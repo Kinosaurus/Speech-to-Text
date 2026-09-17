@@ -1,15 +1,5 @@
 import argparse
 import os
-import threading
-import logging
-from fastapi import FastAPI
-from fastapi import UploadFile, Form
-import uvicorn
-import tempfile
-import shutil
-import json
-from starlette.responses import PlainTextResponse, JSONResponse
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', '-p',
@@ -35,19 +25,19 @@ if __name__ == "__main__":
                         help='Boolean only for TensorRT model. Use python session or cpp session, By default uses Cpp.')
     parser.add_argument('--omp_num_threads', '-omp',
                         type=int,
-                        default=1,
-                        help="Number of threads to use for OpenMP")
+                        default=4,
+                        help="CPU inference threads. Start with the number of physical cores (default: 4).")
     parser.add_argument('--no_single_model', '-nsm',
                         action='store_true',
                         help='Set this if every connection should instantiate its own model. Only relevant for custom model, passed using -trt or -fw.')
     parser.add_argument('--max_clients',
                         type=int,
-                        default=4,
-                        help='Maximum clients supported by the server.')
+                        default=1,
+                        help='Maximum clients supported by the server (default: 1 for one pod).')
     parser.add_argument('--max_connection_time',
                         type=int,
-                        default=300,
-                        help='The maximum duration (in seconds) a client can stay connected. Defaults to 300 seconds (5 minutes)')
+                        default=3600,
+                        help='Maximum client session in seconds (default: 3600, enough for a full book).')
     parser.add_argument('--cache_path', '-c',
                         type=str,
                         default="~/.cache/whisper-live/",

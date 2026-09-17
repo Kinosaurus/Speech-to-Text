@@ -4,6 +4,18 @@ from whisper_live.client import TranscriptionClient
 import argparse
 
 
+def read_optional_text(parser, inline_value, file_value, label):
+    """Return an inline value or UTF-8 file contents, but never both."""
+    if inline_value and file_value:
+        parser.error(f"Use either --{label} or --{label}_file, not both.")
+    if file_value:
+        path = Path(file_value)
+        if not path.is_file():
+            parser.error(f"{label.replace('_', ' ').title()} file not found: {path}")
+        return path.read_text(encoding='utf-8').strip()
+    return inline_value
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', '-p',
@@ -25,8 +37,8 @@ if __name__ == '__main__':
                           help='output recording filename, only used for microphone input.')
     parser.add_argument('--model', '-m',
                           type=str,
-                          default='small',
-                          help='Model to use for transcription, e.g., "tiny, small.en, large-v3".')
+                          default='base.en',
+                          help='Model to use. base.en is the default low-latency English profile; tiny.en is faster.')
     parser.add_argument('--lang', '-l',
                           type=str,
                           default='en',
@@ -55,8 +67,57 @@ if __name__ == '__main__':
                           type=int,
                           default=4,
                           help='Number of transcript segments to display in terminal (default: 4).')
+    parser.add_argument('--no_vad',
+                          action='store_true',
+                          help='Disable voice activity detection. Usually keep VAD enabled for a reading pod.')
+    parser.add_argument('--vad_threshold',
+                          type=float,
+                          default=0.5,
+                          help='Silero VAD speech threshold from 0 to 1 (default: 0.5).')
+    parser.add_argument('--min_silence_ms',
+                          type=int,
+                          default=160,
+                          help='Silence that ends a speech chunk, in milliseconds (default: 160).')
+    parser.add_argument('--speech_pad_ms',
+                          type=int,
+                          default=120,
+                          help='Audio padding around detected speech, in milliseconds (default: 120).')
+    parser.add_argument('--same_output_threshold',
+                          type=int,
+                          default=3,
+                          help='Repeated hypotheses before committing a segment. Lower is faster but less stable (default: 3).')
+    parser.add_argument('--initial_prompt',
+                          type=str,
+                          default=None,
+                          help='Short passage or context that is expected next.')
+    parser.add_argument('--initial_prompt_file',
+                          type=str,
+                          default=None,
+                          help='UTF-8 file containing the short passage expected next.')
+    parser.add_argument('--hotwords',
+                          type=str,
+                          default=None,
+                          help='Comma-separated story names or unusual vocabulary to bias recognition.')
+    parser.add_argument('--hotwords_file',
+                          type=str,
+                          default=None,
+                          help='UTF-8 file containing comma-separated story vocabulary.')
 
     args = parser.parse_args()
+
+    if not 0.0 <= args.vad_threshold <= 1.0:
+        parser.error('--vad_threshold must be between 0 and 1.')
+    if args.min_silence_ms < 0 or args.speech_pad_ms < 0:
+        parser.error('VAD timing values cannot be negative.')
+    if args.same_output_threshold < 1:
+        parser.error('--same_output_threshold must be at least 1.')
+
+    initial_prompt = read_optional_text(
+        parser, args.initial_prompt, args.initial_prompt_file, 'initial_prompt'
+    )
+    hotwords = read_optional_text(
+        parser, args.hotwords, args.hotwords_file, 'hotwords'
+    )
 
     if args.translate and args.enable_translation:
         print("[WARN]: Both --translate and --enable_translation are set. "
@@ -70,7 +131,15 @@ if __name__ == '__main__':
         lang=args.lang,
         translate=args.translate,
         model=args.model,                                  # also support hf_model => `Systran/faster-whisper-small`
-        use_vad=True,
+        use_vad=not args.no_vad,
+        vad_parameters={
+            'threshold': args.vad_threshold,
+            'min_silence_duration_ms': args.min_silence_ms,
+            'speech_pad_ms': args.speech_pad_ms,
+        },
+        same_output_threshold=args.same_output_threshold,
+        initial_prompt=initial_prompt,
+        hotwords=hotwords,
         save_output_recording=args.save_output_recording,  # Only used for microphone input, False by Default
         output_recording_filename=args.output_file,        # Only used for microphone input
         mute_audio_playback=args.mute_audio_playback,      # Only used for file input, False by Default
