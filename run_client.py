@@ -1,7 +1,10 @@
 from pathlib import Path
+import json
 import sys
 from whisper_live.client import TranscriptionClient
 import argparse
+
+from checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
 
 
 def read_optional_text(parser, inline_value, file_value, label):
@@ -102,6 +105,18 @@ if __name__ == '__main__':
                           type=str,
                           default=None,
                           help='UTF-8 file containing comma-separated story vocabulary.')
+    parser.add_argument('--checkpoints',
+                          type=str,
+                          default=None,
+                          help='JSON story manifest containing ordered checkpoints and effects.')
+    parser.add_argument('--checkpoint_threshold',
+                          type=float,
+                          default=None,
+                          help='Override the manifest similarity threshold from 0 to 100.')
+    parser.add_argument('--checkpoint_stability',
+                          type=int,
+                          default=None,
+                          help='Override the number of consecutive matches required to trigger.')
 
     args = parser.parse_args()
 
@@ -111,6 +126,11 @@ if __name__ == '__main__':
         parser.error('VAD timing values cannot be negative.')
     if args.same_output_threshold < 1:
         parser.error('--same_output_threshold must be at least 1.')
+    if (args.checkpoint_threshold is not None
+            and not 0.0 <= args.checkpoint_threshold <= 100.0):
+        parser.error('--checkpoint_threshold must be between 0 and 100.')
+    if args.checkpoint_stability is not None and args.checkpoint_stability < 1:
+        parser.error('--checkpoint_stability must be at least 1.')
 
     initial_prompt = read_optional_text(
         parser, args.initial_prompt, args.initial_prompt_file, 'initial_prompt'
@@ -118,6 +138,39 @@ if __name__ == '__main__':
     hotwords = read_optional_text(
         parser, args.hotwords, args.hotwords_file, 'hotwords'
     )
+
+    transcription_callback = None
+    if args.checkpoints:
+        try:
+            checkpoint_matcher = CheckpointMatcher.from_file(
+                args.checkpoints,
+                threshold=args.checkpoint_threshold,
+                stability=args.checkpoint_stability,
+            )
+        except ValueError as error:
+            parser.error(str(error))
+
+        print(
+            f"[CHECKPOINTS] Loaded {len(checkpoint_matcher.checkpoints)} checkpoints "
+            f"for '{checkpoint_matcher.title}' using {MATCHING_ENGINE}."
+        )
+
+        def handle_transcription(text, _segments):
+            print(f"[TRANSCRIPT] {text}")
+            update = checkpoint_matcher.process(text)
+            if update.checkpoint_id is None:
+                return
+            print(
+                f"[MATCH] {update.checkpoint_id}: {update.score:.1f} "
+                f"({update.confirmations}/{update.confirmations_required})"
+            )
+            if update.triggered:
+                effect = json.dumps(update.effect, ensure_ascii=False)
+                print(f"[TRIGGER] {update.checkpoint_id}: {effect}")
+            if update.completed:
+                print("[CHECKPOINTS] All story checkpoints completed.")
+
+        transcription_callback = handle_transcription
 
     if args.translate and args.enable_translation:
         print("[WARN]: Both --translate and --enable_translation are set. "
@@ -140,6 +193,7 @@ if __name__ == '__main__':
         same_output_threshold=args.same_output_threshold,
         initial_prompt=initial_prompt,
         hotwords=hotwords,
+        transcription_callback=transcription_callback,
         save_output_recording=args.save_output_recording,  # Only used for microphone input, False by Default
         output_recording_filename=args.output_file,        # Only used for microphone input
         mute_audio_playback=args.mute_audio_playback,      # Only used for file input, False by Default

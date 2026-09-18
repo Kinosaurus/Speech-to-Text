@@ -85,6 +85,10 @@ directly power LED strips, speakers, motors or the projector.
 |---|---|
 | `run_server.py` | Starts a locally hosted WhisperLive server configured for one long reading session |
 | `run_client.py` | Streams microphone or file audio and exposes VAD, prompt and hotword tuning |
+| `checkpoint_matcher.py` | Forward-only fuzzy checkpoint matcher shared by the demo and live client |
+| `checkpoint_demo.py` | Runs the sample checkpoints without a microphone or WhisperLive server |
+| `examples/sample_story.json` | Original four-checkpoint sample story and safe placeholder effects |
+| `examples/sample_passage.txt` | Short original passage to read during a microphone test |
 | `BOOKS_TO_LIFE_POD_NOTES.md` | Detailed enclosure, hardware, ASR, latency, matching and budget decisions |
 | `README.md` | Project overview and prototype instructions |
 
@@ -108,7 +112,7 @@ Create and activate a virtual environment, then install the upstream package:
 py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install whisper-live
+python -m pip install -r requirements.txt
 ```
 
 On Linux, install the PortAudio development package first, following the
@@ -167,6 +171,52 @@ python run_client.py `
 
 An inline prompt and a prompt file cannot be supplied at the same time. The
 same rule applies to `--hotwords` and `--hotwords_file`.
+
+### Test the sample checkpoints
+
+The included sample is an original four-page mini-story called *Mila and the
+Sky Garden*. Its placeholder effects print to the terminal; they do not send
+commands to real lights or speakers.
+
+Test the matcher without running WhisperLive:
+
+```powershell
+python checkpoint_demo.py
+```
+
+The demo deliberately includes small recognition mistakes such as `seed` →
+`seat` and `flower` → `flour`. Each checkpoint needs two consecutive matches
+before it triggers. To type your own simulated transcripts:
+
+```powershell
+python checkpoint_demo.py --interactive
+```
+
+For a live microphone test, start `run_server.py` in the first terminal. In a
+second terminal run:
+
+```powershell
+python run_client.py `
+  --model tiny.en `
+  --checkpoints .\examples\sample_story.json `
+  --initial_prompt_file .\examples\sample_passage.txt
+```
+
+Read [examples/sample_passage.txt](examples/sample_passage.txt) aloud. The
+terminal reports the current similarity score and prints `[TRIGGER]` with the
+placeholder effect when a checkpoint is confirmed. Useful tuning overrides:
+
+```powershell
+python run_client.py `
+  --model tiny.en `
+  --checkpoints .\examples\sample_story.json `
+  --checkpoint_threshold 78 `
+  --checkpoint_stability 2
+```
+
+Lowering the threshold makes recognition more forgiving but increases false
+triggers. Production values must be tuned using recordings from children in
+the real enclosure.
 
 ### Useful latency controls
 

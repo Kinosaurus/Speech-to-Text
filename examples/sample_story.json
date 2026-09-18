@@ -1,0 +1,71 @@
+{
+  "book_id": "mila-sky-garden-demo",
+  "title": "Mila and the Sky Garden",
+  "threshold": 82,
+  "stability": 2,
+  "min_coverage": 0.8,
+  "checkpoints": [
+    {
+      "id": "seed_found",
+      "page": 1,
+      "anchor": "Mila found a tiny silver seed beside the old gate",
+      "effect": {
+        "effect_id": "seed_shimmer",
+        "lighting_colour": "#D8E6F3",
+        "brightness": 0.16,
+        "fade_ms": 1200,
+        "visual": "silver_sparkles",
+        "audio": "soft_chime"
+      }
+    },
+    {
+      "id": "grass_grows",
+      "page": 2,
+      "anchor": "Soft green grass curled across the floor like a ribbon",
+      "effect": {
+        "effect_id": "grass_grow",
+        "lighting_colour": "#6F9B5D",
+        "brightness": 0.18,
+        "fade_ms": 1600,
+        "visual": "slow_grass_loop",
+        "audio": "gentle_leaves"
+      }
+    },
+    {
+      "id": "clouds_arrive",
+      "page": 3,
+      "anchor": "White clouds drifted slowly above the warm golden hill",
+      "effect": {
+        "effect_id": "cloud_drift",
+        "lighting_colour": "#BFD8ED",
+        "brightness": 0.2,
+        "fade_ms": 1800,
+        "visual": "slow_clouds_loop",
+        "audio": "light_breeze"
+      }
+    },
+    {
+      "id": "flower_opens",
+      "page": 4,
+      "anchor": "The little seed opened into a bright blue flower",
+      "effect": {
+        "effect_id": "flower_reveal",
+        "lighting_colour": "#6E8FEA",
+        "brightness": 0.22,
+        "fade_ms": 2000,
+        "visual": "blue_flower_opening",
+        "audio": "quiet_bell"
+      }
+    }
+  ],
+  "demo_transcripts": [
+    "Mila found a tiny silver seat beside the old gate",
+    "Mila found a tiny silver seed beside the old gate",
+    "Soft green grass curled across the floor like a river",
+    "Soft green grass curled across the floor like a ribbon",
+    "White clouds drifted slowly above the warm golden hills",
+    "White clouds drifted slowly above the warm golden hill",
+    "The little seed opened into a bright blue flour",
+    "The little seed opened into a bright blue flower"
+  ]
+}
