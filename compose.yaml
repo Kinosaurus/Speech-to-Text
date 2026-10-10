@@ -1,0 +1,28 @@
+# Laptop test: CPU ASR in Docker, microphone client runs natively on Windows.
+services:
+  asr:
+    image: books-to-life-asr-cpu:local
+    build:
+      context: .
+      target: cpu
+    init: true
+    command: ["python", "run_server.py", "--device", "cpu", "--omp_num_threads", "${ASR_THREADS:-2}"]
+    environment:
+      CUDA_VISIBLE_DEVICES: ""
+      OMP_NUM_THREADS: "${ASR_THREADS:-2}"
+      OPENBLAS_NUM_THREADS: "1"
+      HF_HUB_OFFLINE: "${HF_HUB_OFFLINE:-0}"
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - model-cache:/root/.cache
+    healthcheck:
+      # Checks the listener. The client separately waits for model readiness.
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1',9090),2).close()"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  model-cache:

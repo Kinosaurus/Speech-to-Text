@@ -1,0 +1,502 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="24.7.17" type="device">
+  <diagram id="page-0" name="1 - Current app flow">
+    <mxGraphModel dx="1500" dy="1450" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1550" pageHeight="1450" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Books to Life Pod | Current implemented app flow" style="text;html=0;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="20" width="1400" height="60" />
+        </mxCell>
+        <mxCell id="audio" value="AUDIO AND SPEECH RECOGNITION" style="text;html=0;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="110" width="380" height="40" />
+        </mxCell>
+        <mxCell id="matching" value="CHECKPOINT MATCHING" style="text;html=0;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="110" width="380" height="40" />
+        </mxCell>
+        <mxCell id="result" value="RESULT AND SESSION PROGRESS" style="text;html=0;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="110" width="430" height="40" />
+        </mxCell>
+        <mxCell id="a1" value="Child reads into microphone&#10;WhisperLive client captures 16 kHz mono audio" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="180" width="330" height="85" />
+        </mxCell>
+        <mxCell id="a2" value="Convert microphone samples into audio packets&#10;Stream over WebSocket to configured local server" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="305" width="330" height="85" />
+        </mxCell>
+        <mxCell id="a3" value="Server buffers incoming audio&#10;Default backend: faster-whisper" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="430" width="330" height="85" />
+        </mxCell>
+        <mxCell id="a4" value="Speech recognition with VAD enabled by default&#10;Settings: threshold 0.5, silence 160 ms, padding 120 ms" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="555" width="330" height="100" />
+        </mxCell>
+        <mxCell id="a5" value="Decode speech into partial/completed text segments&#10;Default model: base.en; English transcription" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="695" width="330" height="85" />
+        </mxCell>
+        <mxCell id="a6" value="Return segments to client&#10;Join segment text, omitting adjacent duplicate segments" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="835" width="330" height="85" />
+        </mxCell>
+        <mxCell id="m1" value="Read checkpoint JSON before starting audio&#10;Reject malformed or missing checkpoint file" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="180" width="330" height="85" />
+        </mxCell>
+        <mxCell id="m2" value="Validate IDs, matching book_id, positive unique positions,&#10;checkpoint_text, effect object and non-negative delays" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="305" width="330" height="100" />
+        </mxCell>
+        <mxCell id="m3" value="Sort checkpoints by checkpoint_position&#10;Initialize current_index = 0 and confirmations = 0" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="450" width="330" height="85" />
+        </mxCell>
+        <mxCell id="m4" value="Transcription callback passes text to process()&#10;Select only the current expected checkpoint" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="595" width="330" height="85" />
+        </mxCell>
+        <mxCell id="m5" value="Normalize text; check word count; search ordered word windows&#10;Calculate the best similarity score&#10;Full breakdown on page 2" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="740" width="330" height="110" />
+        </mxCell>
+        <mxCell id="m6" value="Apply score threshold and consecutive-update confirmation&#10;Defaults: score &gt;= 82, stability = 2, min_coverage = 0.8" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="895" width="330" height="100" />
+        </mxCell>
+        <mxCell id="r1" value="Confirmed checkpoint?" style="rhombus;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="560" width="330" height="115" />
+        </mxCell>
+        <mxCell id="r2" value="Not confirmed: print match score and confirmation count&#10;Keep expected checkpoint unchanged" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="180" width="330" height="85" />
+        </mxCell>
+        <mxCell id="r3" value="Confirmed: return checkpoint ID, position and effect payload&#10;Advance current_index; reset confirmations to 0" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="735" width="330" height="100" />
+        </mxCell>
+        <mxCell id="r4" value="Client prints [TRIGGER] and the nested effect object&#10;Media filenames and delays remain data; no playback yet" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="875" width="330" height="100" />
+        </mxCell>
+        <mxCell id="r5" value="Index past final checkpoint?" style="rhombus;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="1015" width="330" height="115" />
+        </mxCell>
+        <mxCell id="r6" value="Print checkpoint sequence complete&#10;Further process() calls return no trigger&#10;Audio capture is not automatically stopped here" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="1190" width="330" height="100" />
+        </mxCell>
+        <mxCell id="note" value="Current limitation: missing one checkpoint keeps the matcher waiting for it.&#10;RFID selection, Moonshine, two-ahead matching and real effect playback are planned (page 3)." style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1140" width="820" height="115" />
+        </mxCell>
+        <mxCell id="edge-e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="a1" target="a2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="a2" target="a3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="a3" target="a4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="a4" target="a5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="a5" target="a6">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="m1" target="m2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="m2" target="m3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="m3" target="m4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="m4" target="m5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="m5" target="m6">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e11" value="Transcript callback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="a6" target="m4">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="460" y="875" />
+              <mxPoint x="460" y="635" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e12" value="Match update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="m6" target="r1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="950" y="940" />
+              <mxPoint x="950" y="615" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e13" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="r1" target="r2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e14" value="Next audio update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="r2" target="a1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1440" y="225" />
+              <mxPoint x="1440" y="90" />
+              <mxPoint x="25" y="90" />
+              <mxPoint x="25" y="225" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e15" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="r1" target="r3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="r3" target="r4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="r4" target="r5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e18" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="r5" target="r6">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e19" value="No - next transcript" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="r5" target="m4">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="980" y="1075" />
+              <mxPoint x="980" y="690" />
+              <mxPoint x="520" y="690" />
+              <mxPoint x="520" y="635" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page-1" name="2 - Current matcher detail">
+    <mxGraphModel dx="1500" dy="1560" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1550" pageHeight="1560" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Current matcher | Every decision in checkpoint_matcher.py" style="text;html=0;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="20" width="1420" height="60" />
+        </mxCell>
+        <mxCell id="t1" value="Receive one transcript callback&#10;If already completed, return without a trigger" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="150" width="330" height="85" />
+        </mxCell>
+        <mxCell id="t2" value="Select checkpoints[current_index]&#10;Read threshold, stability and min_coverage&#10;Use checkpoint override or manifest default" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="285" width="330" height="105" />
+        </mxCell>
+        <mxCell id="t3" value="Normalize transcript and checkpoint_text&#10;Unicode NFKC; lowercase; remove punctuation except apostrophes&#10;Collapse whitespace and split into words" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="440" width="330" height="120" />
+        </mxCell>
+        <mxCell id="t4" value="minimum_words = max(3, ceil(anchor_word_count x min_coverage))&#10;Example: 10-word phrase at 0.8 requires at least 8 words" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="610" width="330" height="110" />
+        </mxCell>
+        <mxCell id="t5" value="Empty transcript or fewer than minimum_words?" style="rhombus;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="770" width="330" height="135" />
+        </mxCell>
+        <mxCell id="t6" value="Set similarity score = 0" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fdecec;strokeColor=#b65c5c;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="970" width="330" height="85" />
+        </mxCell>
+        <mxCell id="s1" value="Keep only the most recent&#10;max(80, anchor_word_count x 3) transcript words" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="150" width="330" height="100" />
+        </mxCell>
+        <mxCell id="s2" value="Choose candidate window lengths&#10;From minimum_words through&#10;min(transcript_word_count, anchor_word_count + 2)" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="305" width="330" height="110" />
+        </mxCell>
+        <mxCell id="s3" value="For each length: slide through every possible start&#10;Keep words in their original reading order" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="465" width="330" height="100" />
+        </mxCell>
+        <mxCell id="s4" value="Join each candidate window into text&#10;Compare with the full normalized checkpoint phrase" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="615" width="330" height="100" />
+        </mxCell>
+        <mxCell id="s5" value="Compute RapidFuzz ratio, from 0 to 100&#10;If RapidFuzz is unavailable, use difflib fallback" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="765" width="330" height="100" />
+        </mxCell>
+        <mxCell id="s6" value="Keep maximum score across all candidate windows" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#eaf2ff;strokeColor=#5375a5;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="915" width="330" height="85" />
+        </mxCell>
+        <mxCell id="c1" value="Score &gt;= threshold?&#10;Default: 82" style="rhombus;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="150" width="330" height="125" />
+        </mxCell>
+        <mxCell id="c2" value="Yes: confirmations += 1" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="325" width="330" height="85" />
+        </mxCell>
+        <mxCell id="c3" value="No: confirmations = 0" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fdecec;strokeColor=#b65c5c;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="1130" width="330" height="85" />
+        </mxCell>
+        <mxCell id="c4" value="Confirmations &gt;= stability?&#10;Default: 2 callbacks" style="rhombus;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="460" width="330" height="125" />
+        </mxCell>
+        <mxCell id="c5" value="Yes: take checkpoint.effect&#10;Advance current_index by 1&#10;Reset internal confirmations to 0" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="650" width="330" height="110" />
+        </mxCell>
+        <mxCell id="c6" value="Return MatchUpdate&#10;ID, position, score, confirmation count,&#10;triggered/completed flags and effect if triggered" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="830" width="330" height="120" />
+        </mxCell>
+        <mxCell id="c7" value="Wait for next transcript callback&#10;Progress follows sorted checkpoint positions" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#e8f4ed;strokeColor=#548569;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="995" width="330" height="85" />
+        </mxCell>
+        <mxCell id="note" value="Coverage is a minimum-word-count guard, not an independent alignment percentage.&#10;Current confirmations count callbacks, including repeated text; no freshness or timestamp guard exists.&#10;Only one checkpoint is evaluated, so no candidate comparison or skipped-checkpoint logic runs yet." style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1250" width="860" height="160" />
+        </mxCell>
+        <mxCell id="edge-e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="t1" target="t2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="t2" target="t3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="t3" target="t4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="t4" target="t5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e5" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="t5" target="t6">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e6" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="t5" target="s1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="450" y="835" />
+              <mxPoint x="450" y="120" />
+              <mxPoint x="715" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="s1" target="s2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="s2" target="s3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="s3" target="s4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="s4" target="s5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="s5" target="s6">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e12" value="Best score" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="s6" target="c1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="980" y="955" />
+              <mxPoint x="980" y="120" />
+              <mxPoint x="1205" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e13" value="Zero score" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="t6" target="c1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="440" y="1010" />
+              <mxPoint x="440" y="1180" />
+              <mxPoint x="990" y="1180" />
+              <mxPoint x="990" y="210" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e14" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="c1" target="c2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e15" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="c1" target="c3">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1440" y="210" />
+              <mxPoint x="1440" y="1170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="c2" target="c4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e17" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="c4" target="c5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e18" value="No - effect is empty" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="c4" target="c6">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1400" y="520" />
+              <mxPoint x="1400" y="890" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="c5" target="c6">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e20" value="No trigger" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="c3" target="c6">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1430" y="1170" />
+              <mxPoint x="1430" y="890" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="c6" target="c7">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e22" value="Next update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="c7" target="t1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="990" y="1035" />
+              <mxPoint x="990" y="1090" />
+              <mxPoint x="25" y="1090" />
+              <mxPoint x="25" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page-2" name="3 - Planned recovery and effects">
+    <mxGraphModel dx="1500" dy="1850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1550" pageHeight="1850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Planned additions | Recovery when reading skips a checkpoint" style="text;html=0;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="20" width="1420" height="60" />
+        </mxCell>
+        <mxCell id="status" value="DESIGN PROPOSAL - not implemented&#10;Orange boxes describe proposed behavior. Existing book validation and normalization remain in use." style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="100" width="1410" height="85" />
+        </mxCell>
+        <mxCell id="b1" value="Identify book via RFID/NFC&#10;Load its reviewed local book package" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="230" width="330" height="85" />
+        </mxCell>
+        <mxCell id="b2" value="Set expected position&#10;Activate current checkpoint + next two in sorted order" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="365" width="330" height="100" />
+        </mxCell>
+        <mxCell id="b3" value="Capture speech; local streaming ASR&#10;Target: Moonshine instead of WhisperLive" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="520" width="330" height="100" />
+        </mxCell>
+        <mxCell id="b4" value="Receive partial text and segment/time evidence&#10;Normalize text for matching" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="675" width="330" height="100" />
+        </mxCell>
+        <mxCell id="b5" value="Use evidence from the current reading progress&#10;Avoid reusing old transcript spans for new triggers" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="830" width="330" height="110" />
+        </mxCell>
+        <mxCell id="x1" value="Score each active checkpoint with ordered word windows&#10;Apply each phrase coverage and similarity rules" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="230" width="330" height="110" />
+        </mxCell>
+        <mxCell id="x2" value="Is there a clear candidate match?&#10;Hold if candidate phrases are ambiguous" style="rhombus;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="400" width="330" height="140" />
+        </mxCell>
+        <mxCell id="x3" value="Track confirmations separately for each candidate&#10;Reset a candidate count when its match fails" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="600" width="330" height="110" />
+        </mxCell>
+        <mxCell id="x4" value="Candidate stable enough?" style="rhombus;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="770" width="330" height="140" />
+        </mxCell>
+        <mxCell id="x5" value="Confirm chosen checkpoint&#10;Mark earlier unmatched checkpoints skipped&#10;Keep triggered and skipped IDs in session state" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="970" width="330" height="120" />
+        </mxCell>
+        <mxCell id="x6" value="Advance expected position to checkpoint after chosen one&#10;Slide the three-checkpoint window forward" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="1160" width="330" height="110" />
+        </mxCell>
+        <mxCell id="x7" value="All checkpoints handled?" style="rhombus;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="1330" width="330" height="140" />
+        </mxCell>
+        <mxCell id="x8" value="Checkpoint sequence complete&#10;No replay of triggered or skipped effects" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="550" y="1540" width="330" height="100" />
+        </mxCell>
+        <mxCell id="e1" value="Send only chosen checkpoint.effect to controller&#10;Record confirmation time t0&#10;Do not enqueue skipped checkpoint effects" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="230" width="330" height="120" />
+        </mxCell>
+        <mxCell id="e2" value="Validate and resolve reviewed local asset files&#10;Skip absent/null visual or sound&#10;Report missing files without blocking reading" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="410" width="330" height="120" />
+        </mxCell>
+        <mxCell id="e3" value="Queue visual for t0 + visual_delay&#10;Queue sound for t0 + sound_delay&#10;Omitted delay = 0 ms" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="590" width="330" height="110" />
+        </mxCell>
+        <mxCell id="e4" value="Process due events without blocking audio capture&#10;Start each available asset when its timer is due" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="760" width="330" height="110" />
+        </mxCell>
+        <mxCell id="e5" value="Apply controller limits and lighting/audio settings&#10;Lighting/visual player; sound playback; USB serial controls" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="930" width="330" height="110" />
+        </mxCell>
+        <mxCell id="e6" value="Child continues reading while timers and playback run&#10;Playback is independent of the matching loop" style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1040" y="1100" width="330" height="100" />
+        </mxCell>
+        <mxCell id="note" value="To tune before implementation: candidate separation margin, fresh-evidence rules and effect overlap policy.&#10;A larger page jump needs an operator page-correction control; the three-checkpoint window does not search the whole book." style="rounded=1;arcSize=10;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=14;spacing=8;fillColor=#fff1d6;strokeColor=#b9882d;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1650" width="1410" height="130" />
+        </mxCell>
+        <mxCell id="edge-e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="b1" target="b2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="b2" target="b3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="b3" target="b4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="b4" target="b5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e5" value="Fresh reading evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="b5" target="x1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="455" y="885" />
+              <mxPoint x="455" y="200" />
+              <mxPoint x="715" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x1" target="x2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e7" value="No - wait" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x2" target="b3">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="460" y="470" />
+              <mxPoint x="460" y="570" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e8" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x2" target="x3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x3" target="x4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e10" value="No - more evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x4" target="b3">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="430" y="840" />
+              <mxPoint x="430" y="570" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e11" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x4" target="x5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x5" target="x6">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x6" target="x7">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e14" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x7" target="x8">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e15" value="No - next window" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x7" target="b2">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="25" y="1400" />
+              <mxPoint x="25" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e16" value="Effect event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="x5" target="e1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="950" y="1030" />
+              <mxPoint x="950" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="e1" target="e2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="e2" target="e3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="e3" target="e4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="e4" target="e5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="edge-e21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;strokeColor=#5d6b7a;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="e5" target="e6">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

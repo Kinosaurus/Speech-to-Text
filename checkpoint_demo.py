@@ -2,9 +2,13 @@
 
 import argparse
 import json
+import math
 from pathlib import Path
+import statistics
+from time import perf_counter
 
 from checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
+from alignment_matcher import AlignmentMatcher
 
 
 def show_update(text, update):
@@ -14,9 +18,16 @@ def show_update(text, update):
         return
 
     print(
-        f"MATCH: {update.checkpoint_id} | score={update.score:.1f} | "
+        f"MATCH: {update.checkpoint_id} | position={update.checkpoint_position} | "
+        f"score={update.score:.1f} | "
         f"confirmation={update.confirmations}/{update.confirmations_required}"
     )
+    if hasattr(update, "tracked_word_position"):
+        print(f"ALIGNMENT: words={update.alignment_start}:{update.alignment_end} | "
+              f"confirmed_position={update.tracked_word_position} | "
+              f"recovery={update.recovering} | ambiguous={update.ambiguous} | duplicate={update.duplicate}")
+        if update.skipped_checkpoint_ids:
+            print(f"SKIPPED: {', '.join(update.skipped_checkpoint_ids)}")
     if update.triggered:
         print(f"TRIGGER: {json.dumps(update.effect, ensure_ascii=False)}")
     if update.completed:
@@ -37,16 +48,22 @@ def main():
     )
     parser.add_argument("--threshold", type=float, default=None)
     parser.add_argument("--stability", type=int, default=None)
+    parser.add_argument("--matching_mode", choices=("alignment", "fuzzy"), default="alignment")
+    parser.add_argument("--benchmark", type=int, default=None, metavar="REPEATS",
+                        help="Replay demo transcripts to measure matching-only time per update.")
     args = parser.parse_args()
+    if args.benchmark is not None and (args.benchmark < 1 or args.interactive):
+        parser.error("--benchmark requires a positive repeat count and cannot be used with --interactive.")
 
     manifest_path = Path(args.checkpoints)
-    matcher = CheckpointMatcher.from_file(
+    matcher_type = AlignmentMatcher if args.matching_mode == "alignment" else CheckpointMatcher
+    matcher = matcher_type.from_file(
         manifest_path, threshold=args.threshold, stability=args.stability
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 
     print(f"BOOK: {matcher.title}")
-    print(f"MATCHING ENGINE: {MATCHING_ENGINE}")
+    print(f"MATCHING ENGINE: {matcher.mode} ({MATCHING_ENGINE})")
     print(f"CHECKPOINTS: {len(matcher.checkpoints)}")
 
     if args.interactive:
@@ -63,6 +80,21 @@ def main():
     demo_transcripts = manifest.get("demo_transcripts", [])
     if not demo_transcripts:
         raise ValueError("Manifest has no 'demo_transcripts' sequence.")
+
+    if args.benchmark is not None:
+        times = []
+        for _ in range(args.benchmark):
+            replay = matcher_type(manifest, threshold=args.threshold, stability=args.stability)
+            for text in demo_transcripts:
+                started = perf_counter()
+                replay.process(text)
+                times.append((perf_counter() - started) * 1000)
+        times.sort()
+        p95 = times[max(0, math.ceil(len(times) * 0.95) - 1)]
+        print(f"TIMING: {len(times)} updates | median={statistics.median(times):.3f} ms | "
+              f"p95={p95:.3f} ms | max={max(times):.3f} ms")
+        print("Matching-only timing on this computer; excludes ASR, capture, confirmation waits and playback.")
+        return
 
     for text in demo_transcripts:
         show_update(text, matcher.process(text))

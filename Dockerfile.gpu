@@ -1,0 +1,20 @@
+# NVIDIA laptop/desktop GPU profile, separate from Jetson's ARM64 environment.
+FROM nvidia/cuda:12.3.2-cudnn9-runtime-ubuntu22.04@sha256:edc99e084ef003e1e6f180dbe2e9f64496c61254cb109c09060532c2d3b61d75
+ENV PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=1
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 python3-pip python-is-python3 python3-dev build-essential \
+    portaudio19-dev libsndfile1 ca-certificates wget \
+    && rm -rf /var/lib/apt/lists/*
+COPY requirements-client.txt requirements-asr.txt ./
+RUN python -m pip install --no-cache-dir torch==2.5.1 --index-url https://download.pytorch.org/whl/cu121 \
+    && python -m pip install --no-cache-dir -r requirements-asr.txt \
+    && python -m pip install --no-cache-dir --no-deps whisper-live==0.10.0
+COPY run_server.py run_client.py asr_runtime.py audio_runtime.py prepare_models.py \
+    alignment_matcher.py checkpoint_matcher.py checkpoint_demo.py ./
+COPY examples ./examples
+COPY tests ./tests
+RUN python -c "from whisper_live.backend.faster_whisper_backend import ServeClientFasterWhisper"
+EXPOSE 9090
+CMD ["python", "run_server.py", "--device", "cuda", "--omp_num_threads", "2"]

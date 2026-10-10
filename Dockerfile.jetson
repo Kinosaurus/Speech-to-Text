@@ -1,0 +1,40 @@
+# JetPack 6.2 baseline. This NVIDIA iGPU image was verified to contain ARM64.
+# Build on Jetson; do not use this image for an x86 laptop.
+ARG JETSON_BASE_IMAGE=nvcr.io/nvidia/pytorch:25.02-py3-igpu@sha256:8d939943ff1cb570d3f85aeb95671e06cdf78715fa76218cc585849a16c95e61
+FROM ${JETSON_BASE_IMAGE}
+ARG CT2_VERSION=4.8.2
+ARG BUILD_JOBS=2
+ENV PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=1 CMAKE_BUILD_PARALLEL_LEVEL=2
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential cmake git libopenblas-dev portaudio19-dev libsndfile1 wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Build explicitly for Orin's SM 8.7 rather than depending on an ARM CPU wheel.
+# No GPU is required during compilation; it is verified after deployment.
+RUN git clone --branch v${CT2_VERSION} --depth 1 --recursive --shallow-submodules \
+        https://github.com/OpenNMT/CTranslate2.git /tmp/ctranslate2 \
+    && cmake -S /tmp/ctranslate2 -B /tmp/ctranslate2/build \
+        -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local \
+        -DWITH_MKL=OFF -DWITH_DNNL=OFF -DWITH_OPENBLAS=ON \
+        -DWITH_CUDA=ON -DWITH_CUDNN=ON -DCUDA_ARCH_LIST=8.7 \
+        -DOPENMP_RUNTIME=COMP -DBUILD_CLI=OFF -DBUILD_TESTS=OFF \
+    && cmake --build /tmp/ctranslate2/build --parallel ${BUILD_JOBS} \
+    && cmake --install /tmp/ctranslate2/build \
+    && ldconfig \
+    && python -m pip install --no-cache-dir -r /tmp/ctranslate2/python/install_requirements.txt \
+    && python -m pip install --no-cache-dir --no-build-isolation --no-deps /tmp/ctranslate2/python \
+    && rm -rf /tmp/ctranslate2
+
+# Keep NVIDIA's CUDA-enabled Torch; do not install requirements.txt or CPU Torch.
+COPY requirements-client.txt requirements-asr.txt ./
+RUN python -m pip install --no-cache-dir -r requirements-asr.txt \
+    && python -m pip install --no-cache-dir --no-deps whisper-live==0.10.0
+COPY run_server.py run_client.py asr_runtime.py audio_runtime.py prepare_models.py \
+    alignment_matcher.py checkpoint_matcher.py checkpoint_demo.py ./
+COPY examples ./examples
+COPY tests ./tests
+RUN python -c "from whisper_live.backend.faster_whisper_backend import ServeClientFasterWhisper; import ctranslate2; assert ctranslate2.__version__ == '4.8.2'"
+EXPOSE 9090
+CMD ["python", "run_server.py", "--device", "cuda", "--omp_num_threads", "2"]

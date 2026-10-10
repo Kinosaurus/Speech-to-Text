@@ -30,6 +30,86 @@ class CheckpointMatcherTests(unittest.TestCase):
         self.assertFalse(first.triggered)
         self.assertTrue(second.triggered)
         self.assertEqual(second.checkpoint_id, "seed_found")
+        self.assertEqual(second.checkpoint_position, 1)
+
+    def test_numeric_checkpoint_schema_preserves_effect_payload(self):
+        effect = {
+            "visual": "grass_and_lamb.gif",
+            "visual_delay": 500,
+            "sound": "lamb.wav",
+            "sound_delay": 1000,
+        }
+        matcher = CheckpointMatcher({
+            "book_id": 1,
+            "checkpoints": [{
+                "id": 1,
+                "book_id": 1,
+                "checkpoint_position": 1,
+                "checkpoint_text": "mary had a little lamb",
+                "effect": effect,
+            }],
+        })
+        self.assertFalse(matcher.process("Mary had a little lamb!").triggered)
+        update = matcher.process("Mary had a little lamb!")
+        self.assertTrue(update.triggered)
+        self.assertEqual(update.effect, effect)
+        self.assertEqual(update.checkpoint_position, 1)
+        self.assertTrue(update.completed)
+        self.assertFalse(matcher.process("Mary had a little lamb!").triggered)
+
+    def test_positions_control_order_without_reordering_input(self):
+        manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+        manifest["checkpoints"].reverse()
+        matcher = CheckpointMatcher(manifest, stability=1)
+        positions = []
+        for checkpoint in sorted(manifest["checkpoints"], key=lambda item: item["checkpoint_position"]):
+            update = matcher.process(checkpoint["checkpoint_text"])
+            self.assertTrue(update.triggered)
+            positions.append(update.checkpoint_position)
+        self.assertEqual(positions, [1, 2, 3, 4])
+        self.assertEqual(manifest["checkpoints"][0]["checkpoint_position"], 4)
+
+    def test_rejects_invalid_checkpoint_records(self):
+        cases = [
+            ("checkpoint_position", 0),
+            ("checkpoint_position", True),
+            ("checkpoint_position", "1"),
+            ("checkpoint_text", "   "),
+            ("checkpoint_text", 123),
+            ("book_id", "another-book"),
+            ("effect", "soft_chime"),
+        ]
+        for field, value in cases:
+            with self.subTest(field=field, value=value):
+                manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+                manifest["checkpoints"][0][field] = value
+                with self.assertRaises(ValueError):
+                    CheckpointMatcher(manifest)
+
+    def test_rejects_duplicate_positions_and_ids(self):
+        for field in ("id", "checkpoint_position"):
+            with self.subTest(field=field):
+                manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+                manifest["checkpoints"][1][field] = manifest["checkpoints"][0][field]
+                with self.assertRaises(ValueError):
+                    CheckpointMatcher(manifest)
+
+    def test_rejects_invalid_effect_delays(self):
+        for field in ("visual_delay", "sound_delay"):
+            for value in (-1, 0.5, "500", True, None):
+                with self.subTest(field=field, value=value):
+                    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+                    manifest["checkpoints"][0]["effect"][field] = value
+                    with self.assertRaises(ValueError):
+                        CheckpointMatcher(manifest)
+
+    def test_accepts_null_assets_and_omitted_delays(self):
+        manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+        manifest["checkpoints"][0]["effect"] = {"visual": None, "sound": None}
+        matcher = CheckpointMatcher(manifest, stability=1)
+        update = matcher.process(manifest["checkpoints"][0]["checkpoint_text"])
+        self.assertTrue(update.triggered)
+        self.assertEqual(update.effect, {"visual": None, "sound": None})
 
     def test_does_not_skip_to_later_checkpoint(self):
         later_text = "White clouds drifted slowly above the warm golden hill"

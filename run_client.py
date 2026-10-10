@@ -1,10 +1,11 @@
 from pathlib import Path
 import json
 import sys
-from whisper_live.client import TranscriptionClient
 import argparse
 
 from checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
+from alignment_matcher import AlignmentMatcher
+from audio_runtime import configure_microphone, input_devices, wait_for_server
 
 
 def read_optional_text(parser, inline_value, file_value, label):
@@ -21,6 +22,14 @@ def read_optional_text(parser, inline_value, file_value, label):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('--list_input_devices', action='store_true',
+                        help='List microphone names and indexes without connecting to the server.')
+    parser.add_argument('--input_device', default=None,
+                        help='Microphone index or unique part of its name; default uses the OS microphone.')
+    parser.add_argument('--audio_chunk', type=int, default=4096,
+                        help='Microphone samples per packet at 16 kHz; try 1024 on the Pi (64 ms).')
+    parser.add_argument('--connection_timeout', type=float, default=180,
+                        help='Maximum seconds to wait for the server and model to become ready.')
     parser.add_argument('--port', '-p',
                           type=int,
                           default=9090,
@@ -108,7 +117,7 @@ if __name__ == '__main__':
     parser.add_argument('--checkpoints',
                           type=str,
                           default=None,
-                          help='JSON story manifest containing ordered checkpoints and effects.')
+                          help='JSON book manifest with full pages text, checkpoint positions and effect objects.')
     parser.add_argument('--checkpoint_threshold',
                           type=float,
                           default=None,
@@ -117,8 +126,27 @@ if __name__ == '__main__':
                           type=int,
                           default=None,
                           help='Override the number of consecutive matches required to trigger.')
+    parser.add_argument('--matching_mode', choices=('alignment', 'fuzzy'), default='alignment',
+                        help='Track speech against full page text (default), or compare checkpoint phrases only.')
 
     args = parser.parse_args()
+
+    if args.audio_chunk < 256 or args.audio_chunk > 16384:
+        parser.error('--audio_chunk must be between 256 and 16384 samples.')
+    if not 0 < args.connection_timeout < float('inf'):
+        parser.error('--connection_timeout must be positive and finite.')
+    if args.list_input_devices:
+        import pyaudio
+        audio = pyaudio.PyAudio()
+        try:
+            devices = input_devices(audio)
+            for device in devices:
+                print(f"{device['index']}: {device['name']} (input channels={device['maxInputChannels']})")
+            if not devices:
+                print('No microphone inputs found. Connect a USB microphone and check audio permissions.')
+        finally:
+            audio.terminate()
+        sys.exit(0 if devices else 1)
 
     if not 0.0 <= args.vad_threshold <= 1.0:
         parser.error('--vad_threshold must be between 0 and 1.')
@@ -140,9 +168,11 @@ if __name__ == '__main__':
     )
 
     transcription_callback = None
+    print(f"[ASR] Requested model={args.model}, language={args.lang}, VAD={not args.no_vad}")
     if args.checkpoints:
         try:
-            checkpoint_matcher = CheckpointMatcher.from_file(
+            matcher_type = AlignmentMatcher if args.matching_mode == 'alignment' else CheckpointMatcher
+            checkpoint_matcher = matcher_type.from_file(
                 args.checkpoints,
                 threshold=args.checkpoint_threshold,
                 stability=args.checkpoint_stability,
@@ -152,18 +182,28 @@ if __name__ == '__main__':
 
         print(
             f"[CHECKPOINTS] Loaded {len(checkpoint_matcher.checkpoints)} checkpoints "
-            f"for '{checkpoint_matcher.title}' using {MATCHING_ENGINE}."
+            f"for '{checkpoint_matcher.title}' using {checkpoint_matcher.mode} ({MATCHING_ENGINE})."
         )
 
-        def handle_transcription(text, _segments):
+        def handle_transcription(text, segments):
             print(f"[TRANSCRIPT] {text}")
-            update = checkpoint_matcher.process(text)
+            if args.matching_mode == 'alignment':
+                update = checkpoint_matcher.process(text, segments=segments)
+            else:
+                update = checkpoint_matcher.process(text)
             if update.checkpoint_id is None:
                 return
             print(
-                f"[MATCH] {update.checkpoint_id}: {update.score:.1f} "
+                f"[MATCH] {update.checkpoint_id} at position {update.checkpoint_position}: "
+                f"{update.score:.1f} "
                 f"({update.confirmations}/{update.confirmations_required})"
             )
+            if args.matching_mode == 'alignment':
+                print(f"[ALIGN] page={update.page}, words={update.alignment_start}:{update.alignment_end}, "
+                      f"confirmed_position={update.tracked_word_position}, recovery={update.recovering}, "
+                      f"ambiguous={update.ambiguous}, duplicate={update.duplicate}")
+                if update.skipped_checkpoint_ids:
+                    print(f"[SKIPPED] {', '.join(update.skipped_checkpoint_ids)}")
             if update.triggered:
                 effect = json.dumps(update.effect, ensure_ascii=False)
                 print(f"[TRIGGER] {update.checkpoint_id}: {effect}")
@@ -178,6 +218,8 @@ if __name__ == '__main__':
               "while --enable_translation uses M2M100 for any-to-any. "
               "Both will be active.")
 
+    from whisper_live.client import TranscriptionClient
+    print(f'[SERVER] ws://{args.server}:{args.port}')
     client = TranscriptionClient(
         args.server,
         args.port,
@@ -204,6 +246,18 @@ if __name__ == '__main__':
     )
 
     if args.files is None:
+        try:
+            microphone = configure_microphone(client, args.input_device, args.audio_chunk)
+            print(f"[MICROPHONE] {microphone['name']} (device {microphone['index']})")
+            print(f"[AUDIO] Capture rate={client.rate} Hz, channels={client.channels}")
+            print(f'[AUDIO] Packet duration={1000 * client.chunk / client.rate:g} ms')
+            wait_for_server(client, args.connection_timeout)
+        except (OSError, ValueError, ConnectionError, TimeoutError) as error:
+            client.close_all_clients()
+            if client.stream is not None:
+                client.stream.close()
+            client.p.terminate()
+            parser.exit(1, f'[STARTUP] {error}\n')
         client()
         sys.exit(0)
 
@@ -224,5 +278,13 @@ if __name__ == '__main__':
     for file_path in valid_files:
         print(f"  - {file_path}")
 
+    try:
+        wait_for_server(client, args.connection_timeout)
+    except (ConnectionError, TimeoutError) as error:
+        client.close_all_clients()
+        if client.stream is not None:
+            client.stream.close()
+        client.p.terminate()
+        parser.exit(1, f'[STARTUP] {error}\n')
     for f in valid_files:
         client(f)

@@ -1,0 +1,35 @@
+# Overlay for a Pi 4 with 64-bit Raspberry Pi OS and a wired USB microphone.
+services:
+  asr:
+    platform: linux/arm64
+  pod:
+    image: books-to-life-pod-client:local
+    platform: linux/arm64
+    build:
+      context: .
+      target: client
+    init: true
+    depends_on:
+      asr:
+        condition: service_healthy
+    devices:
+      - /dev/snd:/dev/snd
+    group_add:
+      - "${AUDIO_GID:-29}"
+    command:
+      - python
+      - run_client.py
+      - --server
+      - asr
+      - --model
+      - "${ASR_MODEL:-base.en}"
+      - --checkpoints
+      - "/books/${BOOK_MANIFEST:-sample_story.json}"
+      - --input_device
+      - "${INPUT_DEVICE:-default}"
+      - --audio_chunk
+      - "${AUDIO_CHUNK:-1024}"
+      - --connection_timeout
+      - "180"
+    volumes:
+      - ./examples:/books:ro

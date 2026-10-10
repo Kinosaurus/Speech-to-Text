@@ -1,0 +1,20 @@
+# Laptop: Docker runs GPU ASR; run the microphone client natively on Windows.
+services:
+  asr:
+    image: books-to-life-asr-gpu:local
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    gpus: all
+    init: true
+    environment:
+      OMP_NUM_THREADS: "${ASR_THREADS:-2}"
+      OPENBLAS_NUM_THREADS: "1"
+      HF_HUB_OFFLINE: "${HF_HUB_OFFLINE:-0}"
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - gpu-model-cache:/root/.cache
+volumes:
+  gpu-model-cache:

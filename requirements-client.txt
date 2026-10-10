@@ -1,0 +1,8 @@
+# Dependencies actually imported by the WhisperLive microphone/file client.
+# Install whisper-live separately with --no-deps to avoid its server-only extras.
+PyAudio==0.2.14
+av>=14,<19
+numpy>=1.26.4,<2.5
+scipy>=1.13,<2
+websocket-client>=1.8,<2
+rapidfuzz>=3.14,<4

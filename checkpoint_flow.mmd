@@ -1,0 +1,26 @@
+flowchart TD
+    A([Start reading session]) --> B[Identify book - RFID scan planned]
+    B --> C[Load book manifest and validate checkpoints]
+    C --> D[Sort by checkpoint_position]
+    D --> E[Set next expected checkpoint]
+    E --> F[Activate current checkpoint plus next two - planned]
+    F --> G[Child reads aloud into microphone]
+    G --> H[Local speech recognition produces transcript]
+    H --> I[Normalize transcript and checkpoint_text]
+    I --> J[Compare speech with active checkpoint phrases]
+    J --> K{Clear match confirmed across consecutive updates?}
+    K -- No --> G
+    K -- Yes --> L[Mark any earlier unmatched checkpoints skipped - planned]
+    L --> M[Record matched position and prevent repeat triggers]
+    M --> N[Advance to checkpoint after the matched one]
+    M --> O[Schedule only the matched checkpoint effect - planned]
+    O --> P[Wait visual_delay milliseconds from confirmation]
+    O --> Q[Wait sound_delay milliseconds from confirmation]
+    P --> R[Play visual if present - planned]
+    Q --> S[Play sound if present - planned]
+    N --> T{All checkpoints triggered or skipped?}
+    T -- No --> F
+    T -- Yes --> U([Checkpoint sequence complete])
+
+    classDef planned fill:#fff3cd,stroke:#b8860b,color:#222;
+    class B,F,L,O,P,Q,R,S planned;

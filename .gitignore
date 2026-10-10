@@ -149,6 +149,9 @@ activemq-data/
 
 # Environments
 .env
+.env.*
+!.env.example
+!.env.*.example
 .envrc
 .venv
 env/
@@ -216,3 +219,29 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local ASR tests, transcripts and scratch work
+/tmp/
+/recordings/
+/*.wav
+/*.m4a
+/*.mp3
+/*.mp4
+/*.flac
+/*.ogg
+/*.aac
+/*.wma
+/*.webm
+/*.srt
+/*.aup3
+/*.aup4
+
+# Downloaded models and platform-specific caches
+/models/
+/model-cache/
+/.hf-cache/
+
+# Desktop metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

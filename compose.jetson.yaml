@@ -1,0 +1,60 @@
+# Standalone file: both programs run on Jetson. Do not merge the CPU Compose file.
+services:
+  asr:
+    image: books-to-life-asr-jetson:local
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile.jetson
+    runtime: nvidia
+    init: true
+    command: ["python", "run_server.py", "--device", "cuda", "--omp_num_threads", "${ASR_THREADS:-2}"]
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+      OMP_NUM_THREADS: "${ASR_THREADS:-2}"
+      OPENBLAS_NUM_THREADS: "1"
+      HF_HUB_OFFLINE: "${HF_HUB_OFFLINE:-0}"
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - jetson-model-cache:/root/.cache
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1',9090),2).close()"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+  pod:
+    image: books-to-life-pod-client:local
+    platform: linux/arm64
+    build:
+      context: .
+      target: client
+    init: true
+    depends_on:
+      asr:
+        condition: service_healthy
+    devices:
+      - /dev/snd:/dev/snd
+    group_add:
+      - "${AUDIO_GID:-29}"
+    command:
+      - python
+      - run_client.py
+      - --server
+      - asr
+      - --model
+      - "${ASR_MODEL:-small.en}"
+      - --checkpoints
+      - "/books/${BOOK_MANIFEST:-sample_story.json}"
+      - --input_device
+      - "${INPUT_DEVICE:-default}"
+      - --audio_chunk
+      - "${AUDIO_CHUNK:-1024}"
+      - --connection_timeout
+      - "180"
+    volumes:
+      - ./examples:/books:ro
+volumes:
+  jetson-model-cache:

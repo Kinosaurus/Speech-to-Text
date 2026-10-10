@@ -7,55 +7,79 @@
   "checkpoints": [
     {
       "id": "seed_found",
+      "book_id": "mila-sky-garden-demo",
+      "checkpoint_position": 1,
       "page": 1,
-      "anchor": "Mila found a tiny silver seed beside the old gate",
+      "checkpoint_text": "Mila found a tiny silver seed beside the old gate",
       "effect": {
         "effect_id": "seed_shimmer",
         "lighting_colour": "#D8E6F3",
         "brightness": 0.16,
         "fade_ms": 1200,
-        "visual": "silver_sparkles",
-        "audio": "soft_chime"
-      }
+        "visual": "silver_sparkles.gif",
+        "visual_delay": 500,
+        "sound": "soft_chime.wav",
+        "sound_delay": 1000
+      },
+      "word_start": 0,
+      "word_end": 10
     },
     {
       "id": "grass_grows",
+      "book_id": "mila-sky-garden-demo",
+      "checkpoint_position": 2,
       "page": 2,
-      "anchor": "Soft green grass curled across the floor like a ribbon",
+      "checkpoint_text": "Soft green grass curled across the floor like a ribbon",
       "effect": {
         "effect_id": "grass_grow",
         "lighting_colour": "#6F9B5D",
         "brightness": 0.18,
         "fade_ms": 1600,
-        "visual": "slow_grass_loop",
-        "audio": "gentle_leaves"
-      }
+        "visual": "slow_grass_loop.gif",
+        "visual_delay": 0,
+        "sound": "gentle_leaves.wav",
+        "sound_delay": 0
+      },
+      "word_start": 25,
+      "word_end": 35
     },
     {
       "id": "clouds_arrive",
+      "book_id": "mila-sky-garden-demo",
+      "checkpoint_position": 3,
       "page": 3,
-      "anchor": "White clouds drifted slowly above the warm golden hill",
+      "checkpoint_text": "White clouds drifted slowly above the warm golden hill",
       "effect": {
         "effect_id": "cloud_drift",
         "lighting_colour": "#BFD8ED",
         "brightness": 0.2,
         "fade_ms": 1800,
-        "visual": "slow_clouds_loop",
-        "audio": "light_breeze"
-      }
+        "visual": "slow_clouds_loop.gif",
+        "visual_delay": 0,
+        "sound": "light_breeze.wav",
+        "sound_delay": 0
+      },
+      "word_start": 49,
+      "word_end": 58
     },
     {
       "id": "flower_opens",
+      "book_id": "mila-sky-garden-demo",
+      "checkpoint_position": 4,
       "page": 4,
-      "anchor": "The little seed opened into a bright blue flower",
+      "checkpoint_text": "The little seed opened into a bright blue flower",
       "effect": {
         "effect_id": "flower_reveal",
         "lighting_colour": "#6E8FEA",
         "brightness": 0.22,
         "fade_ms": 2000,
-        "visual": "blue_flower_opening",
-        "audio": "quiet_bell"
-      }
+        "visual": "blue_flower_opening.gif",
+        "visual_delay": 0,
+        "sound": "quiet_bell.wav",
+        "sound_delay": 0
+      },
+      "word_start": 73,
+      "word_end": 82
     }
   ],
   "demo_transcripts": [
@@ -67,5 +91,32 @@
     "White clouds drifted slowly above the warm golden hill",
     "The little seed opened into a bright blue flour",
     "The little seed opened into a bright blue flower"
-  ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "text": "Mila found a tiny silver seed beside the old gate. She carried it carefully into the quiet garden and pressed it into the warm soil."
+    },
+    {
+      "page": 2,
+      "text": "Soft green grass curled across the floor like a ribbon. Mila followed it as it wound between the stones and climbed towards the hill."
+    },
+    {
+      "page": 3,
+      "text": "White clouds drifted slowly above the warm golden hill. Their shadows moved gently while the garden filled with the sound of a light breeze."
+    },
+    {
+      "page": 4,
+      "text": "The little seed opened into a bright blue flower. Mila smiled, closed her book, and promised to visit the sky garden again."
+    }
+  ],
+  "alignment": {
+    "window_words": 120,
+    "transcript_words": 32,
+    "minimum_words": 5,
+    "backtrack_words": 32,
+    "recovery_after": 3,
+    "ambiguity_margin": 4,
+    "recovery_threshold": 92
+  }
 }

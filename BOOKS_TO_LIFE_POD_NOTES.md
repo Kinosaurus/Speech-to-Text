@@ -1,10 +1,17 @@
 # Books to Life Pod — Working Design Notes
 
-Last updated: 17 September 2026
+Last updated: 10 October 2026
 
 This document consolidates the project discussion so the team does not need to
 search through the conversation history. Figures marked as estimates must be
 validated with recordings made inside the actual pod.
+
+Current software deployment target: **Jetson Orin Nano Super 8GB**, with local
+GPU WhisperLive/faster-whisper recognition and CPU word-sequence alignment.
+See [JETSON_SETUP.md](JETSON_SETUP.md) for the JetPack 6.2 deployment baseline
+and laptop testing. The Pi CPU profile remains available. Earlier Pi hardware
+budgets and Moonshine estimates below are retained as alternatives; they are
+not measured Jetson results. GPU builds and real-board latency remain unverified.
 
 ## 1. Project objective
 
@@ -165,7 +172,7 @@ Local noise reduction and VAD
     ↓
 Moonshine streaming ASR produces partial text
     ↓
-RapidFuzz compares it with the expected book checkpoint
+Word-sequence alignment compares it with nearby book passages
     ↓
 Checkpoint is confirmed
     ↓
@@ -344,11 +351,13 @@ Raspberry Pi or LattePanda
 Using an inexpensive microcontroller protects the main computer from electrical
 damage and makes the physical control system replaceable.
 
-## 11. Book-text matching with RapidFuzz
+## 11. Book-text alignment and checkpoint matching
 
-RapidFuzz performs approximate string matching. It does not transcribe speech,
-parse books or choose effects. It compares Moonshine's imperfect transcript
-with an expected checkpoint phrase.
+The prototype now defaults to `AlignmentMatcher`: local dynamic programming
+aligns recent recognized word sequences with nearby full page text. RapidFuzz
+provides fuzzy word comparisons inside that alignment. It does not transcribe
+speech or choose effects. The original phrase-only matcher is retained behind
+`--matching_mode fuzzy` for comparison.
 
 Example:
 
@@ -359,27 +368,33 @@ Expected:
 Moonshine output:
 "the rabbit step quietly in the dark forrest"
 
-RapidFuzz:
-High similarity → checkpoint can be confirmed
+Word alignment:
+Locate these words in the passage → propose its checkpoint's ambience
 ```
 
 Recommended matching rules:
 
-- Match only the current checkpoint, optionally also the next one.
-- Use distinctive anchors of approximately 6–12 words.
+- Align against nearby full passages, retaining recent spoken context.
+- Use distinctive checkpoint phrases as book-position markers.
 - Begin testing around an 82/100 similarity threshold.
 - Require at least 5–6 detected words.
-- Require two consecutive matching partial transcripts.
+- Require two consistent, distinct transcript updates; identical callbacks do
+  not add confirmation. Timestamped partial-to-final updates can confirm.
 - Trigger every checkpoint only once.
+- Select the latest confirmed ambience after a jump; skip earlier missed effects.
+- Widen the forward word window after failed fresh updates, using stricter
+  recovery scoring. Hold progress for ambiguous matches in separate scenes.
 - Do not use generic anchor phrases.
 - Provide a parent/operator page correction control.
 - Tune thresholds using recordings of actual children inside the pod.
 
-Matching only the nearby expected passage prevents background speech from
-jumping the story several pages forward.
+Nearby passage searches reduce accidental distant matches. Recovery can search
+farther ahead but still requires clear and stable evidence. Text matching cannot
+distinguish whether the child or parent is reading.
 
-RapidFuzz is MIT-licensed and should add only a few milliseconds of processing
-for the small search window used here.
+RapidFuzz is MIT-licensed. Matching-only timings can be measured with
+`python checkpoint_demo.py --benchmark 30`. Pi performance and end-to-end
+response latency have not yet been measured for this tracker.
 
 ## 12. Book parsing and reusable state machine
 
@@ -409,24 +424,61 @@ Example manifest:
 {
   "book_id": "rabbit-forest",
   "title": "The Rabbit's Journey",
+  "pages": [
+    {
+      "page": 3,
+      "text": "The rabbit stepped quietly into the dark forest. Tall trees covered the path."
+    },
+    {
+      "page": 7,
+      "text": "Thunder rolled across the darkening sky. Gentle rain settled over the garden."
+    }
+  ],
   "checkpoints": [
     {
       "id": "enter_forest",
+      "book_id": "rabbit-forest",
+      "checkpoint_position": 1,
       "page": 3,
-      "anchor": "the rabbit stepped quietly into the dark forest",
-      "effect": "forest_calm"
+      "checkpoint_text": "the rabbit stepped quietly into the dark forest",
+      "effect": {
+        "effect_id": "forest_calm",
+        "visual": "forest_loop.mp4",
+        "visual_delay": 0,
+        "sound": "forest_birds.ogg",
+        "sound_delay": 0
+      }
     },
     {
       "id": "storm_starts",
+      "book_id": "rabbit-forest",
+      "checkpoint_position": 2,
       "page": 7,
-      "anchor": "thunder rolled across the darkening sky",
-      "effect": "gentle_storm"
+      "checkpoint_text": "thunder rolled across the darkening sky",
+      "effect": {
+        "effect_id": "gentle_storm",
+        "visual": "gentle_storm_loop.mp4",
+        "visual_delay": 500,
+        "sound": "soft_rain.ogg",
+        "sound_delay": 1000
+      }
     }
   ]
 }
 ```
 
-The effect controller should load only pre-approved effect definitions:
+`checkpoint_position` is the positive sequence number within the book. IDs and
+positions must be unique, and each checkpoint's `book_id` must match the manifest.
+The tracker orders checkpoints by position and locates their text in full pages.
+Optional `word_start` and exclusive `word_end` locate repeated phrases in the
+normalized full-book word stream. The example above omits intervening pages for
+brevity; actual book packages should include all readable pages. Visual and
+sound delays are non-negative integer milliseconds after confirmation; omitted
+delays mean zero. Either asset may be `null`. Current effects are printed as
+payloads; playback and delay scheduling are planned controller responsibilities.
+
+The effect controller should load only pre-approved effect definitions. An
+optional `effect_id` can identify a reusable reviewed preset, for example:
 
 ```json
 {
@@ -435,7 +487,7 @@ The effect controller should load only pre-approved effect definitions:
     "lighting_colour": "#567A46",
     "brightness": 0.18,
     "fade_ms": 1500,
-    "audio": "forest_birds.ogg",
+    "sound": "forest_birds.ogg",
     "volume": 0.20
   }
 }
@@ -530,7 +582,7 @@ Software:
 - Raspberry Pi OS/Linux
 - Local noise reduction and VAD
 - Moonshine Small Streaming
-- RapidFuzz sequential checkpoint matcher
+- Passage word-sequence tracker with fuzzy word comparisons and recovery
 - Generic Python state machine
 - JSON book and effect manifests
 - Local media assets

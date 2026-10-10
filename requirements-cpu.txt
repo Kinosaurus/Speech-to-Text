@@ -1,0 +1,2 @@
+-r requirements-asr.txt
+# Torch is installed separately from its CPU-only index in Dockerfile.

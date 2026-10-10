@@ -71,10 +71,13 @@ class MatchUpdate:
     triggered: bool
     completed: bool
     effect: dict[str, Any] | None = None
+    checkpoint_position: int | None = None
 
 
 class CheckpointMatcher:
     """Match only the next checkpoint and trigger every checkpoint once."""
+
+    mode = "fuzzy checkpoint matching"
 
     def __init__(
         self,
@@ -88,7 +91,6 @@ class CheckpointMatcher:
 
         self.book_id = str(manifest.get("book_id", "unknown-book"))
         self.title = str(manifest.get("title", self.book_id))
-        self.checkpoints = checkpoints
         self.default_threshold = float(
             threshold if threshold is not None else manifest.get("threshold", 82.0)
         )
@@ -104,9 +106,48 @@ class CheckpointMatcher:
         if not 0.0 < self.default_min_coverage <= 1.0:
             raise ValueError("Minimum coverage must be greater than 0 and at most 1.")
 
+        positions = set()
+        checkpoint_ids = set()
         for checkpoint in checkpoints:
-            if not checkpoint.get("id") or not checkpoint.get("anchor"):
-                raise ValueError("Every checkpoint requires an 'id' and 'anchor'.")
+            if not isinstance(checkpoint, dict):
+                raise ValueError("Every checkpoint must be an object.")
+            checkpoint_id = checkpoint.get("id")
+            text = checkpoint.get("checkpoint_text")
+            if (
+                isinstance(checkpoint_id, bool)
+                or not isinstance(checkpoint_id, (str, int))
+                or not str(checkpoint_id).strip()
+                or not isinstance(text, str)
+                or not normalize_text(text)
+            ):
+                raise ValueError(
+                    "Every checkpoint requires an 'id' and non-empty 'checkpoint_text'."
+                )
+            if str(checkpoint_id) in checkpoint_ids:
+                raise ValueError("Checkpoint IDs must be unique within a book.")
+            checkpoint_ids.add(str(checkpoint_id))
+
+            if "book_id" not in checkpoint or str(checkpoint["book_id"]) != self.book_id:
+                raise ValueError("Every checkpoint's 'book_id' must match the manifest.")
+            position = checkpoint.get("checkpoint_position")
+            if type(position) is not int or position < 1:
+                raise ValueError("Checkpoint positions must be positive integers.")
+            if position in positions:
+                raise ValueError("Checkpoint positions must be unique within a book.")
+            positions.add(position)
+
+            effect = checkpoint.get("effect")
+            if not isinstance(effect, dict):
+                raise ValueError("Every checkpoint requires an 'effect' object.")
+            for asset in ("visual", "sound"):
+                if effect.get(asset) is not None and not isinstance(effect[asset], str):
+                    raise ValueError(f"Effect '{asset}' must be a string or null.")
+            for delay in ("visual_delay", "sound_delay"):
+                value = effect.get(delay, 0)
+                if type(value) is not int or value < 0:
+                    raise ValueError(f"Effect '{delay}' must be a non-negative integer in milliseconds.")
+
+        self.checkpoints = sorted(checkpoints, key=lambda item: item["checkpoint_position"])
 
         self.current_index = 0
         self.confirmations = 0
@@ -149,7 +190,7 @@ class CheckpointMatcher:
         min_coverage = float(
             checkpoint.get("min_coverage", self.default_min_coverage)
         )
-        score = best_window_score(transcript, checkpoint["anchor"], min_coverage)
+        score = best_window_score(transcript, checkpoint["checkpoint_text"], min_coverage)
 
         if score >= threshold:
             self.confirmations += 1
@@ -174,4 +215,5 @@ class CheckpointMatcher:
             triggered=triggered,
             completed=self.completed,
             effect=effect,
+            checkpoint_position=checkpoint["checkpoint_position"],
         )

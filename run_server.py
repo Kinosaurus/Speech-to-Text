@@ -1,7 +1,13 @@
 import argparse
 import os
+from asr_runtime import configure_device, describe_device
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument('--host', default='0.0.0.0', help='Address on which to listen.')
+    parser.add_argument('--device', choices=('auto', 'cpu', 'cuda'), default='auto',
+                        help='Use cuda for Jetson/NVIDIA GPU, cpu for Pi, or auto for development.')
+    parser.add_argument('--check_device', action='store_true',
+                        help='Report inference device support and exit without starting the server.')
     parser.add_argument('--port', '-p',
                         type=int,
                         default=9090,
@@ -101,6 +107,12 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    if args.omp_num_threads < 1:
+        parser.error('--omp_num_threads must be at least 1.')
+    if args.device != 'auto' and args.backend != 'faster_whisper':
+        parser.error('--device is currently supported only with the faster_whisper backend.')
+    configure_device(args.device)
+
     if args.backend == "tensorrt":
         if args.trt_model_path is None:
             raise ValueError("Please Provide a valid tensorrt model path")
@@ -108,10 +120,26 @@ if __name__ == "__main__":
     if "OMP_NUM_THREADS" not in os.environ:
         os.environ["OMP_NUM_THREADS"] = str(args.omp_num_threads)
 
+    if args.backend == 'faster_whisper':
+        import torch
+        import ctranslate2
+        try:
+            device, precision = describe_device(args.device, torch, ctranslate2)
+        except ValueError as error:
+            parser.error(str(error))
+        print(f'[ASR] Device={device}, precision={precision}, CPU threads={os.environ["OMP_NUM_THREADS"]}', flush=True)
+        if device == 'cuda':
+            print(f'[GPU] {torch.cuda.get_device_name(0)}; Torch CUDA={torch.version.cuda}; '
+                  f'CTranslate2={ctranslate2.__version__}', flush=True)
+        if args.check_device:
+            raise SystemExit(0)
+    elif args.check_device:
+        parser.error('--check_device is currently supported only with faster_whisper.')
+
     from whisper_live.server import TranscriptionServer
     server = TranscriptionServer()
     server.run(
-        "0.0.0.0",
+        args.host,
         port=args.port,
         backend=args.backend,
         faster_whisper_custom_model_path=args.faster_whisper_custom_model_path,
