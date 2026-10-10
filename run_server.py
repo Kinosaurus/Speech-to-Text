@@ -136,8 +136,8 @@ if __name__ == "__main__":
     elif args.check_device:
         parser.error('--check_device is currently supported only with faster_whisper.')
 
-    from whisper_live.server import TranscriptionServer
-    server = TranscriptionServer()
+    from book_context_server import BookContextServer
+    server = BookContextServer()
     server.run(
         args.host,
         port=args.port,

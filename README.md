@@ -111,16 +111,64 @@ microphone to assess the actual recording conditions.
 
 ### 4. Test checkpoint tracking when ready
 
-Read [the sample passage](examples/sample_passage.txt) aloud while running:
+Choose the manifest matching the passage being read. `--checkpoints` accepts
+any compatible book JSON file, so switching passages does not require code
+changes or restarting the ASR server. Restart the client with the new manifest.
+
+| Passage | Checkpoint manifest | Checkpoints |
+|---|---|---|
+| [The Little Mermaid excerpt](examples/little_mermaid_passage.txt) | [little_mermaid_story.json](examples/little_mermaid_story.json) | 2 |
+| [Mila and the Sky Garden](examples/sample_passage.txt) | [sample_story.json](examples/sample_story.json) | 4 |
+
+For the Little Mermaid excerpt, read the passage aloud while running:
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model small.en --audio_chunk 1024 --checkpoints examples/sample_story.json
+.\.venv\Scripts\python.exe run_client.py --model small.en --audio_chunk 1024 --checkpoints .\examples\little_mermaid_story.json
+```
+
+For your recording, replace the quoted audio path below with your file's path:
+
+```powershell
+.\.venv\Scripts\python.exe run_client.py --model small.en --files ".\recordings\LittleMermaid.wav" --mute_audio_playback --checkpoints .\examples\little_mermaid_story.json
 ```
 
 Watch `[TRANSCRIPT]` for recognized speech, `[ALIGN]` for book tracking and
 `[TRIGGER]` for a confirmed checkpoint's effect payload. The prototype prints
 effects; physical lighting, speaker and projector control are not implemented.
-For a recording test, use a recording of this same passage with this manifest.
+The Little Mermaid sample has two checkpoints:
+
+- **`mermaid_has_legs`**: "She had the prettiest legs on earth" — a warm,
+  gentle daylight ambience after her transformation.
+- **`mermaid_cannot_speak`**: "And the little mermaid could not speak" — a
+  quieter blue ambience during her silent encounter with the prince.
+
+The visual/audio filenames are placeholders. Surrounding book text helps
+confirm progress even if an anchor is misread; triggers can occur just after
+the anchor. Each checkpoint should trigger at most once per client session.
+Look for two `[TRIGGER]` lines to verify both fired. Reaching the end can also
+mean an earlier checkpoint was skipped, so check `[SKIPPED]` too.
+
+Selecting a checkpoint manifest also enables **automatic book hints for
+Whisper**: the next expected checkpoint and up to two future checkpoint
+phrases become hotwords, with a short surrounding passage as the prompt.
+The hint window moves with confirmed reading progress. Look for
+`[BOOK_CONTEXT] Hotwords`, `Passage prompt`, and `Server supports live hint updates`.
+Hints guide recognition; they do not verify pronunciation or count as a match.
+Use a recording of the selected passage, since a different book would bias ASR
+toward unrelated words.
+
+For a comparison without automatic hints, add `--no_book_context` to the same
+command. Explicit `--hotwords` / `--initial_prompt` options still apply and
+override their respective generated field.
+
+After updating the code, rebuild and restart the Docker GPU server once:
+
+```powershell
+docker compose -f compose.gpu.yaml up -d --build asr
+```
+
+An older server can use the startup hints but cannot receive the moving window;
+the client reports this without sending incompatible update messages.
 
 Stop the client and server with **Ctrl+C** in their respective terminals.
 `docker compose -f compose.gpu.yaml down` removes the stopped containers while
@@ -223,9 +271,14 @@ directly power LED strips, speakers, motors or the projector.
 | `run_client.py` | Streams microphone or file audio and exposes VAD, prompt and hotword tuning |
 | `checkpoint_matcher.py` | Forward-only fuzzy checkpoint matcher shared by the demo and live client |
 | `alignment_matcher.py` | Default passage tracker: word alignment, confirmation, ambiguity checks and recovery |
+| `book_context.py` | Generates bounded passage/hotword hints from confirmed book progress |
+| `book_context_client.py` | Streams audio and negotiates live book-hint updates |
+| `book_context_server.py` | Applies live hints to the next Whisper inference without reloading its model |
 | `checkpoint_demo.py` | Runs the sample checkpoints without a microphone or WhisperLive server |
 | `examples/sample_story.json` | Original four-checkpoint sample story and safe placeholder effects |
 | `examples/sample_passage.txt` | Short original passage to read during a microphone test |
+| `examples/little_mermaid_story.json` | Two-checkpoint manifest for the supplied Little Mermaid excerpt |
+| `examples/little_mermaid_passage.txt` | Exact supplied passage for live or recorded reading tests |
 | `BOOKS_TO_LIFE_POD_NOTES.md` | Detailed enclosure, hardware, ASR, latency, matching and budget decisions |
 | `README.md` | Project overview and prototype instructions |
 | `JETSON_SETUP.md` | Jetson GPU setup, laptop testing, model preparation and hardware verification |
@@ -302,8 +355,28 @@ python run_client.py --model small.en
 
 ### Story-aware recognition
 
-Give the recognizer only the short passage expected next, rather than the
-entire book:
+With `--checkpoints`, book hints are generated automatically. By default,
+the hotwords contain the next expected checkpoint plus two ahead, capped at
+48 words / 320 characters. Each phrase is capped at 16 words / 100 characters.
+The prompt contains up to 64 normalized book words / 480 characters, with an
+eight-word lookback to retain context during corrections. Whisper's own token
+limits still apply. These hints are soft guidance, not constrained decoding.
+
+Hints refresh after a checkpoint advances or the confirmed word position moves
+another 16 words. Tentative matches and unrelated speech do not move this
+window. The final checkpoint's hints are retained for the remaining passage.
+The client and server exchange bounded, revision-numbered controls separately
+from audio. The server queues updates per session and applies each prompt and
+hotword pair on the ASR thread before its next inference. `[BOOK_CONTEXT] Server
+queued hint revision ...` acknowledges receipt; an inference already in progress
+continues with its previous hints.
+
+Use `--book_context_lookahead 0` to include only the next checkpoint, or adjust
+`--book_context_words` within 8–128. Use `--no_book_context` for a baseline test.
+ASR-only tests without `--checkpoints` receive no automatic book hints.
+
+You can also supply manual hints. Each explicit field replaces its automatic
+counterpart and stays fixed for that session:
 
 ```powershell
 python run_client.py `

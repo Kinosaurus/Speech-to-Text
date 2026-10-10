@@ -12,7 +12,8 @@ RUN python -m pip install --no-cache-dir torch==2.5.1 --index-url https://downlo
     && python -m pip install --no-cache-dir -r requirements-asr.txt \
     && python -m pip install --no-cache-dir --no-deps whisper-live==0.10.0
 COPY run_server.py run_client.py asr_runtime.py audio_runtime.py prepare_models.py \
-    alignment_matcher.py checkpoint_matcher.py checkpoint_demo.py ./
+    alignment_matcher.py checkpoint_matcher.py checkpoint_demo.py \
+    book_context.py book_context_client.py book_context_server.py ./
 COPY examples ./examples
 COPY tests ./tests
 RUN python -c "from whisper_live.backend.faster_whisper_backend import ServeClientFasterWhisper"

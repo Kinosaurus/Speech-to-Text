@@ -6,6 +6,7 @@ import argparse
 from checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
 from alignment_matcher import AlignmentMatcher
 from audio_runtime import configure_microphone, input_devices, wait_for_server
+from book_context import BookContext
 
 
 def read_optional_text(parser, inline_value, file_value, label):
@@ -114,6 +115,12 @@ if __name__ == '__main__':
                           type=str,
                           default=None,
                           help='UTF-8 file containing comma-separated story vocabulary.')
+    parser.add_argument('--no_book_context', action='store_true',
+                        help='Disable automatic book prompts/hotwords; explicit hints still apply.')
+    parser.add_argument('--book_context_lookahead', type=int, default=2,
+                        help='Future checkpoints included in ASR hints, after the next expected one (default: 2).')
+    parser.add_argument('--book_context_words', type=int, default=64,
+                        help='Maximum words in the nearby ASR passage prompt (default: 64, range: 8–128).')
     parser.add_argument('--checkpoints',
                           type=str,
                           default=None,
@@ -159,6 +166,8 @@ if __name__ == '__main__':
         parser.error('--checkpoint_threshold must be between 0 and 100.')
     if args.checkpoint_stability is not None and args.checkpoint_stability < 1:
         parser.error('--checkpoint_stability must be at least 1.')
+    if not 0 <= args.book_context_lookahead <= 10 or not 8 <= args.book_context_words <= 128:
+        parser.error('Book context requires --book_context_lookahead 0–10 and --book_context_words 8–128.')
 
     initial_prompt = read_optional_text(
         parser, args.initial_prompt, args.initial_prompt_file, 'initial_prompt'
@@ -168,6 +177,7 @@ if __name__ == '__main__':
     )
 
     transcription_callback = None
+    book_context = None
     print(f"[ASR] Requested model={args.model}, language={args.lang}, VAD={not args.no_vad}")
     if args.checkpoints:
         try:
@@ -185,12 +195,27 @@ if __name__ == '__main__':
             f"for '{checkpoint_matcher.title}' using {checkpoint_matcher.mode} ({MATCHING_ENGINE})."
         )
 
+        if not args.no_book_context:
+            book_context = BookContext(
+                checkpoint_matcher, lookahead=args.book_context_lookahead,
+                prompt_words=args.book_context_words, initial_prompt=initial_prompt, hotwords=hotwords,
+            )
+            initial_prompt, hotwords = book_context.hints.initial_prompt, book_context.hints.hotwords
+            print(f"[BOOK_CONTEXT] Automatic hints enabled; lookahead={args.book_context_lookahead}.")
+            print(f"[BOOK_CONTEXT] Hotwords: {hotwords or '(none)'}")
+            print(f"[BOOK_CONTEXT] Passage prompt: {initial_prompt or '(none)'}")
+
         def handle_transcription(text, segments):
             print(f"[TRANSCRIPT] {text}")
             if args.matching_mode == 'alignment':
                 update = checkpoint_matcher.process(text, segments=segments)
             else:
                 update = checkpoint_matcher.process(text)
+            if book_context:
+                hints = book_context.refresh()
+                if hints is not None:
+                    print(f"[BOOK_CONTEXT] Updated hotwords: {hints.hotwords or '(none)'}")
+                    client.client.queue_book_context(hints)
             if update.checkpoint_id is None:
                 return
             print(
@@ -218,7 +243,10 @@ if __name__ == '__main__':
               "while --enable_translation uses M2M100 for any-to-any. "
               "Both will be active.")
 
-    from whisper_live.client import TranscriptionClient
+    if book_context:
+        from book_context_client import BookTranscriptionClient as TranscriptionClient
+    else:
+        from whisper_live.client import TranscriptionClient
     print(f'[SERVER] ws://{args.server}:{args.port}')
     client = TranscriptionClient(
         args.server,

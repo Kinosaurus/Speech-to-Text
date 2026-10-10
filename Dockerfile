@@ -9,7 +9,8 @@ COPY requirements-client.txt ./
 RUN python -m pip install --no-cache-dir -r requirements-client.txt \
     && python -m pip install --no-cache-dir --no-deps whisper-live==0.10.0
 COPY run_client.py run_server.py checkpoint_matcher.py alignment_matcher.py \
-    checkpoint_demo.py audio_runtime.py asr_runtime.py prepare_models.py ./
+    checkpoint_demo.py audio_runtime.py asr_runtime.py prepare_models.py \
+    book_context.py book_context_client.py book_context_server.py ./
 COPY examples ./examples
 COPY tests ./tests
 RUN python -c "from whisper_live.client import TranscriptionClient; import alignment_matcher"
