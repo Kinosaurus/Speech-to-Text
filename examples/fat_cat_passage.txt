@@ -1,0 +1,11 @@
+A cat.
+A mat.
+A rat.
+A fat cat.
+A fat cat on a mat.
+A fat cat sat on a mat.
+A fat cat and a rat.
+A fat cat and a rat sat on a mat.
+A fat cat and a rat and a bat.
+A fat cat and a rat and a bat sat on a mat.
+A rat on a bat on a cat in a hat on a mat.

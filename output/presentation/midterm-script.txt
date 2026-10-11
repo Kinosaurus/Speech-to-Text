@@ -1,0 +1,70 @@
+Books to Life Pod: midterm software presentation
+
+Prepared 11 October 2026. Approximate speaking time: 3 minutes, plus an optional short demo.
+
+Positioning
+
+Present this as a working software prototype. The PC GPU pipeline and book-context integration work; recognition accuracy with children and performance on a physical Jetson are still being evaluated. The prototype prints effect payloads; it does not yet control lights, speakers, or a projector.
+
+Speaking script
+
+Our software follows a reader's progress through a physical book and uses that progress to select subtle environmental effects. The intention is to support the story with lighting, sound, and visuals, while keeping attention on the book. Either the child or parent can read and advance the experience.
+
+Starting on the left of the diagram, we capture audio from a microphone or use a recording for repeatable tests. The client converts this into a standard audio stream and sends it over a local WebSocket connection to our speech server.
+
+The server first uses voice activity detection to identify speech and filter silence. Faster-whisper then converts the audio into timestamped text using the GPU. The reader does not need to pause at every checkpoint, because recognition continues as they read.
+
+The book JSON contains the full reference passage, checkpoint locations, and reusable effect definitions. Our word-sequence matcher compares recent recognized words with the surrounding passage. This gives us context when the reader misses a word, repeats something, or makes a correction, although it cannot recover every recognition error.
+
+We check similarity, word coverage, and agreement across transcript updates before confirming progress. Each checkpoint is processed at most once per reading session. If the reader skips ahead and we confidently find their later position, we skip the earlier effects and select the current scene instead of replaying everything they missed.
+
+The feedback loop at the top is our latest improvement. We send Whisper a short nearby passage and the expected checkpoint phrases, including up to two future checkpoints. These hints move with confirmed progress. They guide recognition, but they do not prove that a word was spoken or assess pronunciation.
+
+At the output, the prototype currently prints an effect command. Connecting that command to physical lighting, audio, and projection is our next integration step.
+
+We have tested the GPU pipeline on an RTX 4060 laptop, and the software has 55 passing automated tests. Those tests check software behavior; they do not establish children's recognition accuracy.
+
+Our next milestones are to compare hints on and off using the same child-reading recordings, measure missed and false triggers and response delay, improve progress confirmation, and test the actual Jetson deployment. At this stage, we have demonstrated the software flow, while identifying the reliability questions we still need to resolve.
+
+What to point to on the diagram
+
+1. Follow the middle row from audio input to confirmed progress.
+2. Point to the book JSON feeding both alignment and Whisper hints.
+3. Follow the top feedback arrow: confirmed progress moves the hints.
+4. Point to the printed payload and the dashed, planned effect-controller connection.
+
+Avoid saying the system understands or grades the child's reading, that all recognition errors are handled, or that the Jetson has already been tested.
+
+Optional 30-second demo
+
+- Use a pre-tested Little Mermaid recording with its matching manifest.
+- Show the transcript, alignment position, and the two [TRIGGER] payloads if that exact recording reliably produces them.
+- Have a short captured demo available in case microphone or networking setup fails during the presentation.
+- Describe measured results only. A text-only checkpoint demo validates matching behavior, not child ASR accuracy.
+
+Effect spacing: proposed starting point
+
+- Place checkpoints at meaningful changes in ambience. Do not insert an effect just because a fixed time has elapsed.
+- Start with roughly 20-30 seconds between ambience changes and around 2-second fades, then evaluate with readers. This is a design proposal, not a measured requirement or an existing rule in the code.
+- At an illustrative 90 words/minute, 20-30 seconds corresponds to about 30-45 words between checkpoint endings. Different reading speeds change the elapsed time.
+- Several channels changing together, such as a lighting fade plus gentle sound, can belong to one scene effect rather than separate checkpoints.
+- If nearby checkpoints select the same ambience, the future controller can retain it instead of repeatedly restarting it. If the reader jumps ahead, the latest scene should replace stale pending transitions.
+
+What the current code actually enforces
+
+There is no minimum time gap or cooldown between different checkpoint triggers. The matcher confirms text progress and prints payloads; playback and delay scheduling are not implemented.
+
+visual_delay / sound_delay specify intended delays after checkpoint confirmation. fade_ms specifies a lighting transition duration. Neither is the interval between checkpoints.
+
+In the Mermaid sample, the first anchor ends at normalized word 17 and the second at word 44: a gap of 27 words between their endings. At 90 words/minute, that is about 18 seconds, before accounting for pauses and confirmation latency. There are 20 intervening words between the first anchor's end and the second anchor's start. This is fine for a short technical demo; it is not a validated production spacing rule.
+
+Current source map
+
+- run_client.py: audio entry point and printed [TRIGGER] output.
+- run_server.py, book_context_server.py: local speech server and queued live hints.
+- alignment_matcher.py: passage alignment, confirmation, recovery, skips, and replay prevention.
+- book_context.py, book_context_client.py: bounded prompt/hotwords and live updates.
+- examples/little_mermaid_story.json: the two demo checkpoints and planned effects.
+- README.md: current PC GPU quickstart.
+
+Repository snapshot: branch first-pipeline, commit c3e9e43; PC GPU tested, Jetson ARM64 image and board performance unverified. The PC and Jetson share application code but require different compatible container images.

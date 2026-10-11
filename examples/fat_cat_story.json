@@ -1,0 +1,68 @@
+{
+  "book_id": "fat-cat-reading-demo",
+  "title": "Fat Cat - supplied phonics passage",
+  "threshold": 82,
+  "stability": 2,
+  "min_coverage": 0.8,
+  "pages": [
+    {
+      "page": 1,
+      "text": "A cat.\nA mat.\nA rat.\nA fat cat.\nA fat cat on a mat.\nA fat cat sat on a mat.\nA fat cat and a rat.\nA fat cat and a rat sat on a mat.\nA fat cat and a rat and a bat.\nA fat cat and a rat and a bat sat on a mat.\nA rat on a bat on a cat in a hat on a mat."
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "fat_cat_on_mat",
+      "book_id": "fat-cat-reading-demo",
+      "checkpoint_position": 1,
+      "page": 1,
+      "checkpoint_text": "A fat cat sat on a mat",
+      "word_start": 15,
+      "word_end": 22,
+      "effect": {
+        "effect_id": "warm_daylight",
+        "lighting_colour": "#F5DEB3",
+        "brightness": 0.18,
+        "fade_ms": 2000,
+        "visual": "warm_light_loop.gif",
+        "visual_delay": 0,
+        "sound": "light_breeze.wav",
+        "sound_delay": 0
+      }
+    },
+    {
+      "id": "animals_in_hat",
+      "book_id": "fat-cat-reading-demo",
+      "checkpoint_position": 2,
+      "page": 1,
+      "checkpoint_text": "A rat on a bat on a cat in a hat",
+      "word_start": 60,
+      "word_end": 71,
+      "effect": {
+        "effect_id": "quiet_blue_ambience",
+        "lighting_colour": "#BFD8ED",
+        "brightness": 0.14,
+        "fade_ms": 2000,
+        "visual": "soft_blue_loop.gif",
+        "visual_delay": 0,
+        "sound": "light_breeze.wav",
+        "sound_delay": 0
+      }
+    }
+  ],
+  "alignment": {
+    "window_words": 120,
+    "transcript_words": 32,
+    "minimum_words": 5,
+    "backtrack_words": 32,
+    "recovery_after": 3,
+    "ambiguity_margin": 4,
+    "recovery_threshold": 92
+  },
+  "demo_transcripts": [
+    "A cat. A mat. A rat. A fat cat. A fat cat on a mat. A fat cat sat on a mat.",
+    "A cat. A mat. A rat. A fat cat. A fat cat on a mat. A fat cat sat on a mat. A fat",
+    "A cat. A mat. A rat. A fat cat. A fat cat on a mat. A fat cat sat on a mat. A fat cat and a rat. A fat cat and a rat sat on a mat. A fat cat and a rat and a bat. A fat cat and a rat and a bat sat on a mat. A rat on a bat on a cat in a hat",
+    "A cat. A mat. A rat. A fat cat. A fat cat on a mat. A fat cat sat on a mat. A fat cat and a rat. A fat cat and a rat sat on a mat. A fat cat and a rat and a bat. A fat cat and a rat and a bat sat on a mat. A rat on a bat on a cat in a hat on a mat."
+  ]
+}

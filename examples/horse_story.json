@@ -1,0 +1,48 @@
+{
+  "book_id": "horse-reading-demo",
+  "title": "Horse - supplied farm passage",
+  "threshold": 82,
+  "stability": 2,
+  "min_coverage": 0.8,
+  "pages": [
+    {
+      "page": 1,
+      "text": "I went to the farm with my family.\nI saw a big horse at the farm.\nThe horse was brown.\nThe horse can run fast."
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "horse_at_farm",
+      "book_id": "horse-reading-demo",
+      "checkpoint_position": 1,
+      "page": 1,
+      "checkpoint_text": "I saw a big horse at the farm",
+      "word_start": 8,
+      "word_end": 16,
+      "effect": {
+        "effect_id": "warm_daylight",
+        "lighting_colour": "#F5DEB3",
+        "brightness": 0.18,
+        "fade_ms": 2000,
+        "visual": "warm_light_loop.gif",
+        "visual_delay": 0,
+        "sound": "light_breeze.wav",
+        "sound_delay": 0
+      }
+    }
+  ],
+  "alignment": {
+    "window_words": 120,
+    "transcript_words": 32,
+    "minimum_words": 5,
+    "backtrack_words": 32,
+    "recovery_after": 3,
+    "ambiguity_margin": 4,
+    "recovery_threshold": 92
+  },
+  "demo_transcripts": [
+    "I went to the farm with my family. I saw a big horse at the farm.",
+    "I went to the farm with my family. I saw a big horse at the farm. The horse",
+    "I went to the farm with my family. I saw a big horse at the farm. The horse was brown. The horse can run fast."
+  ]
+}

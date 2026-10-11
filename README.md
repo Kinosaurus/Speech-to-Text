@@ -119,6 +119,9 @@ changes or restarting the ASR server. Restart the client with the new manifest.
 |---|---|---|
 | [The Little Mermaid excerpt](examples/little_mermaid_passage.txt) | [little_mermaid_story.json](examples/little_mermaid_story.json) | 2 |
 | [Mila and the Sky Garden](examples/sample_passage.txt) | [sample_story.json](examples/sample_story.json) | 4 |
+| [Fat Cat phonics passage](examples/fat_cat_passage.txt) | [fat_cat_story.json](examples/fat_cat_story.json) | 2 |
+| [Horse farm passage](examples/horse.txt) | [horse_story.json](examples/horse_story.json) | 1 |
+| [Tea passage](examples/tea_passage.txt) | [tea_story.json](examples/tea_story.json) | 3 |
 
 For the Little Mermaid excerpt, read the passage aloud while running:
 

@@ -1,0 +1,89 @@
+{
+  "book_id": "tea-reading-demo",
+  "title": "Tea - supplied reading passage",
+  "threshold": 82,
+  "stability": 2,
+  "min_coverage": 0.8,
+  "pages": [
+    {
+      "page": 1,
+      "text": "\"Yes, yes\", said the mouse. \n\"I will make us a pot of tea\". \n\nShe hung up the phone.\nShe put the teapot on the stove.\nShe set out the cups.\nShe swept the little house.\n\nToad felt happy.\nHe a sang a little."
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "make_a_pot_of_tea",
+      "book_id": "tea-reading-demo",
+      "checkpoint_position": 1,
+      "page": 1,
+      "checkpoint_text": "I will make us a pot of tea",
+      "word_start": 5,
+      "word_end": 13,
+      "effect": {
+        "effect_id": "warm_tea_ambience",
+        "lighting_colour": "#F5DEB3",
+        "brightness": 0.18,
+        "fade_ms": 2000,
+        "visual": "warm_light_loop.gif",
+        "visual_delay": 0,
+        "sound": "light_breeze.wav",
+        "sound_delay": 0
+      }
+    },
+    {
+      "id": "teapot_on_stove",
+      "book_id": "tea-reading-demo",
+      "checkpoint_position": 2,
+      "page": 1,
+      "checkpoint_text": "She put the teapot on the stove",
+      "word_start": 18,
+      "word_end": 25,
+      "effect": {
+        "effect_id": "gentle_amber_ambience",
+        "lighting_colour": "#FFD6A5",
+        "brightness": 0.18,
+        "fade_ms": 2000,
+        "visual": "soft_amber_loop.gif",
+        "visual_delay": 0,
+        "sound": "light_breeze.wav",
+        "sound_delay": 0
+      }
+    },
+    {
+      "id": "little_house_ready",
+      "book_id": "tea-reading-demo",
+      "checkpoint_position": 3,
+      "page": 1,
+      "checkpoint_text": "She swept the little house",
+      "word_start": 30,
+      "word_end": 35,
+      "effect": {
+        "effect_id": "cozy_house_ambience",
+        "lighting_colour": "#F5E6CC",
+        "brightness": 0.16,
+        "fade_ms": 2000,
+        "visual": "warm_light_loop.gif",
+        "visual_delay": 0,
+        "sound": "light_breeze.wav",
+        "sound_delay": 0
+      }
+    }
+  ],
+  "alignment": {
+    "window_words": 120,
+    "transcript_words": 32,
+    "minimum_words": 5,
+    "backtrack_words": 32,
+    "recovery_after": 3,
+    "ambiguity_margin": 4,
+    "recovery_threshold": 92
+  },
+  "demo_transcripts": [
+    "yes yes said the mouse i will make us a pot of tea",
+    "yes yes said the mouse i will make us a pot of tea she hung up",
+    "yes yes said the mouse i will make us a pot of tea she hung up the phone she put the teapot on the stove",
+    "yes yes said the mouse i will make us a pot of tea she hung up the phone she put the teapot on the stove she set out",
+    "yes yes said the mouse i will make us a pot of tea she hung up the phone she put the teapot on the stove she set out the cups she swept the little house",
+    "yes yes said the mouse i will make us a pot of tea she hung up the phone she put the teapot on the stove she set out the cups she swept the little house toad felt happy he a sang a little"
+  ]
+}

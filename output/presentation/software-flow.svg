@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">Books to Life Pod software architecture</title>
+<desc id="desc">Audio streams to VAD and GPU Whisper, then local word alignment confirms book progress and prints an effect payload. A book JSON feeds alignment and moving recognition hints. Physical effect playback is planned.</desc>
+<rect width="1920" height="1080" fill="#FFFFFF"/>
+<text x="60" y="44" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="48" font-weight="700" fill="#16324A">Books to Life Pod: software flow</text>
+<text x="60" y="114" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="400" fill="#526A7D">Working PC prototype | Jetson deployment is the next hardware validation step</text>
+<rect x="1330" y="210" width="520" height="150" rx="14" fill="#E9F5F4" stroke="#B9CAD5" stroke-width="2"/>
+<text x="1348" y="230" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="27" font-weight="700" fill="#16324A">Selected book JSON</text>
+<text x="1348" y="272" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Full passage + checkpoint word positions</text>
+<text x="1348" y="299" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Anchor phrases + reusable effect payloads</text>
+<rect x="900" y="210" width="350" height="150" rx="14" fill="#E9F5F4" stroke="#B9CAD5" stroke-width="2"/>
+<text x="918" y="230" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="27" font-weight="700" fill="#16324A">Moving book hints</text>
+<text x="918" y="272" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Short nearby passage prompt</text>
+<text x="918" y="299" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Next checkpoint + 2 ahead</text>
+<text x="918" y="326" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Soft bias, not proof of speech</text>
+<rect x="625" y="425" width="600" height="240" rx="18" fill="#F7FAFC" stroke="#D5E1E8" stroke-width="2"/>
+<rect x="1255" y="425" width="620" height="240" rx="18" fill="#F7FAFC" stroke="#D5E1E8" stroke-width="2"/>
+<text x="645" y="447" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#526A7D">SPEECH SERVER / GPU</text>
+<text x="1275" y="447" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#526A7D">LOCAL CLIENT / CPU</text>
+<rect x="60" y="490" width="230" height="150" rx="14" fill="#FFFFFF" stroke="#B9CAD5" stroke-width="2"/>
+<text x="78" y="510" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#16324A">1. Audio input</text>
+<text x="78" y="552" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Mic or recording</text>
+<text x="78" y="579" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Child or parent</text>
+<rect x="350" y="490" width="240" height="150" rx="14" fill="#FFFFFF" stroke="#B9CAD5" stroke-width="2"/>
+<text x="368" y="510" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#16324A">2. Stream audio</text>
+<text x="368" y="552" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">16 kHz mono PCM</text>
+<text x="368" y="579" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Local WebSocket</text>
+<text x="368" y="606" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">port 9090</text>
+<rect x="650" y="490" width="230" height="150" rx="14" fill="#EFF5FA" stroke="#B9CAD5" stroke-width="2"/>
+<text x="668" y="510" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700" fill="#16324A">3. Detect speech</text>
+<text x="668" y="552" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">VAD filters silence</text>
+<text x="668" y="579" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Read continuously</text>
+<text x="668" y="606" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">across checkpoints</text>
+<rect x="940" y="490" width="260" height="150" rx="14" fill="#EFF5FA" stroke="#B9CAD5" stroke-width="2"/>
+<text x="958" y="510" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#16324A">4. Speech to text</text>
+<text x="958" y="552" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">faster-whisper</text>
+<text x="958" y="579" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">NVIDIA GPU / CUDA</text>
+<text x="958" y="606" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Partial + final text</text>
+<rect x="1280" y="490" width="270" height="150" rx="14" fill="#FFFFFF" stroke="#B9CAD5" stroke-width="2"/>
+<text x="1298" y="510" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#16324A">5. Align words</text>
+<text x="1298" y="552" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Recent transcript</text>
+<text x="1298" y="579" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">vs full book passage</text>
+<text x="1298" y="606" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Word-order matching</text>
+<rect x="1610" y="490" width="240" height="150" rx="14" fill="#FFFFFF" stroke="#B9CAD5" stroke-width="2"/>
+<text x="1628" y="510" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#16324A">6. Confirm</text>
+<text x="1628" y="552" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Similarity + coverage</text>
+<text x="1628" y="579" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Consecutive updates</text>
+<text x="1628" y="606" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Skip missed scenes</text>
+<polyline points="290,565 350,565" fill="none" stroke="#526A7D" stroke-width="3"/>
+<polygon points="350,565 337.0,559.0 337.0,571.0" fill="#526A7D"/>
+<polyline points="590,565 650,565" fill="none" stroke="#526A7D" stroke-width="3"/>
+<polygon points="650,565 637.0,559.0 637.0,571.0" fill="#526A7D"/>
+<polyline points="880,565 940,565" fill="none" stroke="#526A7D" stroke-width="3"/>
+<polygon points="940,565 927.0,559.0 927.0,571.0" fill="#526A7D"/>
+<polyline points="1200,565 1280,565" fill="none" stroke="#526A7D" stroke-width="3"/>
+<polygon points="1280,565 1267.0,559.0 1267.0,571.0" fill="#526A7D"/>
+<polyline points="1550,565 1610,565" fill="none" stroke="#526A7D" stroke-width="3"/>
+<polygon points="1610,565 1597.0,559.0 1597.0,571.0" fill="#526A7D"/>
+<polyline points="1330,285 1250,285" fill="none" stroke="#007E87" stroke-width="3"/>
+<polygon points="1250,285 1263.0,291.0 1263.0,279.0" fill="#007E87"/>
+<polyline points="1415,360 1415,490" fill="none" stroke="#007E87" stroke-width="3"/>
+<polygon points="1415,490 1421.0,477.0 1409.0,477.0" fill="#007E87"/>
+<text x="1435" y="378" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="400" fill="#007E87">Reference words</text>
+<text x="1435" y="403" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="400" fill="#007E87">+ checkpoints</text>
+<polyline points="1070,360 1070,490" fill="none" stroke="#007E87" stroke-width="3"/>
+<polygon points="1070,490 1076.0,477.0 1064.0,477.0" fill="#007E87"/>
+<text x="850" y="386" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="400" fill="#007E87">Prompt + hotwords</text>
+<polyline points="1850,550 1890,550 1890,182 1075,182 1075,210" fill="none" stroke="#007E87" stroke-width="3"/>
+<polygon points="1075,210 1081.0,197.0 1069.0,197.0" fill="#007E87"/>
+<text x="1465" y="153" dominant-baseline="hanging" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#007E87">Confirmed progress moves hints</text>
+<text x="1280" y="692" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="400" fill="#526A7D">Weak / ambiguous match:</text>
+<text x="1280" y="723" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="400" fill="#526A7D">No trigger; keep listening</text>
+<rect x="1610" y="820" width="240" height="150" rx="14" fill="#FFFFFF" stroke="#B9CAD5" stroke-width="2"/>
+<text x="1628" y="840" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#16324A">7. Emit payload</text>
+<text x="1628" y="882" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">[TRIGGER] + JSON</text>
+<text x="1628" y="909" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Once per checkpoint</text>
+<text x="1628" y="936" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Printed in prototype</text>
+<rect x="1180" y="820" width="340" height="150" rx="14" fill="#FFFFFF" stroke="#B9CAD5" stroke-width="2" stroke-dasharray="10 7"/>
+<polyline points="1192,820 1508,820" fill="none" stroke="#B9CAD5" stroke-width="2" stroke-dasharray="10 8"/>
+<polyline points="1520,832 1520,958" fill="none" stroke="#B9CAD5" stroke-width="2" stroke-dasharray="10 8"/>
+<polyline points="1192,970 1508,970" fill="none" stroke="#B9CAD5" stroke-width="2" stroke-dasharray="10 8"/>
+<polyline points="1180,832 1180,958" fill="none" stroke="#B9CAD5" stroke-width="2" stroke-dasharray="10 8"/>
+<text x="1198" y="840" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="700" fill="#16324A">Planned: effect controller</text>
+<text x="1198" y="882" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Fades, timing, sound ducking</text>
+<text x="1198" y="909" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Lights / sound / projector</text>
+<text x="1198" y="936" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="400" fill="#526A7D">Spacing policy to implement</text>
+<polyline points="1730,640 1730,820" fill="none" stroke="#526A7D" stroke-width="3"/>
+<polygon points="1730,820 1736.0,807.0 1724.0,807.0" fill="#526A7D"/>
+<text x="1760" y="751" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="400" fill="#526A7D">Confirmed</text>
+<polyline points="1610,895 1520,895" fill="none" stroke="#526A7D" stroke-width="3" stroke-dasharray="10 8"/>
+<polygon points="1520,895 1533.0,901.0 1533.0,889.0" fill="#526A7D"/>
+<text x="60" y="834" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#16324A">Implemented: PC GPU, passage tracking, live book hints.</text>
+<text x="60" y="883" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="400" fill="#526A7D">To validate: child-reading accuracy, response delay, Jetson.</text>
+<text x="60" y="938" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="400" fill="#526A7D">PC: native Python client + Docker GPU server. No physical playback yet.</text>
+<text x="60" y="1025" dominant-baseline="hanging" text-anchor="start" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="400" fill="#526A7D">Solid = implemented path. Dashed = planned physical effects. | 11 October 2026</text>
+</svg>
