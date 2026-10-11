@@ -1,0 +1,4 @@
+[
+  { "label": "Good reader", "file": "good_reader.wav" },
+  { "label": "Skips a line", "file": "skips_line.wav" }
+]

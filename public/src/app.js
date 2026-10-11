@@ -14,6 +14,16 @@ import {
 import KeenASR, { TextAligner } from '../vendor/keenasr/keenasr-web.js';
 import { createCheckpointEngine } from './checkpointEngine.js';
 import { normalize, getWords } from './textUtils.js';
+import {
+  installAudioSource,
+  setAudioMode,
+  setRecording,
+  setRecordingFromUrl,
+  hasRecording
+} from './audioSource.js';
+
+// Must run before KeenASR asks for the microphone.
+installAudioSource();
 
 // --------------------------------------------------
 // Configuration
@@ -30,6 +40,9 @@ const CHECKPOINTS_URL = new URL(
   `../books/${BOOK_NAME}/checkpoints.json`,
   import.meta.url
 );
+
+// Optional list of bundled test recordings (see public/test-audio/README.md).
+const TEST_AUDIO_URL = new URL('../test-audio/', import.meta.url);
 
 // KeenASR acoustic model bundle (not committed; see README).
 const MODEL_URL = new URL(
@@ -173,6 +186,9 @@ function App() {
   const [isStopping, setIsStopping] = useState(false);
   const [furthestWord, setFurthestWord] = useState(-1);
   const [metrics, setMetrics] = useState(null);
+  const [audioMode, setAudioModeState] = useState('microphone');
+  const [recordingInfo, setRecordingInfo] = useState('');
+  const [bundledRecordings, setBundledRecordings] = useState([]);
 
   const engineRef = useRef(null);
   const listeningRef = useRef(false);
@@ -247,6 +263,73 @@ function App() {
       mountedRef.current = false;
     };
   }, []);
+
+  // Optional bundled recordings listed in test-audio/recordings.json.
+  useEffect(() => {
+    fetch(new URL('recordings.json', TEST_AUDIO_URL))
+      .then(response => (response.ok ? response.json() : []))
+      .then(list => {
+        if (Array.isArray(list)) setBundledRecordings(list);
+      })
+      .catch(() => {});
+  }, []);
+
+  function changeAudioMode(mode) {
+    if (isListening || isStopping) return;
+
+    setAudioMode(mode);
+    setAudioModeState(mode);
+    setError('');
+    appendEvent(
+      mode === 'recording'
+        ? 'Audio source: recorded audio.'
+        : 'Audio source: live microphone.'
+    );
+  }
+
+  async function chooseRecordingFile(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const info = await setRecording(file, file.name);
+      setRecordingInfo(
+        `${info.name} (${info.durationSeconds.toFixed(1)} s)`
+      );
+      setError('');
+      appendEvent(`Loaded recording: ${info.name}`);
+    } catch (loadError) {
+      console.error(loadError);
+      setRecordingInfo('');
+      setError(
+        'Could not decode that audio file. Try a WAV or MP3.\n' +
+        (loadError?.message || String(loadError))
+      );
+    }
+  }
+
+  async function chooseBundledRecording(event) {
+    const file = event.target.value;
+    if (!file) return;
+
+    const entry = bundledRecordings.find(item => item.file === file);
+
+    try {
+      const info = await setRecordingFromUrl(
+        new URL(file, TEST_AUDIO_URL),
+        entry?.label || file
+      );
+      setRecordingInfo(
+        `${info.name} (${info.durationSeconds.toFixed(1)} s)`
+      );
+      setError('');
+      appendEvent(`Loaded recording: ${info.name}`);
+    } catch (loadError) {
+      console.error(loadError);
+      setRecordingInfo('');
+      setError(loadError?.message || String(loadError));
+    }
+  }
 
   // Initialize KeenASR after the user clicks the button.
   async function initialize() {
@@ -424,6 +507,11 @@ function App() {
   async function startReading() {
     if (!isReady || listeningRef.current || stoppingRef.current) return;
 
+    if (audioMode === 'recording' && !hasRecording()) {
+      setError('Choose a recording first, or switch to the live microphone.');
+      return;
+    }
+
     setError('');
     setMetrics(null);
     setTranscript('');
@@ -562,6 +650,65 @@ function App() {
             disabled: !isListening || isStopping,
             children: 'Stop Reading'
           })
+        ]
+      }),
+
+      jsxs('div', {
+        class: 'audio-source',
+        children: [
+          jsx('strong', { children: 'Audio source: ' }),
+          jsxs('select', {
+            value: audioMode,
+            disabled: isListening || isStopping,
+            onChange: event => changeAudioMode(event.target.value),
+            children: [
+              jsx('option', { value: 'microphone', children: 'Live microphone' }),
+              jsx('option', { value: 'recording', children: 'Recorded audio' })
+            ]
+          }),
+
+          audioMode === 'recording'
+            ? jsxs('div', {
+                children: [
+                  jsx('label', {
+                    children: 'Upload a recording: '
+                  }),
+                  jsx('input', {
+                    type: 'file',
+                    accept: 'audio/*',
+                    disabled: isListening || isStopping,
+                    onChange: chooseRecordingFile
+                  }),
+
+                  bundledRecordings.length
+                    ? jsxs('div', {
+                        children: [
+                          jsx('label', { children: 'or pick a bundled one: ' }),
+                          jsxs('select', {
+                            disabled: isListening || isStopping,
+                            onChange: chooseBundledRecording,
+                            children: [
+                              jsx('option', { value: '', children: '— choose —' }),
+                              ...bundledRecordings.map(item =>
+                                jsx('option', {
+                                  value: item.file,
+                                  children: item.label || item.file
+                                })
+                              )
+                            ]
+                          })
+                        ]
+                      })
+                    : null,
+
+                  jsx('div', {
+                    children: recordingInfo
+                      ? `Loaded: ${recordingInfo}`
+                      : 'No recording loaded yet.'
+                  })
+                ]
+              })
+            : null
         ]
       }),
 

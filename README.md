@@ -15,6 +15,8 @@ Everything runs locally in the browser: no audio leaves the device.
   words, tolerant of word endings ("pretty" / "prettiest")
 - Skipped checkpoints are detected and **recovered** if the child re-reads them
 - Reading accuracy and word error rate after each attempt
+- **Live microphone or recorded audio**: switch in the UI, handy for demos
+  and repeatable testing
 - Zero build step: plain ES modules, a tiny Python server
 
 ## Quick start
@@ -56,6 +58,32 @@ microphone, then **Start Reading**.
 > Use `localhost` (or HTTPS). Browsers only allow microphone access and
 > `SharedArrayBuffer` on secure origins, and `http://192.168.x.x` is not one.
 
+## Live microphone or recorded audio
+
+Use the **Audio source** box on the page.
+
+- **Live microphone**: the default.
+- **Recorded audio**: pick a file from your computer, or choose one listed in
+  `public/test-audio/recordings.json` (see
+  [`public/test-audio/README.md`](public/test-audio/README.md)).
+
+How it works: the KeenASR web SDK has no "process a file" function; it
+always listens to `getUserMedia()`. `src/audioSource.js` wraps
+`getUserMedia()` so that, in recording mode, the SDK receives a stream that
+plays your file instead of the microphone. Consequences:
+
+- Recordings play **in real time** (a 30 s clip takes 30 s).
+- You can switch source between attempts without re-initialising.
+- In recording mode, "Stop Reading" stops the playback.
+- If you initialise in recording mode and later switch to the microphone,
+  the browser asks for microphone permission at that point.
+- This relies on how the SDK currently obtains audio, so re-test after
+  upgrading the SDK.
+
+Alternative with no code: start Chrome with
+`--use-fake-device-for-media-stream --use-fake-ui-for-media-stream
+--use-file-for-fake-audio-capture=path\to\file.wav`.
+
 ## Project structure
 
 ```
@@ -68,8 +96,10 @@ microphone, then **Start Reading**.
 │   ├── src/
 │   │   ├── app.js               UI, KeenASR setup, start/stop flow
 │   │   ├── checkpointEngine.js  decides when a checkpoint is triggered
+│   │   ├── audioSource.js       live microphone <-> recorded audio switch
 │   │   ├── textUtils.js         normalize() / getWords()
 │   │   └── alignmentHelpers.js  word-highlighting helpers (not wired in yet)
+│   ├── test-audio/              optional recordings (audio git-ignored)
 │   ├── books/
 │   │   └── little-mermaid/
 │   │       ├── full_text.txt

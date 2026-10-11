@@ -4,6 +4,11 @@ public/vendor/keenasr/*
 *.tgz
 *.wasm
 
+# --- Test recordings (may contain children's voices)
+public/test-audio/*
+!public/test-audio/README.md
+!public/test-audio/recordings.json.example
+
 # --- Python
 __pycache__/
 *.py[cod]
