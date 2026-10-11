@@ -105,6 +105,20 @@ and [audio export guide](https://www.audacityteam.org/manual/getting-started/exp
 Audacity `.aup4` / `.aup3` files are projects; **export an audio file** before
 using them with this client.
 
+### Use the shared test recordings
+
+The [shared audio folder](examples/audio/README.md) contains eight resampled
+WAV recordings that groupmates can test after pulling the repository. The files
+are 16 kHz mono audio and can be supplied directly to `--files`:
+
+```powershell
+.\.venv\Scripts\python.exe run_client.py --model medium.en --files .\examples\audio\tea.wav --mute_audio_playback --checkpoints .\examples\tea_story.json
+```
+
+Use the matching checkpoint manifest listed in the shared audio instructions.
+Dog, Dragon, Nickel and Recording 2 currently have no corresponding manifests;
+test those without `--checkpoints`. Run one recording per client session.
+
 Keep `--checkpoints` out of tests using unrelated videos or recordings. These
 tests measure recognition; also test a child reading into the intended pod
 microphone to assess the actual recording conditions.
