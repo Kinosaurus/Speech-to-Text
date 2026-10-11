@@ -1,0 +1,8 @@
+# Normalise line endings so Windows (CRLF) and macOS/Linux (LF) users
+# don't create noisy diffs.
+* text=auto eol=lf
+*.wasm binary
+*.tgz binary
+*.png binary
+*.gif binary
+*.wav binary

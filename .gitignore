@@ -1,0 +1,24 @@
+# --- KeenASR SDK and model (proprietary, see public/vendor/keenasr/README.md)
+public/vendor/keenasr/*
+!public/vendor/keenasr/README.md
+*.tgz
+*.wasm
+
+# --- Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# --- Node (if you add tooling later)
+node_modules/
+
+# --- Environment / secrets
+.env
+.env.*
+
+# --- Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
