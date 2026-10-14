@@ -1,0 +1,2 @@
+# Add to the existing client environment; model/runtime assets use prepare.py.
+websockets>=14,<17

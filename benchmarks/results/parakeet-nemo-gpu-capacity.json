@@ -1,0 +1,76 @@
+{
+  "hardware": "RTX 3070 Ti 8 GB",
+  "runtime": "WSL Ubuntu-24.04, NeMo CUDA bfloat16",
+  "chunk_ms": 560,
+  "right_context_ms": 560,
+  "repetitions": 1,
+  "warmup": true,
+  "note": "Clock/power limits are not Jetson emulation. Times start at first audio packet.",
+  "runs": [
+    {
+      "model": "parakeet-nemo",
+      "profile": "normal",
+      "audio_seconds": 33.114,
+      "hint_mode": "fixed vocabulary: mermaid, legs, prince, deep blue eyes; boost=1.0",
+      "first_text_seconds": 1.6709766000130912,
+      "final_text_seconds": 34.508222000004025,
+      "triggers": [
+        {
+          "id": "mermaid_has_legs",
+          "arrival_seconds": 10.909186900011264
+        },
+        {
+          "id": "mermaid_cannot_speak",
+          "arrival_seconds": 29.51977190001344
+        }
+      ],
+      "transcript": "The next thing she knew the little mermaid woke up, she had the prettiest life on earth and in front of her stood the handsome prince Who are you? asked the prince. Where do you come from? The little mermaid could not speak. She could only look at the place with her peepy eyes",
+      "errors": [],
+      "exit_code": 0
+    },
+    {
+      "model": "parakeet-nemo",
+      "profile": "900mhz-200w",
+      "audio_seconds": 33.114,
+      "hint_mode": "fixed vocabulary: mermaid, legs, prince, deep blue eyes; boost=1.0",
+      "first_text_seconds": 1.6695336999982828,
+      "final_text_seconds": 34.530197999993106,
+      "triggers": [
+        {
+          "id": "mermaid_has_legs",
+          "arrival_seconds": 10.917932499985909
+        },
+        {
+          "id": "mermaid_cannot_speak",
+          "arrival_seconds": 29.484065399999963
+        }
+      ],
+      "transcript": "The next thing she knew the little mermaid woke up, she had the prettiest life on earth and in front of her stood the handsome prince Who are you? asked the prince. Where do you come from? The little mermaid could not speak. She could only look at the place with her peepy eyes",
+      "errors": [],
+      "exit_code": 0
+    },
+    {
+      "model": "parakeet-nemo",
+      "profile": "450mhz-100w",
+      "audio_seconds": 33.114,
+      "hint_mode": "fixed vocabulary: mermaid, legs, prince, deep blue eyes; boost=1.0",
+      "first_text_seconds": 1.682884699999704,
+      "final_text_seconds": 34.563053999998374,
+      "triggers": [
+        {
+          "id": "mermaid_has_legs",
+          "arrival_seconds": 10.992027000000235
+        },
+        {
+          "id": "mermaid_cannot_speak",
+          "arrival_seconds": 29.521173600005568
+        }
+      ],
+      "transcript": "The next thing she knew the little mermaid woke up, she had the prettiest life on earth and in front of her stood the handsome prince Who are you? asked the prince. Where do you come from? The little mermaid could not speak. She could only look at the place with her peepy eyes",
+      "errors": [
+        "[ERROR] WebSocket Error: Connection closed normally (code 1000)"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

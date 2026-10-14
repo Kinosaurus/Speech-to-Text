@@ -48,6 +48,8 @@ if __name__ == '__main__':
                           type=str,
                           default='./output_recording.wav',
                           help='output recording filename, only used for microphone input.')
+    parser.add_argument('--transcript_file', default='./output.srt',
+                        help='Destination for the recognized transcript (SRT).')
     parser.add_argument('--model', '-m',
                           type=str,
                           default='base.en',
@@ -137,6 +139,22 @@ if __name__ == '__main__':
                         help='Track speech against full page text (default), or compare checkpoint phrases only.')
 
     args = parser.parse_args()
+
+    native_model = args.model in ('parakeet', 'moonshine', 'parakeet-nemo')
+    if native_model:
+        if args.model != 'parakeet-nemo' and (args.initial_prompt or args.initial_prompt_file or args.hotwords or args.hotwords_file):
+            parser.error('Parakeet/Moonshine native runtime does not support prompts or hotwords.')
+        if args.translate or args.enable_translation or args.lang != 'en':
+            parser.error('Parakeet/Moonshine native runtime supports English transcription only.')
+        if args.model == 'parakeet-nemo':
+            if args.initial_prompt or args.initial_prompt_file:
+                parser.error('Parakeet NeMo accepts --hotwords phrases, not a Whisper passage prompt.')
+            print('[ASR] Parakeet NeMo: phrase boosting supported; Whisper VAD/segment settings do not apply.')
+        else:
+            args.no_book_context = True
+            print('[ASR] Native streaming: book hints disabled; Whisper VAD/segment settings do not apply.')
+        if args.files and len(args.files) != 1:
+            parser.error('Run one native recording per client invocation.')
 
     if args.audio_chunk < 256 or args.audio_chunk > 16384:
         parser.error('--audio_chunk must be between 256 and 16384 samples.')
@@ -243,7 +261,9 @@ if __name__ == '__main__':
               "while --enable_translation uses M2M100 for any-to-any. "
               "Both will be active.")
 
-    if book_context:
+    if native_model:
+        from native_stream_client import NativeTranscriptionClient as TranscriptionClient
+    elif book_context:
         from book_context_client import BookTranscriptionClient as TranscriptionClient
     else:
         from whisper_live.client import TranscriptionClient
@@ -266,6 +286,7 @@ if __name__ == '__main__':
         transcription_callback=transcription_callback,
         save_output_recording=args.save_output_recording,  # Only used for microphone input, False by Default
         output_recording_filename=args.output_file,        # Only used for microphone input
+        output_transcription_path=args.transcript_file,
         mute_audio_playback=args.mute_audio_playback,      # Only used for file input, False by Default
         enable_translation=args.enable_translation,        # Enable translation of the transcription output
         target_language=args.target_language,              # Target language for translation, e.g., "fr

@@ -63,6 +63,8 @@ class BookContextConnection(Client):
 class BookTranscriptionClient(TranscriptionTeeClient):
     """Reuse upstream microphone/file streaming with our connection subclass."""
 
+    connection_type = None
+
     def __init__(self, *args, **kwargs):
         audio_options = {
             key: kwargs.pop(key, default)
@@ -77,5 +79,5 @@ class BookTranscriptionClient(TranscriptionTeeClient):
         if not transcript_path.endswith(".srt"):
             raise ValueError("output_transcription_path must end with .srt")
         kwargs["srt_file_path"] = transcript_path
-        self.client = BookContextConnection(*args, **kwargs)
+        self.client = (self.connection_type or BookContextConnection)(*args, **kwargs)
         super().__init__([self.client], **audio_options)

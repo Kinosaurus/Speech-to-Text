@@ -52,7 +52,18 @@ def prepare(cache):
             raise RuntimeError(f'Integrity check failed for {name}; no model was loaded.')
         partial.replace(target)
     with tarfile.open(cache / 'runtime.tar.gz') as archive:
-        archive.extractall(cache, filter='data')
+        # Only regular files/directories are needed. Validate explicitly so
+        # extraction is also safe on Python 3.10 without tarfile's data filter.
+        for member in archive.getmembers():
+            destination = (cache / member.name).resolve()
+            if not destination.is_relative_to(cache.resolve()) or not (member.isfile() or member.isdir()):
+                raise RuntimeError(f'Unsafe runtime archive entry: {member.name}')
+            if member.isdir():
+                destination.mkdir(parents=True, exist_ok=True)
+            else:
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                with archive.extractfile(member) as source, destination.open('wb') as target:
+                    shutil.copyfileobj(source, target)
     with zipfile.ZipFile(cache / 'api.whl') as archive:
         archive.extractall(cache / 'api')
     (cache / 'sources.json').write_text(json.dumps([

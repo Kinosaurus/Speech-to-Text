@@ -1,5 +1,162 @@
 # Books to Life Pod
 
+## Parakeet with moving phrase hints (NeMo, Linux/WSL CUDA)
+
+`parakeet-nemo` is a separate adapter for the original NVIDIA Parakeet Unified
+checkpoint. It uses the same Windows file/microphone client and checkpoint
+matcher. Upcoming checkpoint phrases bias NeMo's GPU decoder; passage prompts
+are not used. Hint revisions replace the phrase tree between audio chunks while
+retaining the speech decoder's state and previously emitted words.
+
+This is a different runtime from the hint-free `parakeet` GGUF adapter. Its
+default buffering is 560 ms chunk + 560 ms right context, with 5.6 seconds left
+context. It uses bfloat16 CUDA inference and disables CUDA graph decoding while
+supporting dynamic phrase changes. Re-measure accuracy and timing in this
+configuration; the earlier Vulkan results do not apply directly. Jetson execution
+has not been verified.
+
+The original checkpoint is 2.47 GB. The installed Linux environment measured
+6.64 GB on this PC, for about 9.1 GB combined, excluding Ubuntu itself and
+caches. Allow 15–20 GB of free space for setup and temporary files.
+For a fresh Windows laptop, reserve **20 GB free for hinted Parakeet** including
+WSL/Ubuntu and the client, or **30 GB free for the full Whisper + Parakeet +
+Moonshine comparison setup**. These are planning allowances, not download sizes.
+The current full set of environments/models uses about 18.9 GB before Ubuntu,
+the repository, and temporary caches. This Parakeet adapter requires an NVIDIA
+GPU with working CUDA in WSL; a CPU-only laptop cannot run it.
+In Ubuntu/WSL (not the Windows `.venv`), install
+`python3-venv`, `python3-dev`, `libsndfile1`, and `build-essential`, then from this project directory:
+
+```bash
+python3 -m venv ~/.venvs/books-to-life-nemo
+~/.venvs/books-to-life-nemo/bin/python -m pip install --upgrade pip
+~/.venvs/books-to-life-nemo/bin/python -m pip install --no-cache-dir -r requirements-nemo.txt
+~/.venvs/books-to-life-nemo/bin/python prepare_nemo_model.py
+~/.venvs/books-to-life-nemo/bin/python run_nemo_server.py --model-path model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo
+```
+
+On this PC the project is `/mnt/c/Users/heart/Speech-to-Text` inside Ubuntu-24.04.
+The model is already prepared in the shared project cache. In Windows, run:
+
+```powershell
+.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --files examples/audio/little_mermaid.wav --mute_audio_playback --checkpoints examples/little_mermaid_story.json --transcript_file output/parakeet-nemo.srt
+```
+
+Hints turn on automatically with a checkpoint manifest. Use `--no_book_context`
+for a no-hints comparison on the same server, or `--hotwords "Mermaid, Prince"`
+for explicit comma-separated phrases. The server's `--boost` controls strength
+(default 1.0). Hints can introduce errors as well as resolve ambiguity; validate
+off-book speech before treating this as a production reader. One connection is
+allowed at a time. SRT times describe stream bounds rather than word alignment.
+
+Verified on this PC's RTX 3070 Ti: the paced `little_mermaid.wav` stream
+completed with live hint revisions, both checkpoint triggers, and final SRT
+output. The automatic checkpoint phrases at boost 1.0 produced the same text
+as the no-hints run, including recognition errors. A separate run with explicit
+`--no_book_context --hotwords "mermaid, legs, prince, deep blue eyes"` corrected
+"The little merry could not speak" to "The little mermaid could not speak",
+but left the other errors. This is a small smoke test, not a child-speech
+accuracy evaluation. Logs and transcripts are under
+`output/parakeet-nemo-*`; the installed package snapshot is
+`output/nemo-installed-packages.txt`. The 74 automated tests also pass.
+
+GPU throttling smoke test (RTX 3070 Ti, warmed server, one run per setting,
+33.114-second recording paced through the application, the explicit vocabulary
+above, boost 1.0):
+
+| GPU profile | First text | Final update | Checkpoint 1 | Checkpoint 2 |
+| --- | ---: | ---: | ---: | ---: |
+| Normal, 310 W power limit | 1.67 s | 34.51 s | 10.91 s | 29.52 s |
+| Locked 900 MHz, 200 W limit | 1.67 s | 34.53 s | 10.92 s | 29.48 s |
+| Locked 450 MHz, 100 W limit | 1.68 s | 34.56 s | 10.99 s | 29.52 s |
+
+Times are measured from the first audio packet, not from the end of a spoken
+phrase. All profiles produced identical text and completed both checkpoints.
+Telemetry confirmed the locked clocks. One client logged a normal WebSocket
+close (1000) as an error after completion; it exited successfully and saved the
+full transcript. Normal clocks and the original power limit were restored.
+These limits do not emulate Jetson core count, memory bandwidth, or shared RAM.
+Portable results are in `benchmarks/results/parakeet-nemo-gpu-capacity.json`.
+
+## Native Windows CUDA setup (verified on RTX 3070 Ti)
+
+Whisper can run directly in the Windows environment without Docker. This
+project was verified with Python 3.10, PyTorch 2.6.0+cu124,
+torchaudio 2.6.0+cu124 and CTranslate2 4.8.2. CUDA-enabled PyTorch includes the
+runtime libraries used by this configuration; a full CUDA development toolkit
+was not needed. The PyTorch download is about 2.53 GB and its installed directory
+uses about 4.67 GB.
+
+In an environment with the project dependencies already installed:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install --no-cache-dir torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+```
+
+WhisperLive's speech detector uses `wget` for its first download. If `wget` is
+unavailable on Windows, populate its cache once with PowerShell:
+
+```powershell
+$vadCache = Join-Path $env:USERPROFILE '.cache\whisper-live'
+New-Item -ItemType Directory -Force -Path $vadCache | Out-Null
+if (-not (Test-Path (Join-Path $vadCache 'silero_vad.onnx'))) {
+    Invoke-WebRequest -Uri 'https://github.com/snakers4/silero-vad/raw/v5.0/files/silero_vad.onnx' -OutFile (Join-Path $vadCache 'silero_vad.onnx')
+}
+.\.venv\Scripts\python.exe run_server.py --device cuda --check_device
+.\.venv\Scripts\python.exe prepare_models.py --model small.en --device cuda --verify_inference
+.\.venv\Scripts\python.exe run_server.py --device cuda --host 127.0.0.1 --port 9090
+```
+
+Run the usual `run_client.py --files ...` command in another terminal. Successful
+device detection alone is insufficient: the preparation command must also report
+that synthetic ASR inference passed on CUDA. CPU-only PyTorch reports CUDA as
+unavailable even when the NVIDIA driver and GPU support it.
+
+## Stream a recording through Parakeet or Moonshine (Windows)
+
+These models now use the same `run_client.py` file/microphone transport and
+checkpoint matcher as Whisper, with a separate native WebSocket server.
+This is application playback, not the benchmark runner. Model decoding and
+buffering differ: the native runtime does not implement Whisper's VAD settings,
+segment-repeat threshold or phrase hints. Book hints are disabled automatically.
+For a comparable Whisper run, use `--no_book_context`.
+
+One-time preparation in the existing client environment (about **1.85 GB** on
+disk for both models and runtime; the installer requires 8 GiB free):
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-native.txt
+.\.venv\Scripts\python.exe benchmarks\prepare.py
+```
+
+Start a server in Terminal 1 (uses the first Vulkan GPU; CPU is available with
+`--device cpu`). Keep it running while testing files:
+
+```powershell
+.\.venv\Scripts\python.exe run_native_server.py --model parakeet --port 9091
+```
+
+In Terminal 2, send one recording at normal playback speed:
+
+```powershell
+.\.venv\Scripts\python.exe run_client.py --model parakeet --server 127.0.0.1 --port 9091 --files examples/audio/little_mermaid.wav --mute_audio_playback --checkpoints examples/little_mermaid_story.json --transcript_file output/parakeet.srt
+```
+
+For Moonshine, stop the server and replace `parakeet` with `moonshine` in both
+commands (also choose a different transcript filename). Each file invocation
+starts a new recognition session. Omit `--files` to use a microphone; Ctrl+C
+finishes capture. Run one client at a time per server.
+
+File input uses the existing 256 ms packets. `--audio_chunk` applies only to
+microphone input. Parakeet's default internal chunk plus right context totals
+320 ms; `run_native_server.py --chunk-ms` changes both halves. Moonshine uses
+its native streaming defaults. Finalization is acknowledged before the client
+saves its transcript. Native SRT timestamps describe the full stream bounds,
+not individual word/phrase alignment. English transcription only.
+
+The model cache is shared with the benchmark scripts, so this does not download
+a second copy. The server binds to localhost by default.
+
 ## Quickstart — test on a Windows PC with an NVIDIA GPU
 
 Use **two terminals** in the project folder: Docker runs the speech-recognition

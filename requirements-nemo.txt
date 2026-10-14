@@ -1,0 +1,12 @@
+# Isolated Linux/WSL CUDA environment; do not install in the Windows .venv.
+# Pin the APIs used by the buffered streaming and per-stream phrase boosting adapter.
+torch==2.7.1
+torchaudio==2.7.1
+cuda-bindings<13
+transformers==4.53.3
+numpy==2.2.6
+librosa==0.11.0
+lightning==2.4.0
+pytorch-lightning==2.4.0
+nemo_toolkit[asr] @ https://github.com/NVIDIA-NeMo/NeMo/archive/c2368abafc7657085d3821075ed256da8055b781.zip
+websockets>=14,<17
