@@ -10,6 +10,10 @@ For deployment on a board, follow [Jetson setup](JETSON_SETUP.md) or
 [Raspberry Pi CPU setup](PI4_SETUP.md). A PC without a compatible NVIDIA GPU can
 use the [native CPU instructions](#run-locally) below.
 
+To compare Whisper, Parakeet Unified and Moonshine Streaming on the shared
+child recordings, see the [isolated ASR benchmark](benchmarks/README.md).
+It reuses the existing Whisper GPU image and keeps extra model downloads separate.
+
 ### 1. Prepare the Windows client once
 
 If your `.venv` already runs `run_client.py`, skip this step. Otherwise, install
