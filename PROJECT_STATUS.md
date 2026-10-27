@@ -94,6 +94,9 @@ required. Negation/prompt markers block split proposals but do not replace
 speaker identification or semantic understanding in the ordinary aligner.
 First-scene split assistance is intentionally unsupported.
 
+For a second PC with limited disk space, see [LOW_STORAGE_TESTING.md](LOW_STORAGE_TESTING.md)
+for client-only LAN testing and offline limitations.
+
 ## How to start the tested Parakeet + split setup on this PC
 
 Requires the existing Windows .venv, WSL Ubuntu-24.04, CUDA and prepared NeMo
