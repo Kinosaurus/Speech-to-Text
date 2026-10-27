@@ -275,6 +275,24 @@ class AlignmentMatcher(CheckpointMatcher):
         value = float(checkpoint.get("threshold", self.default_threshold))
         return max(value, self.recovery_threshold) if recovering else value
 
+    def _reject_candidate(self, ambiguous):
+        self.confirmations = 0
+        self._pending_scene = None
+
+    def _confirm_candidate(self, scene, best):
+        self.confirmations = self.confirmations + 1 if scene == self._pending_scene else 1
+        self._pending_scene = scene
+        return self.confirmations
+
+    def _alignment_candidates(self, low, high):
+        candidates = []
+        lengths = {len(self._buffer), max(self.minimum_words, len(self._buffer) // 2),
+                   self.minimum_words, min(len(self._buffer), self.minimum_words + 3)}
+        for length in sorted(lengths, reverse=True):
+            candidates.extend(align_words(self._buffer[-length:], self.words[low:high], low,
+                                          self.minimum_words, self._minimum_coverage))
+        return candidates
+
     def process(self, transcript: str, segments=None) -> AlignmentUpdate:
         if self.completed:
             return AlignmentUpdate(None, 0, 0, 0, False, True,
@@ -292,12 +310,7 @@ class AlignmentMatcher(CheckpointMatcher):
         level = min(self._misses // self.recovery_after, len(self.words).bit_length())
         high = min(len(self.words), self.tracked_word_position + self.window_words * (2 ** level))
         recovering = level > 0
-        candidates = []
-        lengths = {len(self._buffer), max(self.minimum_words, len(self._buffer) // 2),
-                   self.minimum_words, min(len(self._buffer), self.minimum_words + 3)}
-        for length in sorted(lengths, reverse=True):
-            candidates.extend(align_words(self._buffer[-length:], self.words[low:high], low,
-                                          self.minimum_words, self._minimum_coverage))
+        candidates = self._alignment_candidates(low, high)
         candidates = [span for span in candidates
                       if span.score >= self._threshold(self._scene(span.end), recovering)
                       and span.matched_words >= math.ceil(span.query_words * float(
@@ -319,16 +332,13 @@ class AlignmentMatcher(CheckpointMatcher):
         if best is None or ambiguous:
             if len(self._buffer) >= self.minimum_words:
                 self._misses += 1
-            self.confirmations = 0
-            self._pending_scene = None
+            self._reject_candidate(ambiguous)
             return AlignmentUpdate(**base, recovering=recovering, ambiguous=ambiguous)
 
         scene = self._scene(best.end)
         selected = self.checkpoints[scene] if scene >= 0 else checkpoint
         required = selected.get("stability", self.default_stability)
-        self.confirmations = self.confirmations + 1 if scene == self._pending_scene else 1
-        self._pending_scene = scene
-        confirmations = self.confirmations
+        confirmations = self._confirm_candidate(scene, best)
         skipped = ()
         effect = None
         triggered = False

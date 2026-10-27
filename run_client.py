@@ -5,6 +5,8 @@ import argparse
 
 from checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
 from alignment_matcher import AlignmentMatcher
+from evidence_matcher import EvidenceAlignmentMatcher
+from split_matcher import SplitEvidenceMatcher
 from audio_runtime import configure_microphone, input_devices, wait_for_server
 from book_context import BookContext
 
@@ -135,8 +137,8 @@ if __name__ == '__main__':
                           type=int,
                           default=None,
                           help='Override the number of consecutive matches required to trigger.')
-    parser.add_argument('--matching_mode', choices=('alignment', 'fuzzy'), default='alignment',
-                        help='Track speech against full page text (default), or compare checkpoint phrases only.')
+    parser.add_argument('--matching_mode', choices=('alignment', 'evidence', 'split', 'fuzzy'), default='alignment',
+                        help='Full-text alignment (default); experimental evidence/split alignment; or fuzzy checkpoint phrases.')
 
     args = parser.parse_args()
 
@@ -199,7 +201,7 @@ if __name__ == '__main__':
     print(f"[ASR] Requested model={args.model}, language={args.lang}, VAD={not args.no_vad}")
     if args.checkpoints:
         try:
-            matcher_type = AlignmentMatcher if args.matching_mode == 'alignment' else CheckpointMatcher
+            matcher_type = {'alignment': AlignmentMatcher, 'evidence': EvidenceAlignmentMatcher, 'split': SplitEvidenceMatcher, 'fuzzy': CheckpointMatcher}[args.matching_mode]
             checkpoint_matcher = matcher_type.from_file(
                 args.checkpoints,
                 threshold=args.checkpoint_threshold,
@@ -225,7 +227,7 @@ if __name__ == '__main__':
 
         def handle_transcription(text, segments):
             print(f"[TRANSCRIPT] {text}")
-            if args.matching_mode == 'alignment':
+            if args.matching_mode in ('alignment', 'evidence', 'split'):
                 update = checkpoint_matcher.process(text, segments=segments)
             else:
                 update = checkpoint_matcher.process(text)
@@ -241,7 +243,7 @@ if __name__ == '__main__':
                 f"{update.score:.1f} "
                 f"({update.confirmations}/{update.confirmations_required})"
             )
-            if args.matching_mode == 'alignment':
+            if args.matching_mode in ('alignment', 'evidence', 'split'):
                 print(f"[ALIGN] page={update.page}, words={update.alignment_start}:{update.alignment_end}, "
                       f"confirmed_position={update.tracked_word_position}, recovery={update.recovering}, "
                       f"ambiguous={update.ambiguous}, duplicate={update.duplicate}")

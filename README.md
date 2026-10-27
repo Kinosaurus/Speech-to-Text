@@ -1,5 +1,9 @@
 # Books to Life Pod
 
+For the current implemented flow, tracker modes, verified results, startup commands
+and remaining work, see [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
+
 ## Parakeet with moving phrase hints (NeMo, Linux/WSL CUDA)
 
 `parakeet-nemo` is a separate adapter for the original NVIDIA Parakeet Unified

@@ -1,0 +1,1412 @@
+{
+  "protocol": "Fresh WAV audio paced through actual application WebSocket client; original and split trackers evaluated online at each new ASR callback, fixed shared hints; normal GPU clocks/power (no throttle changes). Sources and clips hashed. GPU models run sequentially.",
+  "limits": "No fresh microphone acoustics; scene correctness and phrase-end latency not manually annotated. Eight clips, one run per model/condition, development recordings. Off-book clips have no matching manifests and are tested against all four available books.",
+  "source_sha256": {
+    "alignment_matcher.py": "79d43659de79cc2f4d28124d7cf13083697a0b65c15daed47f8d14130d3dcea1",
+    "evidence_matcher.py": "3d851b082936cbb055509e3dd540fe4cf3299b209fdc33b209367d18751295e8",
+    "split_matcher.py": "015ac1cd5015002dd9d9fff4158abdc9dcd62585b17abbefbb05d6d6aaccf9cf",
+    "benchmarks/live_tracker_probe.py": "63e04fe85cf6235d1209a21d0bc4339a9a4673abe87171e80de104bd91f6b926",
+    "benchmarks/run_live_tracker_comparison.py": "80bc65c1daa831ab41e1cdcd12fc6c3b75f0ecf5f0fa6b641fa139e4337da3e9"
+  },
+  "aggregate": [
+    {
+      "model": "medium.en",
+      "condition": "no-hints",
+      "runs": 4,
+      "original_activations": 4,
+      "split_activations": 4,
+      "original_unactivated": 4,
+      "split_unactivated": 4,
+      "common_timing_count": 4,
+      "median_extra_seconds": 0.27246310000009544,
+      "max_extra_seconds": 1.776800200001162
+    },
+    {
+      "model": "medium.en",
+      "condition": "fixed-hints",
+      "runs": 4,
+      "original_activations": 5,
+      "split_activations": 5,
+      "original_unactivated": 3,
+      "split_unactivated": 3,
+      "common_timing_count": 5,
+      "median_extra_seconds": 0.0,
+      "max_extra_seconds": 0.6902821000003314
+    },
+    {
+      "model": "medium.en",
+      "condition": "off-book",
+      "runs": 4,
+      "original_activations": 0,
+      "split_activations": 0,
+      "original_unactivated": 0,
+      "split_unactivated": 0,
+      "common_timing_count": 0,
+      "median_extra_seconds": null,
+      "max_extra_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "condition": "no-hints",
+      "runs": 4,
+      "original_activations": 6,
+      "split_activations": 8,
+      "original_unactivated": 2,
+      "split_unactivated": 0,
+      "common_timing_count": 6,
+      "median_extra_seconds": 0.0,
+      "max_extra_seconds": 0.5426171999988583
+    },
+    {
+      "model": "parakeet-nemo",
+      "condition": "fixed-hints",
+      "runs": 4,
+      "original_activations": 6,
+      "split_activations": 8,
+      "original_unactivated": 2,
+      "split_unactivated": 0,
+      "common_timing_count": 6,
+      "median_extra_seconds": 0.0,
+      "max_extra_seconds": 0.4788255000003119
+    },
+    {
+      "model": "parakeet-nemo",
+      "condition": "off-book",
+      "runs": 4,
+      "original_activations": 0,
+      "split_activations": 0,
+      "original_unactivated": 0,
+      "split_unactivated": 0,
+      "common_timing_count": 0,
+      "median_extra_seconds": null,
+      "max_extra_seconds": null
+    }
+  ],
+  "runs": [
+    {
+      "model": "medium.en",
+      "audio": "horse",
+      "condition": "no-hints",
+      "audio_sha256": "76e92753b625cb09177de4173b8bb18738280bda9166cb1e1eedc8cca43878db",
+      "audio_seconds": 40.61525,
+      "samples_sent": 649844,
+      "expected_samples": 649844,
+      "packet_samples": [
+        2676,
+        4096
+      ],
+      "audio_delivery_seconds": 42.31833890000011,
+      "first_text_seconds": 1.2829899999996996,
+      "audio_sent_before_first_text_seconds": 1.28,
+      "gpu_after": "1800 MHz, 310.00 W, 3554 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "horse",
+          "scene": "horse_at_farm",
+          "arrival_seconds": 25.29078599999957,
+          "decision_seconds": 25.291965399999754,
+          "audio_end": 23.71,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "horse",
+          "scene": "horse_at_farm",
+          "arrival_seconds": 27.067586200000733,
+          "decision_seconds": 27.069079700000657,
+          "audio_end": 25.4,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "horse_at_farm",
+          "split_minus_original_seconds": 1.776800200001162
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 4.757799999424606,
+        "split": 1.8682000008993782
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "horse",
+      "condition": "fixed-hints",
+      "audio_sha256": "76e92753b625cb09177de4173b8bb18738280bda9166cb1e1eedc8cca43878db",
+      "audio_seconds": 40.61525,
+      "samples_sent": 649844,
+      "expected_samples": 649844,
+      "packet_samples": [
+        2676,
+        4096
+      ],
+      "audio_delivery_seconds": 42.32961150000077,
+      "first_text_seconds": 1.3180026000009093,
+      "audio_sent_before_first_text_seconds": 1.28,
+      "gpu_after": "210 MHz, 310.00 W, 4327 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "horse",
+          "scene": "horse_at_farm",
+          "arrival_seconds": 26.112995200001023,
+          "decision_seconds": 26.113689700001487,
+          "audio_end": 24.66,
+          "score": 87.5,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "horse",
+          "scene": "horse_at_farm",
+          "arrival_seconds": 26.112995200001023,
+          "decision_seconds": 26.114341000000422,
+          "audio_end": 24.66,
+          "score": 87.5,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "horse_at_farm",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 1.2401000003592344,
+        "split": 1.3964999998279382
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "fat_cat",
+      "condition": "no-hints",
+      "audio_sha256": "c44c9bc85ece10b8af8bb33b3df2fba5422b5c041cd78a683c370d5b03fe9bdc",
+      "audio_seconds": 56.855,
+      "samples_sent": 909680,
+      "expected_samples": 909680,
+      "packet_samples": [
+        368,
+        4096
+      ],
+      "audio_delivery_seconds": 59.266523299999655,
+      "first_text_seconds": 1.0259368999995786,
+      "audio_sent_before_first_text_seconds": 1.024,
+      "gpu_after": "1935 MHz, 310.00 W, 5296 MiB",
+      "exit_code": 0,
+      "original": [],
+      "split": [],
+      "original_unactivated": [
+        "fat_cat_on_mat",
+        "animals_in_hat"
+      ],
+      "split_unactivated": [
+        "fat_cat_on_mat",
+        "animals_in_hat"
+      ],
+      "added": [],
+      "lost": [],
+      "timing": [],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 5.795199998829048,
+        "split": 4.242200000589946
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "fat_cat",
+      "condition": "fixed-hints",
+      "audio_sha256": "c44c9bc85ece10b8af8bb33b3df2fba5422b5c041cd78a683c370d5b03fe9bdc",
+      "audio_seconds": 56.855,
+      "samples_sent": 909680,
+      "expected_samples": 909680,
+      "packet_samples": [
+        368,
+        4096
+      ],
+      "audio_delivery_seconds": 59.160878800000184,
+      "first_text_seconds": 1.109748300001229,
+      "audio_sent_before_first_text_seconds": 1.28,
+      "gpu_after": "285 MHz, 310.00 W, 3202 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "fat_cat",
+          "scene": "fat_cat_on_mat",
+          "arrival_seconds": 9.146872600000279,
+          "decision_seconds": 9.147394300000087,
+          "audio_end": 8.704,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "fat_cat",
+          "scene": "fat_cat_on_mat",
+          "arrival_seconds": 9.83715470000061,
+          "decision_seconds": 9.839021100000537,
+          "audio_end": 8.19,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [
+        "animals_in_hat"
+      ],
+      "split_unactivated": [
+        "animals_in_hat"
+      ],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "fat_cat_on_mat",
+          "split_minus_original_seconds": 0.6902821000003314
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 2.154800000425894,
+        "split": 2.185800000006566
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "tea",
+      "condition": "no-hints",
+      "audio_sha256": "d3437ff93212fa451fa582a87ef48e616eecea0923b8ee7e7c4730aad02ee31c",
+      "audio_seconds": 92.8481875,
+      "samples_sent": 1485571,
+      "expected_samples": 1485571,
+      "packet_samples": [
+        2819,
+        4096
+      ],
+      "audio_delivery_seconds": 96.5132308,
+      "first_text_seconds": 0.9575540000005276,
+      "audio_sent_before_first_text_seconds": 1.024,
+      "gpu_after": "210 MHz, 310.00 W, 4983 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "tea",
+          "scene": "make_a_pot_of_tea",
+          "arrival_seconds": 23.060863400000017,
+          "decision_seconds": 23.061520700000983,
+          "audio_end": 22.016,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "tea",
+          "scene": "make_a_pot_of_tea",
+          "arrival_seconds": 23.605789600000207,
+          "decision_seconds": 23.607373599999846,
+          "audio_end": 22.528,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [
+        "teapot_on_stove",
+        "little_house_ready"
+      ],
+      "split_unactivated": [
+        "teapot_on_stove",
+        "little_house_ready"
+      ],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "make_a_pot_of_tea",
+          "split_minus_original_seconds": 0.5449262000001909
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 1.6281000007438706,
+        "split": 1.652200000535231
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "tea",
+      "condition": "fixed-hints",
+      "audio_sha256": "d3437ff93212fa451fa582a87ef48e616eecea0923b8ee7e7c4730aad02ee31c",
+      "audio_seconds": 92.8481875,
+      "samples_sent": 1485571,
+      "expected_samples": 1485571,
+      "packet_samples": [
+        2819,
+        4096
+      ],
+      "audio_delivery_seconds": 96.65504920000129,
+      "first_text_seconds": 0.9417668000005506,
+      "audio_sent_before_first_text_seconds": 1.024,
+      "gpu_after": "210 MHz, 310.00 W, 5580 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "tea",
+          "scene": "teapot_on_stove",
+          "arrival_seconds": 54.80740640000113,
+          "decision_seconds": 54.808415700001206,
+          "audio_end": 52.736,
+          "score": 100.0,
+          "skipped": [
+            "make_a_pot_of_tea"
+          ]
+        }
+      ],
+      "split": [
+        {
+          "book": "tea",
+          "scene": "teapot_on_stove",
+          "arrival_seconds": 54.80740640000113,
+          "decision_seconds": 54.80938010000136,
+          "audio_end": 52.736,
+          "score": 100.0,
+          "skipped": [
+            "make_a_pot_of_tea"
+          ]
+        }
+      ],
+      "original_unactivated": [
+        "make_a_pot_of_tea",
+        "little_house_ready"
+      ],
+      "split_unactivated": [
+        "make_a_pot_of_tea",
+        "little_house_ready"
+      ],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "teapot_on_stove",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 4.387099999803468,
+        "split": 4.276499999832595
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "little_mermaid",
+      "condition": "no-hints",
+      "audio_sha256": "31447f2e2f9f37ab0f87edd4b7c8e67b2dcc1fb3b25c2365503d8709c904f14c",
+      "audio_seconds": 33.114625,
+      "samples_sent": 529834,
+      "expected_samples": 529834,
+      "packet_samples": [
+        1450,
+        4096
+      ],
+      "audio_delivery_seconds": 34.48318700000091,
+      "first_text_seconds": 0.9580970000006346,
+      "audio_sent_before_first_text_seconds": 1.024,
+      "gpu_after": "1935 MHz, 310.00 W, 6804 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_has_legs",
+          "arrival_seconds": 9.84824640000079,
+          "decision_seconds": 9.849155200001405,
+          "audio_end": 9.37,
+          "score": 94.11764705882354,
+          "skipped": []
+        },
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_cannot_speak",
+          "arrival_seconds": 30.42906050000056,
+          "decision_seconds": 30.43039680000038,
+          "audio_end": 29.132,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_has_legs",
+          "arrival_seconds": 9.84824640000079,
+          "decision_seconds": 9.849986900000658,
+          "audio_end": 9.37,
+          "score": 94.11764705882354,
+          "skipped": []
+        },
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_cannot_speak",
+          "arrival_seconds": 30.42906050000056,
+          "decision_seconds": 30.431725800001004,
+          "audio_end": 29.132,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "mermaid_has_legs",
+          "split_minus_original_seconds": 0.0
+        },
+        {
+          "scene": "mermaid_cannot_speak",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 3.1501999983447604,
+        "split": 2.5354000008519506
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "little_mermaid",
+      "condition": "fixed-hints",
+      "audio_sha256": "31447f2e2f9f37ab0f87edd4b7c8e67b2dcc1fb3b25c2365503d8709c904f14c",
+      "audio_seconds": 33.114625,
+      "samples_sent": 529834,
+      "expected_samples": 529834,
+      "packet_samples": [
+        1450,
+        4096
+      ],
+      "audio_delivery_seconds": 34.522331999999736,
+      "first_text_seconds": 1.9720383999992919,
+      "audio_sent_before_first_text_seconds": 2.048,
+      "gpu_after": "210 MHz, 310.00 W, 7886 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_has_legs",
+          "arrival_seconds": 14.15233199999966,
+          "decision_seconds": 14.153636499999266,
+          "audio_end": 12.28,
+          "score": 100.0,
+          "skipped": []
+        },
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_cannot_speak",
+          "arrival_seconds": 35.13592840000092,
+          "decision_seconds": 35.13723700000082,
+          "audio_end": 32.37,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_has_legs",
+          "arrival_seconds": 14.15233199999966,
+          "decision_seconds": 14.154758099999526,
+          "audio_end": 12.28,
+          "score": 100.0,
+          "skipped": []
+        },
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_cannot_speak",
+          "arrival_seconds": 35.13592840000092,
+          "decision_seconds": 35.1385379000003,
+          "audio_end": 32.37,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "mermaid_has_legs",
+          "split_minus_original_seconds": 0.0
+        },
+        {
+          "scene": "mermaid_cannot_speak",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 1.715899999908288,
+        "split": 1.674799999818788
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "dog",
+      "condition": "off-book",
+      "audio_sha256": "d6062d31e4064676948fe3e4f777b2c2af4e2e26d4c6650c5f8685cd678285df",
+      "audio_seconds": 23.88675,
+      "samples_sent": 382188,
+      "expected_samples": 382188,
+      "packet_samples": [
+        1260,
+        4096
+      ],
+      "audio_delivery_seconds": 24.9178258000005,
+      "first_text_seconds": 2.600340100001631,
+      "audio_sent_before_first_text_seconds": 2.56,
+      "gpu_after": "210 MHz, 310.00 W, 7885 MiB",
+      "exit_code": 0,
+      "original": [],
+      "split": [],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 1.233499999216292,
+        "split": 0.7982999995874707
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "dragon",
+      "condition": "off-book",
+      "audio_sha256": "c2d69b4e49f405ac16ef224b00b4be4a53bfa0248d8cbafc2602b766cd1e8a6e",
+      "audio_seconds": 43.404125,
+      "samples_sent": 694466,
+      "expected_samples": 694466,
+      "packet_samples": [
+        2242,
+        4096
+      ],
+      "audio_delivery_seconds": 45.25540909999846,
+      "first_text_seconds": 3.6901958999987983,
+      "audio_sent_before_first_text_seconds": 3.584,
+      "gpu_after": "285 MHz, 310.00 W, 7871 MiB",
+      "exit_code": 0,
+      "original": [],
+      "split": [],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 2.152199998818105,
+        "split": 2.4462000001221895
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "nickel",
+      "condition": "off-book",
+      "audio_sha256": "2a751b15648c389c40bdeed438f143fda2122a5fc8ecce80bacb1702463253e1",
+      "audio_seconds": 76.7905625,
+      "samples_sent": 1228649,
+      "expected_samples": 1228649,
+      "packet_samples": [
+        3945,
+        4096
+      ],
+      "audio_delivery_seconds": 79.8760080999996,
+      "first_text_seconds": 47.74360429999979,
+      "audio_sent_before_first_text_seconds": 46.08,
+      "gpu_after": "210 MHz, 310.00 W, 7622 MiB",
+      "exit_code": 0,
+      "original": [],
+      "split": [],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 2.5394000003871042,
+        "split": 2.32270000014978
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "medium.en",
+      "audio": "recording_2",
+      "condition": "off-book",
+      "audio_sha256": "66f882374c1e1029cd75cb7fa1e9151d6fb32265b00093f121a74af6ff7e03d9",
+      "audio_seconds": 18.751,
+      "samples_sent": 300016,
+      "expected_samples": 300016,
+      "packet_samples": [
+        1008,
+        4096
+      ],
+      "audio_delivery_seconds": 19.56971880000118,
+      "first_text_seconds": 9.454081900001256,
+      "audio_sent_before_first_text_seconds": 9.216,
+      "gpu_after": "210 MHz, 310.00 W, 7848 MiB",
+      "exit_code": 0,
+      "original": [],
+      "split": [],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 0.6685999996989267,
+        "split": 0.7468000003427733
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "horse",
+      "condition": "no-hints",
+      "audio_sha256": "76e92753b625cb09177de4173b8bb18738280bda9166cb1e1eedc8cca43878db",
+      "audio_seconds": 40.61525,
+      "samples_sent": 649844,
+      "expected_samples": 649844,
+      "packet_samples": [
+        2676,
+        4096
+      ],
+      "audio_delivery_seconds": 42.18786479999975,
+      "first_text_seconds": 4.809650099999999,
+      "audio_sent_before_first_text_seconds": 4.864,
+      "gpu_after": "540 MHz, 310.00 W, 5821 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "horse",
+          "scene": "horse_at_farm",
+          "arrival_seconds": 26.67634370000087,
+          "decision_seconds": 26.67701289999968,
+          "audio_end": 25.856,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "horse",
+          "scene": "horse_at_farm",
+          "arrival_seconds": 26.67634370000087,
+          "decision_seconds": 26.677651500000138,
+          "audio_end": 25.856,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "horse_at_farm",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 1.056600000083563,
+        "split": 0.9767999999894528
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "horse",
+      "condition": "fixed-hints",
+      "audio_sha256": "76e92753b625cb09177de4173b8bb18738280bda9166cb1e1eedc8cca43878db",
+      "audio_seconds": 40.61525,
+      "samples_sent": 649844,
+      "expected_samples": 649844,
+      "packet_samples": [
+        2676,
+        4096
+      ],
+      "audio_delivery_seconds": 42.2479845000012,
+      "first_text_seconds": 2.170049199999994,
+      "audio_sent_before_first_text_seconds": 2.304,
+      "gpu_after": "1230 MHz, 310.00 W, 5897 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "horse",
+          "scene": "horse_at_farm",
+          "arrival_seconds": 26.699529200001052,
+          "decision_seconds": 26.700679800000216,
+          "audio_end": 25.856,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "horse",
+          "scene": "horse_at_farm",
+          "arrival_seconds": 26.699529200001052,
+          "decision_seconds": 26.70182250000107,
+          "audio_end": 25.856,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "horse_at_farm",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 1.0677000009309268,
+        "split": 1.034599999911734
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "fat_cat",
+      "condition": "no-hints",
+      "audio_sha256": "c44c9bc85ece10b8af8bb33b3df2fba5422b5c041cd78a683c370d5b03fe9bdc",
+      "audio_seconds": 56.855,
+      "samples_sent": 909680,
+      "expected_samples": 909680,
+      "packet_samples": [
+        368,
+        4096
+      ],
+      "audio_delivery_seconds": 59.07903859999974,
+      "first_text_seconds": 1.7191743999992468,
+      "audio_sent_before_first_text_seconds": 1.792,
+      "gpu_after": "540 MHz, 310.00 W, 5852 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "fat_cat",
+          "scene": "fat_cat_on_mat",
+          "arrival_seconds": 7.514270499999839,
+          "decision_seconds": 7.514788200000112,
+          "audio_end": 7.424,
+          "score": 100.0,
+          "skipped": []
+        },
+        {
+          "book": "fat_cat",
+          "scene": "animals_in_hat",
+          "arrival_seconds": 56.964513900000384,
+          "decision_seconds": 56.96623700000055,
+          "audio_end": 55.04,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "fat_cat",
+          "scene": "fat_cat_on_mat",
+          "arrival_seconds": 7.514270499999839,
+          "decision_seconds": 7.515248400000928,
+          "audio_end": 7.424,
+          "score": 100.0,
+          "skipped": []
+        },
+        {
+          "book": "fat_cat",
+          "scene": "animals_in_hat",
+          "arrival_seconds": 56.964513900000384,
+          "decision_seconds": 56.967967799999315,
+          "audio_end": 55.04,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "fat_cat_on_mat",
+          "split_minus_original_seconds": 0.0
+        },
+        {
+          "scene": "animals_in_hat",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 2.4866000003385125,
+        "split": 2.588699999250821
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "fat_cat",
+      "condition": "fixed-hints",
+      "audio_sha256": "c44c9bc85ece10b8af8bb33b3df2fba5422b5c041cd78a683c370d5b03fe9bdc",
+      "audio_seconds": 56.855,
+      "samples_sent": 909680,
+      "expected_samples": 909680,
+      "packet_samples": [
+        368,
+        4096
+      ],
+      "audio_delivery_seconds": 59.053189399998566,
+      "first_text_seconds": 1.67505809999966,
+      "audio_sent_before_first_text_seconds": 1.792,
+      "gpu_after": "645 MHz, 310.00 W, 5898 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "fat_cat",
+          "scene": "fat_cat_on_mat",
+          "arrival_seconds": 7.535264799998913,
+          "decision_seconds": 7.535774099998889,
+          "audio_end": 7.424,
+          "score": 100.0,
+          "skipped": []
+        },
+        {
+          "book": "fat_cat",
+          "scene": "animals_in_hat",
+          "arrival_seconds": 56.99160949999896,
+          "decision_seconds": 56.992658299999675,
+          "audio_end": 55.04,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "fat_cat",
+          "scene": "fat_cat_on_mat",
+          "arrival_seconds": 7.535264799998913,
+          "decision_seconds": 7.536219099998561,
+          "audio_end": 7.424,
+          "score": 100.0,
+          "skipped": []
+        },
+        {
+          "book": "fat_cat",
+          "scene": "animals_in_hat",
+          "arrival_seconds": 56.99160949999896,
+          "decision_seconds": 56.99367869999878,
+          "audio_end": 55.04,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "fat_cat_on_mat",
+          "split_minus_original_seconds": 0.0
+        },
+        {
+          "scene": "animals_in_hat",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 2.314999999725842,
+        "split": 4.1430000001128064
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "tea",
+      "condition": "no-hints",
+      "audio_sha256": "d3437ff93212fa451fa582a87ef48e616eecea0923b8ee7e7c4730aad02ee31c",
+      "audio_seconds": 92.8481875,
+      "samples_sent": 1485571,
+      "expected_samples": 1485571,
+      "packet_samples": [
+        2819,
+        4096
+      ],
+      "audio_delivery_seconds": 96.46930590000082,
+      "first_text_seconds": 2.2006232000003365,
+      "audio_sent_before_first_text_seconds": 2.304,
+      "gpu_after": "435 MHz, 310.00 W, 5897 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "tea",
+          "scene": "make_a_pot_of_tea",
+          "arrival_seconds": 23.212777000000642,
+          "decision_seconds": 23.214090299999953,
+          "audio_end": 22.528,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "tea",
+          "scene": "make_a_pot_of_tea",
+          "arrival_seconds": 23.212777000000642,
+          "decision_seconds": 23.21532810000099,
+          "audio_end": 22.528,
+          "score": 100.0,
+          "skipped": []
+        },
+        {
+          "book": "tea",
+          "scene": "teapot_on_stove",
+          "arrival_seconds": 55.69855430000098,
+          "decision_seconds": 55.70022299999982,
+          "audio_end": 53.76,
+          "score": 95.0,
+          "skipped": []
+        },
+        {
+          "book": "tea",
+          "scene": "little_house_ready",
+          "arrival_seconds": 94.23181430000113,
+          "decision_seconds": 94.23398029999953,
+          "audio_end": 90.88,
+          "score": 82.14285714285714,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [
+        "teapot_on_stove",
+        "little_house_ready"
+      ],
+      "split_unactivated": [],
+      "added": [
+        "teapot_on_stove",
+        "little_house_ready"
+      ],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "make_a_pot_of_tea",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": 55.69855430000098,
+      "tracker_compute_max_ms": {
+        "original": 1.9940999991376884,
+        "split": 1.9929999998566927
+      },
+      "stove_wait_after_first_stove_text_seconds": 0.0
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "tea",
+      "condition": "fixed-hints",
+      "audio_sha256": "d3437ff93212fa451fa582a87ef48e616eecea0923b8ee7e7c4730aad02ee31c",
+      "audio_seconds": 92.8481875,
+      "samples_sent": 1485571,
+      "expected_samples": 1485571,
+      "packet_samples": [
+        2819,
+        4096
+      ],
+      "audio_delivery_seconds": 96.5090820000012,
+      "first_text_seconds": 2.2118385000012495,
+      "audio_sent_before_first_text_seconds": 2.304,
+      "gpu_after": "690 MHz, 310.00 W, 5835 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "tea",
+          "scene": "make_a_pot_of_tea",
+          "arrival_seconds": 23.23269900000014,
+          "decision_seconds": 23.233770300001197,
+          "audio_end": 22.528,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "tea",
+          "scene": "make_a_pot_of_tea",
+          "arrival_seconds": 23.23269900000014,
+          "decision_seconds": 23.23484770000141,
+          "audio_end": 22.528,
+          "score": 100.0,
+          "skipped": []
+        },
+        {
+          "book": "tea",
+          "scene": "teapot_on_stove",
+          "arrival_seconds": 55.723197600000276,
+          "decision_seconds": 55.72619630000008,
+          "audio_end": 53.76,
+          "score": 95.0,
+          "skipped": []
+        },
+        {
+          "book": "tea",
+          "scene": "little_house_ready",
+          "arrival_seconds": 94.30149370000072,
+          "decision_seconds": 94.30514220000077,
+          "audio_end": 90.88,
+          "score": 82.14285714285714,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [
+        "teapot_on_stove",
+        "little_house_ready"
+      ],
+      "split_unactivated": [],
+      "added": [
+        "teapot_on_stove",
+        "little_house_ready"
+      ],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "make_a_pot_of_tea",
+          "split_minus_original_seconds": 0.0
+        }
+      ],
+      "first_stove_callback_seconds": 55.723197600000276,
+      "tracker_compute_max_ms": {
+        "original": 1.852199999120785,
+        "split": 1.8036999990727054
+      },
+      "stove_wait_after_first_stove_text_seconds": 0.0
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "little_mermaid",
+      "condition": "no-hints",
+      "audio_sha256": "31447f2e2f9f37ab0f87edd4b7c8e67b2dcc1fb3b25c2365503d8709c904f14c",
+      "audio_seconds": 33.114625,
+      "samples_sent": 529834,
+      "expected_samples": 529834,
+      "packet_samples": [
+        1450,
+        4096
+      ],
+      "audio_delivery_seconds": 34.39168379999974,
+      "first_text_seconds": 1.6819909000005282,
+      "audio_sent_before_first_text_seconds": 1.792,
+      "gpu_after": "465 MHz, 310.00 W, 5879 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_has_legs",
+          "arrival_seconds": 10.992040299999644,
+          "decision_seconds": 10.993215000000419,
+          "audio_end": 10.752,
+          "score": 94.44444444444444,
+          "skipped": []
+        },
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_cannot_speak",
+          "arrival_seconds": 29.5960883000007,
+          "decision_seconds": 29.598282500001005,
+          "audio_end": 28.672,
+          "score": 90.9090909090909,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_has_legs",
+          "arrival_seconds": 10.992040299999644,
+          "decision_seconds": 10.994225200000074,
+          "audio_end": 10.752,
+          "score": 94.44444444444444,
+          "skipped": []
+        },
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_cannot_speak",
+          "arrival_seconds": 30.13870549999956,
+          "decision_seconds": 30.14027460000034,
+          "audio_end": 29.184,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "mermaid_has_legs",
+          "split_minus_original_seconds": 0.0
+        },
+        {
+          "scene": "mermaid_cannot_speak",
+          "split_minus_original_seconds": 0.5426171999988583
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 2.1963999988656724,
+        "split": 2.4606999995739898
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "little_mermaid",
+      "condition": "fixed-hints",
+      "audio_sha256": "31447f2e2f9f37ab0f87edd4b7c8e67b2dcc1fb3b25c2365503d8709c904f14c",
+      "audio_seconds": 33.114625,
+      "samples_sent": 529834,
+      "expected_samples": 529834,
+      "packet_samples": [
+        1450,
+        4096
+      ],
+      "audio_delivery_seconds": 34.38856529999903,
+      "first_text_seconds": 1.6337504999992234,
+      "audio_sent_before_first_text_seconds": 1.792,
+      "gpu_after": "1035 MHz, 310.00 W, 5907 MiB",
+      "exit_code": 0,
+      "original": [
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_has_legs",
+          "arrival_seconds": 11.002318699998796,
+          "decision_seconds": 11.003359699998327,
+          "audio_end": 10.752,
+          "score": 94.44444444444444,
+          "skipped": []
+        },
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_cannot_speak",
+          "arrival_seconds": 29.625503899998876,
+          "decision_seconds": 29.634182099998725,
+          "audio_end": 28.672,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "split": [
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_has_legs",
+          "arrival_seconds": 11.002318699998796,
+          "decision_seconds": 11.004364599999462,
+          "audio_end": 10.752,
+          "score": 94.44444444444444,
+          "skipped": []
+        },
+        {
+          "book": "little_mermaid",
+          "scene": "mermaid_cannot_speak",
+          "arrival_seconds": 30.104329399999187,
+          "decision_seconds": 30.105901099999755,
+          "audio_end": 29.184,
+          "score": 100.0,
+          "skipped": []
+        }
+      ],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [
+        {
+          "scene": "mermaid_has_legs",
+          "split_minus_original_seconds": 0.0
+        },
+        {
+          "scene": "mermaid_cannot_speak",
+          "split_minus_original_seconds": 0.4788255000003119
+        }
+      ],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 2.84280000050785,
+        "split": 3.2778999993752223
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "dog",
+      "condition": "off-book",
+      "audio_sha256": "d6062d31e4064676948fe3e4f777b2c2af4e2e26d4c6650c5f8685cd678285df",
+      "audio_seconds": 23.88675,
+      "samples_sent": 382188,
+      "expected_samples": 382188,
+      "packet_samples": [
+        1260,
+        4096
+      ],
+      "audio_delivery_seconds": 24.81094219999919,
+      "first_text_seconds": 2.741580799998701,
+      "audio_sent_before_first_text_seconds": 2.816,
+      "gpu_after": "360 MHz, 310.00 W, 5936 MiB",
+      "exit_code": 0,
+      "original": [],
+      "split": [],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 0.7606999988638563,
+        "split": 0.7407000011880882
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "dragon",
+      "condition": "off-book",
+      "audio_sha256": "c2d69b4e49f405ac16ef224b00b4be4a53bfa0248d8cbafc2602b766cd1e8a6e",
+      "audio_seconds": 43.404125,
+      "samples_sent": 694466,
+      "expected_samples": 694466,
+      "packet_samples": [
+        2242,
+        4096
+      ],
+      "audio_delivery_seconds": 45.122324500000204,
+      "first_text_seconds": 2.742179299999407,
+      "audio_sent_before_first_text_seconds": 2.816,
+      "gpu_after": "660 MHz, 310.00 W, 5933 MiB",
+      "exit_code": 0,
+      "original": [],
+      "split": [],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 2.5819000002229586,
+        "split": 2.600099998744554
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "nickel",
+      "condition": "off-book",
+      "audio_sha256": "2a751b15648c389c40bdeed438f143fda2122a5fc8ecce80bacb1702463253e1",
+      "audio_seconds": 76.7905625,
+      "samples_sent": 1228649,
+      "expected_samples": 1228649,
+      "packet_samples": [
+        3945,
+        4096
+      ],
+      "audio_delivery_seconds": 79.98964240000124,
+      "first_text_seconds": 46.481751400000576,
+      "audio_sent_before_first_text_seconds": 44.8,
+      "gpu_after": "510 MHz, 310.00 W, 5865 MiB",
+      "exit_code": 0,
+      "original": [],
+      "split": [],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 3.3297999998467276,
+        "split": 4.474699999263976
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    },
+    {
+      "model": "parakeet-nemo",
+      "audio": "recording_2",
+      "condition": "off-book",
+      "audio_sha256": "66f882374c1e1029cd75cb7fa1e9151d6fb32265b00093f121a74af6ff7e03d9",
+      "audio_seconds": 18.751,
+      "samples_sent": 300016,
+      "expected_samples": 300016,
+      "packet_samples": [
+        1008,
+        4096
+      ],
+      "audio_delivery_seconds": 19.55509350000092,
+      "first_text_seconds": 3.5523721000008663,
+      "audio_sent_before_first_text_seconds": 3.584,
+      "gpu_after": "720 MHz, 310.00 W, 5865 MiB",
+      "exit_code": 0,
+      "original": [],
+      "split": [],
+      "original_unactivated": [],
+      "split_unactivated": [],
+      "added": [],
+      "lost": [],
+      "timing": [],
+      "first_stove_callback_seconds": null,
+      "tracker_compute_max_ms": {
+        "original": 0.6849000001238892,
+        "split": 0.7797999987815274
+      },
+      "stove_wait_after_first_stove_text_seconds": null
+    }
+  ]
+}
