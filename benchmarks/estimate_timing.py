@@ -12,7 +12,7 @@ from benchmarks.common import audio
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--audio', type=Path, default=Path('examples/audio/little_mermaid.wav'))
+    parser.add_argument('--audio', type=Path, default=Path('recordings/little_mermaid.wav'))
     parser.add_argument('--cache', type=Path, default=Path('model-cache/asr-benchmark'))
     parser.add_argument('--output', type=Path, default=Path('output/benchmarks/little-mermaid/timing-reference-parakeet.json'))
     args = parser.parse_args()

@@ -98,12 +98,12 @@ def main():
         return
     output = root / 'output/benchmarks'
     cases = [
-        ('tea', 'tea-streaming', '4YearOldTea_resampled.wav', 'examples/tea_story.json', {
+        ('tea', 'tea-streaming', 'recordings/tea.wav', 'examples/tea_story.json', {
             'make_a_pot_of_tea': ('I will make us a pot of tea', 'Full checkpoint phrase recognized.'),
             'teapot_on_stove': ('on the stove', 'Only the ending is matched; teapot is misrecognized in the reference stream.'),
             'little_house_ready': ('house', 'Single unique ending word; preceding words are misrecognized. Requires listening verification.'),
         }),
-        ('fat_cat', 'fat-cat-streaming', '5YearOldFatCat_resampled.wav', 'examples/fat_cat_story.json', {
+        ('fat_cat', 'fat-cat-streaming', 'recordings/fat_cat.wav', 'examples/fat_cat_story.json', {
             'fat_cat_on_mat': ('A fat cat sat on a mat', 'Exact checkpoint phrase is absent from the ASR timing reference. A later similar sentence cannot verify this endpoint.'),
             'animals_in_hat': ('rat on a bat on a cat in a hat', 'Checkpoint recognized except its leading article.'),
         }),

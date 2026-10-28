@@ -1,8 +1,15 @@
 # Books to Life Pod: current flow, handover and verification
 
-Updated 27 October 2026. This describes the implemented repository, including
+Updated 28 October 2026. This describes the implemented repository, including
 experimental trackers developed in this chat. The older PROJECT_BRIEF.md is a
 planning snapshot and should not be used as the current architecture/status.
+
+Latest changes: experimental `split` now includes boundary evidence carry and
+scoped timely recovery. See [the latency evaluation](benchmarks/TIMELY_TRACKER_RESULTS.md)
+for measured gains and remaining delays. Recordings and matching transcripts
+are consolidated under [recordings/](recordings/README.md). OCSC inputs remain
+local; [cross-PC setup and transfer commands](recordings/OCSC_LOCAL_SETUP.md)
+are committed so the same subset can be used on another personal PC.
 
 ## Current flow
 
@@ -70,7 +77,7 @@ No automatic model fallback or production recognizer selection is implemented.
 | --- | --- | --- |
 | `alignment` | Original full-text word-sequence alignment and consecutive confirmation | Default |
 | `evidence` | Holds candidates through bounded noisy updates; supports strong stable revisions/completion at the boundary | Experimental |
-| `split` | Evidence tracker plus context-dependent two-token-to-one-word proposals near the next boundary | Experimental; latest tested improvement |
+| `split` | Contextual split-token alignment, boundary evidence carry and scoped timely recovery | Experimental; see the latest latency report |
 | `fuzzy` | Legacy checkpoint-phrase matching | Optional baseline |
 
 The CLI model default is currently `base.en`; it is NOT automatically Parakeet
@@ -114,10 +121,10 @@ Terminal 2, PowerShell in the repository, recorded Tea with the tested fixed hin
 
 ```powershell
 New-Item -ItemType Directory -Force output | Out-Null
-.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --matching_mode split --files examples/audio/tea.wav --mute_audio_playback --checkpoints examples/tea_story.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-split.srt
+.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --matching_mode split --files recordings/tea.wav --mute_audio_playback --checkpoints examples/tea_story.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-split.srt
 ```
 
-For microphone input, omit `--files examples/audio/tea.wav` and read that passage
+For microphone input, omit `--files recordings/tea.wav` and read that passage
 aloud. Select a device using `--list_input_devices` then `--input_device` if
 needed. Stop capture with Ctrl+C. Microphone packet size is configurable using
 `--audio_chunk`; file playback uses the existing 4096-sample packets. Test a new

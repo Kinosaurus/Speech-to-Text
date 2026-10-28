@@ -1,16 +1,25 @@
 """Live original/split observers on fresh ASR callbacks, with packet audit."""
-import json,runpy,sys,time
+import json,runpy,sys,time,os
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from whisper_live.client import Client,TranscriptionTeeClient
 from alignment_matcher import AlignmentMatcher
 from split_matcher import SplitEvidenceMatcher
+from boundary_matcher import BoundaryEvidenceMatcher
+from timely_matcher import TimelyEvidenceMatcher
 out=Path(sys.argv[sys.argv.index('--transcript_file')+1]).with_suffix('.events.jsonl')
 f=out.open('w',encoding='utf-8');samples=0;origin=None
-book=Path(sys.argv[sys.argv.index('--checkpoints')+1]).stem.replace('_story','') if '--checkpoints' in sys.argv else None
-books=[book] if book else ['horse','fat_cat','tea','little_mermaid']
-trackers={name:{'original':AlignmentMatcher.from_file(ROOT/f'examples/{name}_story.json'),'split':SplitEvidenceMatcher.from_file(ROOT/f'examples/{name}_story.json')} for name in books}
+from benchmarks.observer_manifests import observer_manifest_paths
+checkpoint_path = sys.argv[sys.argv.index('--checkpoints')+1] if '--checkpoints' in sys.argv else None
+manifest_paths = observer_manifest_paths(ROOT, checkpoint_path)
+if os.environ.get('TRACKER_COMPARE_MANIFESTS'):
+ manifest_paths = {name:ROOT/path for name,path in json.loads(os.environ['TRACKER_COMPARE_MANIFESTS']).items()}
+trackers={name:{'original':AlignmentMatcher.from_file(path),'split':SplitEvidenceMatcher.from_file(path),
+                'boundary':BoundaryEvidenceMatcher.from_file(path),
+                'timely':TimelyEvidenceMatcher.from_file(path)}
+          for name,path in manifest_paths.items()}
+
 def emit(kind,**kw):
  f.write(json.dumps({'kind':kind,'wall':time.perf_counter(),**kw})+'\n');f.flush()
 oldsend=TranscriptionTeeClient.multicast_packet
@@ -35,6 +44,8 @@ def send(self,packet,unconditional=False):
  return oldsend(self,packet,unconditional)
 def message(self,ws,raw):
  value=json.loads(raw)
+ if value.get('message') or value.get('status'):
+  emit('status',message=value.get('message'),status=value.get('status'))
  if value.get('segments'):
   seg=value['segments'];emit('segments',segments=seg)
   text=' '.join(s['text'] for s in seg)

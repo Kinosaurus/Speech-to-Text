@@ -43,7 +43,7 @@ On this PC the project is `/mnt/c/Users/heart/Speech-to-Text` inside Ubuntu-24.0
 The model is already prepared in the shared project cache. In Windows, run:
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --files examples/audio/little_mermaid.wav --mute_audio_playback --checkpoints examples/little_mermaid_story.json --transcript_file output/parakeet-nemo.srt
+.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --files recordings/little_mermaid.wav --mute_audio_playback --checkpoints examples/little_mermaid_story.json --transcript_file output/parakeet-nemo.srt
 ```
 
 Hints turn on automatically with a checkpoint manifest. Use `--no_book_context`
@@ -143,7 +143,7 @@ Start a server in Terminal 1 (uses the first Vulkan GPU; CPU is available with
 In Terminal 2, send one recording at normal playback speed:
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model parakeet --server 127.0.0.1 --port 9091 --files examples/audio/little_mermaid.wav --mute_audio_playback --checkpoints examples/little_mermaid_story.json --transcript_file output/parakeet.srt
+.\.venv\Scripts\python.exe run_client.py --model parakeet --server 127.0.0.1 --port 9091 --files recordings/little_mermaid.wav --mute_audio_playback --checkpoints examples/little_mermaid_story.json --transcript_file output/parakeet.srt
 ```
 
 For Moonshine, stop the server and replace `parakeet` with `moonshine` in both
@@ -244,7 +244,7 @@ directly. Remove it if you want to hear the recording while testing.
 
 The terminal normally shows only the latest four transcript segments. These
 commands show up to 20, with timestamps. Older text scrolling out of view does
-not mean it was deleted; the session transcript is saved to `output.srt` when
+not mean it was deleted; the session transcript is saved under `recordings/` when
 the client finishes. Partial recognition can also change as more audio arrives.
 
 ### Record computer audio with Audacity, including YouTube
@@ -272,12 +272,12 @@ using them with this client.
 
 ### Use the shared test recordings
 
-The [shared audio folder](examples/audio/README.md) contains eight resampled
+The [recording library](recordings/README.md) contains eight shared resampled
 WAV recordings that groupmates can test after pulling the repository. The files
 are 16 kHz mono audio and can be supplied directly to `--files`:
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model medium.en --files .\examples\audio\tea.wav --mute_audio_playback --checkpoints .\examples\tea_story.json
+.\.venv\Scripts\python.exe run_client.py --model medium.en --files .\recordings\tea.wav --mute_audio_playback --checkpoints .\examples\tea_story.json
 ```
 
 Use the matching checkpoint manifest listed in the shared audio instructions.

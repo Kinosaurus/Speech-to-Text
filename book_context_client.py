@@ -6,6 +6,7 @@ import threading
 from whisper_live.client import Client, TranscriptionTeeClient
 
 from book_context import CONTEXT_PROTOCOL_VERSION, MAX_CONTEXT_CHARS
+from audio_runtime import prepare_stream_audio, wait_for_server
 
 
 class BookContextConnection(Client):
@@ -61,7 +62,17 @@ class BookContextConnection(Client):
 
 
 class BookTranscriptionClient(TranscriptionTeeClient):
-    """Reuse upstream microphone/file streaming with our connection subclass."""
+    """Reuse upstream streaming with managed recording paths and our connection."""
+
+    def __call__(self, audio=None, rtsp_url=None, hls_url=None, save_file=None):
+        if audio is None:
+            return super().__call__(audio=audio, rtsp_url=rtsp_url, hls_url=hls_url, save_file=save_file)
+        if rtsp_url is not None or hls_url is not None:
+            raise ValueError('Choose one audio source.')
+        wait_for_server(self)
+        # Keep the same paced player and packet transport; only prepare paths
+        # here instead of WhisperLive's root-level *_resampled.wav helper.
+        return self.play_file(prepare_stream_audio(audio))
 
     connection_type = None
 

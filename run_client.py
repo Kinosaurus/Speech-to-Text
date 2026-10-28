@@ -2,11 +2,14 @@ from pathlib import Path
 import json
 import sys
 import argparse
+from datetime import datetime
 
 from checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
 from alignment_matcher import AlignmentMatcher
 from evidence_matcher import EvidenceAlignmentMatcher
 from split_matcher import SplitEvidenceMatcher
+from boundary_matcher import BoundaryEvidenceMatcher
+from timely_matcher import TimelyEvidenceMatcher
 from audio_runtime import configure_microphone, input_devices, wait_for_server
 from book_context import BookContext
 
@@ -48,9 +51,9 @@ if __name__ == '__main__':
                               'If not provided, will use microphone input.')
     parser.add_argument('--output_file', '-o',
                           type=str,
-                          default='./output_recording.wav',
+                          default=None,
                           help='output recording filename, only used for microphone input.')
-    parser.add_argument('--transcript_file', default='./output.srt',
+    parser.add_argument('--transcript_file', default=None,
                         help='Destination for the recognized transcript (SRT).')
     parser.add_argument('--model', '-m',
                           type=str,
@@ -142,6 +145,19 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    library = Path(__file__).resolve().parent / 'recordings'
+    session = datetime.now().strftime('%Y%m%d-%H%M%S-%f')
+    if args.output_file is None:
+        args.output_file = str(library / f'microphone-{session}.wav')
+    if args.transcript_file is None:
+        if args.files:
+            name = Path(args.files[0]).stem if len(args.files) == 1 else 'multi-file-session'
+            args.transcript_file = str(library / 'transcripts' / name / f'live-{session}.srt')
+        else:
+            args.transcript_file = str(library / f'microphone-{session}.srt')
+    Path(args.transcript_file).parent.mkdir(parents=True, exist_ok=True)
+    Path(args.output_file).parent.mkdir(parents=True, exist_ok=True)
+
     native_model = args.model in ('parakeet', 'moonshine', 'parakeet-nemo')
     if native_model:
         if args.model != 'parakeet-nemo' and (args.initial_prompt or args.initial_prompt_file or args.hotwords or args.hotwords_file):
@@ -201,7 +217,7 @@ if __name__ == '__main__':
     print(f"[ASR] Requested model={args.model}, language={args.lang}, VAD={not args.no_vad}")
     if args.checkpoints:
         try:
-            matcher_type = {'alignment': AlignmentMatcher, 'evidence': EvidenceAlignmentMatcher, 'split': SplitEvidenceMatcher, 'fuzzy': CheckpointMatcher}[args.matching_mode]
+            matcher_type = {'alignment': AlignmentMatcher, 'evidence': EvidenceAlignmentMatcher, 'split': TimelyEvidenceMatcher, 'fuzzy': CheckpointMatcher}[args.matching_mode]
             checkpoint_matcher = matcher_type.from_file(
                 args.checkpoints,
                 threshold=args.checkpoint_threshold,

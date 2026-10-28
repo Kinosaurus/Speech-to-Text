@@ -1,6 +1,51 @@
 """Microphone selection and bounded startup for the pod client."""
 
 import time
+import hashlib
+from pathlib import Path
+import wave
+
+
+def prepare_stream_audio(source):
+    """Reuse ready PCM files; cache conversions without root-level duplicates."""
+    source = Path(source).resolve()
+    try:
+        with wave.open(str(source), 'rb') as audio:
+            if (audio.getnchannels(), audio.getsampwidth(), audio.getframerate(),
+                    audio.getcomptype()) == (1, 2, 16000, 'NONE'):
+                return str(source)
+    except (wave.Error, EOFError):
+        pass
+    import av
+    digest = hashlib.sha256()
+    with source.open('rb') as data:
+        for block in iter(lambda: data.read(1024 * 1024), b''):
+            digest.update(block)
+    cache = Path(__file__).resolve().parent / 'recordings/cache'
+    cache.mkdir(parents=True, exist_ok=True)
+    target = cache / f'{source.stem}-{digest.hexdigest()[:16]}-16k.wav'
+    if target.is_file():
+        return str(target)
+    partial = target.with_suffix('.partial.wav')
+    # An explicit Python file handle ensures Windows releases the converted
+    # file before the atomic rename, even if PyAV stream objects remain alive.
+    with partial.open('wb') as binary, av.open(str(source)) as incoming, \
+            av.open(binary, mode='w', format='wav') as outgoing:
+        stream = outgoing.add_stream('pcm_s16le', rate=16000)
+        stream.layout = 'mono'
+        resampler = av.AudioResampler(format='s16', layout='mono', rate=16000)
+        for frame in incoming.decode(audio=0):
+            frame.pts = None
+            for converted in resampler.resample(frame):
+                for packet in stream.encode(converted):
+                    outgoing.mux(packet)
+        for converted in resampler.resample(None):
+            for packet in stream.encode(converted):
+                outgoing.mux(packet)
+        for packet in stream.encode(None):
+            outgoing.mux(packet)
+    partial.replace(target)
+    return str(target)
 
 
 def input_devices(audio):
