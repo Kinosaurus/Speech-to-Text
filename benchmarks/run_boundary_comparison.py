@@ -12,6 +12,8 @@ import time
 import wave
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from recording_library import resolve_recording_path
 OUT = ROOT / 'output/timely-streaming-2026-10-28'
 MODES = ('original', 'split', 'boundary', 'timely')
 
@@ -26,8 +28,8 @@ def main():
     OUT=args.output
     OUT.mkdir(parents=True, exist_ok=True)
     jobs = []
-    subsets = [json.loads((ROOT/f'output/ocsc/{name}.json').read_text())
-               for name in ('subset', 'subset-early')]
+    subsets = [json.loads((ROOT/f'recordings/library/evaluation/ocsc_subsets/{name}.json').read_text())
+               for name in ('standard', 'early')]
     for row in subsets[0]['jobs']:
         jobs.append(dict(id='ocsc-'+row['id'], audio=row['clip'], condition='no-hints',
                          manifests={name:s['manifest'] for name,s in zip(('ocsc-standard','ocsc-early'),subsets)},
@@ -39,17 +41,20 @@ def main():
                  little_mermaid='mermaid, legs, prince, deep blue eyes')
     for condition in ('no-hints','fixed-hints'):
         for name in hints:
-            manifest = f'examples/{name}_story.json'
+            manifest = f'recordings/library/stories/{name}/readers/{name}/checkpoints.json'
             expected = {c['id']:None for c in json.loads((ROOT/manifest).read_text())['checkpoints']}
-            jobs.append(dict(id=name+'-'+condition, audio=f'recordings/{name}.wav',
+            jobs.append(dict(id=name+'-'+condition, audio=f'recordings/library/stories/{name}/readers/{name}/audio.wav',
                              condition=condition, hints=hints[name] if condition=='fixed-hints' else None,
                              manifests={name:manifest}, expected={name:expected}))
-    allbooks = {name:f'examples/{name}_story.json' for name in hints}
+    allbooks = {name:f'recordings/library/stories/{name}/readers/{name}/checkpoints.json' for name in hints}
     for name in ('dog','dragon','nickel','recording_2'):
-        jobs.append(dict(id=name+'-off-book', audio=f'recordings/{name}.wav',
+        jobs.append(dict(id=name+'-off-book', audio=f'recordings/library/stories/{name}/readers/{name}/audio.wav',
                          condition='off-book', manifests=allbooks, expected={name:{} for name in hints}))
     if args.jobs:
         jobs=json.loads(args.jobs.read_text())
+    for job in jobs:
+        job['audio'] = str(resolve_recording_path(job['audio']))
+        job['manifests'] = {name:str(resolve_recording_path(path)) for name,path in job['manifests'].items()}
     (OUT/'protocol.json').write_text(json.dumps(dict(jobs=jobs, source_sha256={
         name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in
         ('alignment_matcher.py','evidence_matcher.py','split_matcher.py','boundary_matcher.py','timely_matcher.py',

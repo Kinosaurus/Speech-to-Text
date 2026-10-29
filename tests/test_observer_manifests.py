@@ -4,6 +4,13 @@ from pathlib import Path
 from benchmarks.observer_manifests import observer_manifest_paths
 
 class ObserverManifestTests(unittest.TestCase):
+    def test_canonical_manifest_retains_reader_name_in_observer_results(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            path=root/'recordings/library/stories/tea/readers/tea/checkpoints.json'
+            path.parent.mkdir(parents=True)
+            path.write_text('{}')
+            self.assertEqual(observer_manifest_paths(root,path),{'tea':path})
     def test_explicit_custom_corpus_manifest_is_not_rewritten_into_examples(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)

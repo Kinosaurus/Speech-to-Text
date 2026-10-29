@@ -120,8 +120,8 @@ Refresh these summaries without any recognition replay, then generate the
 combined listening-mark report:
 
 ```powershell
-.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings/tea.wav --manifest examples\tea_story.json --output output\benchmarks\tea-streaming --summarize-only
-.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings/fat_cat.wav --manifest examples\fat_cat_story.json --output output\benchmarks\fat-cat-streaming --summarize-only
+.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings/library/stories/tea/readers/tea/audio.wav --manifest recordings/library/stories/tea/readers/tea/checkpoints.json --output output\benchmarks\tea-streaming --summarize-only
+.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings/library/stories/fat_cat/readers/fat_cat/audio.wav --manifest recordings/library/stories/fat_cat/readers/fat_cat/checkpoints.json --output output\benchmarks\fat-cat-streaming --summarize-only
 .\.venv\Scripts\python.exe benchmarks\checkpoint_latency.py --manual
 ```
 
@@ -135,8 +135,8 @@ estimates, not listening verification. No whole-file recognition, warmup,
 model download or replay of all benchmark profiles is involved:
 
 ```powershell
-.\.venv\Scripts\python.exe benchmarks\stream_timing.py --audio recordings/tea.wav --output output\benchmarks\tea-streaming\timing-reference-streaming-estimated.json
-.\.venv\Scripts\python.exe benchmarks\stream_timing.py --audio recordings/fat_cat.wav --output output\benchmarks\fat-cat-streaming\timing-reference-streaming-estimated.json
+.\.venv\Scripts\python.exe benchmarks\stream_timing.py --audio recordings/library/stories/tea/readers/tea/audio.wav --output output\benchmarks\tea-streaming\timing-reference-streaming-estimated.json
+.\.venv\Scripts\python.exe benchmarks\stream_timing.py --audio recordings/library/stories/fat_cat/readers/fat_cat/audio.wav --output output\benchmarks\fat-cat-streaming\timing-reference-streaming-estimated.json
 .\.venv\Scripts\python.exe benchmarks\checkpoint_latency.py
 ```
 
@@ -155,9 +155,9 @@ Run one profile or another supplied recording/manifest:
 
 ```powershell
 .\.venv\Scripts\python.exe benchmarks\run.py --profiles parakeet-320ms parakeet-1120ms parakeet-2080ms --resume
-.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings\horse.wav --manifest examples\horse_story.json --output output\benchmarks\horse --resume
-.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings/tea.wav --manifest examples\tea_story.json --output output\benchmarks\tea-streaming --profile-timeout 900 --resume
-.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings/fat_cat.wav --manifest examples\fat_cat_story.json --output output\benchmarks\fat-cat-streaming --profile-timeout 900 --resume
+.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings/library/stories/horse/readers/horse/audio.wav --manifest recordings/library/stories/horse/readers/horse/checkpoints.json --output output\benchmarks\horse --resume
+.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings/library/stories/tea/readers/tea/audio.wav --manifest recordings/library/stories/tea/readers/tea/checkpoints.json --output output\benchmarks\tea-streaming --profile-timeout 900 --resume
+.\.venv\Scripts\python.exe benchmarks\run.py --audio recordings/library/stories/fat_cat/readers/fat_cat/audio.wav --manifest recordings/library/stories/fat_cat/readers/fat_cat/checkpoints.json --output output\benchmarks\fat-cat-streaming --profile-timeout 900 --resume
 ```
 
 `--resume` only reuses outputs whose input hashes, model, backend, hint setting,

@@ -17,7 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def sample(name="sample_story.json"):
-    return json.loads((ROOT / "examples" / name).read_text(encoding="utf-8"))
+    story=name.removesuffix('_story.json')
+    reader='demo' if story=='sample' else story
+    return json.loads((ROOT / f'recordings/library/stories/{story}/readers/{reader}/checkpoints.json').read_text(encoding="utf-8"))
 
 
 class BookContextTests(unittest.TestCase):
@@ -112,7 +114,7 @@ class BookContextTests(unittest.TestCase):
     def launch_client(self, options):
         fake = Mock()
         # The mocked audio client never decodes this existing fixture.
-        audio = ROOT / "examples" / "little_mermaid_passage.txt"
+        audio = ROOT / "recordings/library/stories/little_mermaid/readers/little_mermaid/passage.txt"
         args = ["run_client.py", "--files", str(audio), *options]
         with patch.object(sys, "argv", args), \
                 patch("book_context_client.BookTranscriptionClient", fake), \
@@ -122,7 +124,7 @@ class BookContextTests(unittest.TestCase):
         return fake.call_args.kwargs
 
     def test_cli_automatic_hints_and_opt_out_reach_client_handshake(self):
-        manifest = str(ROOT / "examples" / "little_mermaid_story.json")
+        manifest = str(ROOT / "recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json")
         options = self.launch_client(["--checkpoints", manifest])
         self.assertIn("prettiest legs", options["hotwords"])
         self.assertIn("deep blue eyes", options["initial_prompt"])

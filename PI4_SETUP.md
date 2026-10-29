@@ -21,7 +21,7 @@ been measured on a Pi. Use cooling for sustained recognition.
 ## Move the project over
 
 Copy this project folder to the Pi, excluding `.venv`, `.git`, `tmp` and any
-private recordings. Keep the Python files, `tests`, `examples`, all requirements
+private recordings. Keep the Python files, `tests`, the public `recordings/library/stories` sample folders, all requirements
 files, Dockerfile, Compose files and `.env.pi4.example`. A Windows `.venv` cannot
 be reused on Linux.
 
@@ -68,7 +68,7 @@ docker compose run --rm asr python prepare_models.py --model base.en
 docker compose -f compose.yaml -f compose.pi4.yaml up
 ```
 
-Read `examples/sample_passage.txt` aloud. Logs should show the microphone, CPU
+Read `recordings/library/stories/sample/readers/demo/passage.txt` aloud. Logs should show the microphone, CPU
 inference, `[TRANSCRIPT]`, `[ALIGN]` and `[TRIGGER]`. Press Ctrl+C to stop both
 programs; `docker compose -f compose.yaml -f compose.pi4.yaml down` removes the
 containers while retaining the models. Do not use `down -v` unless you intend
@@ -102,7 +102,7 @@ two terminals:
 
 ```powershell
 # Terminal 2: microphone and checkpoint tracking.
-.\.venv\Scripts\python.exe run_client.py --model base.en --audio_chunk 1024 --checkpoints examples/sample_story.json
+.\.venv\Scripts\python.exe run_client.py --model base.en --audio_chunk 1024 --checkpoints recordings/library/stories/sample/readers/demo/checkpoints.json
 ```
 
 For a packaging test, start Docker Desktop in Linux container mode, run

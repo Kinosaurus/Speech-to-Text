@@ -21,7 +21,7 @@ def prepare_stream_audio(source):
     with source.open('rb') as data:
         for block in iter(lambda: data.read(1024 * 1024), b''):
             digest.update(block)
-    cache = Path(__file__).resolve().parent / 'recordings/cache'
+    cache = Path(__file__).resolve().parent / 'recordings/library/.cache'
     cache.mkdir(parents=True, exist_ok=True)
     target = cache / f'{source.stem}-{digest.hexdigest()[:16]}-16k.wav'
     if target.is_file():

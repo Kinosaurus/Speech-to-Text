@@ -47,11 +47,11 @@ On the small PC, replace SERVER_IP with the actual GPU PC's address:
 ```powershell
 Test-NetConnection SERVER_IP -Port 9090
 New-Item -ItemType Directory -Force output | Out-Null
-.\.venv\Scripts\python.exe run_client.py --model medium.en --server SERVER_IP --port 9090 --matching_mode split --files recordings/tea.wav --mute_audio_playback --checkpoints examples/tea_story.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-lan-split.srt
+.\.venv\Scripts\python.exe run_client.py --model medium.en --server SERVER_IP --port 9090 --matching_mode split --files recordings/library/stories/tea/readers/tea/audio.wav --mute_audio_playback --checkpoints recordings/library/stories/tea/readers/tea/checkpoints.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-lan-split.srt
 ```
 
 Use alignment instead of split for the original baseline. For a microphone test,
-omit `--files recordings/tea.wav` and read the selected passage aloud. Add
+omit `--files recordings/library/stories/tea/readers/tea/audio.wav` and read the selected passage aloud. Add
 `--input_device` with a listed index/name if needed. Ctrl+C ends microphone
 capture. Retain separate output filenames for each tracker. A server normally
 accepts one client at a time. Choosing medium.en here uses the model on the GPU

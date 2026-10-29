@@ -2,7 +2,7 @@
 import json,statistics,hashlib
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'output/live-tracker-2026-10-24'
-books={n:json.loads((ROOT/f'examples/{n}_story.json').read_text()) for n in ['horse','fat_cat','tea','little_mermaid']}
+books={n:json.loads((ROOT/f'recordings/library/stories/{n}/readers/{n}/checkpoints.json').read_text()) for n in ['horse','fat_cat','tea','little_mermaid']}
 rows=[]
 for results in sorted(OUT.glob('*-results.json')):
  for r in json.loads(results.read_text()):

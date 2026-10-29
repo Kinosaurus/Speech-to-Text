@@ -53,7 +53,7 @@ for builds and models.
 
 Copy/extract the project onto the Jetson, excluding Windows `.venv`, `.git`,
 temporary files and private recordings. Keep all source, Dockerfiles,
-requirements, Compose files, examples and `.env.jetson.example` together.
+requirements, Compose files, public recording-library samples and `.env.jetson.example` together.
 
 Docker Engine and the NVIDIA runtime must already be installed and configured.
 Run from the project folder on the Jetson:
@@ -98,7 +98,7 @@ docker compose -f compose.jetson.yaml up
 
 The synthetic check verifies loading and inference with silent input. It does
 not measure reading accuracy or end-to-end latency. Read
-`examples/sample_passage.txt` and watch `[TRANSCRIPT]`, `[ALIGN]` and `[TRIGGER]`.
+`recordings/library/stories/sample/readers/demo/passage.txt` and watch `[TRANSCRIPT]`, `[ALIGN]` and `[TRIGGER]`.
 Use Ctrl+C to stop. `docker compose -f compose.jetson.yaml down` retains the
 model cache; adding `-v` deletes it.
 
@@ -125,7 +125,7 @@ You can test the same app immediately with CPU recognition. Open two terminals:
 
 ```powershell
 # Terminal 2
-.\.venv\Scripts\python.exe run_client.py --model small.en --audio_chunk 1024 --checkpoints examples/sample_story.json
+.\.venv\Scripts\python.exe run_client.py --model small.en --audio_chunk 1024 --checkpoints recordings/library/stories/sample/readers/demo/checkpoints.json
 ```
 
 For a laptop GPU test, use Docker Desktop's Linux engine with NVIDIA GPU support

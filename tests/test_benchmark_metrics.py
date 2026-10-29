@@ -36,7 +36,7 @@ class BenchmarkMetricsTests(unittest.TestCase):
                          [{'word': 'the', 'end': 1}, {'word': 'mermaid', 'end': 2}], checkpoints), {})
 
     def test_duplicate_update_cannot_add_confirmation(self):
-        manifest = json.loads((Path(__file__).parents[1] / 'examples/little_mermaid_story.json').read_text())
+        manifest = json.loads((Path(__file__).parents[1] / 'recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json').read_text())
         recorder = Recorder(manifest)
         recorder.begin()
         snapshot = [{'start': 0, 'end': 5, 'text': 'She had the prettiest legs on earth', 'completed': False}]
@@ -46,7 +46,7 @@ class BenchmarkMetricsTests(unittest.TestCase):
         self.assertFalse(recorder.matcher.triggered_checkpoint_ids)
 
     def test_invalid_asr_timestamps_are_reported_without_advancing(self):
-        manifest = json.loads((Path(__file__).parents[1] / 'examples/little_mermaid_story.json').read_text())
+        manifest = json.loads((Path(__file__).parents[1] / 'recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json').read_text())
         recorder = Recorder(manifest)
         recorder.begin()
         text = 'She had the prettiest legs on earth'

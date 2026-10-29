@@ -38,7 +38,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--checkpoints",
-        default="examples/sample_story.json",
+        default="recordings/library/stories/sample/readers/demo/checkpoints.json",
         help="Path to a story checkpoint manifest.",
     )
     parser.add_argument(

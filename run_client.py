@@ -11,6 +11,7 @@ from split_matcher import SplitEvidenceMatcher
 from boundary_matcher import BoundaryEvidenceMatcher
 from timely_matcher import TimelyEvidenceMatcher
 from audio_runtime import configure_microphone, input_devices, wait_for_server
+from recording_library import resolve_recording_path, session_outputs
 from book_context import BookContext
 
 
@@ -145,18 +146,19 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    library = Path(__file__).resolve().parent / 'recordings'
     session = datetime.now().strftime('%Y%m%d-%H%M%S-%f')
+    if args.files:
+        args.files = [str(resolve_recording_path(path)) for path in args.files]
+    default_audio, default_transcript = session_outputs(args.files, session)
     if args.output_file is None:
-        args.output_file = str(library / f'microphone-{session}.wav')
+        args.output_file = str(default_audio)
     if args.transcript_file is None:
-        if args.files:
-            name = Path(args.files[0]).stem if len(args.files) == 1 else 'multi-file-session'
-            args.transcript_file = str(library / 'transcripts' / name / f'live-{session}.srt')
-        else:
-            args.transcript_file = str(library / f'microphone-{session}.srt')
+        args.transcript_file = str(default_transcript)
+    if args.checkpoints:
+        args.checkpoints = str(resolve_recording_path(args.checkpoints))
     Path(args.transcript_file).parent.mkdir(parents=True, exist_ok=True)
-    Path(args.output_file).parent.mkdir(parents=True, exist_ok=True)
+    if args.save_output_recording:
+        Path(args.output_file).parent.mkdir(parents=True, exist_ok=True)
 
     native_model = args.model in ('parakeet', 'moonshine', 'parakeet-nemo')
     if native_model:

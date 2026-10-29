@@ -5,7 +5,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from evidence_matcher import EvidenceAlignmentMatcher
 from checkpoint_matcher import normalize_text
 root=Path(__file__).resolve().parents[1]
-manifest=json.loads((root/'examples/tea_story.json').read_text())
+manifest=json.loads((root/'recordings/library/stories/tea/readers/tea/checkpoints.json').read_text())
 def phrase(text):
  words=normalize_text(text).split()
  # Bounded recent context; retain negation guard beyond the matched phrase.

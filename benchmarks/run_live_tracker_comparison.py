@@ -29,10 +29,10 @@ try:
  for name,condition,hints in jobs:
   if any(r['audio']==name and r['condition']==condition for r in results):continue
   stem=f'{args.model.replace(".","_")}-{name}-{condition}'
-  path=OUT/stem;audio=ROOT/f'recordings/{name}.wav'
+  path=OUT/stem;audio=ROOT/f'recordings/library/stories/{name}/readers/{name}/audio.wav'
   status(f'START {stem}')
   cmd=[PY,'-u','benchmarks/live_tracker_probe.py','--model',args.model,'--server','127.0.0.1','--port',str(port),'--files',str(audio),'--mute_audio_playback','--no_book_context','--matching_mode','split','--transcript_file',str(path.with_suffix('.srt'))]
-  if condition!='off-book':cmd+=['--checkpoints',str(ROOT/f'examples/{name}_story.json')]
+  if condition!='off-book':cmd+=['--checkpoints',str(ROOT/f'recordings/library/stories/{name}/readers/{name}/checkpoints.json')]
   if hints:cmd+=['--hotwords',hints]
   with path.with_suffix('.log').open('w',encoding='utf-8') as log:
    result=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT,timeout=240,creationflags=FLAGS)

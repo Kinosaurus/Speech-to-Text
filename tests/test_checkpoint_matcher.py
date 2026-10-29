@@ -6,7 +6,7 @@ from checkpoint_matcher import CheckpointMatcher, normalize_text
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST_PATH = ROOT / "examples" / "sample_story.json"
+MANIFEST_PATH = ROOT / "recordings/library/stories/sample/readers/demo/checkpoints.json"
 
 
 class CheckpointMatcherTests(unittest.TestCase):

@@ -34,13 +34,12 @@ def export_bundle(target):
         raise FileExistsError(f'Refusing to overwrite {target}; choose a new name.')
     files=[]
     for sid in ('6008','7057'):
-        files += [ROOT/f'recordings/{sid}_reading.{ext}' for ext in ('wav','txt','srt')]
-        files += [ROOT/f'recordings/{sid}_full.{ext}' for ext in ('wav','txt','srt','cha')]
-        files += sorted((ROOT/f'recordings/transcripts/{sid}_reading').glob('*.srt'))
-    files += [ROOT/f'output/ocsc/{n}.json' for n in ('subset','subset-early')]
-    files += sorted((ROOT/'output/ocsc/manifests').glob('*.json'))
-    for path in ('output/timely-hints-jobs.json',
-                 'output/ocsc/source/reading-races-thesis.pdf','recordings/INDEX.md'):
+        for category in ('reading_sessions','full_sessions'):
+            folder=ROOT/f'recordings/library/{category}/{sid}'
+            files += sorted(p for p in folder.iterdir() if p.is_file())
+        files += sorted((ROOT/f'recordings/library/transcript_history/{sid}_reading').glob('*.srt'))
+    files += sorted((ROOT/'recordings/library/evaluation/ocsc_subsets').glob('*.json'))
+    for path in ('output/ocsc/source/reading-races-thesis.pdf',):
         if (ROOT/path).is_file():files.append(ROOT/path)
     if not all(p.is_file() for p in files):
         raise FileNotFoundError('Some OCSC inputs are missing. See recordings/OCSC_LOCAL_SETUP.md.')
@@ -65,6 +64,9 @@ def read_verified(source):
         names=archive.namelist()
         if len(names)!=len({n.casefold() for n in names}) or set(names)!=set(inventory)|{INVENTORY}:
             raise ValueError('Unexpected or duplicate ZIP members.')
+        destinations=[destination_name(n).casefold() for n in names if n!=INVENTORY]
+        if len(set(destinations))!=len(destinations):
+            raise ValueError('Multiple archive members map to the same canonical file.')
         if sum(i.file_size for i in archive.infolist()) > 1024**3:
             raise ValueError('Bundle exceeds the 1 GiB local-subset budget.')
         for name,expected in inventory.items():
@@ -76,9 +78,12 @@ def read_verified(source):
                 'output/ocsc/source/reading-races-thesis.pdf'} or
                 re.fullmatch(r'recordings/(6008|7057)_(reading|full)\.(wav|txt|srt|cha)',name) or
                 re.fullmatch(r'recordings/transcripts/(6008|7057)_reading/[A-Za-z0-9._-]+\.srt',name) or
-                re.fullmatch(r'output/ocsc/manifests/[A-Za-z0-9_-]+\.json',name))
+                re.fullmatch(r'output/ocsc/manifests/[A-Za-z0-9_-]+\.json',name) or
+                re.fullmatch(r'recordings/library/(reading_sessions|full_sessions)/(6008|7057)/(audio\.wav|transcript\.(cha|txt|srt)|corpus_transcript\.(txt|srt)|reference\.txt|source\.json|README\.md|checkpoint_status\.json|(reading_task_)?(checkpoints|expected)(_early)?\.json)',name) or
+                re.fullmatch(r'recordings/library/transcript_history/(6008|7057)_reading/[A-Za-z0-9._-]+\.srt',name) or
+                re.fullmatch(r'recordings/library/evaluation/ocsc_subsets/(standard|early)\.json',name))
             if not allowed:raise ValueError(f'Not an OCSC data path: {name}')
-            destination=(ROOT/name).resolve()
+            destination=(ROOT/destination_name(name)).resolve()
             if not destination.is_relative_to(ROOT):raise ValueError('Path outside checkout.')
             data=archive.read(name)
             if len(data)!=expected['bytes'] or digest(data)!=expected['sha256']:
@@ -86,16 +91,30 @@ def read_verified(source):
         return inventory
 
 
+def destination_name(name):
+    match=re.fullmatch(r'recordings/(6008|7057)_(reading|full)\.(wav|txt|srt|cha)',name)
+    if match:
+        sid,kind,ext=match.groups()
+        category='reading_sessions' if kind=='reading' else 'full_sessions'
+        filename='audio.wav' if ext=='wav' else 'transcript.'+ext
+        return f'recordings/library/{category}/{sid}/{filename}'
+    if name.startswith('recordings/transcripts/'):
+        return name.replace('recordings/transcripts/','recordings/library/transcript_history/',1)
+    if name=='recordings/INDEX.md':
+        return 'recordings/library/provenance/legacy_recording_index.md.txt'
+    return name
+
+
 def import_bundle(source):
     inventory=read_verified(source)
     # Check all conflicts before writing. Existing identical files are safe.
     for name,expected in inventory.items():
-        path=ROOT/name
+        path=ROOT/destination_name(name)
         if path.exists() and digest(path.read_bytes())!=expected['sha256']:
             raise FileExistsError(f'Existing file differs: {name}; preserve or rename it before importing.')
     with zipfile.ZipFile(source) as archive:
         for name in list(inventory)+[INVENTORY]:
-            destination=(ROOT/name).resolve()
+            destination=(ROOT/destination_name(name)).resolve()
             if not destination.is_relative_to(ROOT):raise ValueError('Path outside checkout.')
             destination.parent.mkdir(parents=True,exist_ok=True)
             if not destination.exists():destination.write_bytes(archive.read(name))

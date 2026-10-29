@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def sample():
-    return json.loads((ROOT / "examples/sample_story.json").read_text(encoding="utf-8"))
+    return json.loads((ROOT / "recordings/library/stories/sample/readers/demo/checkpoints.json").read_text(encoding="utf-8"))
 
 
 def segment(text, end=1, completed=False, start=0):

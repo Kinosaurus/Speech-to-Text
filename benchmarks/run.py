@@ -207,8 +207,8 @@ def summarize(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--audio', type=Path, default=Path('recordings/little_mermaid.wav'))
-    parser.add_argument('--manifest', type=Path, default=Path('examples/little_mermaid_story.json'))
+    parser.add_argument('--audio', type=Path, default=Path('recordings/library/stories/little_mermaid/readers/little_mermaid/audio.wav'))
+    parser.add_argument('--manifest', type=Path, default=Path('recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json'))
     parser.add_argument('--cache', type=Path, default=Path('model-cache/asr-benchmark'))
     parser.add_argument('--output', type=Path, default=Path('output/benchmarks/little-mermaid-streaming'))
     parser.add_argument('--profiles', nargs='+', choices=list(PROFILES), default=list(PROFILES))

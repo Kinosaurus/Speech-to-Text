@@ -31,7 +31,7 @@ class RecordingAudioTests(unittest.TestCase):
             source=Path(directory)/'input.wav';wav(source,8000)
             with patch.object(audio_runtime,'__file__',str(Path(directory)/'audio_runtime.py')):
                 target=Path(audio_runtime.prepare_stream_audio(source))
-                self.assertEqual(target.parent,Path(directory)/'recordings/cache')
+                self.assertEqual(target.parent,Path(directory)/'recordings/library/.cache')
                 with wave.open(str(target)) as data:
                     self.assertEqual((data.getframerate(),data.getnchannels(),data.getsampwidth()),(16000,1,2))
                     self.assertEqual(data.getnframes(),16000)

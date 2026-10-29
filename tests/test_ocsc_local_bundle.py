@@ -19,14 +19,22 @@ def archive(path,name,data=b'corpus text'):
 
 
 class LocalBundleTests(unittest.TestCase):
+    def test_legacy_and_canonical_alias_collision_is_rejected(self):
+        with TemporaryDirectory(dir=ROOT) as directory:
+            source=Path(directory)/'input.zip'
+            names=['recordings/6008_reading.txt','recordings/library/reading_sessions/6008/transcript.txt']
+            with zipfile.ZipFile(source,'w') as z:
+                for name in names:z.writestr(name,b'corpus text')
+                z.writestr(bundle.INVENTORY,json.dumps({'files':{name:{'bytes':11,'sha256':hashlib.sha256(b'corpus text').hexdigest()} for name in names}}))
+            with self.assertRaises(ValueError):bundle.read_verified(source)
     def test_verified_data_import_and_conflict_preflight(self):
         with TemporaryDirectory(dir=ROOT) as directory:
             base=Path(directory);source=base/'input.zip'
             archive(source,'recordings/6008_reading.txt')
             with patch.object(bundle,'ROOT',base):
                 bundle.import_bundle(source)
-                self.assertEqual((base/'recordings/6008_reading.txt').read_bytes(),b'corpus text')
-                (base/'recordings/6008_reading.txt').write_text('keep existing version')
+                self.assertEqual((base/'recordings/library/reading_sessions/6008/transcript.txt').read_bytes(),b'corpus text')
+                (base/'recordings/library/reading_sessions/6008/transcript.txt').write_text('keep existing version')
                 with self.assertRaises(FileExistsError):bundle.import_bundle(source)
 
     def test_refuses_code_git_and_outside_paths(self):

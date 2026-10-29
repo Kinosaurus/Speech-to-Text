@@ -6,7 +6,7 @@ from alignment_matcher import AlignmentMatcher
 from evidence_matcher import EvidenceAlignmentMatcher
 from split_matcher import SplitEvidenceMatcher
 ROOT=Path(__file__).resolve().parents[1]
-BOOKS={n:json.loads((ROOT/f'examples/{n}_story.json').read_text()) for n in ['horse','fat_cat','tea','little_mermaid']}
+BOOKS={n:json.loads((ROOT/f'recordings/library/stories/{n}/readers/{n}/checkpoints.json').read_text()) for n in ['horse','fat_cat','tea','little_mermaid']}
 def replay(cls,book,events):
  m=cls(book); hits=[]
  for e in events:

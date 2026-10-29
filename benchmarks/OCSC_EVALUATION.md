@@ -179,7 +179,7 @@ can be checked after authentication; investigate certificate trust if needed.
 1. Inspect registered-access transcripts and minimal metadata for ages >=4 and
    <8 years and sections marked @G: Reading. Exclude sessions without actual
    passage reading; report unavailable age groups instead of silently using
-   older children. Aim initially for 4–6 reading clips across different children
+   older children. Aim initially for 4â€“6 reading clips across different children
    and more than one passage, subject to availability and download size.
 2. Identify the original intended reading card/passage. The source paper points
    to passages used in Cartledge et al. (2015); availability of the exact texts
@@ -210,7 +210,7 @@ Template, once a verified clip and manifest exist:
 .\.venv\Scripts\python.exe -u benchmarks/run_ocsc_streaming.py
 
 # Or a single clip:
-.\.venv\Scripts\python.exe -u benchmarks/live_tracker_probe.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --matching_mode split --files recordings/CLIP_reading.wav --mute_audio_playback --checkpoints output/ocsc/manifests/CLIP_story.json --no_book_context --transcript_file output/ocsc/results/CLIP.srt
+.\.venv\Scripts\python.exe -u benchmarks/live_tracker_probe.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --matching_mode split --files recordings/library/reading_sessions/CLIP/audio.wav --mute_audio_playback --checkpoints recordings/library/reading_sessions/CLIP/checkpoints.json --no_book_context --transcript_file output/ocsc/results/CLIP.srt
 ```
 
 Create the result directory first. Run one session at a time. Verify complete

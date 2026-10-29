@@ -1,83 +1,28 @@
-# Recordings and matching transcripts
+# Recordings and reading text
 
-For the exact OCSC subset, redistribution restrictions, and commands to transfer
-your existing local data to another PC, see [OCSC_LOCAL_SETUP.md](OCSC_LOCAL_SETUP.md).
+Open the [recording library](library/README.md) for the complete catalogue.
 
-All project recording audio is consolidated here. For each recording, matching
-filenames identify its audio, readable transcript and subtitles:
+Each story groups its readers under `library/stories/<story>/readers/<reader>/`:
 
-```text
-recordings/
-  tea.wav
-  tea.txt
-  tea.srt
-  6008_reading.wav
-  6008_reading.txt
-  6008_reading.srt
-  6008_full.wav
-  6008_full.txt
-  6008_full.srt
-  6008_full.cha
-  transcripts/<recording>/<original-run>.srt
-  transcripts/unmatched/root-output.srt
-  cache/previous-resamples/
-  index.json
-```
+- `passage.txt`: original supplied reading text, when available.
+- `reference.txt`: a separately labelled corpus reference when original print is unavailable; check `text_status.json`.
+- `transcript.txt` / `transcript.srt`: recorded speech, including reading mistakes, adult prompts or ASR errors.
+- `audio.wav`: recording, or `audio.json` linking to a shared canonical recording.
+- `checkpoints.json`: matching checkpoints; `expected.json` contains provisional timing when available.
+- `checkpoint_status.json` or `recording_status.json`: explicitly missing checkpoints or audio.
 
-## Available recordings
+The supplied Tea, Fat Cat, Horse and Little Mermaid passages sit beside their audio and transcripts. The sample microphone demo has passage text and checkpoints but no matching recording. Multiple CJ-and-Marcus and Grandma readers share story folders; partial peanut decoding is labelled separately from full reading.
 
-| Recording stem | Contents | Checkpoints |
-| --- | --- | --- |
-| `tea` | Original repo sample | `examples/tea_story.json` |
-| `fat_cat` | Original repo sample | `examples/fat_cat_story.json` |
-| `horse` | Original repo sample | `examples/horse_story.json` |
-| `little_mermaid` | Original repo sample | `examples/little_mermaid_story.json` |
-| `dog`, `dragon`, `nickel`, `recording_2` | Original repo samples / off-book controls | None |
-| `6008_reading`, `7057_reading` | OCSC reading-task clips, 16 kHz mono | Local `output/ocsc/manifests/` |
-| `6008_full`, `7057_full` | Complete original OCSC sessions, 44.1 kHz mono | Full sessions, not the benchmark clips |
+Complete source sessions are under `library/full_sessions/`; complete reading tasks are under `library/reading_sessions/`. Whole sessions have checkpoint coverage only for their reading interval. `library/transcript_history/` retains older ASR variants. The two timestamp-review clips are under `library/reviews/timestamp_check/`.
 
-The eight original samples and their selected transcripts are included in Git.
-OCSC media, its transcripts, all historical runs, the conversion cache and the
-local index remain ignored. Downloaded originals outside the project were
-copied here without removing the user's Downloads files.
-
-## What the transcript files mean
-
-- Beside each original sample and reading clip, `.txt` and `.srt` contain the
-  final ASR output from the latest full Parakeet comparison without book hints.
-  Reading mistakes and recognition errors are preserved. These are not cleaned
-  book passages or manually verified reference transcripts.
-- Full-session OCSC `.cha` files are the corpus transcripts. Their `.txt` files
-  preserve speaker-labelled main turns, and `.srt` files use the corpus's
-  automatically aligned utterance timestamps. Untimed turns remain in the text
-  and CHAT files; they cannot be given invented subtitle times. No new whole-
-  session Parakeet inference was run.
-- `transcripts/<recording>/` retains every historical SRT, labelled by original
-  folder/run. A no-hints transcript is selected beside the main WAV for browsing;
-  different models and hint conditions remain separate in the history.
-- The old root `output.srt` is a microphone session without confidently matched
-  saved audio. It is retained in `transcripts/unmatched/`, not assigned to a
-  different child's recording.
-- `index.json` records audio/transcript pairs, provenance, original paths and
-  SHA-256 hashes. It maps old transcript locations mentioned in historical
-  benchmark reports to their new locations. Historical result JSON and logs
-  are unchanged. All moved/copied files were hash checked.
-
-Generated root-level resampled WAVs were verified PCM-identical to their input
-fixtures and moved to `cache/previous-resamples/`. They are not additional
-recordings. Existing ready-to-stream PCM is now reused directly. Other audio
-formats are converted under `recordings/cache/` instead of the project root.
-
-## Run a recording
-
-From the project root, with the installed server running:
+Old root WAVs, `ocsc_more/`, `ocsc_batch2/`, `transcripts/`, `cache/` and `examples/` copies have been retired after preservation checks. `library/migration.json` resolves historical paths. Unique old metadata is retained under `library/provenance/`; historical benchmark results are not rewritten.
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --port 9097 --matching_mode split --files recordings/tea.wav --mute_audio_playback --checkpoints examples/tea_story.json
+.venv/Scripts/python.exe run_client.py --model parakeet-nemo --port 9097 --matching_mode split --files recordings/library/stories/tea/readers/tea/audio.wav --checkpoints recordings/library/stories/tea/readers/tea/checkpoints.json --mute_audio_playback
 ```
 
-Without `--transcript_file`, new file-session transcripts go to
-`recordings/transcripts/<recording>/live-<timestamp>.srt`. Microphone sessions
-use matching `recordings/microphone-<timestamp>.wav` and `.srt` names (audio is
-saved only with `--save_output_recording`). An explicit output path still works.
-The paced player, audio packets and tracker logic are unchanged by this cleanup.
+New microphone captures use `library/captures/<session>/audio.wav` and `transcript.srt`. File-run transcripts use the recording folder's `asr/` directory; external or multi-file runs use `library/runs/`. Temporary resampling uses `library/.cache/`.
+
+The eight original public recordings and supplied texts are tracked at their new paths. OCSC media, transcripts and derived references remain Git-ignored. See [OCSC_LOCAL_SETUP.md](OCSC_LOCAL_SETUP.md) for local corpus use and transfer restrictions.
+
+Refresh the catalogue with `python benchmarks/organize_recording_library.py`; verify preserved assets with `python benchmarks/verify_recording_library.py`.

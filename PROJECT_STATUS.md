@@ -1,13 +1,13 @@
 # Books to Life Pod: current flow, handover and verification
 
-Updated 28 October 2026. This describes the implemented repository, including
+Updated 29 October 2026. This describes the implemented repository, including
 experimental trackers developed in this chat. The older PROJECT_BRIEF.md is a
 planning snapshot and should not be used as the current architecture/status.
 
 Latest changes: experimental `split` now includes boundary evidence carry and
 scoped timely recovery. See [the latency evaluation](benchmarks/TIMELY_TRACKER_RESULTS.md)
 for measured gains and remaining delays. Recordings and matching transcripts
-are consolidated under [recordings/](recordings/README.md). OCSC inputs remain
+are organized under [recordings/library/](recordings/library/README.md), with supplied passage text separate from spoken transcripts. OCSC inputs remain
 local; [cross-PC setup and transfer commands](recordings/OCSC_LOCAL_SETUP.md)
 are committed so the same subset can be used on another personal PC.
 
@@ -121,10 +121,10 @@ Terminal 2, PowerShell in the repository, recorded Tea with the tested fixed hin
 
 ```powershell
 New-Item -ItemType Directory -Force output | Out-Null
-.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --matching_mode split --files recordings/tea.wav --mute_audio_playback --checkpoints examples/tea_story.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-split.srt
+.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --matching_mode split --files recordings/library/stories/tea/readers/tea/audio.wav --mute_audio_playback --checkpoints recordings/library/stories/tea/readers/tea/checkpoints.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-split.srt
 ```
 
-For microphone input, omit `--files recordings/tea.wav` and read that passage
+For microphone input, omit `--files recordings/library/stories/tea/readers/tea/audio.wav` and read that passage
 aloud. Select a device using `--list_input_devices` then `--input_device` if
 needed. Stop capture with Ctrl+C. Microphone packet size is configurable using
 `--audio_chunk`; file playback uses the existing 4096-sample packets. Test a new
@@ -154,7 +154,7 @@ Tea stove/house without hints, and Tea initial tea/house with hints.
 
 The stove fired at the first complete stove callback in both Parakeet runs,
 without waiting for the next sentence. House recovery was still late. Of 21
-shared activations, 16 had unchanged callback timing; five were 0.48–1.78 s later
+shared activations, 16 had unchanged callback timing; five were 0.48â€“1.78 s later
 with the new tracker. This is relative tracker delay, not measured delay from
 the actual spoken word to an effect.
 
@@ -196,7 +196,7 @@ integration testing. The full audio benchmark was not rerun on 27 October.
       skipped-anchor case before reporting precision/recall.
 - [ ] Measure missed scenes, wrong scenes, duplicate activations, median/P95
       spoken-boundary-to-trigger delay, and eventual catch-up delay separately.
-- [ ] Investigate the late Tea house recovery and extra 0.48–1.78 s confirmation
+- [ ] Investigate the late Tea house recovery and extra 0.48â€“1.78 s confirmation
       delays. Avoid claiming the current 25/32 count is an accuracy score.
 
 ### 2. Test generalization and interruptions before choosing the default

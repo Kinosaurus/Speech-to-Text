@@ -21,7 +21,7 @@ has not been verified.
 
 The original checkpoint is 2.47 GB. The installed Linux environment measured
 6.64 GB on this PC, for about 9.1 GB combined, excluding Ubuntu itself and
-caches. Allow 15–20 GB of free space for setup and temporary files.
+caches. Allow 15â€“20 GB of free space for setup and temporary files.
 For a fresh Windows laptop, reserve **20 GB free for hinted Parakeet** including
 WSL/Ubuntu and the client, or **30 GB free for the full Whisper + Parakeet +
 Moonshine comparison setup**. These are planning allowances, not download sizes.
@@ -43,7 +43,7 @@ On this PC the project is `/mnt/c/Users/heart/Speech-to-Text` inside Ubuntu-24.0
 The model is already prepared in the shared project cache. In Windows, run:
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --files recordings/little_mermaid.wav --mute_audio_playback --checkpoints examples/little_mermaid_story.json --transcript_file output/parakeet-nemo.srt
+.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --files recordings/library/stories/little_mermaid/readers/little_mermaid/audio.wav --mute_audio_playback --checkpoints recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json --transcript_file output/parakeet-nemo.srt
 ```
 
 Hints turn on automatically with a checkpoint manifest. Use `--no_book_context`
@@ -143,7 +143,7 @@ Start a server in Terminal 1 (uses the first Vulkan GPU; CPU is available with
 In Terminal 2, send one recording at normal playback speed:
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model parakeet --server 127.0.0.1 --port 9091 --files recordings/little_mermaid.wav --mute_audio_playback --checkpoints examples/little_mermaid_story.json --transcript_file output/parakeet.srt
+.\.venv\Scripts\python.exe run_client.py --model parakeet --server 127.0.0.1 --port 9091 --files recordings/library/stories/little_mermaid/readers/little_mermaid/audio.wav --mute_audio_playback --checkpoints recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json --transcript_file output/parakeet.srt
 ```
 
 For Moonshine, stop the server and replace `parakeet` with `moonshine` in both
@@ -161,7 +161,7 @@ not individual word/phrase alignment. English transcription only.
 The model cache is shared with the benchmark scripts, so this does not download
 a second copy. The server binds to localhost by default.
 
-## Quickstart — test on a Windows PC with an NVIDIA GPU
+## Quickstart â€” test on a Windows PC with an NVIDIA GPU
 
 Use **two terminals** in the project folder: Docker runs the speech-recognition
 **server** on the GPU, while the Windows Python **client** sends microphone or
@@ -191,7 +191,7 @@ These commands install the client dependencies. The server has its own
 dependencies inside Docker; you do not need to activate `.venv` when using the
 explicit Python path shown here.
 
-### 2. Start the GPU server — Terminal 1
+### 2. Start the GPU server â€” Terminal 1
 
 Open **Docker Desktop** and wait for its engine to start. Use Linux containers
 with the WSL2 backend and a compatible NVIDIA driver, as described in
@@ -221,7 +221,7 @@ docker compose -f compose.gpu.yaml up
 For later sessions, open Docker Desktop and run just the `up` command. The
 downloaded models remain in the `gpu-model-cache` volume.
 
-### 3. Test recognition — Terminal 2
+### 3. Test recognition â€” Terminal 2
 
 Open another terminal in the same project folder. **Choose one** of these tests.
 Neither requires a checkpoint file.
@@ -244,7 +244,7 @@ directly. Remove it if you want to hear the recording while testing.
 
 The terminal normally shows only the latest four transcript segments. These
 commands show up to 20, with timestamps. Older text scrolling out of view does
-not mean it was deleted; the session transcript is saved under `recordings/` when
+not mean it was deleted; the session transcript is saved under `recordings/library/captures/` when
 the client finishes. Partial recognition can also change as more audio arrives.
 
 ### Record computer audio with Audacity, including YouTube
@@ -260,7 +260,7 @@ recognition tests, instead of playing it through speakers into a microphone:
    can capture all sounds playing through that output.
 4. Start the YouTube video or other audio, then click **Record** in Audacity.
    Click **Stop** when you have the passage you want to test.
-5. Use **File → Export audio** (`Ctrl+Shift+E`). For a simple ASR test, export
+5. Use **File â†’ Export audio** (`Ctrl+Shift+E`). For a simple ASR test, export
    **WAV, Mono, 16000 Hz, Signed 16-bit PCM**, then pass that file to the command
    above. Recordings at 44100 or 48000 Hz also work; the client resamples them.
    Exporting at a higher rate does not add detail to the original recording.
@@ -272,12 +272,12 @@ using them with this client.
 
 ### Use the shared test recordings
 
-The [recording library](recordings/README.md) contains eight shared resampled
+The [recording library](recordings/library/README.md) contains eight shared resampled
 WAV recordings that groupmates can test after pulling the repository. The files
 are 16 kHz mono audio and can be supplied directly to `--files`:
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model medium.en --files .\recordings\tea.wav --mute_audio_playback --checkpoints .\examples\tea_story.json
+.\.venv\Scripts\python.exe run_client.py --model medium.en --files .\recordings/library/stories/tea/readers/tea/audio.wav --mute_audio_playback --checkpoints .\recordings/library/stories/tea/readers/tea/checkpoints.json
 ```
 
 Use the matching checkpoint manifest listed in the shared audio instructions.
@@ -296,22 +296,22 @@ changes or restarting the ASR server. Restart the client with the new manifest.
 
 | Passage | Checkpoint manifest | Checkpoints |
 |---|---|---|
-| [The Little Mermaid excerpt](examples/little_mermaid_passage.txt) | [little_mermaid_story.json](examples/little_mermaid_story.json) | 2 |
-| [Mila and the Sky Garden](examples/sample_passage.txt) | [sample_story.json](examples/sample_story.json) | 4 |
-| [Fat Cat phonics passage](examples/fat_cat_passage.txt) | [fat_cat_story.json](examples/fat_cat_story.json) | 2 |
-| [Horse farm passage](examples/horse.txt) | [horse_story.json](examples/horse_story.json) | 1 |
-| [Tea passage](examples/tea_passage.txt) | [tea_story.json](examples/tea_story.json) | 3 |
+| [The Little Mermaid excerpt](recordings/library/stories/little_mermaid/readers/little_mermaid/passage.txt) | [little_mermaid_story.json](recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json) | 2 |
+| [Mila and the Sky Garden](recordings/library/stories/sample/readers/demo/passage.txt) | [sample_story.json](recordings/library/stories/sample/readers/demo/checkpoints.json) | 4 |
+| [Fat Cat phonics passage](recordings/library/stories/fat_cat/readers/fat_cat/passage.txt) | [fat_cat_story.json](recordings/library/stories/fat_cat/readers/fat_cat/checkpoints.json) | 2 |
+| [Horse farm passage](recordings/library/stories/horse/readers/horse/passage.txt) | [horse_story.json](recordings/library/stories/horse/readers/horse/checkpoints.json) | 1 |
+| [Tea passage](recordings/library/stories/tea/readers/tea/passage.txt) | [tea_story.json](recordings/library/stories/tea/readers/tea/checkpoints.json) | 3 |
 
 For the Little Mermaid excerpt, read the passage aloud while running:
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model small.en --audio_chunk 1024 --checkpoints .\examples\little_mermaid_story.json
+.\.venv\Scripts\python.exe run_client.py --model small.en --audio_chunk 1024 --checkpoints .\recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json
 ```
 
 For your recording, replace the quoted audio path below with your file's path:
 
 ```powershell
-.\.venv\Scripts\python.exe run_client.py --model small.en --files ".\recordings\LittleMermaid.wav" --mute_audio_playback --checkpoints .\examples\little_mermaid_story.json
+.\.venv\Scripts\python.exe run_client.py --model small.en --files ".\recordings/library/stories/little_mermaid/readers/little_mermaid/audio.wav" --mute_audio_playback --checkpoints .\recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json
 ```
 
 Watch `[TRANSCRIPT]` for recognized speech, `[ALIGN]` for book tracking and
@@ -319,9 +319,9 @@ Watch `[TRANSCRIPT]` for recognized speech, `[ALIGN]` for book tracking and
 effects; physical lighting, speaker and projector control are not implemented.
 The Little Mermaid sample has two checkpoints:
 
-- **`mermaid_has_legs`**: "She had the prettiest legs on earth" — a warm,
+- **`mermaid_has_legs`**: "She had the prettiest legs on earth" â€” a warm,
   gentle daylight ambience after her transformation.
-- **`mermaid_cannot_speak`**: "And the little mermaid could not speak" — a
+- **`mermaid_cannot_speak`**: "And the little mermaid could not speak" â€” a
   quieter blue ambience during her silent encounter with the prince.
 
 The visual/audio filenames are placeholders. Surrounding book text helps
@@ -358,7 +358,7 @@ keeping cached models; adding `-v` deletes the cache.
 
 ## About the project
 
-Books to Life Pod is an interactive reading enclosure for a child aged 5–10
+Books to Life Pod is an interactive reading enclosure for a child aged 5â€“10
 and a parent or caregiver. It follows a physical book locally and triggers
 restrained lighting, sound and visual effects at approved story checkpoints.
 The environmental response is intended to reward continued reading without
@@ -379,7 +379,7 @@ alternatives; physical effect playback is not yet implemented.
 | Item | Current direction |
 |---|---|
 | Users | One child and one parent/caregiver |
-| Enclosure | Cozy segmented circular pod, approximately 198 × 196 × 115 cm |
+| Enclosure | Cozy segmented circular pod, approximately 198 Ã— 196 Ã— 115 cm |
 | Interaction | Read the complete physical book aloud |
 | Book identification | RFID/NFC |
 | Runtime | Offline-first, with no cloud dependency during reading |
@@ -399,7 +399,7 @@ materials are in [BOOKS_TO_LIFE_POD_NOTES.md](BOOKS_TO_LIFE_POD_NOTES.md).
 ## Experience principles
 
 - The child keeps looking at and progressing through the physical book.
-- Visuals provide atmosphere—grass, clouds, weather or colour—not another
+- Visuals provide atmosphereâ€”grass, clouds, weather or colourâ€”not another
   narrative that competes for attention.
 - Effects happen at paragraph or page checkpoints, not on every word.
 - Lighting transitions are slow, diffused and low in brightness.
@@ -412,33 +412,33 @@ materials are in [BOOKS_TO_LIFE_POD_NOTES.md](BOOKS_TO_LIFE_POD_NOTES.md).
 
 ```text
 RFID/NFC book scan
-        │
-        ▼
+        â”‚
+        â–¼
 Load approved book map and effect timeline
 
 Child reads aloud
-        │
-        ▼
+        â”‚
+        â–¼
 Directional wired USB microphone
-        │
-        ▼
+        â”‚
+        â–¼
 Local noise reduction + voice activity detection
-        │
-        ▼
+        â”‚
+        â–¼
 Local streaming ASR produces partial text
-        │
-        ▼
+        â”‚
+        â–¼
 Word-sequence alignment tracks text within nearby book passages
-        │
-        ▼
+        â”‚
+        â–¼
 Confidence + progress guards confirm the checkpoint
-        │
-        ▼
+        â”‚
+        â–¼
 Deterministic state machine
-        │
-        ├── ambient lighting
-        ├── spatial/ambient audio
-        └── simple supporting visual
+        â”‚
+        â”œâ”€â”€ ambient lighting
+        â”œâ”€â”€ spatial/ambient audio
+        â””â”€â”€ simple supporting visual
 ```
 
 An ESP32 or Raspberry Pi Pico should handle RFID, buttons and electrical
@@ -457,10 +457,10 @@ directly power LED strips, speakers, motors or the projector.
 | `book_context_client.py` | Streams audio and negotiates live book-hint updates |
 | `book_context_server.py` | Applies live hints to the next Whisper inference without reloading its model |
 | `checkpoint_demo.py` | Runs the sample checkpoints without a microphone or WhisperLive server |
-| `examples/sample_story.json` | Original four-checkpoint sample story and safe placeholder effects |
-| `examples/sample_passage.txt` | Short original passage to read during a microphone test |
-| `examples/little_mermaid_story.json` | Two-checkpoint manifest for the supplied Little Mermaid excerpt |
-| `examples/little_mermaid_passage.txt` | Exact supplied passage for live or recorded reading tests |
+| `recordings/library/stories/sample/readers/demo/checkpoints.json` | Original four-checkpoint sample story and safe placeholder effects |
+| `recordings/library/stories/sample/readers/demo/passage.txt` | Short original passage to read during a microphone test |
+| `recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json` | Two-checkpoint manifest for the supplied Little Mermaid excerpt |
+| `recordings/library/stories/little_mermaid/readers/little_mermaid/passage.txt` | Exact supplied passage for live or recorded reading tests |
 | `BOOKS_TO_LIFE_POD_NOTES.md` | Detailed enclosure, hardware, ASR, latency, matching and budget decisions |
 | `README.md` | Project overview and prototype instructions |
 | `JETSON_SETUP.md` | Jetson GPU setup, laptop testing, model preparation and hardware verification |
@@ -499,13 +499,13 @@ On Linux, install the PortAudio development package first, following the
 
 Open two terminals with the virtual environment activated.
 
-Terminal 1—start the server:
+Terminal 1â€”start the server:
 
 ```powershell
 python run_server.py
 ```
 
-Terminal 2—transcribe the default microphone:
+Terminal 2â€”transcribe the default microphone:
 
 ```powershell
 python run_client.py
@@ -554,7 +554,7 @@ queued hint revision ...` acknowledges receipt; an inference already in progress
 continues with its previous hints.
 
 Use `--book_context_lookahead 0` to include only the next checkpoint, or adjust
-`--book_context_words` within 8–128. Use `--no_book_context` for a baseline test.
+`--book_context_words` within 8â€“128. Use `--no_book_context` for a baseline test.
 ASR-only tests without `--checkpoints` receive no automatic book hints.
 
 You can also supply manual hints. Each explicit field replaces its automatic
@@ -582,7 +582,7 @@ python checkpoint_demo.py
 ```
 
 The default tracker aligns recognized words with full page text. The demo
-includes recognition mistakes such as `seed` → `seat` and `flower` → `flour`.
+includes recognition mistakes such as `seed` â†’ `seat` and `flower` â†’ `flour`.
 Each scene needs two consistent, distinct transcript updates before it triggers.
 Identical text-only updates do not count twice. To type simulated transcripts:
 
@@ -608,18 +608,18 @@ second terminal run:
 ```powershell
 python run_client.py `
   --model base.en `
-  --checkpoints .\examples\sample_story.json `
-  --initial_prompt_file .\examples\sample_passage.txt
+  --checkpoints .\recordings/library/stories/sample/readers/demo/checkpoints.json `
+  --initial_prompt_file .\recordings/library/stories/sample/readers/demo/passage.txt
 ```
 
-Read [examples/sample_passage.txt](examples/sample_passage.txt) aloud. The
+Read [recordings/library/stories/sample/readers/demo/passage.txt](recordings/library/stories/sample/readers/demo/passage.txt) aloud. The
 terminal reports the current similarity score and prints `[TRIGGER]` with the
 placeholder effect when a checkpoint is confirmed. Useful tuning overrides:
 
 ```powershell
 python run_client.py `
   --model tiny.en `
-  --checkpoints .\examples\sample_story.json `
+  --checkpoints .\recordings/library/stories/sample/readers/demo/checkpoints.json `
   --checkpoint_threshold 78 `
   --checkpoint_stability 2
 ```
@@ -818,7 +818,7 @@ using actual supplier quotes before updating the hardware budget.
 
 - Raspberry Pi 5 4GB
 - active cooler and official 27W power supply
-- 64–128GB high-endurance microSD or NVMe storage
+- 64â€“128GB high-endurance microSD or NVMe storage
 - directional/cardioid wired USB microphone on a short gooseneck
 - two compact powered speakers or an amplifier with two speakers
 - ESP32 or Raspberry Pi Pico
@@ -827,7 +827,7 @@ using actual supplier quotes before updating the hardware budget.
 - one limited visual surface using a monitor or tested projector
 - master switch, strain relief, ventilation and accessible service panel
 
-Place the microphone approximately 20–35 cm from the child, point it away from
+Place the microphone approximately 20â€“35 cm from the child, point it away from
 speakers and fans, and conceal its USB cable inside the furniture. Ordinary
 Bluetooth microphones are not recommended because pairing, charging and audio
 profile behaviour add avoidable operational risk. If wireless input becomes a
@@ -868,8 +868,8 @@ or audible response. The working engineering estimates are:
 
 | Runtime | Estimated response |
 |---|---:|
-| Pi 5 + Moonshine Tiny Streaming | about 0.43–0.53 s |
-| Pi 5 + Moonshine Small Streaming | about 0.72–0.82 s |
+| Pi 5 + Moonshine Tiny Streaming | about 0.43â€“0.53 s |
+| Pi 5 + Moonshine Small Streaming | about 0.72â€“0.82 s |
 | Current WhisperLive approach on Pi 5 | potentially several seconds |
 
 These are planning estimates, not guarantees. Final performance depends on

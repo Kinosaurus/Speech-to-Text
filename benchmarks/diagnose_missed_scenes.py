@@ -7,7 +7,7 @@ root=Path(__file__).resolve().parents[1]
 r=json.load(open(root/'output/evidence-replay/comparison.json'))
 report=[]
 for row in r['matched']:
- manifest=json.load(open(root/f"examples/{row['book']}_story.json"))
+ manifest=json.load(open(root/f"recordings/library/stories/{row['book']}/readers/{row['book']}/checkpoints.json"))
  missing=[c for c in manifest['checkpoints'] if c['id'] not in {x['id'] for x in row['split']}]
  if not missing:continue
  m=SplitEvidenceMatcher(manifest);accepted=[];raw={c['id']:[] for c in missing}

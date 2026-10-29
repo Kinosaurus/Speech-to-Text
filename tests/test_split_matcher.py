@@ -5,7 +5,7 @@ from split_matcher import SplitEvidenceMatcher,split_similarity
 ROOT=Path(__file__).resolve().parents[1]
 
 def ready():
- m=SplitEvidenceMatcher(json.loads((ROOT/'examples/tea_story.json').read_text()))
+ m=SplitEvidenceMatcher(json.loads((ROOT/'recordings/library/stories/tea/readers/tea/checkpoints.json').read_text()))
  text='I will make us a pot of tea'
  m.process(text, [{'start':0,'end':10,'text':text,'completed':False}])
  m.process(text, [{'start':0,'end':10,'text':text,'completed':True}])
@@ -25,7 +25,7 @@ class SplitTests(unittest.TestCase):
    self.assertTrue(u.triggered)
    self.assertEqual(u.checkpoint_id,'teapot_on_stove')
  def test_requires_prior_acquisition(self):
-  m=SplitEvidenceMatcher(json.loads((ROOT/'examples/tea_story.json').read_text()))
+  m=SplitEvidenceMatcher(json.loads((ROOT/'recordings/library/stories/tea/readers/tea/checkpoints.json').read_text()))
   feed(m,'see put the key pot on the',20)
   self.assertFalse(feed(m,'see put the key pot on the stove',22).triggered)
  def test_no_trigger_from_one_hypothesis_or_duplicates(self):
