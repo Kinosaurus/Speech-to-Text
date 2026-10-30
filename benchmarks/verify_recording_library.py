@@ -39,6 +39,17 @@ def main():
             assert target.with_suffix('.transcript.txt').exists(), target
             assert (target.with_suffix('.checkpoints.json').exists()
                     or target.with_suffix('.checkpoint_status.json').exists()), target
+    imported = 0
+    for entry in inv.get('imports', {}).values():
+        report = json.loads((BASE/entry['report']).read_text(encoding='utf-8'))
+        assert len(report['recordings']) == entry['recordings']
+        for recording in report['recordings']:
+            folder = (BASE/recording['path']).resolve()
+            assert folder.is_relative_to(BASE.resolve()), folder
+            assert digest(folder/'audio.wav') == recording['audio_sha256'], folder
+            assert all((folder/name).is_file() for name in
+                       ['passage.txt','transcript.txt','checkpoints.json','source.json']), folder
+            imported += 1
     manifests = 0
     for path in BASE.rglob('*.json'):
         data = json.loads(path.read_text(encoding='utf-8'))
@@ -81,7 +92,9 @@ def main():
         canonical_hashes_and_preserved_legacy_metadata_verified=True, audio_transcript_checkpoint_pairing_verified=True,
         valid_manifests=manifests, exact_pcm_passage_excerpts_verified=derived,
         story_groups=len({r['story'] for r in inv.get('catalogue',inv['stories'])}),
-        story_reader_folders=len(inv['stories']), demo_entries=sum(r.get('audio') is None for r in inv.get('catalogue',[])),
+        story_reader_folders=sum(r.get('audio') is not None for r in inv.get('catalogue',inv['stories'])),
+        imported_recordings_verified=imported,
+        demo_entries=sum(r.get('audio') is None for r in inv.get('catalogue',[])),
         broken_markdown_links=broken, archives_created=0)
     (BASE/'verification.json').write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps(result, indent=2))

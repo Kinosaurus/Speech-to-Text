@@ -4,6 +4,14 @@ Updated 29 October 2026. This describes the implemented repository, including
 experimental trackers developed in this chat. The older PROJECT_BRIEF.md is a
 planning snapshot and should not be used as the current architecture/status.
 
+Follow-up 30 October 2026: [passage-backed audio and hint comparison](benchmarks/READING_CONTEXT_RESULTS.md)
+records the MPS imports, published-text Kites/Billy/Tom rebuild, acoustic timestamp
+estimates and eighteen fresh hinted streams. No hints caught 26/27 checkpoints;
+moving hints 26/27; whole-passage hints 25/27 including a severely early Tom
+activation. Keep `--no_book_context` explicit for the evaluated pilot configuration.
+Guarded jumps and checkpoint-local effect evidence are proposals, not implemented
+fixes. All 119 unit tests pass; automatic timestamps are not manually verified.
+
 Latest changes: experimental `split` now includes boundary evidence carry and
 scoped timely recovery. See [the latency evaluation](benchmarks/TIMELY_TRACKER_RESULTS.md)
 for measured gains and remaining delays. Recordings and matching transcripts

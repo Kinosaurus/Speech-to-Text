@@ -8,6 +8,8 @@ from alignment_matcher import AlignmentMatcher
 from split_matcher import SplitEvidenceMatcher
 from boundary_matcher import BoundaryEvidenceMatcher
 from timely_matcher import TimelyEvidenceMatcher
+from native_stream_client import NativeConnection
+from book_context_client import BookContextConnection
 out=Path(sys.argv[sys.argv.index('--transcript_file')+1]).with_suffix('.events.jsonl')
 f=out.open('w',encoding='utf-8');samples=0;origin=None
 from benchmarks.observer_manifests import observer_manifest_paths
@@ -24,6 +26,22 @@ def emit(kind,**kw):
  f.write(json.dumps({'kind':kind,'wall':time.perf_counter(),**kw})+'\n');f.flush()
 oldsend=TranscriptionTeeClient.multicast_packet
 oldmessage=Client.on_message
+oldnative=NativeConnection.on_message
+oldhintsend=BookContextConnection._send_pending_context
+def hint_send(self):
+ before=self._sent_revision
+ result=oldhintsend(self)
+ if self._sent_revision!=before:
+  emit('book_context_sent',revision=self._sent_revision,hints=self._pending_context)
+ return result
+BookContextConnection._send_pending_context=hint_send
+def native_message(self,ws,raw):
+ value=json.loads(raw)
+ if value.get('message')=='STREAM_DONE':emit('status',message='STREAM_DONE',status=value.get('status'))
+ if value.get('type') in ('book_context_capabilities','book_context_ack'):
+  emit('book_context_control',data=value)
+ return oldnative(self,ws,raw)
+NativeConnection.on_message=native_message
 # Upstream waits for 15 seconds without changed text and can wait indefinitely
 # if final hypotheses oscillate. Keep 15-second quiet detection, cap at 30 s.
 def bounded_settle(self):

@@ -3,6 +3,10 @@
 For the current implemented flow, tracker modes, verified results, startup commands
 and remaining work, see [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
+Latest evaluation: [passage-backed recordings, provisional delays and hint regressions](benchmarks/READING_CONTEXT_RESULTS.md).
+The tested pilot configuration explicitly uses `--model parakeet-nemo --matching_mode split --no_book_context`;
+whole-passage phrase hints caused an early activation and missed checkpoint in this subset.
+
 
 ## Parakeet with moving phrase hints (NeMo, Linux/WSL CUDA)
 
