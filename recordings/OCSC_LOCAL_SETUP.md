@@ -18,7 +18,7 @@ Original source times and SHA-256 hashes are retained in source/provenance metad
 With the GPU ASR server running:
 
 ```powershell
-.venv/Scripts/python.exe run_client.py --model parakeet-nemo --server GPU_PC_IP --port 9097 --matching_mode split --files recordings/library/reading_sessions/7057/audio.wav --checkpoints recordings/library/reading_sessions/7057/checkpoints_early.json --no_book_context --mute_audio_playback
+.venv/Scripts/python.exe -m books_to_life.cli.run_client --model parakeet-nemo --server GPU_PC_IP --port 9097 --matching_mode split --files recordings/library/reading_sessions/7057/audio.wav --checkpoints recordings/library/reading_sessions/7057/checkpoints_early.json --no_book_context --mute_audio_playback
 ```
 
 Use each reader's own manifest. Full sessions include non-reading tasks and should not substitute for reading clips in comparisons. A matched checkpoint does not establish timely activation; inspect evaluation reports for misses and long delays.

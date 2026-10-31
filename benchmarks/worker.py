@@ -17,7 +17,7 @@ from benchmarks.metrics import latest_text
 def whisper(args, pcm, manifest, reference):
     from whisper_live.backend.faster_whisper_backend import ServeClientFasterWhisper
     from whisper_live.transcriber.transcriber_faster_whisper import WhisperModel
-    from book_context import install_context_updates
+    from books_to_life.context.book_context import install_context_updates
 
     recorder = Recorder(manifest, args.hints)
     details = {'runtime': 'WhisperLive/faster-whisper', 'device': 'cuda', 'precision': 'float16',

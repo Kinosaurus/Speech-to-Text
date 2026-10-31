@@ -1,12 +1,12 @@
 """CUDA buffered Parakeet Unified with NeMo's per-stream phrase boosting.
 
-Uses APIs from NVIDIA NeMo c2368ab (see requirements-nemo.txt), following its
+Uses APIs from NVIDIA NeMo c2368ab (see requirements/requirements-nemo.txt), following its
 speech_to_text_streaming_infer_rnnt.py chunk/context protocol. Incoming audio
 alone advances the stream; no whole-file inference or transcript replacement.
 """
 import numpy as np
 
-from book_context import MAX_CONTEXT_CHARS
+from books_to_life.context.book_context import MAX_CONTEXT_CHARS
 
 
 def hint_phrases(hotwords):

@@ -255,6 +255,8 @@ __marimo__/
 /*.aup4
 
 # Downloaded models and platform-specific caches
+/archives/*
+!/archives/README.md
 /models/
 /model-cache/
 /.hf-cache/

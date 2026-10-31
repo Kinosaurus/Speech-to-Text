@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile.jetson
     runtime: nvidia
     init: true
-    command: ["python", "run_server.py", "--device", "cuda", "--omp_num_threads", "${ASR_THREADS:-2}"]
+    command: ["python", "-m", "books_to_life.cli.run_server", "--device", "cuda", "--omp_num_threads", "${ASR_THREADS:-2}"]
     environment:
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
@@ -41,7 +41,8 @@ services:
       - "${AUDIO_GID:-29}"
     command:
       - python
-      - run_client.py
+      - -m
+      - books_to_life.cli.run_client
       - --server
       - asr
       - --model
@@ -55,6 +56,6 @@ services:
       - --connection_timeout
       - "180"
     volumes:
-      - ./examples:/books:ro
+      - ./recordings/library/stories/sample/readers/demo/checkpoints.json:/books/sample_story.json:ro
 volumes:
   jetson-model-cache:

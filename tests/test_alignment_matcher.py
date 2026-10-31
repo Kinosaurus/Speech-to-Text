@@ -3,8 +3,8 @@ import json
 from pathlib import Path
 import unittest
 
-from alignment_matcher import AlignmentMatcher
-from checkpoint_matcher import normalize_text
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
+from books_to_life.matching.checkpoint_matcher import normalize_text
 
 
 ROOT = Path(__file__).resolve().parents[1]

@@ -3,7 +3,7 @@
 import argparse
 import time
 
-from asr_runtime import configure_device, describe_device
+from books_to_life.runtime.asr_runtime import configure_device, describe_device
 
 
 def main():

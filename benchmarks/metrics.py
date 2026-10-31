@@ -65,7 +65,7 @@ def estimated_anchor_times(reference, timed_words, checkpoints):
     for item in timed_words:
         tokens.extend({'word': token, 'end': float(item['end'])} for token in words(item['word']))
     _, matches = edit_alignment(reference, ' '.join(item['word'] for item in tokens))
-    from checkpoint_matcher import normalize_text
+    from books_to_life.matching.checkpoint_matcher import normalize_text
     reference_tokens = normalize_text(reference).split()
     result = {}
     for checkpoint in checkpoints:

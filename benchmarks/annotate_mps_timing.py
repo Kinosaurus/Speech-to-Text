@@ -12,7 +12,7 @@ import sys
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from checkpoint_matcher import normalize_text, fuzz
+from books_to_life.matching.checkpoint_matcher import normalize_text, fuzz
 import soundfile as sf
 
 LIB=ROOT/'recordings/library'

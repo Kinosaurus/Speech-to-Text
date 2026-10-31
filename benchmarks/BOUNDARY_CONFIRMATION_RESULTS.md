@@ -83,7 +83,7 @@ This is deliberately a bounded transfer of anchor-prefix support, not a claim
 that every previous book alignment supports every future scene. Very short
 anchors or recordings without an accepted prefix still need ordinary support.
 
-`run_client.py --matching_mode split` now uses the fixed tracker. The default
+`python -m books_to_life.cli.run_client --matching_mode split` now uses the fixed tracker. The default
 `alignment` mode remains the original. The pre-fix split and evidence classes
 are unchanged, preserving reproducible comparison baselines.
 

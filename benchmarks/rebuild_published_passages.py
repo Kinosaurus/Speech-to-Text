@@ -8,8 +8,8 @@ import wave
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from checkpoint_matcher import normalize_text
-from alignment_matcher import AlignmentMatcher
+from books_to_life.matching.checkpoint_matcher import normalize_text
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
 
 LIB=ROOT/'recordings/library'
 OUT=ROOT/'output/published-passages-2026-10-30'

@@ -18,7 +18,8 @@ services:
       - "${AUDIO_GID:-29}"
     command:
       - python
-      - run_client.py
+      - -m
+      - books_to_life.cli.run_client
       - --server
       - asr
       - --model
@@ -32,4 +33,4 @@ services:
       - --connection_timeout
       - "180"
     volumes:
-      - ./examples:/books:ro
+      - ./recordings/library/stories/sample/readers/demo/checkpoints.json:/books/sample_story.json:ro

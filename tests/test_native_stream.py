@@ -7,8 +7,8 @@ from unittest.mock import Mock, patch
 
 import numpy as np
 
-from run_native_server import handle_stream
-from native_stream_client import NativeConnection
+from books_to_life.cli.run_native_server import handle_stream
+from books_to_life.runtime.native_stream_client import NativeConnection
 
 
 class NativeStreamTests(unittest.TestCase):
@@ -47,7 +47,7 @@ class NativeStreamTests(unittest.TestCase):
         client.finished = Mock()
         client.finished.wait.return_value = True
         client.finished.is_set.return_value = True
-        with patch('book_context_client.BookContextConnection.send_packet_to_server') as send:
+        with patch('books_to_life.context.book_context_client.BookContextConnection.send_packet_to_server') as send:
             client.wait_before_disconnect()
             client.send_packet_to_server(b'END_OF_AUDIO')
         send.assert_called_once_with(b'END_OF_AUDIO')

@@ -5,7 +5,7 @@ import logging
 
 from whisper_live.server import TranscriptionServer
 
-from book_context import CONTEXT_PROTOCOL_VERSION, install_context_updates, parse_context_message
+from books_to_life.context.book_context import CONTEXT_PROTOCOL_VERSION, install_context_updates, parse_context_message
 
 
 class BookContextServer(TranscriptionServer):

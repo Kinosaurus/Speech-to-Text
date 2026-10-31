@@ -5,8 +5,8 @@ import threading
 
 from whisper_live.client import Client, TranscriptionTeeClient
 
-from book_context import CONTEXT_PROTOCOL_VERSION, MAX_CONTEXT_CHARS
-from audio_runtime import prepare_stream_audio, wait_for_server
+from books_to_life.context.book_context import CONTEXT_PROTOCOL_VERSION, MAX_CONTEXT_CHARS
+from books_to_life.runtime.audio_runtime import prepare_stream_audio, wait_for_server
 
 
 class BookContextConnection(Client):

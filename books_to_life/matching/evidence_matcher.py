@@ -4,7 +4,7 @@ Uses the baseline's candidates, coverage, ambiguity and scene selection. A held
 candidate may use the normal score threshold for further support in the SAME
 scene. It cannot make an otherwise unsupported scene trigger on a timer.
 """
-from alignment_matcher import AlignmentMatcher
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
 
 
 class EvidenceAlignmentMatcher(AlignmentMatcher):

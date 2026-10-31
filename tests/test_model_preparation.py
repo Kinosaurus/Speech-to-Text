@@ -6,7 +6,7 @@ from types import ModuleType
 import unittest
 from unittest.mock import Mock, patch
 
-import prepare_models
+from books_to_life.cli import prepare_models
 
 
 class ModelPreparationTests(unittest.TestCase):
@@ -24,7 +24,7 @@ class ModelPreparationTests(unittest.TestCase):
         modules = {'torch': torch, 'ctranslate2': ct2,
                    'whisper_live.transcriber.transcriber_faster_whisper': transcriber,
                    'whisper_live.vad': vad}
-        with patch.dict(os.environ), patch.dict(sys.modules, modules), patch.object(sys, 'argv', ['prepare_models.py', *arguments]), \
+        with patch.dict(os.environ), patch.dict(sys.modules, modules), patch.object(sys, 'argv', ['books_to_life/cli/prepare_models.py', *arguments]), \
                 contextlib.redirect_stdout(io.StringIO()):
             prepare_models.main()
         vad.VoiceActivityDetector.assert_called_once()

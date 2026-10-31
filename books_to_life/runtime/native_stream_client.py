@@ -3,7 +3,7 @@ import json
 import threading
 
 from whisper_live import utils
-from book_context_client import BookContextConnection, BookTranscriptionClient
+from books_to_life.context.book_context_client import BookContextConnection, BookTranscriptionClient
 
 
 class NativeConnection(BookContextConnection):

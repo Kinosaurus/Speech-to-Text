@@ -17,7 +17,7 @@ def status(s):
 try:
  if not args.external_server:
   serverlog=(OUT/f'{args.model}-server.log').open('w')
-  server=subprocess.Popen([PY,'-u','run_server.py','--device','cuda','--host','127.0.0.1','--port',str(port)],stdout=serverlog,stderr=subprocess.STDOUT,creationflags=FLAGS,env=dict(os.environ,HF_HUB_OFFLINE='1'))
+  server=subprocess.Popen([PY,'-u',"-m", "books_to_life.cli.run_server",'--device','cuda','--host','127.0.0.1','--port',str(port)],stdout=serverlog,stderr=subprocess.STDOUT,creationflags=FLAGS,env=dict(os.environ,HF_HUB_OFFLINE='1'))
  deadline=time.monotonic()+240
  while True:
   if server and server.poll() is not None:raise RuntimeError('Server exited; inspect server log')

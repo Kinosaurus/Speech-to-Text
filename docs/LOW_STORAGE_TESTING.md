@@ -16,14 +16,14 @@ Install 64-bit Python 3.12 and Git if needed, then on the small PC:
 git clone --depth 1 --branch first-pipeline https://github.com/Kinosaurus/Speech-to-Text.git
 cd Speech-to-Text
 py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install --no-cache-dir -r requirements-client.txt
+.\.venv\Scripts\python.exe -m pip install --no-cache-dir -r requirements/requirements-client.txt
 .\.venv\Scripts\python.exe -m pip install --no-cache-dir whisper-live==0.10.0 --no-deps
-.\.venv\Scripts\python.exe run_client.py --list_input_devices
+.\.venv\Scripts\python.exe -m books_to_life.cli.run_client --list_input_devices
 ```
 
 Do not install the broad requirements.txt for this client-only setup: installing
 WhisperLive's complete dependency set pulls server extras. `--no-deps` above is
-intentional; requirements-client.txt supplies the client imports. A matching
+intentional; requirements/requirements-client.txt supplies the client imports. A matching
 Windows wheel/Python version is needed for PyAudio. The import/device command
 checks the client environment before connecting.
 
@@ -32,7 +32,7 @@ checks the client environment before connecting.
 On the GPU PC in its existing prepared repository/environment:
 
 ```powershell
-.\.venv\Scripts\python.exe run_server.py --device cuda --host 0.0.0.0 --port 9090
+.\.venv\Scripts\python.exe -m books_to_life.cli.run_server --device cuda --host 0.0.0.0 --port 9090
 ipconfig
 ```
 
@@ -47,7 +47,7 @@ On the small PC, replace SERVER_IP with the actual GPU PC's address:
 ```powershell
 Test-NetConnection SERVER_IP -Port 9090
 New-Item -ItemType Directory -Force output | Out-Null
-.\.venv\Scripts\python.exe run_client.py --model medium.en --server SERVER_IP --port 9090 --matching_mode split --files recordings/library/stories/tea/readers/tea/audio.wav --mute_audio_playback --checkpoints recordings/library/stories/tea/readers/tea/checkpoints.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-lan-split.srt
+.\.venv\Scripts\python.exe -m books_to_life.cli.run_client --model medium.en --server SERVER_IP --port 9090 --matching_mode split --files recordings/library/stories/tea/readers/tea/audio.wav --mute_audio_playback --checkpoints recordings/library/stories/tea/readers/tea/checkpoints.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-lan-split.srt
 ```
 
 Use alignment instead of split for the original baseline. For a microphone test,
@@ -89,7 +89,7 @@ reports about 1.85 GB for both models/runtime, plus the client environment. Its
 installer requires at least 8 GiB free at preparation time, so 10 GB before
 installing Python/client may be tight. It does not provide the tested NeMo
 phrase boosting and will not reproduce that model's results. Check the remaining
-space AFTER client setup before considering requirements-native.txt and
+space AFTER client setup before considering requirements/requirements-native.txt and
 benchmarks/prepare.py. Model/runtime downloads still need temporary space.
 
 Small CPU Whisper is another possible separate configuration, with different

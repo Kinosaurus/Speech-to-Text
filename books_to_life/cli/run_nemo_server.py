@@ -10,8 +10,8 @@ import numpy as np
 from websockets.sync.server import serve
 from websockets.exceptions import ConnectionClosed
 
-from book_context import CONTEXT_PROTOCOL_VERSION, parse_context_message
-from nemo_parakeet import NemoParakeetSession, hint_phrases, load_model
+from books_to_life.context.book_context import CONTEXT_PROTOCOL_VERSION, parse_context_message
+from books_to_life.runtime.nemo_parakeet import NemoParakeetSession, hint_phrases, load_model
 
 
 def handle_connection(socket, factory, lock, max_seconds=3600):

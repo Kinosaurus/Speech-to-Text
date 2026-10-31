@@ -6,7 +6,7 @@ services:
       context: .
       target: cpu
     init: true
-    command: ["python", "run_server.py", "--device", "cpu", "--omp_num_threads", "${ASR_THREADS:-2}"]
+    command: ["python", "-m", "books_to_life.cli.run_server", "--device", "cpu", "--omp_num_threads", "${ASR_THREADS:-2}"]
     environment:
       CUDA_VISIBLE_DEVICES: ""
       OMP_NUM_THREADS: "${ASR_THREADS:-2}"

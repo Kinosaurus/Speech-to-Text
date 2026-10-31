@@ -7,8 +7,8 @@ from pathlib import Path
 import statistics
 from time import perf_counter
 
-from checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
-from alignment_matcher import AlignmentMatcher
+from books_to_life.matching.checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
 
 
 def show_update(text, update):

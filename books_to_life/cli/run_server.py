@@ -1,6 +1,6 @@
 import argparse
 import os
-from asr_runtime import configure_device, describe_device
+from books_to_life.runtime.asr_runtime import configure_device, describe_device
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--host', default='0.0.0.0', help='Address on which to listen.')
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     elif args.check_device:
         parser.error('--check_device is currently supported only with faster_whisper.')
 
-    from book_context_server import BookContextServer
+    from books_to_life.context.book_context_server import BookContextServer
     server = BookContextServer()
     server.run(
         args.host,

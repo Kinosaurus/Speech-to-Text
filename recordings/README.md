@@ -18,7 +18,7 @@ Complete source sessions are under `library/full_sessions/`; complete reading ta
 Old root WAVs, `ocsc_more/`, `ocsc_batch2/`, `transcripts/`, `cache/` and `examples/` copies have been retired after preservation checks. `library/migration.json` resolves historical paths. Unique old metadata is retained under `library/provenance/`; historical benchmark results are not rewritten.
 
 ```powershell
-.venv/Scripts/python.exe run_client.py --model parakeet-nemo --port 9097 --matching_mode split --files recordings/library/stories/tea/readers/tea/audio.wav --checkpoints recordings/library/stories/tea/readers/tea/checkpoints.json --mute_audio_playback
+.venv/Scripts/python.exe -m books_to_life.cli.run_client --model parakeet-nemo --port 9097 --matching_mode split --files recordings/library/stories/tea/readers/tea/audio.wav --checkpoints recordings/library/stories/tea/readers/tea/checkpoints.json --mute_audio_playback
 ```
 
 New microphone captures use `library/captures/<session>/audio.wav` and `transcript.srt`. File-run transcripts use the recording folder's `asr/` directory; external or multi-file runs use `library/runs/`. Temporary resampling uses `library/.cache/`.

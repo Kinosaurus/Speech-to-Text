@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from recording_library import resolve_recording_path
+from books_to_life.data.recording_library import resolve_recording_path
 BASE = ROOT / 'output/ocsc'
 
 

@@ -8,9 +8,9 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
-from alignment_matcher import AlignmentMatcher
-from book_context import BookContext, BookHints, ContextState, install_context_updates, parse_context_message
-from checkpoint_matcher import CheckpointMatcher
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
+from books_to_life.context.book_context import BookContext, BookHints, ContextState, install_context_updates, parse_context_message
+from books_to_life.matching.checkpoint_matcher import CheckpointMatcher
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -115,12 +115,12 @@ class BookContextTests(unittest.TestCase):
         fake = Mock()
         # The mocked audio client never decodes this existing fixture.
         audio = ROOT / "recordings/library/stories/little_mermaid/readers/little_mermaid/passage.txt"
-        args = ["run_client.py", "--files", str(audio), *options]
+        args = ["books_to_life.cli.run_client", "--files", str(audio), *options]
         with patch.object(sys, "argv", args), \
-                patch("book_context_client.BookTranscriptionClient", fake), \
+                patch("books_to_life.context.book_context_client.BookTranscriptionClient", fake), \
                 patch("whisper_live.client.TranscriptionClient", fake), \
-                patch("audio_runtime.wait_for_server"), contextlib.redirect_stdout(io.StringIO()):
-            runpy.run_path(str(ROOT / "run_client.py"), run_name="__main__")
+                patch("books_to_life.runtime.audio_runtime.wait_for_server"), contextlib.redirect_stdout(io.StringIO()):
+            runpy.run_module("books_to_life.cli.run_client", run_name="__main__")
         return fake.call_args.kwargs
 
     def test_cli_automatic_hints_and_opt_out_reach_client_handshake(self):

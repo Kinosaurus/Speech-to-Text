@@ -1,8 +1,8 @@
 import json,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from split_matcher import SplitEvidenceMatcher
-from alignment_matcher import align_words
+from books_to_life.matching.split_matcher import SplitEvidenceMatcher
+from books_to_life.matching.alignment_matcher import align_words
 root=Path(__file__).resolve().parents[1]
 r=json.load(open(root/'output/evidence-replay/comparison.json'))
 report=[]

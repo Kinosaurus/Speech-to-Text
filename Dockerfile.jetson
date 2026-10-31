@@ -28,14 +28,12 @@ RUN git clone --branch v${CT2_VERSION} --depth 1 --recursive --shallow-submodule
     && rm -rf /tmp/ctranslate2
 
 # Keep NVIDIA's CUDA-enabled Torch; do not install requirements.txt or CPU Torch.
-COPY requirements-client.txt requirements-asr.txt ./
+COPY requirements/requirements-client.txt requirements/requirements-asr.txt ./
 RUN python -m pip install --no-cache-dir -r requirements-asr.txt \
     && python -m pip install --no-cache-dir --no-deps whisper-live==0.10.0
-COPY run_server.py run_client.py asr_runtime.py audio_runtime.py prepare_models.py \
-    alignment_matcher.py checkpoint_matcher.py checkpoint_demo.py \
-    book_context.py book_context_client.py book_context_server.py ./
-COPY examples ./examples
+COPY books_to_life ./books_to_life
+COPY recordings/library/stories/sample/readers/demo/checkpoints.json ./examples/sample_story.json
 COPY tests ./tests
 RUN python -c "from whisper_live.backend.faster_whisper_backend import ServeClientFasterWhisper; import ctranslate2; assert ctranslate2.__version__ == '4.8.2'"
 EXPOSE 9090
-CMD ["python", "run_server.py", "--device", "cuda", "--omp_num_threads", "2"]
+CMD ["python", "-m", "books_to_life.cli.run_server", "--device", "cuda", "--omp_num_threads", "2"]

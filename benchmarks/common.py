@@ -7,8 +7,8 @@ from pathlib import Path
 
 import numpy as np
 
-from alignment_matcher import AlignmentMatcher
-from book_context import BookContext
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
+from books_to_life.context.book_context import BookContext
 from benchmarks.metrics import edit_alignment, latest_text
 
 

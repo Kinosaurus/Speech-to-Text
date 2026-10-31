@@ -16,7 +16,7 @@ import soundfile as sf
 ROOT = Path(__file__).resolve().parents[1]
 LIB = ROOT/'recordings/library'
 sys.path.insert(0, str(ROOT))
-from recording_library import sample_audio
+from books_to_life.data.recording_library import sample_audio
 
 
 def sha(path):

@@ -21,9 +21,9 @@ future work.
   microphone/alignment client with `small.en` by default.
 - `Dockerfile.jetson` retains NVIDIA's CUDA-enabled Torch and builds CTranslate2
   4.8.2 with CUDA and cuDNN for the Orin GPU (SM 8.7).
-- `asr_runtime.py` checks both Torch and CTranslate2 for GPU support and the
+- `books_to_life/runtime/asr_runtime.py` checks both Torch and CTranslate2 for GPU support and the
   required precision. Missing support causes an error instead of CPU fallback.
-- `prepare_models.py` accepts `medium.en`, CPU/GPU selection and a synthetic
+- `books_to_life/cli/prepare_models.py` accepts `medium.en`, CPU/GPU selection and a synthetic
   inference check, so model caching also checks the ASR kernels.
 - `compose.gpu.yaml` and `Dockerfile.gpu` provide a separate laptop GPU server
   profile. The Pi CPU files remain available.
@@ -61,7 +61,7 @@ Run from the project folder on the Jetson:
 ```bash
 cp .env.jetson.example .env
 docker compose -f compose.jetson.yaml build
-docker compose -f compose.jetson.yaml run --rm --no-deps asr python run_server.py --device cuda --check_device
+docker compose -f compose.jetson.yaml run --rm --no-deps asr python -m books_to_life.cli.run_server --device cuda --check_device
 ```
 
 The check must report `Device=cuda, precision=float16` and the GPU details.
@@ -78,7 +78,7 @@ configuration; merging the Pi/CPU file can reintroduce CPU-only settings.
 Plug in the wired USB microphone, then list devices inside the client container:
 
 ```bash
-docker compose -f compose.jetson.yaml run --rm --no-deps pod python run_client.py --list_input_devices
+docker compose -f compose.jetson.yaml run --rm --no-deps pod python -m books_to_life.cli.run_client --list_input_devices
 getent group audio | cut -d: -f3
 ```
 
@@ -92,7 +92,7 @@ Only the client container receives `/dev/snd`; no privileged mode is required.
 While online, cache and verify the model selected in `.env`:
 
 ```bash
-docker compose -f compose.jetson.yaml run --rm --no-deps asr python prepare_models.py --model small.en --device cuda --verify_inference
+docker compose -f compose.jetson.yaml run --rm --no-deps asr python -m books_to_life.cli.prepare_models --model small.en --device cuda --verify_inference
 docker compose -f compose.jetson.yaml up
 ```
 
@@ -120,12 +120,12 @@ You can test the same app immediately with CPU recognition. Open two terminals:
 
 ```powershell
 # Terminal 1
-.\.venv\Scripts\python.exe run_server.py --device cpu --omp_num_threads 2
+.\.venv\Scripts\python.exe -m books_to_life.cli.run_server --device cpu --omp_num_threads 2
 ```
 
 ```powershell
 # Terminal 2
-.\.venv\Scripts\python.exe run_client.py --model small.en --audio_chunk 1024 --checkpoints recordings/library/stories/sample/readers/demo/checkpoints.json
+.\.venv\Scripts\python.exe -m books_to_life.cli.run_client --model small.en --audio_chunk 1024 --checkpoints recordings/library/stories/sample/readers/demo/checkpoints.json
 ```
 
 For a laptop GPU test, use Docker Desktop's Linux engine with NVIDIA GPU support
@@ -133,8 +133,8 @@ through WSL2. Stop the native server first to free port 9090:
 
 ```powershell
 docker compose -f compose.gpu.yaml build
-docker compose -f compose.gpu.yaml run --rm asr python run_server.py --device cuda --check_device
-docker compose -f compose.gpu.yaml run --rm asr python prepare_models.py --model small.en --device cuda --verify_inference
+docker compose -f compose.gpu.yaml run --rm asr python -m books_to_life.cli.run_server --device cuda --check_device
+docker compose -f compose.gpu.yaml run --rm asr python -m books_to_life.cli.prepare_models --model small.en --device cuda --verify_inference
 docker compose -f compose.gpu.yaml up
 ```
 

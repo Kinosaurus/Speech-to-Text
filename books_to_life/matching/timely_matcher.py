@@ -1,7 +1,7 @@
 """Bounded next-anchor recovery without lowering global match requirements."""
-from alignment_matcher import align_words
-from boundary_matcher import BoundaryEvidenceMatcher
-from checkpoint_matcher import fuzz
+from books_to_life.matching.alignment_matcher import align_words
+from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
+from books_to_life.matching.checkpoint_matcher import fuzz
 
 
 class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):

@@ -1,6 +1,6 @@
 """Resolve the exact book manifests used by live benchmark observers."""
 from pathlib import Path
-from recording_library import resolve_recording_path
+from books_to_life.data.recording_library import resolve_recording_path
 
 
 def observer_manifest_paths(root, checkpoint_path=None):

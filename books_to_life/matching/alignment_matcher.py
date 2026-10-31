@@ -12,7 +12,7 @@ from functools import lru_cache
 import math
 from typing import Any
 
-from checkpoint_matcher import CheckpointMatcher, MatchUpdate, fuzz, normalize_text
+from books_to_life.matching.checkpoint_matcher import CheckpointMatcher, MatchUpdate, fuzz, normalize_text
 
 
 @lru_cache(maxsize=8192)

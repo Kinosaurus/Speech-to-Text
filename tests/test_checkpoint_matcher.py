@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 import unittest
 
-from checkpoint_matcher import CheckpointMatcher, normalize_text
+from books_to_life.matching.checkpoint_matcher import CheckpointMatcher, normalize_text
 
 
 ROOT = Path(__file__).resolve().parents[1]

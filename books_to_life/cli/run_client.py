@@ -4,15 +4,15 @@ import sys
 import argparse
 from datetime import datetime
 
-from checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
-from alignment_matcher import AlignmentMatcher
-from evidence_matcher import EvidenceAlignmentMatcher
-from split_matcher import SplitEvidenceMatcher
-from boundary_matcher import BoundaryEvidenceMatcher
-from timely_matcher import TimelyEvidenceMatcher
-from audio_runtime import configure_microphone, input_devices, wait_for_server
-from recording_library import resolve_recording_path, session_outputs
-from book_context import BookContext
+from books_to_life.matching.checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
+from books_to_life.matching.evidence_matcher import EvidenceAlignmentMatcher
+from books_to_life.matching.split_matcher import SplitEvidenceMatcher
+from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
+from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
+from books_to_life.runtime.audio_runtime import configure_microphone, input_devices, wait_for_server
+from books_to_life.data.recording_library import resolve_recording_path, session_outputs
+from books_to_life.context.book_context import BookContext
 
 
 def read_optional_text(parser, inline_value, file_value, label):
@@ -282,9 +282,9 @@ if __name__ == '__main__':
               "Both will be active.")
 
     if native_model:
-        from native_stream_client import NativeTranscriptionClient as TranscriptionClient
+        from books_to_life.runtime.native_stream_client import NativeTranscriptionClient as TranscriptionClient
     elif book_context:
-        from book_context_client import BookTranscriptionClient as TranscriptionClient
+        from books_to_life.context.book_context_client import BookTranscriptionClient as TranscriptionClient
     else:
         from whisper_live.client import TranscriptionClient
     print(f'[SERVER] ws://{args.server}:{args.port}')

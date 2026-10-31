@@ -10,7 +10,7 @@ import soundfile as sf
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from alignment_matcher import AlignmentMatcher
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
 
 BASE = ROOT/'recordings/library'
 

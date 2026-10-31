@@ -393,7 +393,7 @@ farther ahead but still requires clear and stable evidence. Text matching cannot
 distinguish whether the child or parent is reading.
 
 RapidFuzz is MIT-licensed. Matching-only timings can be measured with
-`python checkpoint_demo.py --benchmark 30`. Pi performance and end-to-end
+`python -m books_to_life.cli.checkpoint_demo --benchmark 30`. Pi performance and end-to-end
 response latency have not yet been measured for this tracker.
 
 ## 12. Book parsing and reusable state machine

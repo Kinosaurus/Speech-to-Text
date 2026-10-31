@@ -1,8 +1,8 @@
 """Experimental local split-token candidates; no recording-specific aliases."""
 import re
-from alignment_matcher import AlignmentSpan
-from checkpoint_matcher import fuzz
-from evidence_matcher import EvidenceAlignmentMatcher
+from books_to_life.matching.alignment_matcher import AlignmentSpan
+from books_to_life.matching.checkpoint_matcher import fuzz
+from books_to_life.matching.evidence_matcher import EvidenceAlignmentMatcher
 
 
 def split_similarity(left, right, target):

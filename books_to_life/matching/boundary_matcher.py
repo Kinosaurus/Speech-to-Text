@@ -4,7 +4,7 @@ The unchanged SplitEvidenceMatcher remains available for paired benchmarks.
 Only an accepted candidate ending at the next checkpoint can use this credit;
 silence, stale text and a timer cannot trigger a scene.
 """
-from split_matcher import SplitEvidenceMatcher
+from books_to_life.matching.split_matcher import SplitEvidenceMatcher
 
 
 class BoundaryEvidenceMatcher(SplitEvidenceMatcher):

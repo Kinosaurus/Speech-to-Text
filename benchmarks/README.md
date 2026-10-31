@@ -1,5 +1,10 @@
 # Benchmark child-reading recognition
 
+For the current application pilot, see [setups and tradeoffs](../docs/SETUPS.md)
+and [the fresh post-reorganization results](BEST_SETUP_RESULTS.md).
+`run_best_setup.py` repeats that pilot through the actual client and WebSocket
+server; the older `run.py` profiles below use a separate benchmark harness.
+
 These scripts compare the existing Whisper base.en, small.en and medium.en GPU
 setup with Parakeet Unified and Moonshine Streaming Medium. They are separate
 from the reading application: the ASR server/client and matcher are unchanged.
@@ -16,7 +21,7 @@ Those results remain separate from the fresh `*-streaming` runs.
 ## Comparison with the reading application
 
 The benchmark is a separate streaming runner, rather than an exact replay through
-`run_client.py` and its WebSocket server. Whisper uses the same backend, VAD
+`books_to_life/cli/run_client.py` and its WebSocket server. Whisper uses the same backend, VAD
 settings, three-repeat segment threshold, BookContext and AlignmentMatcher, but
 the runner feeds 64 ms audio packets and requests the last 100 transcript segments.
 The application's default file playback feeds 256 ms packets and requests the

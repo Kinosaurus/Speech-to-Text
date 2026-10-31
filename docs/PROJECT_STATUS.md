@@ -1,10 +1,15 @@
 # Books to Life Pod: current flow, handover and verification
 
+31 October follow-up: application Python code now lives in `books_to_life/`.
+Use `python -m books_to_life.cli.<module>` from the project root. See
+[setups and tradeoffs](SETUPS.md) for the recommended explicit configuration and
+[the fresh post-reorganization evaluation](../benchmarks/BEST_SETUP_RESULTS.md).
+
 Updated 29 October 2026. This describes the implemented repository, including
 experimental trackers developed in this chat. The older PROJECT_BRIEF.md is a
 planning snapshot and should not be used as the current architecture/status.
 
-Follow-up 30 October 2026: [passage-backed audio and hint comparison](benchmarks/READING_CONTEXT_RESULTS.md)
+Follow-up 30 October 2026: [passage-backed audio and hint comparison](../benchmarks/READING_CONTEXT_RESULTS.md)
 records the MPS imports, published-text Kites/Billy/Tom rebuild, acoustic timestamp
 estimates and eighteen fresh hinted streams. No hints caught 26/27 checkpoints;
 moving hints 26/27; whole-passage hints 25/27 including a severely early Tom
@@ -13,10 +18,10 @@ Guarded jumps and checkpoint-local effect evidence are proposals, not implemente
 fixes. All 119 unit tests pass; automatic timestamps are not manually verified.
 
 Latest changes: experimental `split` now includes boundary evidence carry and
-scoped timely recovery. See [the latency evaluation](benchmarks/TIMELY_TRACKER_RESULTS.md)
+scoped timely recovery. See [the latency evaluation](../benchmarks/TIMELY_TRACKER_RESULTS.md)
 for measured gains and remaining delays. Recordings and matching transcripts
-are organized under [recordings/library/](recordings/library/README.md), with supplied passage text separate from spoken transcripts. OCSC inputs remain
-local; [cross-PC setup and transfer commands](recordings/OCSC_LOCAL_SETUP.md)
+are organized under [recordings/library/](../recordings/library/README.md), with supplied passage text separate from spoken transcripts. OCSC inputs remain
+local; [cross-PC setup and transfer commands](../recordings/OCSC_LOCAL_SETUP.md)
 are committed so the same subset can be used on another personal PC.
 
 ## Current flow
@@ -122,14 +127,14 @@ Terminal 1, inside Ubuntu/WSL:
 
 ```bash
 cd /mnt/c/Users/heart/Speech-to-Text
-/home/heart/.venvs/books-to-life-nemo/bin/python run_nemo_server.py --model-path model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo --port 9097
+/home/heart/.venvs/books-to-life-nemo/bin/python -m books_to_life.cli.run_nemo_server --model-path model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo --port 9097
 ```
 
 Terminal 2, PowerShell in the repository, recorded Tea with the tested fixed hints:
 
 ```powershell
 New-Item -ItemType Directory -Force output | Out-Null
-.\.venv\Scripts\python.exe run_client.py --model parakeet-nemo --server 127.0.0.1 --port 9097 --matching_mode split --files recordings/library/stories/tea/readers/tea/audio.wav --mute_audio_playback --checkpoints recordings/library/stories/tea/readers/tea/checkpoints.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-split.srt
+.\.venv\Scripts\python.exe -m books_to_life.cli.run_client --model parakeet-nemo --server 127.0.0.1 --port 9097 --matching_mode split --files recordings/library/stories/tea/readers/tea/audio.wav --mute_audio_playback --checkpoints recordings/library/stories/tea/readers/tea/checkpoints.json --no_book_context --hotwords "mouse, pot of tea, phone, teapot, stove, cups, little house, Toad" --transcript_file output/tea-split.srt
 ```
 
 For microphone input, omit `--files recordings/library/stories/tea/readers/tea/audio.wav` and read that passage

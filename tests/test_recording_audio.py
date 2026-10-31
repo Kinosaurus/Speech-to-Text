@@ -5,8 +5,8 @@ import unittest
 from unittest.mock import Mock, patch
 import wave
 
-import audio_runtime
-from book_context_client import BookTranscriptionClient
+from books_to_life.runtime import audio_runtime
+from books_to_life.context.book_context_client import BookTranscriptionClient
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -29,7 +29,7 @@ class RecordingAudioTests(unittest.TestCase):
     def test_conversion_preserves_duration_and_uses_managed_cache(self):
         with TemporaryDirectory(dir=ROOT) as directory:
             source=Path(directory)/'input.wav';wav(source,8000)
-            with patch.object(audio_runtime,'__file__',str(Path(directory)/'audio_runtime.py')):
+            with patch.object(audio_runtime,'__file__',str(Path(directory)/'books_to_life/runtime/audio_runtime.py')):
                 target=Path(audio_runtime.prepare_stream_audio(source))
                 self.assertEqual(target.parent,Path(directory)/'recordings/library/.cache')
                 with wave.open(str(target)) as data:

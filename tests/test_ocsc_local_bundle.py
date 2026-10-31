@@ -40,7 +40,7 @@ class LocalBundleTests(unittest.TestCase):
     def test_refuses_code_git_and_outside_paths(self):
         with TemporaryDirectory(dir=ROOT) as directory:
             base=Path(directory)
-            for name in ('../outside.txt','.git/hooks/pre-commit','run_client.py'):
+            for name in ('../outside.txt','.git/hooks/pre-commit','books_to_life/cli/run_client.py'):
                 source=base/'input.zip';archive(source,name)
                 with patch.object(bundle,'ROOT',base),self.assertRaises(ValueError):
                     bundle.read_verified(source)

@@ -12,9 +12,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from alignment_matcher import AlignmentMatcher
-from checkpoint_matcher import normalize_text
-from timely_matcher import TimelyEvidenceMatcher
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
+from books_to_life.matching.checkpoint_matcher import normalize_text
+from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
 import soundfile as sf
 
 SOURCE = ROOT / 'output/mps/source'

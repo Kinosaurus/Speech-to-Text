@@ -13,7 +13,7 @@ import wave
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from recording_library import resolve_recording_path
+from books_to_life.data.recording_library import resolve_recording_path
 OUT = ROOT / 'output/timely-streaming-2026-10-28'
 MODES = ('original', 'split', 'boundary', 'timely')
 
@@ -57,8 +57,8 @@ def main():
         job['manifests'] = {name:str(resolve_recording_path(path)) for name,path in job['manifests'].items()}
     (OUT/'protocol.json').write_text(json.dumps(dict(jobs=jobs, source_sha256={
         name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in
-        ('alignment_matcher.py','evidence_matcher.py','split_matcher.py','boundary_matcher.py','timely_matcher.py',
-         'benchmarks/live_tracker_probe.py','run_client.py')}),indent=2))
+        ('books_to_life/matching/alignment_matcher.py','books_to_life/matching/evidence_matcher.py','books_to_life/matching/split_matcher.py','books_to_life/matching/boundary_matcher.py','books_to_life/matching/timely_matcher.py',
+         'benchmarks/live_tracker_probe.py','books_to_life/cli/run_client.py')}),indent=2))
     # Only startup is retried; no automatic rerun of completed recognition.
     deadline = time.monotonic()+240
     while True:

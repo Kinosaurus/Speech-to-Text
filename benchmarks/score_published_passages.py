@@ -9,7 +9,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from benchmarks.annotate_mps_timing import locate, boundary_wall
-from checkpoint_matcher import normalize_text
+from books_to_life.matching.checkpoint_matcher import normalize_text
 import soundfile as sf
 
 LIB=ROOT/'recordings/library'

@@ -2,8 +2,8 @@
 import json,re,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from evidence_matcher import EvidenceAlignmentMatcher
-from checkpoint_matcher import normalize_text
+from books_to_life.matching.evidence_matcher import EvidenceAlignmentMatcher
+from books_to_life.matching.checkpoint_matcher import normalize_text
 root=Path(__file__).resolve().parents[1]
 manifest=json.loads((root/'recordings/library/stories/tea/readers/tea/checkpoints.json').read_text())
 def phrase(text):

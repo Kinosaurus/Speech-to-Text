@@ -4,12 +4,12 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from whisper_live.client import Client,TranscriptionTeeClient
-from alignment_matcher import AlignmentMatcher
-from split_matcher import SplitEvidenceMatcher
-from boundary_matcher import BoundaryEvidenceMatcher
-from timely_matcher import TimelyEvidenceMatcher
-from native_stream_client import NativeConnection
-from book_context_client import BookContextConnection
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
+from books_to_life.matching.split_matcher import SplitEvidenceMatcher
+from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
+from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
+from books_to_life.runtime.native_stream_client import NativeConnection
+from books_to_life.context.book_context_client import BookContextConnection
 out=Path(sys.argv[sys.argv.index('--transcript_file')+1]).with_suffix('.events.jsonl')
 f=out.open('w',encoding='utf-8');samples=0;origin=None
 from benchmarks.observer_manifests import observer_manifest_paths
@@ -75,5 +75,5 @@ def message(self,ws,raw):
  return oldmessage(self,ws,raw)
 TranscriptionTeeClient.multicast_packet=send
 Client.on_message=message
-try:runpy.run_path(str(ROOT/'run_client.py'),run_name='__main__')
+try:runpy.run_module("books_to_life.cli.run_client", run_name='__main__')
 finally:f.close()

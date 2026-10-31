@@ -1,5 +1,5 @@
 import unittest
-from evidence_matcher import EvidenceAlignmentMatcher
+from books_to_life.matching.evidence_matcher import EvidenceAlignmentMatcher
 
 def manifest():
  return {'book_id':'test','title':'test','threshold':82,'stability':2,'min_coverage':.8,'pages':[{'page':1,'text':'alpha bravo cedar delta eagle forest garden harbor island jungle'}],'checkpoints':[{'id':'scene','book_id':'test','checkpoint_position':1,'checkpoint_text':'alpha bravo cedar delta eagle','effect':{'effect_id':'test'}}]}

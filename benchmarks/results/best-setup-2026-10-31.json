@@ -1,0 +1,470 @@
+{
+  "configuration": {
+    "model": "Parakeet Unified NeMo 0.6B",
+    "device": "RTX 3070 Ti CUDA bfloat16 / WSL Ubuntu-24.04",
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "boost": 1.0,
+    "hints": false,
+    "matching_mode": "split (TimelyEvidenceMatcher)",
+    "threshold": 82,
+    "stability": 2,
+    "minimum_coverage": 0.8,
+    "audio_packet_samples": 4096,
+    "sample_rate": 16000,
+    "warmup": "No separate recognition warmup; first recording includes first-inference effects."
+  },
+  "source_sha256": {
+    "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+    "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+    "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+    "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+    "books_to_life/cli/prepare_nemo_model.py": "16b3eae34d54afb6091a4aa177dbb998e3e213581dd7e7638a1ab5df93d256f7",
+    "books_to_life/cli/run_client.py": "429c4663afcb6934a2545ea0969e29ade6d19afbe81646172e0d1ed01a1f9f90",
+    "books_to_life/cli/run_native_server.py": "03bd3bebe66bc6b92ecb46cfde30bff1f3c8b4ce3a19fe18c7bf1e795d8c0294",
+    "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+    "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+    "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+    "books_to_life/context/book_context.py": "7a5b1ed5819335ad1f0ba4f42f23b59f418d5634aa76bffda8774e0149e60758",
+    "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+    "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+    "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+    "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+    "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+    "books_to_life/matching/alignment_matcher.py": "79fc4bfbd173c7159a4663486401b19e6ba318f7e3e4252ec80c77434404da9e",
+    "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+    "books_to_life/matching/checkpoint_matcher.py": "5cee23779d3ea0fd293137b10317443b6db6e602aa64c724e4aa9f648719798c",
+    "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+    "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+    "books_to_life/matching/timely_matcher.py": "130fdde015995e0d5615e748a84f49e4eafd31a3e687e262dd8d5723b03127d9",
+    "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+    "books_to_life/runtime/asr_runtime.py": "e4c299f854a2df1c8984f0fcdedd28adc3847fa33502b6be981bd6d651ce276c",
+    "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+    "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+    "books_to_life/runtime/nemo_parakeet.py": "f916f61a2930732f206084a889cb8f51e6d46e93352b79ac96f8f3a0e1f813a6",
+    "benchmarks/live_tracker_probe.py": "e86c03db4c8f4837c278602ce61ff33ba6b85530abeaed144c0f15ba495d7eb2",
+    "benchmarks/run_mps_streaming.py": "17319b3a7cd1f306e06be8e9b1157269c72d0e8798991e5e4dd723c0ae43da06",
+    "benchmarks/run_boundary_comparison.py": "7c7cbb3c15ecff8f60592b554728b846756b11774de553fbd0a6cae04494d1d4",
+    "benchmarks/run_best_setup.py": "f0d23b80b53243cbf9166b16fa84fe8df3bca5cd906e69a9c5f2a1bb125cab88"
+  },
+  "summary_source_sha256": {
+    "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+    "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+    "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+    "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+    "books_to_life/cli/prepare_nemo_model.py": "16b3eae34d54afb6091a4aa177dbb998e3e213581dd7e7638a1ab5df93d256f7",
+    "books_to_life/cli/run_client.py": "429c4663afcb6934a2545ea0969e29ade6d19afbe81646172e0d1ed01a1f9f90",
+    "books_to_life/cli/run_native_server.py": "03bd3bebe66bc6b92ecb46cfde30bff1f3c8b4ce3a19fe18c7bf1e795d8c0294",
+    "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+    "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+    "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+    "books_to_life/context/book_context.py": "7a5b1ed5819335ad1f0ba4f42f23b59f418d5634aa76bffda8774e0149e60758",
+    "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+    "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+    "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+    "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+    "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+    "books_to_life/matching/alignment_matcher.py": "79fc4bfbd173c7159a4663486401b19e6ba318f7e3e4252ec80c77434404da9e",
+    "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+    "books_to_life/matching/checkpoint_matcher.py": "5cee23779d3ea0fd293137b10317443b6db6e602aa64c724e4aa9f648719798c",
+    "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+    "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+    "books_to_life/matching/timely_matcher.py": "130fdde015995e0d5615e748a84f49e4eafd31a3e687e262dd8d5723b03127d9",
+    "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+    "books_to_life/runtime/asr_runtime.py": "e4c299f854a2df1c8984f0fcdedd28adc3847fa33502b6be981bd6d651ce276c",
+    "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+    "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+    "books_to_life/runtime/nemo_parakeet.py": "f916f61a2930732f206084a889cb8f51e6d46e93352b79ac96f8f3a0e1f813a6",
+    "benchmarks/live_tracker_probe.py": "e86c03db4c8f4837c278602ce61ff33ba6b85530abeaed144c0f15ba495d7eb2",
+    "benchmarks/run_mps_streaming.py": "17319b3a7cd1f306e06be8e9b1157269c72d0e8798991e5e4dd723c0ae43da06",
+    "benchmarks/run_boundary_comparison.py": "7c7cbb3c15ecff8f60592b554728b846756b11774de553fbd0a6cae04494d1d4",
+    "benchmarks/run_best_setup.py": "60871a9f9ada2c0edbf9f04791898b5041a7ff0e764d85405e1cf908fe716e1b"
+  },
+  "summary_only_source_changes": [
+    "benchmarks/run_best_setup.py"
+  ],
+  "timing": "Previously frozen acoustic estimates mapped onto fresh packet clocks; not manually verified.",
+  "repetitions": 1,
+  "recordings": [
+    {
+      "group": "mps",
+      "audio_id": "3a14g_EN-OL-RC-234_1",
+      "audio_sha256": "bd0b39b734ca4473912096a57d6688b7ddcadff8868c9c1499ca047200838506",
+      "manifest_sha256": "e1dac284857cf459e169466d99570882b23bd8c882a54db8d9d3d68854001da7",
+      "audio_seconds": 31.88,
+      "expected": 3,
+      "triggered": 3,
+      "missing": [],
+      "duplicates": false,
+      "unexpected": [],
+      "first_asr_seconds": 4.705810800000108,
+      "all_samples_delivered": true,
+      "stream_done": true,
+      "partial_before_eof": true,
+      "application_observer_agree": true,
+      "delays": [
+        {
+          "checkpoint": "hundred_sheep",
+          "estimated_delay_seconds": 0.48165789999984554
+        },
+        {
+          "checkpoint": "riverside",
+          "estimated_delay_seconds": 0.01718639999990046
+        },
+        {
+          "checkpoint": "lost_sheep",
+          "estimated_delay_seconds": 0.709249699999873
+        }
+      ],
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      }
+    },
+    {
+      "group": "mps",
+      "audio_id": "3a14g_EN-OL-RC-234_2",
+      "audio_sha256": "c1c2575dc1371be19d6a43d4b9b97053aaf036508e7a66c43967a65f59d193d5",
+      "manifest_sha256": "c788b88df17cdabaecf01eb8aaf26e07f9b53a563862c6450259b3dc0bd10e2a",
+      "audio_seconds": 27.68,
+      "expected": 3,
+      "triggered": 3,
+      "missing": [],
+      "duplicates": false,
+      "unexpected": [],
+      "first_asr_seconds": 2.7382385999999315,
+      "all_samples_delivered": true,
+      "stream_done": true,
+      "partial_before_eof": true,
+      "application_observer_agree": true,
+      "delays": [
+        {
+          "checkpoint": "found_in_bush",
+          "estimated_delay_seconds": 0.9413860999998178
+        },
+        {
+          "checkpoint": "carried_home",
+          "estimated_delay_seconds": 0.8494425999997475
+        },
+        {
+          "checkpoint": "happy_friends",
+          "estimated_delay_seconds": 0.8262038000002576
+        }
+      ],
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      }
+    },
+    {
+      "group": "mps",
+      "audio_id": "3c29g_EN-OL-RC-234_1",
+      "audio_sha256": "dbced80c8cdf1e881a8edc6ff2e03efe37c819b9ceeb32de4e85fab8b7c599b4",
+      "manifest_sha256": "1c189785160d49997f2e4d82c05641f97f42aaf6b60cf2759667a38059cbf910",
+      "audio_seconds": 38.57,
+      "expected": 3,
+      "triggered": 3,
+      "missing": [],
+      "duplicates": false,
+      "unexpected": [],
+      "first_asr_seconds": 2.7529516999998123,
+      "all_samples_delivered": true,
+      "stream_done": true,
+      "partial_before_eof": true,
+      "application_observer_agree": true,
+      "delays": [
+        {
+          "checkpoint": "hundred_sheep",
+          "estimated_delay_seconds": 0.9335548000003655
+        },
+        {
+          "checkpoint": "riverside",
+          "estimated_delay_seconds": 0.6642061000002286
+        },
+        {
+          "checkpoint": "lost_sheep",
+          "estimated_delay_seconds": 0.5757865999999012
+        }
+      ],
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      }
+    },
+    {
+      "group": "mps",
+      "audio_id": "3c29g_EN-OL-RC-234_2",
+      "audio_sha256": "d10678fa703e76900fc896eb9fff0f6a9029fcf774ba51049644954e6997e522",
+      "manifest_sha256": "22eb51cac271935da7a0abb8a13dd4bf81a8e9a5b1f4cb3c4c53f1ea167b3b1e",
+      "audio_seconds": 37.01,
+      "expected": 3,
+      "triggered": 3,
+      "missing": [],
+      "duplicates": false,
+      "unexpected": [],
+      "first_asr_seconds": 2.743810300000405,
+      "all_samples_delivered": true,
+      "stream_done": true,
+      "partial_before_eof": true,
+      "application_observer_agree": true,
+      "delays": [
+        {
+          "checkpoint": "found_in_bush",
+          "estimated_delay_seconds": 1.0024664999996276
+        },
+        {
+          "checkpoint": "carried_home",
+          "estimated_delay_seconds": 0.6482697000001281
+        },
+        {
+          "checkpoint": "happy_friends",
+          "estimated_delay_seconds": 1.058273900000131
+        }
+      ],
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      }
+    },
+    {
+      "group": "mps",
+      "audio_id": "3d60g_EN-OL-RC-234_1",
+      "audio_sha256": "3a586a3ab717243009674f7907d699f657c40e35d19066be62692b89f425fb18",
+      "manifest_sha256": "39126f1147c9f464dd5ad216d697ad4b8658a5e750c9ee7af9122879da23ea1c",
+      "audio_seconds": 29.62,
+      "expected": 3,
+      "triggered": 3,
+      "missing": [],
+      "duplicates": false,
+      "unexpected": [],
+      "first_asr_seconds": 2.726603200000227,
+      "all_samples_delivered": true,
+      "stream_done": true,
+      "partial_before_eof": true,
+      "application_observer_agree": true,
+      "delays": [
+        {
+          "checkpoint": "hundred_sheep",
+          "estimated_delay_seconds": 0.7835814999998547
+        },
+        {
+          "checkpoint": "riverside",
+          "estimated_delay_seconds": 0.11427269999967393
+        },
+        {
+          "checkpoint": "lost_sheep",
+          "estimated_delay_seconds": 1.271669799999927
+        }
+      ],
+      "observer_counts": {
+        "original": 2,
+        "split": 2,
+        "boundary": 3,
+        "timely": 3
+      }
+    },
+    {
+      "group": "mps",
+      "audio_id": "3d60g_EN-OL-RC-234_2",
+      "audio_sha256": "9b6bed31135877025dbaa01222870c5055c4b4f0f1c9ed006e4892282e6893d9",
+      "manifest_sha256": "d157ac34e3d3deadaa65ee5bf934728de2ebc06537ca3089081baf01cbb53965",
+      "audio_seconds": 29.0,
+      "expected": 3,
+      "triggered": 3,
+      "missing": [],
+      "duplicates": false,
+      "unexpected": [],
+      "first_asr_seconds": 2.7297091000000364,
+      "all_samples_delivered": true,
+      "stream_done": true,
+      "partial_before_eof": true,
+      "application_observer_agree": true,
+      "delays": [
+        {
+          "checkpoint": "found_in_bush",
+          "estimated_delay_seconds": 0.9518551999999545
+        },
+        {
+          "checkpoint": "carried_home",
+          "estimated_delay_seconds": 0.9227610000002642
+        },
+        {
+          "checkpoint": "happy_friends",
+          "estimated_delay_seconds": 1.3581742000001213
+        }
+      ],
+      "observer_counts": {
+        "original": 2,
+        "split": 2,
+        "boundary": 3,
+        "timely": 3
+      }
+    },
+    {
+      "group": "published",
+      "audio_id": "making-kites-7028",
+      "audio_sha256": "55d4d93254a66c3e31ffebaabbb5946e279eada6f6487554016d4660ee487461",
+      "manifest_sha256": "c8ff81e1b2319ea24ed799b3136968f3fbf0b7aa8ed269749e9b2f08f528935e",
+      "audio_seconds": 89.809,
+      "expected": 3,
+      "triggered": 3,
+      "missing": [],
+      "duplicates": false,
+      "unexpected": [],
+      "first_asr_seconds": 1.7567351000002418,
+      "all_samples_delivered": true,
+      "stream_done": true,
+      "partial_before_eof": true,
+      "application_observer_agree": true,
+      "delays": [
+        {
+          "checkpoint": "see_kites",
+          "estimated_delay_seconds": 0.6715583999998671
+        },
+        {
+          "checkpoint": "dinosaur_kite",
+          "estimated_delay_seconds": 1.1858545999998569
+        },
+        {
+          "checkpoint": "fly_our_kites",
+          "estimated_delay_seconds": 1.1759396000002198
+        }
+      ],
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      }
+    },
+    {
+      "group": "published",
+      "audio_id": "billy-visits-grandpa-6027",
+      "audio_sha256": "5ec8c606fafb60b875ca246c36d8fbe504c0dd4f1f7c92abbf9c0e1f215e343d",
+      "manifest_sha256": "a66db26fb66c742f7d86b3cc7f41a1ec4cf3aee2eb487e9d25845e1c16510455",
+      "audio_seconds": 113.389,
+      "expected": 3,
+      "triggered": 2,
+      "missing": [
+        "cookies_and_chess"
+      ],
+      "duplicates": false,
+      "unexpected": [],
+      "first_asr_seconds": 1.1869779999997263,
+      "all_samples_delivered": true,
+      "stream_done": true,
+      "partial_before_eof": true,
+      "application_observer_agree": true,
+      "delays": [
+        {
+          "checkpoint": "cold_toes",
+          "estimated_delay_seconds": 0.9495719000001372
+        },
+        {
+          "checkpoint": "seven_years_old",
+          "estimated_delay_seconds": 1.9350240999997368
+        }
+      ],
+      "observer_counts": {
+        "original": 2,
+        "split": 2,
+        "boundary": 2,
+        "timely": 2
+      }
+    },
+    {
+      "group": "published",
+      "audio_id": "tom-s-secret-study-7015",
+      "audio_sha256": "7c2d81a794086e741c44d670a91b95ca4d99765398f737a6835f4f96f1bd2f94",
+      "manifest_sha256": "e6a1cebd83cd38410a10dd36d92e885e8f90846985de8bfaa83a5d6d081601d7",
+      "audio_seconds": 61.867,
+      "expected": 3,
+      "triggered": 3,
+      "missing": [],
+      "duplicates": false,
+      "unexpected": [],
+      "first_asr_seconds": 1.1437028000000282,
+      "all_samples_delivered": true,
+      "stream_done": true,
+      "partial_before_eof": true,
+      "application_observer_agree": true,
+      "delays": [
+        {
+          "checkpoint": "secret_place",
+          "estimated_delay_seconds": 0.9989774999999099
+        },
+        {
+          "checkpoint": "comic_books_and_toys",
+          "estimated_delay_seconds": 0.6656212000002597
+        },
+        {
+          "checkpoint": "after_school_study",
+          "estimated_delay_seconds": 0.4131397999994988
+        }
+      ],
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      }
+    }
+  ],
+  "controls": {
+    "recordings": 4,
+    "book_comparisons": 36,
+    "current_tracker_triggers": 0,
+    "all_observer_triggers": 0,
+    "all_samples_delivered": true,
+    "all_final_completed_and_normal_close": true
+  },
+  "aggregate": {
+    "recordings": 9,
+    "expected": 27,
+    "triggered": 26,
+    "median_estimated_delay_seconds": 0.8861018000000058,
+    "min_estimated_delay_seconds": 0.01718639999990046,
+    "max_estimated_delay_seconds": 1.9350240999997368,
+    "more_than_one_second_early": 0,
+    "duplicate_recordings": 0,
+    "unexpected_ids": 0,
+    "median_first_asr_seconds": 2.7297091000000364,
+    "delivery_and_completion_pass": true
+  },
+  "evaluation_date": "2026-10-31",
+  "server_environment": {
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "packages": {
+      "torch": "2.7.1",
+      "nemo_toolkit": "3.1.0",
+      "numpy": "2.2.6",
+      "websockets": "16.1.1"
+    }
+  },
+  "client_environment": {
+    "python": "3.10.7 (tags/v3.10.7:6cc6b13, Sep  5 2022, 14:08:36) [MSC v.1933 64 bit (AMD64)]",
+    "packages": {
+      "whisper-live": "0.10.0",
+      "numpy": "2.2.6",
+      "websocket-client": "1.9.2",
+      "websockets": "16.1.1",
+      "rapidfuzz": "3.14.5"
+    },
+    "gpu": "NVIDIA GeForce RTX 3070 Ti, 610.88, 310.00 W, 8192 MiB"
+  },
+  "limits": [
+    "One fresh paced stream per recording; development data, not held-out validation.",
+    "Automatic acoustic endpoints reused from the previous evaluation; not manually verified.",
+    "No fresh microphone, alternative recognizer, Jetson, or Pi comparison.",
+    "The report reader was repaired after streaming for legacy Windows stdout decoding; both coordinator hashes are recorded. Inference, matcher, client and probe sources were unchanged."
+  ]
+}

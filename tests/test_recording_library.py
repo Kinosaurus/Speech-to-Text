@@ -3,7 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from recording_library import resolve_recording_path, session_outputs
+from books_to_life.data.recording_library import resolve_recording_path, session_outputs
 
 
 class RecordingLibraryTests(unittest.TestCase):

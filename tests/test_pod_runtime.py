@@ -3,8 +3,8 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
-from asr_runtime import configure_device, describe_device
-from audio_runtime import configure_microphone, select_input_device, wait_for_server
+from books_to_life.runtime.asr_runtime import configure_device, describe_device
+from books_to_life.runtime.audio_runtime import configure_microphone, select_input_device, wait_for_server
 
 
 def fake_audio():
@@ -52,14 +52,14 @@ class PodRuntimeTests(unittest.TestCase):
     def test_ready_wait_yields_cpu_and_returns_after_handshake(self):
         connection = SimpleNamespace(recording=False, server_error=False, waiting=False)
         client = SimpleNamespace(clients=[connection])
-        with patch('audio_runtime.time.sleep', side_effect=lambda _: setattr(connection, 'recording', True)) as sleep:
+        with patch('books_to_life.runtime.audio_runtime.time.sleep', side_effect=lambda _: setattr(connection, 'recording', True)) as sleep:
             wait_for_server(client, timeout=1)
         sleep.assert_called_once_with(0.05)
 
     def test_missing_server_times_out_and_rejection_fails_immediately(self):
         connection = SimpleNamespace(recording=False, server_error=False, waiting=False)
         client = SimpleNamespace(clients=[connection])
-        with patch('audio_runtime.time.monotonic', side_effect=[0, 2]):
+        with patch('books_to_life.runtime.audio_runtime.time.monotonic', side_effect=[0, 2]):
             with self.assertRaises(TimeoutError):
                 wait_for_server(client, timeout=1)
         connection.server_error = True

@@ -1,7 +1,7 @@
 import unittest
 
-from boundary_matcher import BoundaryEvidenceMatcher
-from timely_matcher import TimelyEvidenceMatcher
+from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
+from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
 
 
 def config():

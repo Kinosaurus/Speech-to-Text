@@ -43,7 +43,7 @@ Plug in the USB microphone **before starting the containers**. List its input
 devices inside the pod container:
 
 ```bash
-docker compose -f compose.yaml -f compose.pi4.yaml run --rm --no-deps pod python run_client.py --list_input_devices
+docker compose -f compose.yaml -f compose.pi4.yaml run --rm --no-deps pod python -m books_to_life.cli.run_client --list_input_devices
 getent group audio | cut -d: -f3
 ```
 
@@ -64,7 +64,7 @@ compatibility still needs a hardware test.
 While connected to the internet, cache the same model selected in `.env`:
 
 ```bash
-docker compose run --rm asr python prepare_models.py --model base.en
+docker compose run --rm asr python -m books_to_life.cli.prepare_models --model base.en
 docker compose -f compose.yaml -f compose.pi4.yaml up
 ```
 
@@ -97,12 +97,12 @@ two terminals:
 
 ```powershell
 # Terminal 1: force the CPU inference path used by the Pi.
-.\.venv\Scripts\python.exe run_server.py --device cpu --omp_num_threads 2
+.\.venv\Scripts\python.exe -m books_to_life.cli.run_server --device cpu --omp_num_threads 2
 ```
 
 ```powershell
 # Terminal 2: microphone and checkpoint tracking.
-.\.venv\Scripts\python.exe run_client.py --model base.en --audio_chunk 1024 --checkpoints recordings/library/stories/sample/readers/demo/checkpoints.json
+.\.venv\Scripts\python.exe -m books_to_life.cli.run_client --model base.en --audio_chunk 1024 --checkpoints recordings/library/stories/sample/readers/demo/checkpoints.json
 ```
 
 For a packaging test, start Docker Desktop in Linux container mode, run
@@ -116,8 +116,8 @@ Verification commands:
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
-.\.venv\Scripts\python.exe run_server.py --device cpu --check_device
-.\.venv\Scripts\python.exe checkpoint_demo.py --benchmark 30
+.\.venv\Scripts\python.exe -m books_to_life.cli.run_server --device cpu --check_device
+.\.venv\Scripts\python.exe -m books_to_life.cli.checkpoint_demo --benchmark 30
 docker compose -f compose.yaml -f compose.pi4.yaml config --quiet
 ```
 

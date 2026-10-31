@@ -1,8 +1,8 @@
 import copy
 import unittest
 
-from boundary_matcher import BoundaryEvidenceMatcher
-from split_matcher import SplitEvidenceMatcher
+from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
+from books_to_life.matching.split_matcher import SplitEvidenceMatcher
 
 
 def config():

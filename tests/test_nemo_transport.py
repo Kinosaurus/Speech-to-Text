@@ -6,8 +6,8 @@ from unittest.mock import Mock
 
 import numpy as np
 
-from nemo_parakeet import NemoParakeetSession, hint_phrases, reset_phrase_state
-from run_nemo_server import handle_connection
+from books_to_life.runtime.nemo_parakeet import NemoParakeetSession, hint_phrases, reset_phrase_state
+from books_to_life.cli.run_nemo_server import handle_connection
 
 
 class Socket:

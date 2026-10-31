@@ -10,9 +10,9 @@ import wave
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from checkpoint_matcher import normalize_text
-from book_context import BookContext
-from timely_matcher import TimelyEvidenceMatcher
+from books_to_life.matching.checkpoint_matcher import normalize_text
+from books_to_life.context.book_context import BookContext
+from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
 
 LIB=ROOT/'recordings/library'
 OUT=ROOT/'output/hint-comparison-2026-10-30'

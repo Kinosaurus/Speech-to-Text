@@ -2,9 +2,9 @@
 import json, sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from alignment_matcher import AlignmentMatcher
-from evidence_matcher import EvidenceAlignmentMatcher
-from split_matcher import SplitEvidenceMatcher
+from books_to_life.matching.alignment_matcher import AlignmentMatcher
+from books_to_life.matching.evidence_matcher import EvidenceAlignmentMatcher
+from books_to_life.matching.split_matcher import SplitEvidenceMatcher
 ROOT=Path(__file__).resolve().parents[1]
 BOOKS={n:json.loads((ROOT/f'recordings/library/stories/{n}/readers/{n}/checkpoints.json').read_text()) for n in ['horse','fat_cat','tea','little_mermaid']}
 def replay(cls,book,events):

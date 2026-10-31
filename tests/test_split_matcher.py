@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 import unittest
-from split_matcher import SplitEvidenceMatcher,split_similarity
+from books_to_life.matching.split_matcher import SplitEvidenceMatcher,split_similarity
 ROOT=Path(__file__).resolve().parents[1]
 
 def ready():

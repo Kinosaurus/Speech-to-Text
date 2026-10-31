@@ -8,10 +8,10 @@ from unittest.mock import Mock, patch
 
 import numpy as np
 
-from book_context import BookHints, ContextState
-from book_context_client import BookContextConnection, BookTranscriptionClient
+from books_to_life.context.book_context import BookHints, ContextState
+from books_to_life.context.book_context_client import BookContextConnection, BookTranscriptionClient
 try:
-    from book_context_server import BookContextServer
+    from books_to_life.context.book_context_server import BookContextServer
 except ModuleNotFoundError:
     # The lightweight client image intentionally omits server-only dependencies.
     BookContextServer = None
@@ -19,8 +19,8 @@ except ModuleNotFoundError:
 
 class BookContextTransportTests(unittest.TestCase):
     def test_audio_wrapper_preserves_capture_options_and_transcript_path(self):
-        with patch("book_context_client.BookContextConnection") as connection, \
-                patch("book_context_client.TranscriptionTeeClient.__init__", return_value=None) as audio:
+        with patch("books_to_life.context.book_context_client.BookContextConnection") as connection, \
+                patch("books_to_life.context.book_context_client.TranscriptionTeeClient.__init__", return_value=None) as audio:
             wrapper = BookTranscriptionClient(
                 "localhost", 9090, model="small.en", initial_prompt="Passage", hotwords="Mermaid",
                 mute_audio_playback=True, save_output_recording=True,
@@ -33,7 +33,7 @@ class BookContextTransportTests(unittest.TestCase):
                                       save_output_recording=True, output_recording_filename="reading.wav")
 
     def test_audio_wrapper_rejects_invalid_output_paths_before_connecting(self):
-        with patch("book_context_client.BookContextConnection") as connection:
+        with patch("books_to_life.context.book_context_client.BookContextConnection") as connection:
             for options in ({"save_output_recording": True, "output_recording_filename": "reading.mp3"},
                             {"output_transcription_path": "reading.txt"}):
                 with self.assertRaises(ValueError):
