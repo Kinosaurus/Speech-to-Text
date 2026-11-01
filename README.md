@@ -6,6 +6,10 @@ triggers checkpoints for visuals and sound.
 Start with [current progress and tested commands](docs/PROJECT_STATUS.md).
 For model choices, deployment options, and why the pilot setup was selected,
 see [setups and tradeoffs](docs/SETUPS.md).
+For additional child recordings and regional source findings, see
+[child-reading data](docs/CHILD_READING_DATA.md).
+Current split mode separates one-shot permission from reading progress. See
+[effect policies](docs/EFFECT_POLICIES.md) and the [guarded rerun results](benchmarks/GUARDED_PILOT_RESULTS.md).
 For installation and running the app, use the [running guide](docs/RUNNING.md).
 Run commands from this project folder, even when reading a guide inside `docs/`.
 

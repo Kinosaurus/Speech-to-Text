@@ -1,0 +1,84 @@
+{
+  "book_id": "singapore-pilot-original",
+  "title": "Maya and the Rainy Garden \u2014 original collection passage",
+  "threshold": 82,
+  "stability": 2,
+  "min_coverage": 0.8,
+  "pages": [
+    {
+      "page": 1,
+      "text": "Maya looked out of the window. Rain fell softly on the garden. She put on her shoes and walked downstairs with Dad. Maya opened her bright yellow umbrella. They walked past the void deck and followed the path to the pond. The small frog jumped into the pond. Maya watched the circles spread across the water. Soon the rain stopped. Dad and Maya walked home together. Maya hung the umbrella beside the door. She smiled and went inside to draw a picture of the little frog."
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "rain_ambience",
+      "book_id": "singapore-pilot-original",
+      "checkpoint_position": 1,
+      "page": 1,
+      "checkpoint_text": "Rain fell softly on the garden",
+      "word_start": 6,
+      "word_end": 12,
+      "effect_policy": "ambience",
+      "required_words": [],
+      "effect": {
+        "effect_id": "rain_ambience"
+      }
+    },
+    {
+      "id": "umbrella_open",
+      "book_id": "singapore-pilot-original",
+      "checkpoint_position": 2,
+      "page": 1,
+      "checkpoint_text": "Maya opened her bright yellow umbrella",
+      "word_start": 22,
+      "word_end": 28,
+      "effect_policy": "one_shot",
+      "required_words": [
+        "opened"
+      ],
+      "effect": {
+        "effect_id": "umbrella_open"
+      }
+    },
+    {
+      "id": "frog_jump",
+      "book_id": "singapore-pilot-original",
+      "checkpoint_position": 3,
+      "page": 1,
+      "checkpoint_text": "The small frog jumped into the pond",
+      "word_start": 41,
+      "word_end": 48,
+      "effect_policy": "one_shot",
+      "required_words": [
+        "jumped"
+      ],
+      "effect": {
+        "effect_id": "frog_jump"
+      }
+    },
+    {
+      "id": "umbrella_hung",
+      "book_id": "singapore-pilot-original",
+      "checkpoint_position": 4,
+      "page": 1,
+      "checkpoint_text": "Maya hung the umbrella beside the door",
+      "word_start": 66,
+      "word_end": 73,
+      "effect_policy": "one_shot",
+      "required_words": [
+        "hung"
+      ],
+      "effect": {
+        "effect_id": "umbrella_hung"
+      }
+    }
+  ],
+  "provenance": {
+    "kind": "Original project collection passage; not a corpus recording",
+    "audio_collected": false,
+    "actual_reader_country": null,
+    "actual_reader_age": null,
+    "timing_gold_available": false
+  }
+}

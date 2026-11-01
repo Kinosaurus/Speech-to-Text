@@ -1,0 +1,14 @@
+{
+  "session_id": null,
+  "reader_id": null,
+  "recording_location_country": null,
+  "reader_age_or_grade": null,
+  "self_reported_language_background": null,
+  "microphone": null,
+  "microphone_distance_cm": null,
+  "background_audio_condition": null,
+  "passage": "Maya and the Rainy Garden",
+  "recording_permission_confirmed": false,
+  "notes": null,
+  "manual_timing_verified": false
+}

@@ -267,6 +267,8 @@ if __name__ == '__main__':
                       f"ambiguous={update.ambiguous}, duplicate={update.duplicate}")
                 if update.skipped_checkpoint_ids:
                     print(f"[SKIPPED] {', '.join(update.skipped_checkpoint_ids)}")
+            if getattr(update, 'effect_suppressed', False):
+                print(f"[SUPPRESSED] {update.checkpoint_id}: {update.effect_suppression_reason}")
             if update.triggered:
                 effect = json.dumps(update.effect, ensure_ascii=False)
                 print(f"[TRIGGER] {update.checkpoint_id}: {effect}")

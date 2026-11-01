@@ -70,7 +70,7 @@ def message(self,ws,raw):
   for name,pair in trackers.items():
    for mode,m in pair.items():
     start=time.perf_counter();u=m.process(text,seg);elapsed=time.perf_counter()-start
-    emit('tracker',book=name,mode=mode,triggered=u.triggered,scene=u.checkpoint_id,score=u.score,position=u.tracked_word_position,skipped=list(u.skipped_checkpoint_ids),audio_end=float(seg[-1]['end']),compute_seconds=elapsed)
+    emit('tracker',book=name,mode=mode,triggered=u.triggered,scene=u.checkpoint_id,score=u.score,position=u.tracked_word_position,skipped=list(u.skipped_checkpoint_ids),audio_end=float(seg[-1]['end']),compute_seconds=elapsed,suppressed=u.effect_suppressed,suppression_reason=u.effect_suppression_reason,effect_policy=u.effect_policy)
     if u.triggered:print('[LIVE_TRIGGER]',name,mode,u.checkpoint_id,flush=True)
  return oldmessage(self,ws,raw)
 TranscriptionTeeClient.multicast_packet=send

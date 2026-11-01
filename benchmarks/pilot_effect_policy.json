@@ -1,0 +1,11 @@
+{
+  "default_effect_policy": "one_shot",
+  "rules": [
+    {
+      "checkpoint_text": "bears hibernate from October to April",
+      "required_words": ["hibernate"],
+      "reason": "This one-shot represents hibernation; a date phrase alone must not grant effect permission."
+    }
+  ],
+  "note": "Authored effect semantics, not ASR substitutions. Passage text and anchor word ranges remain unchanged. Ambience catch-up must be explicitly selected by a book author."
+}

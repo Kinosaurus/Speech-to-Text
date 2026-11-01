@@ -2,10 +2,52 @@
 from books_to_life.matching.alignment_matcher import align_words
 from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
 from books_to_life.matching.checkpoint_matcher import fuzz
+from books_to_life.matching.effect_permission import EffectPermission
+from dataclasses import replace
 
 
 class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     mode = 'experimental contextual alignment with timely anchor recovery'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._effect_permissions = {
+            str(cp['id']): EffectPermission(cp, self.default_min_coverage, self.words[max(0, start-3):start])
+            for cp, (start, end) in zip(self.checkpoints, self.checkpoint_ranges)}
+        self.suppressed_checkpoint_ids = set()
+
+    def process(self, transcript, segments=None):
+        update = super().process(transcript, segments)
+        if not update.triggered:
+            return update
+        permission = self._effect_permissions[update.checkpoint_id]
+        allowed, reason = permission.permits(self._buffer)
+        if allowed:
+            return replace(update, effect_policy=permission.policy)
+        # Superclass progress advances independently. A rejected one-shot is
+        # recorded as suppressed, never as emitted, and never replayed later.
+        self.triggered_checkpoint_ids.discard(update.checkpoint_id)
+        self.suppressed_checkpoint_ids.add(update.checkpoint_id)
+        return replace(update, triggered=False, effect=None, effect_suppressed=True,
+                       effect_suppression_reason=reason, effect_policy=permission.policy)
+
+    def _select_candidate(self, candidates):
+        best = super()._select_candidate(candidates)
+        if best is None:
+            return None
+        checkpoint = self.checkpoints[self.current_index]
+        start, end = self.checkpoint_ranges[self.current_index]
+        # Only resolve a near tie one word before the acquired NEXT endpoint.
+        # Never reward a global jump, distant checkpoint, or unsupported anchor.
+        if best.end != end-1 or self.tracked_word_position < start:
+            return best
+        supported, _ = self._effect_permissions[str(checkpoint['id'])].supports_anchor(self._buffer)
+        if not supported:
+            return best
+        alternatives = [span for span in candidates if span.end == end
+                        and span.start <= best.end and best.start < span.end
+                        and best.score-span.score <= .5]
+        return max(alternatives, key=lambda span: (span.score, span.matched_words)) if alternatives else best
 
     def _ingest(self, transcript, segments):
         fresh = super()._ingest(transcript, segments)
@@ -93,4 +135,18 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                 and not (set(self._buffer[-16:]) & {'not','never','dont',"don't",'say','repeat'})):
             self._boundary_prefix = dict(scene=target,end=best.end,time=self._audio_time,
                                          update=self._fresh_updates,text=tuple(self._buffer))
+        elif (end-start <= 6 and start+2 <= best.end < end
+                and self.tracked_word_position >= start
+                and not (set(self._buffer[-16:]) & {'not','never','dont',"don't",'say','repeat'})):
+            # A short, function-word-heavy anchor may first arrive as only
+            # "a bit". Count its PREVIOUS callback only with an acquired local
+            # position and a unique exact five-word run including book context
+            # (e.g. "it gets is a bit"). The reached endpoint must still supply
+            # a different, newer callback; same-audio revisions cannot confirm.
+            context = self.words[best.end-5:best.end]
+            if (len(context) == 5 and best.end-5 < start and len(set(context)) >= 4
+                    and self._buffer[-5:] == context
+                    and sum(self.words[i:i+5] == context for i in range(len(self.words)-4)) == 1):
+                self._boundary_prefix = dict(scene=target,end=best.end,time=self._audio_time,
+                                             update=self._fresh_updates,text=tuple(self._buffer))
         return count

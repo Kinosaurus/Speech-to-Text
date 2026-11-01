@@ -90,3 +90,31 @@ Six Indian Grade 3 recordings, three speakers, 3m14s total. Original supplied te
 <!-- nine-recording-hint-comparison -->
 
 [Moving hints and whole-passage phrases versus no hints: nine-recording live comparison](evaluation/hint-comparison-2026-10-30/README.md).
+
+<!-- mps-expansion-2026-11-02 -->
+## Additional MPS readings: Bears and Butterflies
+
+Twelve new Indian recordings from six new speaker IDs, Grades 4 and 5; exact ages unknown. India is South Asia, not Southeast Asia. Original provider passages and transcripts stay separate. Three fixed checkpoints per paragraph; Historical pre-guard run: 35/36 configured activations; no human-verified timing gold. See the guarded follow-up for current effect-permission outcomes.
+
+| Recording | Grade | Audio | Passage | Checkpoints |
+| --- | ---: | --- | --- | --- |
+| [4a18f_EN-OL-RC-426_1](stories/mps-bears-part-1/readers/mps-4a18f/README.md) | 4 | [Play](stories/mps-bears-part-1/readers/mps-4a18f/audio.wav) | [Original text](stories/mps-bears-part-1/readers/mps-4a18f/passage.txt) | [Manifest](stories/mps-bears-part-1/readers/mps-4a18f/checkpoints.json) |
+| [4a18f_EN-OL-RC-426_2](stories/mps-bears-part-2/readers/mps-4a18f/README.md) | 4 | [Play](stories/mps-bears-part-2/readers/mps-4a18f/audio.wav) | [Original text](stories/mps-bears-part-2/readers/mps-4a18f/passage.txt) | [Manifest](stories/mps-bears-part-2/readers/mps-4a18f/checkpoints.json) |
+| [4b25a_EN-OL-RC-426_1](stories/mps-bears-part-1/readers/mps-4b25a/README.md) | 4 | [Play](stories/mps-bears-part-1/readers/mps-4b25a/audio.wav) | [Original text](stories/mps-bears-part-1/readers/mps-4b25a/passage.txt) | [Manifest](stories/mps-bears-part-1/readers/mps-4b25a/checkpoints.json) |
+| [4b25a_EN-OL-RC-426_2](stories/mps-bears-part-2/readers/mps-4b25a/README.md) | 4 | [Play](stories/mps-bears-part-2/readers/mps-4b25a/audio.wav) | [Original text](stories/mps-bears-part-2/readers/mps-4b25a/passage.txt) | [Manifest](stories/mps-bears-part-2/readers/mps-4b25a/checkpoints.json) |
+| [4a35g_EN-OL-RC-426_1](stories/mps-bears-part-1/readers/mps-4a35g/README.md) | 4 | [Play](stories/mps-bears-part-1/readers/mps-4a35g/audio.wav) | [Original text](stories/mps-bears-part-1/readers/mps-4a35g/passage.txt) | [Manifest](stories/mps-bears-part-1/readers/mps-4a35g/checkpoints.json) |
+| [4a35g_EN-OL-RC-426_2](stories/mps-bears-part-2/readers/mps-4a35g/README.md) | 4 | [Play](stories/mps-bears-part-2/readers/mps-4a35g/audio.wav) | [Original text](stories/mps-bears-part-2/readers/mps-4a35g/passage.txt) | [Manifest](stories/mps-bears-part-2/readers/mps-4a35g/checkpoints.json) |
+| [5a28c_EN-OL-RC-538_1](stories/mps-butterflies-part-1/readers/mps-5a28c/README.md) | 5 | [Play](stories/mps-butterflies-part-1/readers/mps-5a28c/audio.wav) | [Original text](stories/mps-butterflies-part-1/readers/mps-5a28c/passage.txt) | [Manifest](stories/mps-butterflies-part-1/readers/mps-5a28c/checkpoints.json) |
+| [5a28c_EN-OL-RC-538_2](stories/mps-butterflies-part-2/readers/mps-5a28c/README.md) | 5 | [Play](stories/mps-butterflies-part-2/readers/mps-5a28c/audio.wav) | [Original text](stories/mps-butterflies-part-2/readers/mps-5a28c/passage.txt) | [Manifest](stories/mps-butterflies-part-2/readers/mps-5a28c/checkpoints.json) |
+| [5b2b_EN-OL-RC-538_1](stories/mps-butterflies-part-1/readers/mps-5b2b/README.md) | 5 | [Play](stories/mps-butterflies-part-1/readers/mps-5b2b/audio.wav) | [Original text](stories/mps-butterflies-part-1/readers/mps-5b2b/passage.txt) | [Manifest](stories/mps-butterflies-part-1/readers/mps-5b2b/checkpoints.json) |
+| [5b2b_EN-OL-RC-538_2](stories/mps-butterflies-part-2/readers/mps-5b2b/README.md) | 5 | [Play](stories/mps-butterflies-part-2/readers/mps-5b2b/audio.wav) | [Original text](stories/mps-butterflies-part-2/readers/mps-5b2b/passage.txt) | [Manifest](stories/mps-butterflies-part-2/readers/mps-5b2b/checkpoints.json) |
+| [5a21k_EN-OL-RC-538_1](stories/mps-butterflies-part-1/readers/mps-5a21k/README.md) | 5 | [Play](stories/mps-butterflies-part-1/readers/mps-5a21k/audio.wav) | [Original text](stories/mps-butterflies-part-1/readers/mps-5a21k/passage.txt) | [Manifest](stories/mps-butterflies-part-1/readers/mps-5a21k/checkpoints.json) |
+| [5a21k_EN-OL-RC-538_2](stories/mps-butterflies-part-2/readers/mps-5a21k/README.md) | 5 | [Play](stories/mps-butterflies-part-2/readers/mps-5a21k/audio.wav) | [Original text](stories/mps-butterflies-part-2/readers/mps-5a21k/passage.txt) | [Manifest](stories/mps-butterflies-part-2/readers/mps-5a21k/checkpoints.json) |
+
+[Source/import report](acquisition/mps-expansion-2026-11-02/import_report.json). [Evaluation report](../../benchmarks/READING_EXPANSION_RESULTS.md). Local listening index: output/mps-expansion-2026-11-02/INDEX.md. Provider terms require clarification before redistribution; raw files remain local.
+<!-- /mps-expansion-2026-11-02 -->
+
+<!-- guarded-effect-followup -->
+## Current guarded effect follow-up
+
+[Effect policy and fresh reruns](../../benchmarks/GUARDED_PILOT_RESULTS.md) distinguish emitted, withheld, skipped, and unreached checkpoints. Additional-reader manifests carry authored one-shot policies; pre-policy manifest copies and old frozen evaluations are preserved. Human listening sign-off is still pending.

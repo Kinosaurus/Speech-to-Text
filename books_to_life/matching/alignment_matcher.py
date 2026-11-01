@@ -39,6 +39,9 @@ class AlignmentUpdate(MatchUpdate):
     recovering: bool = False
     ambiguous: bool = False
     duplicate: bool = False
+    effect_suppressed: bool = False
+    effect_suppression_reason: str | None = None
+    effect_policy: str | None = None
 
 
 def align_words(
@@ -323,7 +326,7 @@ class AlignmentMatcher(CheckpointMatcher):
             if previous is None or (span.score, span.matched_words) > (previous.score, previous.matched_words):
                 best_by_end[span.end] = span
         candidates = sorted(best_by_end.values(), key=lambda span: (span.score, span.matched_words), reverse=True)
-        best = candidates[0] if candidates else None
+        best = self._select_candidate(candidates)
         ambiguous = bool(best and any(
             self._scene(other.end) != self._scene(best.end)
             and (other.end <= best.start or best.end <= other.start)
@@ -364,3 +367,7 @@ class AlignmentMatcher(CheckpointMatcher):
             alignment_start=best.start, alignment_end=best.end,
             skipped_checkpoint_ids=skipped, recovering=recovering,
         )
+
+    def _select_candidate(self, candidates):
+        """Hook for a bounded next-endpoint choice; baseline ordering is unchanged."""
+        return candidates[0] if candidates else None

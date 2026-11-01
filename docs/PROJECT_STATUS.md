@@ -1,5 +1,28 @@
 # Books to Life Pod: current flow, handover and verification
 
+Implemented 2 November: split mode now gates one-shot effects separately from
+reading progress and fixes the reproduced short-anchor ranking/confirmation
+delay. [The complete guarded rerun](../benchmarks/GUARDED_PILOT_RESULTS.md)
+covered 21 readings and four controls: 56 effects emitted, five withheld, two
+unreached; zero effects in 36 unrelated-audio/passage comparisons. The affected
+case improved from 5.543 s to 0.709 s on provisional timing. All 135 tests pass.
+See [effect policies](EFFECT_POLICIES.md) and the
+[Singapore microphone collection kit](pilot/singapore/README.md). Human listening
+sign-off and actual Singapore microphone/enclosure testing remain pending.
+The dated notes below retain the earlier, pre-guard evidence.
+
+Flagged-case follow-up: [the evidence review](../benchmarks/FLAGGED_READING_REVIEW.md)
+finds two omission/effect-policy risks and one reproducible candidate-ranking
+delay. All original human listening fields remain unverified. Runtime matching
+was reviewed but not changed.
+
+2 November follow-up: [12 additional child-reading streams](../benchmarks/READING_EXPANSION_RESULTS.md)
+from six new Indian speaker IDs activated 35/36 configured checkpoints, with zero
+triggers in 16 unrelated-audio/passage comparisons. These are not Singapore or
+Southeast Asian children. Seventeen checkpoints have extra review flags and no
+timing is manually verified. All 122 unit tests pass. Runtime matching was not
+changed; see [regional data findings](CHILD_READING_DATA.md).
+
 31 October follow-up: application Python code now lives in `books_to_life/`.
 Use `python -m books_to_life.cli.<module>` from the project root. See
 [setups and tradeoffs](SETUPS.md) for the recommended explicit configuration and
@@ -243,8 +266,9 @@ integration testing. The full audio benchmark was not rerun on 27 October.
 
 - [ ] Connect trigger payloads to preloaded projector/video and sound playback;
       replace placeholder assets, then measure real audio/video synchronization.
-- [ ] Define persistent ambience versus one-shot event behavior. Late catch-up
-      should set the current ambience without replaying every missed one-shot.
+- [x] Define persistent ambience versus one-shot permission in split mode;
+      suppressed one-shots advance progress without replay. Real actuator
+      integration and component policies for mixed payloads remain pending.
 - [ ] Add operator book selection/session reset and define rereading behavior.
       State is currently in memory and resets when the client restarts.
 - [ ] Define disconnect/reconnect and restart recovery; add persistence if needed.

@@ -1,5 +1,9 @@
 # Books to Life Pod
 
+The current guarded pilot requires explicit `--matching_mode split`. Legacy
+alignment/evidence/fuzzy examples are comparison modes and do not implement
+the new [one-shot effect guard](EFFECT_POLICIES.md).
+
 For the recommended pilot and a comparison of deployment options, see
 [setups and tradeoffs](SETUPS.md). Fresh post-reorganization results are in
 [the 31 October evaluation](../benchmarks/BEST_SETUP_RESULTS.md).

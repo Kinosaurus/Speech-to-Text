@@ -2,6 +2,12 @@
 
 Updated 31 October 2026. Run all commands from the repository root.
 
+2 November update: split mode now separates effect permission from reading
+progress. See [effect policies](EFFECT_POLICIES.md) and the
+[guarded pilot evaluation](../benchmarks/GUARDED_PILOT_RESULTS.md). Historical
+activation counts below precede this conservative guard and are not current
+effect-correctness scores.
+
 ## Recommended setup for the current reading pilot
 
 Use **Parakeet Unified NeMo 0.6B on CUDA, the `split` tracker, and no automatic

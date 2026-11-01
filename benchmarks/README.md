@@ -1,5 +1,13 @@
 # Benchmark child-reading recognition
 
+Latest: [guarded effect and timing evaluation](GUARDED_PILOT_RESULTS.md), 21
+fresh reading streams plus four unrelated-speech streams. Suppressed effects
+are reported separately from emitted and unreached checkpoints.
+
+The [2 November additional-reader evaluation](READING_EXPANSION_RESULTS.md)
+adds 12 Indian recordings, original passages, 36 frozen checkpoints, fresh
+application streams and controls, with provisional endpoint review files.
+
 For the current application pilot, see [setups and tradeoffs](../docs/SETUPS.md)
 and [the fresh post-reorganization results](BEST_SETUP_RESULTS.md).
 `run_best_setup.py` repeats that pilot through the actual client and WebSocket

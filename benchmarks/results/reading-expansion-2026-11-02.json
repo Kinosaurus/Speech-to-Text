@@ -1,0 +1,1137 @@
+{
+  "date": "2026-11-02",
+  "country": "India",
+  "regional_status": "South Asian fallback; not Singapore/SEA validation",
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching_mode": "split",
+    "hints": false,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "sample_rate": 16000,
+    "audio_packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "repetitions": 1
+  },
+  "selection": {
+    "seed": 20261102,
+    "country": "India",
+    "region": "South Asia; not Southeast Asia",
+    "selected_ids": [
+      "4a18f_EN-OL-RC-426_1",
+      "4a18f_EN-OL-RC-426_2",
+      "4b25a_EN-OL-RC-426_1",
+      "4b25a_EN-OL-RC-426_2",
+      "4a35g_EN-OL-RC-426_1",
+      "4a35g_EN-OL-RC-426_2",
+      "5a28c_EN-OL-RC-538_1",
+      "5a28c_EN-OL-RC-538_2",
+      "5b2b_EN-OL-RC-538_1",
+      "5b2b_EN-OL-RC-538_2",
+      "5a21k_EN-OL-RC-538_1",
+      "5a21k_EN-OL-RC-538_2"
+    ],
+    "speakers": [
+      "4a18f",
+      "4a35g",
+      "4b25a",
+      "5a21k",
+      "5a28c",
+      "5b2b"
+    ],
+    "excluded_speakers": [
+      "3a14g",
+      "3c29g",
+      "3d60g"
+    ],
+    "metadata_sha256": "d43d1c9b2cb1f2fd6177eecea4ff501595413a04ddb2050c037d87e90883b6b0",
+    "revision": "6b4a075b9f7db047f70e3c6abef8a843ba369594",
+    "policy": "Three paired-paragraph speakers per grade, 4 and 5; three female and three male IDs total. Sorted candidates sampled using a fixed RNG seed. No selection by ASR, reading score, duration, or checkpoint outcome.",
+    "checkpoints": {
+      "4-1": [
+        {
+          "id": "thick_legs",
+          "text": "short tails and thick legs"
+        },
+        {
+          "id": "fish_and_seals",
+          "text": "usually eat fish and seals"
+        },
+        {
+          "id": "keep_away",
+          "text": "keep away from us"
+        }
+      ],
+      "4-2": [
+        {
+          "id": "hibernate",
+          "text": "bears hibernate from October to April"
+        },
+        {
+          "id": "clever_bears",
+          "text": "they can smell very well and are very clever"
+        },
+        {
+          "id": "begging_paws",
+          "text": "by sitting up and holding out their paws"
+        }
+      ],
+      "5-1": [
+        {
+          "id": "wing_colours",
+          "text": "the brilliant colours of their wings"
+        },
+        {
+          "id": "small_scales",
+          "text": "covered with very small scales"
+        },
+        {
+          "id": "fine_patterns",
+          "text": "make very fine patterns"
+        }
+      ],
+      "5-2": [
+        {
+          "id": "black_circles",
+          "text": "large, black circles on their wings"
+        },
+        {
+          "id": "escape_enemies",
+          "text": "escape from its enemies"
+        },
+        {
+          "id": "damaged_wing",
+          "text": "a bit of the wing"
+        }
+      ]
+    }
+  },
+  "source_sha256": {
+    "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+    "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+    "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+    "books_to_life/cli/prepare_nemo_model.py": "16b3eae34d54afb6091a4aa177dbb998e3e213581dd7e7638a1ab5df93d256f7",
+    "books_to_life/cli/run_client.py": "429c4663afcb6934a2545ea0969e29ade6d19afbe81646172e0d1ed01a1f9f90",
+    "books_to_life/cli/run_native_server.py": "03bd3bebe66bc6b92ecb46cfde30bff1f3c8b4ce3a19fe18c7bf1e795d8c0294",
+    "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+    "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+    "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+    "books_to_life/context/book_context.py": "7a5b1ed5819335ad1f0ba4f42f23b59f418d5634aa76bffda8774e0149e60758",
+    "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+    "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+    "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+    "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+    "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+    "books_to_life/matching/alignment_matcher.py": "79fc4bfbd173c7159a4663486401b19e6ba318f7e3e4252ec80c77434404da9e",
+    "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+    "books_to_life/matching/checkpoint_matcher.py": "5cee23779d3ea0fd293137b10317443b6db6e602aa64c724e4aa9f648719798c",
+    "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+    "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+    "books_to_life/matching/timely_matcher.py": "130fdde015995e0d5615e748a84f49e4eafd31a3e687e262dd8d5723b03127d9",
+    "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+    "books_to_life/runtime/asr_runtime.py": "e4c299f854a2df1c8984f0fcdedd28adc3847fa33502b6be981bd6d651ce276c",
+    "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+    "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+    "books_to_life/runtime/nemo_parakeet.py": "f916f61a2930732f206084a889cb8f51e6d46e93352b79ac96f8f3a0e1f813a6",
+    "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+    "benchmarks/prepare_mps_expansion.py": "388dae98d17e15eab226f950a0275877852c1f498c643cc753e81d51deaa99e2",
+    "benchmarks/run_reading_expansion.py": "d7e241f12551c6a592a967322a536584e69e612673566e72dc3f7f2ff0e1f683",
+    "benchmarks/run_mps_streaming.py": "17319b3a7cd1f306e06be8e9b1157269c72d0e8798991e5e4dd723c0ae43da06",
+    "benchmarks/run_boundary_comparison.py": "7c7cbb3c15ecff8f60592b554728b846756b11774de553fbd0a6cae04494d1d4",
+    "benchmarks/live_tracker_probe.py": "e86c03db4c8f4837c278602ce61ff33ba6b85530abeaed144c0f15ba495d7eb2",
+    "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12"
+  },
+  "analysis_sha256": "47362b2b7a9caba3c77aef0b6d9f44fd0b10cd60ec03b4176eb74086b2b44a62",
+  "manual_timing_verification": false,
+  "recordings": [
+    {
+      "audio_id": "4a18f_EN-OL-RC-426_1",
+      "reader": "4a18f",
+      "grade": 4,
+      "gender": "Female",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 42.95,
+      "audio_sha256": "4ac2368c51dbab635aab2861cd092ce305dfc4e2b926fc9c276c81de54b5086a",
+      "manifest_sha256": "76e3e2950519b4cdde392faabe7d0a488666065023cff8ea245cbea011b842a8",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 4.65743780000048,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "triggered": true,
+          "estimated_endpoint_seconds": null,
+          "estimated_delay_seconds": null,
+          "manual_verification": false,
+          "review_flags": [
+            "small.en: anchor could not be located",
+            "No two-model endpoint; latency unscored"
+          ],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 6.18,
+          "endpoint_in_clip_seconds": null
+        },
+        {
+          "id": "fish_and_seals",
+          "triggered": true,
+          "estimated_endpoint_seconds": 16.85,
+          "estimated_delay_seconds": 0.9712937000022066,
+          "manual_verification": false,
+          "review_flags": [
+            "Provider reports a reading substitution/deletion in this anchor",
+            "Low endpoint recognition probability"
+          ],
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          },
+          "clip_start_seconds": 12.6,
+          "endpoint_in_clip_seconds": 4.250000000000002
+        },
+        {
+          "id": "keep_away",
+          "triggered": true,
+          "estimated_endpoint_seconds": null,
+          "estimated_delay_seconds": null,
+          "manual_verification": false,
+          "review_flags": [
+            "small.en: anchor could not be located",
+            "medium.en: anchor could not be located",
+            "Provider reports a reading substitution/deletion in this anchor",
+            "No two-model endpoint; latency unscored"
+          ],
+          "provider_counts": {
+            "correct": 2,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "audio_id": "4a18f_EN-OL-RC-426_2",
+      "reader": "4a18f",
+      "grade": 4,
+      "gender": "Female",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 46.49,
+      "audio_sha256": "afdd03e1bca69cca388a90c84c80b296c7240240bc9122e84f83734b6756384b",
+      "manifest_sha256": "1cdaf351be2aa3dab567e7d6a8a549b29a49d5e014564f9fbe53cb2495f7c662",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.742829700000584,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 2,
+        "boundary": 3,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "triggered": true,
+          "estimated_endpoint_seconds": 6.79,
+          "estimated_delay_seconds": 0.46545330000117247,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 1.7999999999999998,
+          "endpoint_in_clip_seconds": 4.99
+        },
+        {
+          "id": "clever_bears",
+          "triggered": true,
+          "estimated_endpoint_seconds": null,
+          "estimated_delay_seconds": null,
+          "manual_verification": false,
+          "review_flags": [
+            "small.en: anchor could not be located",
+            "Provider reports a reading substitution/deletion in this anchor",
+            "No two-model endpoint; latency unscored"
+          ],
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 2,
+            "deletions": 0
+          },
+          "clip_start_seconds": 22.14,
+          "endpoint_in_clip_seconds": null
+        },
+        {
+          "id": "begging_paws",
+          "triggered": true,
+          "estimated_endpoint_seconds": 45.370000000000005,
+          "estimated_delay_seconds": 1.1045599999997648,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 37.26,
+          "endpoint_in_clip_seconds": 8.110000000000007
+        }
+      ]
+    },
+    {
+      "audio_id": "4b25a_EN-OL-RC-426_1",
+      "reader": "4b25a",
+      "grade": 4,
+      "gender": "Male",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 37.73,
+      "audio_sha256": "63fa5e358c004faed8fc46b0e77f27be3bd865807e1a705b67aa7c2ec1953165",
+      "manifest_sha256": "237011ac6631a28c1a0d6e97d3883d780d0b234163f2b4557764e0dc83bce217",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.7068474999996397,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "triggered": true,
+          "estimated_endpoint_seconds": 9.84,
+          "estimated_delay_seconds": 0.7594497000009142,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 6.5600000000000005,
+          "endpoint_in_clip_seconds": 3.2799999999999994
+        },
+        {
+          "id": "fish_and_seals",
+          "triggered": true,
+          "estimated_endpoint_seconds": 17.48,
+          "estimated_delay_seconds": 1.058960799999113,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 12.84,
+          "endpoint_in_clip_seconds": 4.640000000000001
+        },
+        {
+          "id": "keep_away",
+          "triggered": true,
+          "estimated_endpoint_seconds": 36.68,
+          "estimated_delay_seconds": 1.3072546000003058,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 33.74,
+          "endpoint_in_clip_seconds": 2.9399999999999977
+        }
+      ]
+    },
+    {
+      "audio_id": "4b25a_EN-OL-RC-426_2",
+      "reader": "4b25a",
+      "grade": 4,
+      "gender": "Male",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 32.39,
+      "audio_sha256": "1640e189c01f05863104a6b223cf01cf4d91289dfa8b5e1d20c5abc8c82ac12a",
+      "manifest_sha256": "7b70f9a968b9e7f6b29287a48df101843d368436a2f7056ab9715cb56e45d4b5",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.750200099999347,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "triggered": true,
+          "estimated_endpoint_seconds": 6.35,
+          "estimated_delay_seconds": 0.9464214999989053,
+          "manual_verification": false,
+          "review_flags": [
+            "Provider reports a reading substitution/deletion in this anchor"
+          ],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          },
+          "clip_start_seconds": 2.38,
+          "endpoint_in_clip_seconds": 3.9699999999999998
+        },
+        {
+          "id": "clever_bears",
+          "triggered": true,
+          "estimated_endpoint_seconds": 20.29,
+          "estimated_delay_seconds": 1.1018230999998195,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 15.0,
+          "endpoint_in_clip_seconds": 5.289999999999999
+        },
+        {
+          "id": "begging_paws",
+          "triggered": true,
+          "estimated_endpoint_seconds": 31.22,
+          "estimated_delay_seconds": 0.662165300000197,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 25.8,
+          "endpoint_in_clip_seconds": 5.419999999999998
+        }
+      ]
+    },
+    {
+      "audio_id": "4a35g_EN-OL-RC-426_1",
+      "reader": "4a35g",
+      "grade": 4,
+      "gender": "Female",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 48.41,
+      "audio_sha256": "1968faccdc2165043a46de11e0635f904c2faa81b6ef59906a484555b3c1c15a",
+      "manifest_sha256": "93faa22337e2b83dac0d8ad8fcc459a1f1d8f198e514f4ea96aecd1aeeaca184",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.182287300000098,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "triggered": true,
+          "estimated_endpoint_seconds": 12.33,
+          "estimated_delay_seconds": 1.6588981000004424,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 8.66,
+          "endpoint_in_clip_seconds": 3.67
+        },
+        {
+          "id": "fish_and_seals",
+          "triggered": true,
+          "estimated_endpoint_seconds": null,
+          "estimated_delay_seconds": null,
+          "manual_verification": false,
+          "review_flags": [
+            "small.en: anchor could not be located",
+            "medium.en: anchor could not be located",
+            "Provider reports a reading substitution/deletion in this anchor",
+            "No two-model endpoint; latency unscored"
+          ],
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "triggered": true,
+          "estimated_endpoint_seconds": 47.31,
+          "estimated_delay_seconds": 1.4820836999988387,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 44.28,
+          "endpoint_in_clip_seconds": 3.030000000000001
+        }
+      ]
+    },
+    {
+      "audio_id": "4a35g_EN-OL-RC-426_2",
+      "reader": "4a35g",
+      "grade": 4,
+      "gender": "Female",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 40.61,
+      "audio_sha256": "fae5de18f2ee7c5fba0abd7978721285953da51757a0759e127f149b10f38f4f",
+      "manifest_sha256": "004b6afc2adaa094b2949ac7c58b07ca4eaa6af7c220c4d16fe1cf5dccd5391b",
+      "configured": 3,
+      "triggered": 2,
+      "missing": [
+        "begging_paws"
+      ],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.736771799998678,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 2,
+        "split": 2,
+        "boundary": 2,
+        "timely": 2
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "triggered": true,
+          "estimated_endpoint_seconds": 6.96,
+          "estimated_delay_seconds": 1.3309253999977955,
+          "manual_verification": false,
+          "review_flags": [
+            "Provider reports a reading substitution/deletion in this anchor",
+            "At least one acoustic anchor score below 90"
+          ],
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 1
+          },
+          "clip_start_seconds": 2.7800000000000002,
+          "endpoint_in_clip_seconds": 4.18
+        },
+        {
+          "id": "clever_bears",
+          "triggered": true,
+          "estimated_endpoint_seconds": 24.91,
+          "estimated_delay_seconds": 0.793024400001741,
+          "manual_verification": false,
+          "review_flags": [
+            "Provider reports a reading substitution/deletion in this anchor"
+          ],
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          },
+          "clip_start_seconds": 16.92,
+          "endpoint_in_clip_seconds": 7.989999999999998
+        },
+        {
+          "id": "begging_paws",
+          "triggered": false,
+          "estimated_endpoint_seconds": null,
+          "estimated_delay_seconds": null,
+          "manual_verification": false,
+          "review_flags": [
+            "small.en: anchor could not be located",
+            "medium.en: anchor could not be located",
+            "Provider reports a reading substitution/deletion in this anchor",
+            "No two-model endpoint; latency unscored"
+          ],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 3,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "audio_id": "5a28c_EN-OL-RC-538_1",
+      "reader": "5a28c",
+      "grade": 5,
+      "gender": "Male",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 37.97,
+      "audio_sha256": "095af866fa785314e797ec9cd5972ec34dd45f0eaae2e037d6451d061e798666",
+      "manifest_sha256": "23eea07afdf5227a1d9435eec0ae05460fc051f315e5be8c71ce170d062c721d",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.7063707999986946,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 2,
+        "split": 2,
+        "boundary": 2,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "triggered": true,
+          "estimated_endpoint_seconds": 11.739999999999998,
+          "estimated_delay_seconds": 1.8173461000005773,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 6.800000000000001,
+          "endpoint_in_clip_seconds": 4.939999999999998
+        },
+        {
+          "id": "small_scales",
+          "triggered": true,
+          "estimated_endpoint_seconds": 24.43,
+          "estimated_delay_seconds": 0.7512454999996407,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 20.6,
+          "endpoint_in_clip_seconds": 3.8299999999999983
+        },
+        {
+          "id": "fine_patterns",
+          "triggered": true,
+          "estimated_endpoint_seconds": 37.03,
+          "estimated_delay_seconds": 1.2554980000004434,
+          "manual_verification": false,
+          "review_flags": [
+            "Provider reports a reading substitution/deletion in this anchor",
+            "Recognized endpoint differs from printed endpoint"
+          ],
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          },
+          "clip_start_seconds": 33.72,
+          "endpoint_in_clip_seconds": 3.3100000000000023
+        }
+      ]
+    },
+    {
+      "audio_id": "5a28c_EN-OL-RC-538_2",
+      "reader": "5a28c",
+      "grade": 5,
+      "gender": "Male",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 42.95,
+      "audio_sha256": "22365e89a8b69ede9284b98af95787587c649515527734bab494ee52e15425c1",
+      "manifest_sha256": "b83822be20b317b00b73daac54345b029c99189fc96d6eb230d8845b5bae25e4",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.724272399998881,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "triggered": true,
+          "estimated_endpoint_seconds": 9.780000000000001,
+          "estimated_delay_seconds": 0.8407141000006959,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 5.66,
+          "endpoint_in_clip_seconds": 4.120000000000001
+        },
+        {
+          "id": "escape_enemies",
+          "triggered": true,
+          "estimated_endpoint_seconds": 20.509999999999998,
+          "estimated_delay_seconds": 0.8549401000000216,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 17.18,
+          "endpoint_in_clip_seconds": 3.3299999999999983
+        },
+        {
+          "id": "damaged_wing",
+          "triggered": true,
+          "estimated_endpoint_seconds": 41.82,
+          "estimated_delay_seconds": 0.7568373999984033,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 38.18,
+          "endpoint_in_clip_seconds": 3.6400000000000006
+        }
+      ]
+    },
+    {
+      "audio_id": "5b2b_EN-OL-RC-538_1",
+      "reader": "5b2b",
+      "grade": 5,
+      "gender": "Female",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 47.12,
+      "audio_sha256": "4ebc40b991beb65248569a7acf0c3a2e0583fde8c23379bce099ce84f3c054eb",
+      "manifest_sha256": "85c7d4d773098f1e3e8cd904372399fb8e72cc3a0460f6b18f993ee9c29072dd",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.1984633000010945,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 2,
+        "boundary": 2,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "triggered": true,
+          "estimated_endpoint_seconds": 13.58,
+          "estimated_delay_seconds": 0.8908566000009159,
+          "manual_verification": false,
+          "review_flags": [
+            "Provider reports a reading substitution/deletion in this anchor"
+          ],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          },
+          "clip_start_seconds": 8.92,
+          "endpoint_in_clip_seconds": 4.66
+        },
+        {
+          "id": "small_scales",
+          "triggered": true,
+          "estimated_endpoint_seconds": null,
+          "estimated_delay_seconds": null,
+          "manual_verification": false,
+          "review_flags": [
+            "small.en: anchor could not be located",
+            "medium.en: anchor could not be located",
+            "Provider reports a reading substitution/deletion in this anchor",
+            "No two-model endpoint; latency unscored"
+          ],
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "triggered": true,
+          "estimated_endpoint_seconds": 46.07,
+          "estimated_delay_seconds": 0.8601361000000907,
+          "manual_verification": false,
+          "review_flags": [
+            "Provider reports a reading substitution/deletion in this anchor",
+            "Recognized endpoint differs from printed endpoint"
+          ],
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          },
+          "clip_start_seconds": 42.0,
+          "endpoint_in_clip_seconds": 4.07
+        }
+      ]
+    },
+    {
+      "audio_id": "5b2b_EN-OL-RC-538_2",
+      "reader": "5b2b",
+      "grade": 5,
+      "gender": "Female",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 55.37,
+      "audio_sha256": "e5355340540ffeb7636dd0b304384660114c7ab5b67f7046f9fcc1e69848f22e",
+      "manifest_sha256": "ca225cce0933b81d4d4333ede21cbbd6f339aa354b55c545178436468b6660e9",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.2121759000001475,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "triggered": true,
+          "estimated_endpoint_seconds": 13.14,
+          "estimated_delay_seconds": 2.66336659999979,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 6.32,
+          "endpoint_in_clip_seconds": 6.82
+        },
+        {
+          "id": "escape_enemies",
+          "triggered": true,
+          "estimated_endpoint_seconds": null,
+          "estimated_delay_seconds": null,
+          "manual_verification": false,
+          "review_flags": [
+            "small.en: anchor could not be located",
+            "medium.en: anchor could not be located",
+            "Provider reports a reading substitution/deletion in this anchor",
+            "No two-model endpoint; latency unscored"
+          ],
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 0,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "triggered": true,
+          "estimated_endpoint_seconds": 54.18,
+          "estimated_delay_seconds": 0.7338025999997626,
+          "manual_verification": false,
+          "review_flags": [
+            "Provider reports a reading substitution/deletion in this anchor"
+          ],
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          },
+          "clip_start_seconds": 49.96,
+          "endpoint_in_clip_seconds": 4.219999999999999
+        }
+      ]
+    },
+    {
+      "audio_id": "5a21k_EN-OL-RC-538_1",
+      "reader": "5a21k",
+      "grade": 5,
+      "gender": "Male",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 36.12,
+      "audio_sha256": "46391c5a2653a956fc8c352ba12301450a23be39490f7f5c674f10530edef835",
+      "manifest_sha256": "3dad410b27872cc83c4a8df1271ba42ea9c08e3e291ab0b9f15b887084a8e718",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.2616403000010905,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 3,
+        "boundary": 3,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "triggered": true,
+          "estimated_endpoint_seconds": 10.469999999999999,
+          "estimated_delay_seconds": 2.0733172000000195,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 6.800000000000001,
+          "endpoint_in_clip_seconds": 3.669999999999998
+        },
+        {
+          "id": "small_scales",
+          "triggered": true,
+          "estimated_endpoint_seconds": 21.189999999999998,
+          "estimated_delay_seconds": 0.7995706999990944,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 17.3,
+          "endpoint_in_clip_seconds": 3.889999999999997
+        },
+        {
+          "id": "fine_patterns",
+          "triggered": true,
+          "estimated_endpoint_seconds": 35.010000000000005,
+          "estimated_delay_seconds": 0.7001887999995233,
+          "manual_verification": false,
+          "review_flags": [
+            "Provider reports a reading substitution/deletion in this anchor",
+            "Recognized endpoint differs from printed endpoint"
+          ],
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          },
+          "clip_start_seconds": 30.759999999999998,
+          "endpoint_in_clip_seconds": 4.250000000000007
+        }
+      ]
+    },
+    {
+      "audio_id": "5a21k_EN-OL-RC-538_2",
+      "reader": "5a21k",
+      "grade": 5,
+      "gender": "Male",
+      "age_years": null,
+      "country": "India",
+      "audio_seconds": 51.8,
+      "audio_sha256": "6e3a13f5472494d39f04eebe852c7eeacee3a06105e5951946696152ff1ee704",
+      "manifest_sha256": "050b8318007269a5df4059c51ae45668b2f977a9f9a9e06ab31a8c2f6e1a9f4f",
+      "configured": 3,
+      "triggered": 3,
+      "missing": [],
+      "unexpected": [],
+      "duplicates": false,
+      "first_asr_seconds": 2.7419608000000153,
+      "application_agreement": true,
+      "all_samples_delivered": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "observer_counts": {
+        "original": 3,
+        "split": 2,
+        "boundary": 2,
+        "timely": 3
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "triggered": true,
+          "estimated_endpoint_seconds": 11.5,
+          "estimated_delay_seconds": 0.913767199997892,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 6.859999999999999,
+          "endpoint_in_clip_seconds": 4.640000000000001
+        },
+        {
+          "id": "escape_enemies",
+          "triggered": true,
+          "estimated_endpoint_seconds": 23.189999999999998,
+          "estimated_delay_seconds": 1.0141579999999522,
+          "manual_verification": false,
+          "review_flags": [],
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 19.12,
+          "endpoint_in_clip_seconds": 4.069999999999997
+        },
+        {
+          "id": "damaged_wing",
+          "triggered": true,
+          "estimated_endpoint_seconds": 46.3,
+          "estimated_delay_seconds": 5.5433121000005485,
+          "manual_verification": false,
+          "review_flags": [
+            "Recognized endpoint differs from printed endpoint",
+            "At least one acoustic anchor score below 90"
+          ],
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          },
+          "clip_start_seconds": 43.0,
+          "endpoint_in_clip_seconds": 3.299999999999997
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "readers": 6,
+    "recordings": 12,
+    "audio_seconds": 519.91,
+    "configured": 36,
+    "triggered": 35,
+    "unexpected": 0,
+    "duplicate_recordings": 0,
+    "estimated_latency_count": 29,
+    "median_estimated_delay_seconds": 0.9464214999989053,
+    "min_estimated_delay_seconds": 0.46545330000117247,
+    "max_estimated_delay_seconds": 5.5433121000005485,
+    "checkpoints_needing_review": 17,
+    "provider_deviating_anchors": 15
+  },
+  "controls": {
+    "recordings": 4,
+    "manifest_comparisons": 16,
+    "current_triggers": 0,
+    "all_observer_triggers": 0
+  },
+  "server_environment": {
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "packages": {
+      "torch": "2.7.1",
+      "nemo_toolkit": "3.1.0",
+      "numpy": "2.2.6",
+      "websockets": "16.1.1"
+    }
+  },
+  "client_environment": {
+    "python": "3.10.7 (tags/v3.10.7:6cc6b13, Sep  5 2022, 14:08:36) [MSC v.1933 64 bit (AMD64)]",
+    "packages": {
+      "whisper-live": "0.10.0",
+      "rapidfuzz": "3.14.5",
+      "numpy": "2.2.6",
+      "websocket-client": "1.9.2"
+    },
+    "gpu": "NVIDIA GeForce RTX 3070 Ti, 610.88, 310.00 W, 8192 MiB"
+  },
+  "limits": [
+    "India is South Asia, not Southeast Asia; no Singapore/SEA positive reading was obtained.",
+    "New speaker IDs and passages relative to our earlier subset, but same MPS recording domain; ASR pretraining overlap unknown.",
+    "One fresh stream per recording, no post-result tuning.",
+    "Automatic same-family Whisper endpoint estimates are not manual temporal gold; 17 checkpoints have extra review flags.",
+    "Provider labels substitutions/deletions in 15 anchors; configured activation totals are not a precision/recall or correctness score.",
+    "Controls reuse the four existing unrelated recordings; no new near-book prompting or live microphone test."
+  ]
+}
