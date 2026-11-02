@@ -1,0 +1,5095 @@
+{
+  "date": "2026-11-02",
+  "scope": "General ASR end-of-stream fix: inspected-data regression, not held-out accuracy",
+  "change": {
+    "runtime_file": "books_to_life/runtime/nemo_parakeet.py",
+    "full_encoder_chunk_and_right_context_at_eof": true,
+    "padding_only_supplies_encoder_context": true,
+    "only_remaining_real_audio_frames_decoded": true,
+    "final_partial_real_frame_included": true,
+    "no_word_specific_rules": true,
+    "no_matcher_changes": true,
+    "real_audio_timestamps_preserved": true,
+    "finish_idempotent": true,
+    "empty_stream_does_not_infer": true
+  },
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "lexicon": {
+    "package": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+  },
+  "execution": {
+    "fresh_reading_streams": 51,
+    "fresh_unrelated_streams": 4,
+    "configured": 153,
+    "real_reading_audio_seconds": 2223.13,
+    "all_original_files_unmodified": true,
+    "one_trial_per_recording": true,
+    "all_trials_retained": true,
+    "all_delivery_audits_passed": true,
+    "all_partial_before_eof": true,
+    "all_stream_done": true,
+    "all_final_timestamps_match_original_audio_duration": true,
+    "all_app_observer_agreement": true,
+    "pre_eof_transcripts_identical": 51
+  },
+  "integrity": {
+    "matcher_unchanged_from_both_previous_batches": true,
+    "matcher_sha256": {
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "8ff3451a90bd4674e352e04a987becd002f60425e1cd7686c3f61bb50086f528",
+      "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "e0ec0564e14f0aada70ccdcc9914a871820ebb060254b132453e3e4fefd36b5d",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phonetic_endpoint.py": "c2e80d78aa5616f4e3659831437d1b6f3737efa5c67e18548efa51c56bd70201",
+      "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+      "books_to_life/matching/timely_matcher.py": "e239b3b7f71d4e221f8ffb470bf0a12db4f137dd85651fe9eec8704c233c73b8",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e"
+    },
+    "source_sha256": {
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/live_tracker_probe.py": "135648b7d0e5f620cf405472317c84d4c509e8ba2911b00a0eb9a5b4ad0bc5d1",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+      "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+      "benchmarks/run_eos_regression.py": "380cbb600bb9a3e433d10727ccfb9aba71392fd3315d489440ec272473e4fc51",
+      "benchmarks/run_mps_heldout.py": "08152d6eedb35306e92af41b196524502d50c62946af65e26d7b2bb6f176a804",
+      "benchmarks/run_split_word_regression.py": "821cb9c1270b7ad8cd292603184d28d5ab9b77f8bf54a3996d4a07db723c934c",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "1bcecbb1cdfeef9c097919ba59cfe6b50f14aa56462d879a91f3d49fc72652a1",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "8ff3451a90bd4674e352e04a987becd002f60425e1cd7686c3f61bb50086f528",
+      "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "e0ec0564e14f0aada70ccdcc9914a871820ebb060254b132453e3e4fefd36b5d",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phonetic_endpoint.py": "c2e80d78aa5616f4e3659831437d1b6f3737efa5c67e18548efa51c56bd70201",
+      "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+      "books_to_life/matching/timely_matcher.py": "e239b3b7f71d4e221f8ffb470bf0a12db4f137dd85651fe9eec8704c233c73b8",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296",
+      "tests/test_nemo_eos_decoder.py": "00c3927e1f760a41fdd5a3fb64430174a08e5e5f1a7a88e2943bb43aa0c98ff0",
+      "tests/test_nemo_transport.py": "35d377f0d0bb8de5cb635b812db3dc73ea5d63286882e74c535dba29334400eb"
+    },
+    "model_hash_unchanged": true,
+    "lexicon_unchanged": true,
+    "sources_unchanged_during_run": true,
+    "manifests_unchanged": true,
+    "original_asr_ledgers_verified_with_identical_matcher": true
+  },
+  "totals": {
+    "original_asr": {
+      "emitted": 126,
+      "suppressed": 18,
+      "skipped": 0,
+      "unreached": 9
+    },
+    "repaired_asr": {
+      "emitted": 128,
+      "suppressed": 18,
+      "skipped": 0,
+      "unreached": 7
+    }
+  },
+  "assertions": [
+    {
+      "recording": "5b15k_EN-OL-RC-538_2",
+      "checkpoint": "damaged_wing",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "Human-heard soft endpoint; silence-padding diagnostic recovered it"
+    },
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "expected_emission": false,
+      "actual_emission": false,
+      "passed": true,
+      "basis": "User-confirmed essential-word omission"
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "checkpoint": "escape_enemies",
+      "expected_emission": false,
+      "actual_emission": false,
+      "passed": true,
+      "basis": "User-confirmed endpoint omission"
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "checkpoint": "small_scales",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "Previously accepted pronunciation"
+    },
+    {
+      "recording": "3a8b_EN-OL-RC-234_1",
+      "checkpoint": "riverside",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "User-confirmed reading with ASR word split"
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "expected_emission": false,
+      "actual_emission": false,
+      "passed": true,
+      "basis": "Provider-annotated essential-word omission"
+    }
+  ],
+  "provider_deleted_endpoint_or_required_word_controls": [
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "emitted": false,
+      "suppressed": true,
+      "unreached": false
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "checkpoint": "escape_enemies",
+      "emitted": false,
+      "suppressed": true,
+      "unreached": false
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "emitted": false,
+      "suppressed": true,
+      "unreached": false
+    },
+    {
+      "recording": "3b11b_EN-OL-RC-234_1",
+      "checkpoint": "lost_sheep",
+      "emitted": false,
+      "suppressed": false,
+      "unreached": true
+    }
+  ],
+  "provider_annotation_review": {
+    "correct_anchors": 83,
+    "emitted_correct_anchors": 83,
+    "nonemitting_correct_anchors": [],
+    "emitted_despite_provider_deleted_endpoint_or_required_word": [],
+    "note": "Provider annotations are review evidence, not human effect-acceptance labels."
+  },
+  "added_emissions": [
+    {
+      "recording": "5b15k_EN-OL-RC-538_2",
+      "checkpoints": [
+        "damaged_wing"
+      ]
+    },
+    {
+      "recording": "4b19g_EN-OL-RC-426_2",
+      "checkpoints": [
+        "begging_paws"
+      ]
+    }
+  ],
+  "removed_emissions": [],
+  "unrelated_controls": {
+    "fresh_streams": 4,
+    "passage_policies": 6,
+    "comparisons": 24,
+    "emitted": 0,
+    "suppressed": 0,
+    "results": [
+      {
+        "recording": "dog",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "d6062d31e4064676948fe3e4f777b2c2af4e2e26d4c6650c5f8685cd678285df",
+        "samples_delivered": 382188,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      },
+      {
+        "recording": "dragon",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "c2d69b4e49f405ac16ef224b00b4be4a53bfa0248d8cbafc2602b766cd1e8a6e",
+        "samples_delivered": 694466,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      },
+      {
+        "recording": "nickel",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "2a751b15648c389c40bdeed438f143fda2122a5fc8ecce80bacb1702463253e1",
+        "samples_delivered": 1228649,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      },
+      {
+        "recording": "recording_2",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "66f882374c1e1029cd75cb7fa1e9151d6fb32265b00093f121a74af6ff7e03d9",
+        "samples_delivered": 300016,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      }
+    ]
+  },
+  "validation": {
+    "windows_unit_tests_run": 153,
+    "windows_passed": 152,
+    "windows_skipped_needing_nemo": 1,
+    "isolated_nemo_decoder_test_passed": true,
+    "diff_check_passed": true,
+    "unit_log_sha256": "a2293290064016647fe374f21ed68256052ee1fb07490c0fb20753611021a7ed"
+  },
+  "recordings": [
+    {
+      "recording": "5b15k_EN-OL-RC-538_2",
+      "speaker": "5b15k",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 50.84,
+      "audio_sha256": "cbfad5237c5d7e77dc3880c3a78c02a2f37d5db660ac246107d24913dcd57ad3",
+      "manifest_sha256": "f14f41b0aa5d03a1c1584d45933e7fa5906ba2e62bfcbf6769888d10a6ae832c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "damaged_wing"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [
+        "damaged_wing"
+      ],
+      "removed_emissions": [],
+      "samples_delivered": 813440,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "It aims or tries to hit the eye but all that it gets is a bit of the",
+      "new_asr_final_tail": "aims or tries to hit the eye but all that it gets is a bit of the wing",
+      "assertion": {
+        "checkpoint": "damaged_wing",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "Human-heard soft endpoint; silence-padding diagnostic recovered it"
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "speaker": "4a35g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 40.61,
+      "audio_sha256": "fae5de18f2ee7c5fba0abd7978721285953da51757a0759e127f149b10f38f4f",
+      "manifest_sha256": "11be7686b3c5a7d9846803e910f6d6e275e9ccefbb4adc87b9138634133d182c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 649760,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "notic noticed have clever the bag of biscuit and nuts by setting up the holing out their pile",
+      "new_asr_final_tail": "notic noticed have clever the bag of biscuit and nuts by setting up the holing out their power",
+      "assertion": {
+        "checkpoint": "hibernate",
+        "expected_emission": false,
+        "actual_emission": false,
+        "passed": true,
+        "basis": "User-confirmed essential-word omission"
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": true,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 3,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "speaker": "5b2b",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 55.37,
+      "audio_sha256": "e5355340540ffeb7636dd0b304384660114c7ab5b67f7046f9fcc1e69848f22e",
+      "manifest_sha256": "677a052d17221ed06d6ba2000eef19a58f534a832d6729711cf4557e320e3cbf",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 885920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "ends or tries to hit the eye, but all that it gets is a bite of the wing",
+      "new_asr_final_tail": "ends or tries to hit the eye, but all that it gets is a bite of the wing",
+      "assertion": {
+        "checkpoint": "escape_enemies",
+        "expected_emission": false,
+        "actual_emission": false,
+        "passed": true,
+        "basis": "User-confirmed endpoint omission"
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": true,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 0,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "speaker": "5b2b",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 47.12,
+      "audio_sha256": "4ebc40b991beb65248569a7acf0c3a2e0583fde8c23379bce099ce84f3c054eb",
+      "manifest_sha256": "451fec9104ce5d19ed9acaca55c316f66fcbca90cce54ae70b991c801233d63e",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 753920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "without their sails the wings won't be transparent the colors on the wings make a very fine pattern",
+      "new_asr_final_tail": "without their sails the wings won't be transparent the colors on the wings make a very fine pattern",
+      "assertion": {
+        "checkpoint": "small_scales",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "Previously accepted pronunciation"
+      },
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a8b_EN-OL-RC-234_1",
+      "speaker": "3a8b",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 53.87,
+      "audio_sha256": "d7d2345b2be18ce96a83cd107fdf84d965fa48f6c409426e21a111902e8e3e5e",
+      "manifest_sha256": "53b5c4fb9a46473a25ff0f54390d46c953cd50ba78478a102b50ea716237a6f8",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 861920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "back home. He counted the sheep. There were only ninety-nine one ship was locked the shepherd was sad",
+      "new_asr_final_tail": "back home. He counted the sheep. There were only ninety-nine one ship was locked the shepherd was sad",
+      "assertion": {
+        "checkpoint": "riverside",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "User-confirmed reading with ASR word split"
+      },
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_2",
+      "speaker": "4c15g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 44.68,
+      "audio_sha256": "194b2cd1f02d53c1b809b8fa5624e2b0e0ba11de79711ecba1adad2b2370b4d2",
+      "manifest_sha256": "a9c40ff738e04effe826e5530f724aec3954939342497563b8e4264ae02b501d",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate",
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate",
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 714880,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "have noticed how clever they beg for biscuits and nuts by setting up and holding out their pounds",
+      "new_asr_final_tail": "have noticed how clever they beg for biscuits and nuts by setting up and holding out their pounds",
+      "assertion": {
+        "checkpoint": "hibernate",
+        "expected_emission": false,
+        "actual_emission": false,
+        "passed": true,
+        "basis": "Provider-annotated essential-word omission"
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": true,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a69j_EN-OL-RC-538_2",
+      "speaker": "5a69j",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 53.38,
+      "audio_sha256": "390a8bc0861c23422968fead45d9f3fbf0a110485b9f64838c9129328df56dad",
+      "manifest_sha256": "da313031c661fb7726bba70354f8f419e71a9ba9c6cb456a884a563ae861c6b9",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 854080,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "N or near to hit the ice but all that it gets is a bite of the wing",
+      "new_asr_final_tail": "N or near to hit the ice but all that it gets is a bite of the wing",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 2,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_1",
+      "speaker": "4c15g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 43.19,
+      "audio_sha256": "0b7607f20423f837c743038e2508c06814ee9f076afbea9ce12aa889c003f0ea",
+      "manifest_sha256": "95eee1b7b6b3a2eed945cce73d34933f133cd054a0ab6942f44b6e8f86ef4d0c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 691040,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "as we think they are. Like most animals, they will do their best to keep away from us",
+      "new_asr_final_tail": "as we think they are. Like most animals, they will do their best to keep away from us",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a35f_EN-OL-RC-538_1",
+      "speaker": "5a35f",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 41.99,
+      "audio_sha256": "584264276d7ab003cd519b771aa35e583bdde03751d1b226ce34641fe21ac76f",
+      "manifest_sha256": "e864d206ef52611e708819beeda32fdeaf6576093e9d07c18cd7477548e3f79e",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 671840,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "colors without this scale the wings would be transparent, the colors on the wings make very fine pattern",
+      "new_asr_final_tail": "colors without this scale the wings would be transparent, the colors on the wings make very fine pattern",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b15a_EN-OL-RC-538_2",
+      "speaker": "5b15a",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 46.61,
+      "audio_sha256": "5edfaf659161cfad9a97cce5c591fcd7003a4fe4d9cc787a6412c1f30e8c4354",
+      "manifest_sha256": "b1b9a6f48898c288e58ae4a4b405e259a851e1d02e63a265c2defed1bd076281",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 745760,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "ends or treats to hit the eye, but all that it gets is a bit of the wings",
+      "new_asr_final_tail": "ends or treats to hit the eye, but all that it gets is a bit of the wings",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 2,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b15a_EN-OL-RC-538_1",
+      "speaker": "5b15a",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 39.38,
+      "audio_sha256": "4e3938931aee74267aa60a70dfc15d713d5baf0f66b0084982eb7f5f931510bc",
+      "manifest_sha256": "1be453abba32e60f73039c9d420c808d7f26aec943b92232cd2964fb8080189c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "fine_patterns"
+        ],
+        "suppressed": [
+          "small_scales"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "fine_patterns"
+        ],
+        "suppressed": [
+          "small_scales"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 630080,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "have color without these scales, the wings would be the colors on the wings make very fine patterns",
+      "new_asr_final_tail": "have color without these scales, the wings would be the colors on the wings make very fine patterns",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4a6j_EN-OL-RC-426_2",
+      "speaker": "4a6j",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 57.74,
+      "audio_sha256": "a805d5b6e950194eb370bb6ee813b613b779ade4d290d50a364285948cbd8297",
+      "manifest_sha256": "ffadf321e9a3f62b54b6253b78f8a93054a2b2aba0b0750976d4b5aeb70b3533",
+      "configured": 3,
+      "before": {
+        "emitted": [],
+        "suppressed": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [],
+        "suppressed": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 923840,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "left how cleverly they be for biscuit and nuts by sitting up up and holding out parts out",
+      "new_asr_final_tail": "left how cleverly they be for biscuit and nuts by sitting up up and holding out parts out",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b37g_EN-OL-RC-538_1",
+      "speaker": "5b37g",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 35.75,
+      "audio_sha256": "0424c2873a7efee0ca1e96fbd618dafe1f29177b761d214d13e3a368b919fc01",
+      "manifest_sha256": "2214d396d283d5d487e299e423494dd4401966b086b323c6ddc4137a93f556c4",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 572000,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "color without these scales, the wings would be transparent. The colours on the wings make very fine patterns",
+      "new_asr_final_tail": "color without these scales, the wings would be transparent. The colours on the wings make very fine patterns",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a43a_EN-OL-RC-234_1",
+      "speaker": "3a43a",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 42.26,
+      "audio_sha256": "359ffb49d6c4bce18f9d4d7ce088d11806c583fa2c9353ee1957606d7dfdf453",
+      "manifest_sha256": "dca3d83330d06a42287721cebd0c651ad9ef19c3f58279e2b205c2cce25c58dd",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 676160,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "home. He counted the sheep. There were only 99. One sheep was lost. The sheep head was said",
+      "new_asr_final_tail": "home. He counted the sheep. There were only 99. One sheep was lost. The sheep head was said",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a43a_EN-OL-RC-234_2",
+      "speaker": "3a43a",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 31.85,
+      "audio_sha256": "17ed93dc50bafa29db5c5d116728dfec4d4f5678275f218d6dd563f2eb385b79",
+      "manifest_sha256": "0f09eabff1dc8f981e9ace65dc273b9f5306f5c0c3dbcdb4739001b09a2f1340",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "happy_friends"
+        ],
+        "suppressed": [
+          "carried_home"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "happy_friends"
+        ],
+        "suppressed": [
+          "carried_home"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 509600,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "it home. He was happy. He showed the sheep to his friends. All of them were happy too",
+      "new_asr_final_tail": "it home. He was happy. He showed the sheep to his friends. All of them were happy too",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b23k_EN-OL-RC-234_2",
+      "speaker": "3b23k",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 49.27,
+      "audio_sha256": "b2287e521ed260311186319a6b57ab1cd07bb333d5482eaebfe08c89a71ae12a",
+      "manifest_sha256": "67606d2deaee509595375fa8ed3f7034a2e260334a7de45f193a3f853db15037",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 788320,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "it home. He was happy. She showed the sheep to his friends. All of them were happy too",
+      "new_asr_final_tail": "it home. He was happy. She showed the sheep to his friends. All of them were happy too",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b7g_EN-OL-RC-426_1",
+      "speaker": "4b7g",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 49.7,
+      "audio_sha256": "e48a8bb581105c6e50c52015d721a868514d0612604406ff556465e340e2d6d5",
+      "manifest_sha256": "00173a14a324955ec6064c69b441c27afac290b86b67a94489d87b108860928c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 795200,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "as we think they are like most animals, they will do their best to keep away from us",
+      "new_asr_final_tail": "as we think they are like most animals, they will do their best to keep away from us",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b37g_EN-OL-RC-538_2",
+      "speaker": "5b37g",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 39.59,
+      "audio_sha256": "24661dd7ede01bc5e83fac521e8b8c140051b86c5fa1751fe3bd8d6c24212ad5",
+      "manifest_sha256": "e9c769e34135d5246a4a422c8b9dd66770da1c976b452ea41ae81fcbe1a352f4",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 633440,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "aims or tries to hit the eye, but all that it gets is a bit of the wing",
+      "new_asr_final_tail": "aims or tries to hit the eye, but all that it gets is a bit of the wing",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b7g_EN-OL-RC-426_2",
+      "speaker": "4b7g",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 51.29,
+      "audio_sha256": "7a60720aabe2a2cad89070833d798b0233f88b9a349888617df3373c04ef2408",
+      "manifest_sha256": "08db6f971b06350c34ce404c1fde30f3fb617af3f4aee69bab10e35d7e4ec914",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 820640,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "how cleverly they back off for biscuits and nuts by sitting up and hoarding holding out their pace",
+      "new_asr_final_tail": "how cleverly they back off for biscuits and nuts by sitting up and hoarding holding out their pace",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 3,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a35f_EN-OL-RC-538_2",
+      "speaker": "5a35f",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 51.53,
+      "audio_sha256": "25e60eac4001767a9056432df02297621d3d8c665578d46862a6da0ce80accb4",
+      "manifest_sha256": "9f656163410c4961fb11773e6957f31661021eeb7641fb4949b7ea2bc6be2eee",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 824480,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "aims or tries to hit the eye but all that it gets it a bit of the wing",
+      "new_asr_final_tail": "aims or tries to hit the eye but all that it gets it a bit of the wing",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3d2c_EN-OL-RC-234_2",
+      "speaker": "3d2c",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 24.05,
+      "audio_sha256": "860714d5c03fdb75223415a63ff8f0dcd9d792a5cb4fe3e007bf630fae2a3166",
+      "manifest_sha256": "72728326862b033d2c8aeadd256fb261e86833d92fa35b6002b6a2c416cb4f11",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 384800,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "it home. He was happy. He showed the sheep to his friends. All of them were happy too",
+      "new_asr_final_tail": "it home. He was happy. He showed the sheep to his friends. All of them were happy too",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b23k_EN-OL-RC-234_1",
+      "speaker": "3b23k",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 42.59,
+      "audio_sha256": "8573d682e9d566e33deea5724dcda55a5fbddf330ab94ca2948dff266ef44514",
+      "manifest_sha256": "65987a1fa7185e07b6cf7466b03877e73b0a0741a37a928bd3c790f43190b223",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 681440,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "them back home. He counted the sheep. There were only 99. One ship was lost, the shepherd watched",
+      "new_asr_final_tail": "them back home. He counted the sheep. There were only 99. One ship was lost, the shepherd watched",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b19g_EN-OL-RC-426_1",
+      "speaker": "4b19g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 51.23,
+      "audio_sha256": "5719e43d16a7b602e9f97ec4657140bfdbfb8d58021750b3e43f2d000edf1f4c",
+      "manifest_sha256": "3bf4a07cfbf039fd88b642a92653d6c7d2e818bea9bbe5771d3c95cf5a3b0c4e",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "keep_away"
+        ],
+        "suppressed": [
+          "fish_and_seals"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "keep_away"
+        ],
+        "suppressed": [
+          "fish_and_seals"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 819680,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "as we think they are like most animals, they will do their best to keep away from us",
+      "new_asr_final_tail": "as we think they are like most animals, they will do their best to keep away from us",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3d2c_EN-OL-RC-234_1",
+      "speaker": "3d2c",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 28.42,
+      "audio_sha256": "8058e5ae8a0b2108735e9c04a72f3bd44ff09aeebf2c0b77af6053f17077bcc4",
+      "manifest_sha256": "f92a0c3cd57d24106dcd8d1e0e08fe0ae2c9f9d94d0bce842e626bfae3697bec",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 454720,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "back home. He counted the sheep. There were only 99 ones sheep was lost. The shepherd was sad",
+      "new_asr_final_tail": "back home. He counted the sheep. There were only 99 ones sheep was lost. The shepherd was sad",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a8b_EN-OL-RC-234_2",
+      "speaker": "3a8b",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 45.41,
+      "audio_sha256": "7abd50792254cfa39eba813d95da9ef2f3dc6c3ae63be65ddeb4731087e54c05",
+      "manifest_sha256": "3c8e9c5b03a980e72922b801ef3e7c844d6beeece21d11a02f0f4db9c53e5d03",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 726560,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "it home. He was happy he shared the ship to his friend all of them were happy too",
+      "new_asr_final_tail": "it home. He was happy he shared the ship to his friend all of them were happy too",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b19g_EN-OL-RC-426_2",
+      "speaker": "4b19g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 44.71,
+      "audio_sha256": "ad250cb551ae9a68a22dad60743962c558b90d5d353eeb6ce341d0368f644008",
+      "manifest_sha256": "6cbd7af9ad8fecf313b0c69960bc48210b2d481125c0aee6c3d1972e14697305",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [
+        "begging_paws"
+      ],
+      "removed_emissions": [],
+      "samples_delivered": 715360,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "have noticed how cleverly they begged for biscuits and nuts by sitting up and holding out their pus",
+      "new_asr_final_tail": "have noticed how cleverly they begged for biscuits and nuts by sitting up and holding out their paws",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a69j_EN-OL-RC-538_1",
+      "speaker": "5a69j",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 47.18,
+      "audio_sha256": "eb87fb7a9ab5a4b15d8c75a7697c869e8c918d3bb5933c985bdae4cc374edee5",
+      "manifest_sha256": "515715813a4ce38f8d40d150e926e1ebbd472aff6c124f53d24fa8a777da2a14",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 754880,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "color without this scale the wings will be transferred the color of the wings make very fine patterns",
+      "new_asr_final_tail": "color without this scale the wings will be transferred the color of the wings make very fine patterns",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4a6j_EN-OL-RC-426_1",
+      "speaker": "4a6j",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 61.31,
+      "audio_sha256": "80ccb75d488ce7849d6527266d1140b750b97528cc6743cecda177a35eee4c0e",
+      "manifest_sha256": "db4c00ce91073808bccc5336371dd762b9796c000c8eabbb4dd88a46588db7e7",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 980960,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "split-word-regression-v2-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "as will think they are like most animals they will do their best, keep away always from us",
+      "new_asr_final_tail": "as will think they are like most animals they will do their best, keep away always from us",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a8k_EN-OL-RC-538_2",
+      "speaker": "5a8k",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 38.48,
+      "audio_sha256": "d6f993ac5612af5108091b8f5ec5847fc7681670597d59c43113790926b5dee0",
+      "manifest_sha256": "6845b1c8a253d09fa71e3f865afd3e11d4ad7b949a3481c28102f183dd8c8afb",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 615680,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "or tries to hit the eye, but all that it gets gets is a bit of the wing",
+      "new_asr_final_tail": "or tries to hit the eye, but all that it gets gets is a bit of the wing",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c38a_EN-OL-RC-426_1",
+      "speaker": "4c38a",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 50.33,
+      "audio_sha256": "52ca90f78c1b95e31c76c7821784f08811849ecbc9f26e802a165135e0dbeced",
+      "manifest_sha256": "61cce330ccf7be7bbfe649ecb7c88422eaffe077f9e6f3e0f91bc1f9983c45dd",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 805280,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "as we think they are like most animals. They will do their best to keep away from us",
+      "new_asr_final_tail": "as we think they are like most animals. They will do their best to keep away from us",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a36a_EN-OL-RC-538_1",
+      "speaker": "5a36a",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 34.25,
+      "audio_sha256": "52ee5e0d9ab9e22748fb2f7af1083f78d07d495c7f771a2c8862c8621849d653",
+      "manifest_sha256": "e357d8ef6d4c1614ebff302eeac4102af5b740f5bae55e48f63d4dd3b64bf306",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 548000,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "color without these scales the wings would be transparent, the colors on the wings make very fine patterns",
+      "new_asr_final_tail": "color without these scales the wings would be transparent, the colors on the wings make very fine patterns",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c38a_EN-OL-RC-426_2",
+      "speaker": "4c38a",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 57.47,
+      "audio_sha256": "79b7fa17378bce36b0b3e4007b504ebf4bcd060b662a84ac16b977373ed312fb",
+      "manifest_sha256": "5999a92efaf58be7baed8c5c6be17a99e0d2a4430e38a61149f2d36e034e4231",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 919520,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "how clever cleverly they beg for biscuits and nuts by sitting up and hitting holding out their paws",
+      "new_asr_final_tail": "how clever cleverly they beg for biscuits and nuts by sitting up and hitting holding out their paws",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b15k_EN-OL-RC-538_1",
+      "speaker": "5b15k",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 44.81,
+      "audio_sha256": "82df71e9e4c14981b8296ddeab7671f69abd44f0e94bafaa11fc0f804256d874",
+      "manifest_sha256": "f7c5cf97de4c0bcd49cec9de3c7afd9104a13399cfc3184898d899680898cc07",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 716960,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "color. Without these skills, the wings would be transparent. The colors on the wings make very fine patterns",
+      "new_asr_final_tail": "color. Without these skills, the wings would be transparent. The colors on the wings make very fine patterns",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4a7j_EN-OL-RC-426_2",
+      "speaker": "4a7j",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 41.63,
+      "audio_sha256": "5d2b49750f871689e7536dcf5aec41d90228ed877a009cbc53598fb94cac7b75",
+      "manifest_sha256": "6c8677b811d25111333beed64a41d76dee67345c42371a849614e38408163cfe",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 666080,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "noticed how cleverly they bag of biscuit biscuits and nuts by setting up and holding out their paws",
+      "new_asr_final_tail": "noticed how cleverly they bag of biscuit biscuits and nuts by setting up and holding out their paws",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b40g_EN-OL-RC-538_1",
+      "speaker": "5b40g",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 34.31,
+      "audio_sha256": "36ac14fe6ce9af51da53958c658a29ed697759e2b9ad83291d06d47c4434c99b",
+      "manifest_sha256": "2e988a571c99a05d908dcc904a6f1efd8dd10c481ef455aee713c5b5e959ae01",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 548960,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "collars without these scales the wings would be transparent the colors on the wing make very fine patterns",
+      "new_asr_final_tail": "collars without these scales the wings would be transparent the colors on the wing make very fine patterns",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a44f_EN-OL-RC-234_1",
+      "speaker": "3a44f",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 43.04,
+      "audio_sha256": "09d080b298c71339b07d406c854c1c8ceb3699f300ba8e887751241371420534",
+      "manifest_sha256": "88b690e19cc1b2b0c61c950382c3dc4868bdb6972bbab9afe38ac6f107d94cd1",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [
+          "hundred_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [
+          "hundred_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 688640,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "back home he counted the sheep there were only 99 one ship was lost the shepherd was sad",
+      "new_asr_final_tail": "back home he counted the sheep there were only 99 one ship was lost the shepherd was sad",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a44f_EN-OL-RC-234_2",
+      "speaker": "3a44f",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 44.45,
+      "audio_sha256": "92d9f6fafa540f4cf20f6141798d1298811f29a0f9e1d08c8fe5e01ff235f44b",
+      "manifest_sha256": "9a8b4a43827a21c4ea3a63541564396fbbbc76fd0c6e9b9d7549dab4bad2a8da",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 711200,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "it home. He was happy. He showed the ship to his friend all of them were happy too",
+      "new_asr_final_tail": "it home. He was happy. He showed the ship to his friend all of them were happy too",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b24c_EN-OL-RC-234_2",
+      "speaker": "3b24c",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 33.07,
+      "audio_sha256": "71add46fa5a954bf02312b78da34ef423e1a1c09f541a757d020bdfa5438d0c8",
+      "manifest_sha256": "7b1cece3c753146f9d15ce4d766b3715a2266f130ee3f21bf9feca4cdfa3fafe",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 529120,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "it home. He was happy. He showed the sheep to his friends all of them were happy too",
+      "new_asr_final_tail": "it home. He was happy. He showed the sheep to his friends all of them were happy too",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c12b_EN-OL-RC-426_1",
+      "speaker": "4c12b",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 44.9,
+      "audio_sha256": "7cde7ac125b2460c9a14ffd75dde18b18322d31982bc54eba7de114ea5d358d7",
+      "manifest_sha256": "a8686930828f79a55cf5cc25a2861b2e435a93c5aa5b33ff19b6763c81c29844",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 718400,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "as we think they are. Like most animals, they will do their best to keep away from us",
+      "new_asr_final_tail": "as we think they are. Like most animals, they will do their best to keep away from us",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b40g_EN-OL-RC-538_2",
+      "speaker": "5b40g",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 39.98,
+      "audio_sha256": "96222ec1bc3c94aca75172943d0e8a62075979ba816527a9a07ed8ff0a8a34b8",
+      "manifest_sha256": "5cc1a5d64dd2743122bc7ee6eed4d5edbd3d94a72dc7f47d1740c4d0c8a9882e",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies"
+        ],
+        "suppressed": [
+          "damaged_wing"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies"
+        ],
+        "suppressed": [
+          "damaged_wing"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 639680,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "aims or tries to hit the eye, but all that it gets is a bit of the finger",
+      "new_asr_final_tail": "aims or tries to hit the eye, but all that it gets is a bit of the finger",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c12b_EN-OL-RC-426_2",
+      "speaker": "4c12b",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 45.28,
+      "audio_sha256": "17660c189c55eefa9e617e58e1d0e30c20bacff700c05eb64828e0cc303b7476",
+      "manifest_sha256": "49187851d0d4ec0db9b022d681ffca143406181b0181ff742d1b5e70a55f3c57",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 724480,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "noticed how clever is then beg four biscuits and nuts by sitting up and holding out their paws",
+      "new_asr_final_tail": "noticed how clever is then beg four biscuits and nuts by sitting up and holding out their paws",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a36a_EN-OL-RC-538_2",
+      "speaker": "5a36a",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 39.8,
+      "audio_sha256": "11442b639646645e7a6958ea25b8fcecdb047e20f8e8ad12449de93723cbd310",
+      "manifest_sha256": "1546edb6086f78463827cc69757979472465bd4b48a2f71628d248bada40955b",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 636800,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "aims or tries to hit the eye, but all that it gets is a bit of the ping",
+      "new_asr_final_tail": "aims or tries to hit the eye, but all that it gets is a bit of the ping",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3d48g_EN-OL-RC-234_2",
+      "speaker": "3d48g",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 32.09,
+      "audio_sha256": "a0c6c297d7e2616e30e4b377a4416f4a58f351c7db5eaee8a229e7c2b22ca6b0",
+      "manifest_sha256": "4a47b5f2dbae1de1618a08684f555a575fd0011424d1e77a4a6736541880f5a6",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 513440,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "it home. He was happy. He showed the ship to his friends. All of them were happy too",
+      "new_asr_final_tail": "it home. He was happy. He showed the ship to his friends. All of them were happy too",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b24c_EN-OL-RC-234_1",
+      "speaker": "3b24c",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 37.4,
+      "audio_sha256": "3dcf6bac29dce422914d84ba25696b09a2cc429ce2e1c4e2fe1012613f1b3837",
+      "manifest_sha256": "3be8205ba0db0b2b3429fbde84330d725e28562f5a8f1308ecfd2eb79901c499",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 598400,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "back home he counted the sheep there were only 99 one ship was lost the shepherd was sacked",
+      "new_asr_final_tail": "back home he counted the sheep there were only 99 one ship was lost the shepherd was sacked",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b1a_EN-OL-RC-426_1",
+      "speaker": "4b1a",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 38.24,
+      "audio_sha256": "6521b80c0ca87a361990c5bccf2d991c0fe2a4e60029892ddb9c6ff8d2503eb4",
+      "manifest_sha256": "f74c17d6f4f8eaa05bc2e70f0c9f04ec477f36e2751b7f5cd1575930218c7c30",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 611840,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "dangerous as we think. They are like most animals, they will do their best keep away from us",
+      "new_asr_final_tail": "dangerous as we think. They are like most animals, they will do their best keep away from us",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3d48g_EN-OL-RC-234_1",
+      "speaker": "3d48g",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 29.57,
+      "audio_sha256": "7a7dd8e046ed0734a1552e36d99f5a32e5d57991a79d39f8640adab1d8c79673",
+      "manifest_sha256": "5c96eb66bd111a09dce1a9fed8f17c52c3e7dd02b625d4e8cd6711d6eeaaaf56",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 473120,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "back home. He hunted the sheep. There were only ninety-nine. One sheep was lost. The shepherd was shack",
+      "new_asr_final_tail": "back home. He hunted the sheep. There were only ninety-nine. One sheep was lost. The shepherd was shot",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b11b_EN-OL-RC-234_2",
+      "speaker": "3b11b",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 50.12,
+      "audio_sha256": "3bcbd173f53c046ebfac9b5e19adaac9022a1944cb1caaf69fc1e7332ae50504",
+      "manifest_sha256": "8b2482af3e723ea30bc8115a3252c01659f1f3e5cac996ece5a97451da246132",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "happy_friends"
+        ],
+        "suppressed": [
+          "carried_home"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "happy_friends"
+        ],
+        "suppressed": [
+          "carried_home"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 801920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "in home he was happy. He showed the ship to his friends all of them were happy too",
+      "new_asr_final_tail": "in home he was happy. He showed the ship to his friends all of them were happy too",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 3,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b1a_EN-OL-RC-426_2",
+      "speaker": "4b1a",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 33.65,
+      "audio_sha256": "730fcc103dfcc188cbf5a188cbabd8c575f7e72b91f1b744a287fbf5b3181362",
+      "manifest_sha256": "f0c7fb39213ec607e393bc4173ce123e53d2de887fdafa33aca3b124718f29b5",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 538400,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "have noticed how cleverly they beg for biscuits and nuts by sitting up and holding out their paws",
+      "new_asr_final_tail": "have noticed how cleverly they beg for biscuits and nuts by sitting up and holding out their paws",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a8k_EN-OL-RC-538_1",
+      "speaker": "5a8k",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 33.17,
+      "audio_sha256": "7cfdc5653fa859d331cb89c716e5eb1b8111b859bb567b588853a9eddd9aa008",
+      "manifest_sha256": "3b33be90ecc9b9b0130d6ece8207a96de9a1dbbe74715bb4643274ec7f5a81d2",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 530720,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "color. Without these scales, the wings could be transparent. The colors on the wings make very fine patterns",
+      "new_asr_final_tail": "color. Without these scales, the wings could be transparent. The colors on the wings make very fine patterns",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b11b_EN-OL-RC-234_1",
+      "speaker": "3b11b",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 60.1,
+      "audio_sha256": "8b24d9136648c5f648b45e755867264f12aba0bc2635f7ae8ea01dbc8fdc781e",
+      "manifest_sha256": "a997fd3ea62cf4ca616593a60d2797e2561e6654502ed0a0c1b14b72e5da62ba",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep"
+        ],
+        "suppressed": [
+          "riverside"
+        ],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep"
+        ],
+        "suppressed": [
+          "riverside"
+        ],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 961600,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "SHepard took them back home he counted the ship there were only 99 one ship was lost the",
+      "new_asr_final_tail": "SHepard took them back home he counted the ship there were only 99 one ship was lost the",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": true,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 2,
+            "deletions": 2
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4a7j_EN-OL-RC-426_1",
+      "speaker": "4a7j",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 46.07,
+      "audio_sha256": "213efaa3b0e9c424a3fed70035c2836a7c427fd7729e5cc9234e2e39d2b8ed8e",
+      "manifest_sha256": "7a081f31c6a58afbfe6b894ced607d5fb288c0944648a882f7889d36789faae0",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "keep_away"
+        ],
+        "suppressed": [
+          "fish_and_seals"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "keep_away"
+        ],
+        "suppressed": [
+          "fish_and_seals"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 737120,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "group": "mps-heldout-split-word-2026-11-02",
+      "pre_eof_transcripts_identical": true,
+      "original_asr_final_tail": "he think they are like to most animals, they will do their best to keep away from us",
+      "new_asr_final_tail": "he think they are like to most animals, they will do their best to keep away from us",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "These 51 recordings were previously inspected. The run is regression coverage and leaves all original held-out results intact.",
+    "The original-ASR baseline is saved-callback replay through the identical matcher, verified against previous live app ledgers. Only repaired ASR is freshly streamed in this batch.",
+    "All audio files, checkpoints, matcher rules, model weights, hints and thresholds stay unchanged. Only NeMo session finalization changes.",
+    "Human acceptance follows the attached source-audio listening reviews, including any endpoint-quality qualifications. Emission counts are not accuracy or word-end latency scores.",
+    "Omission evidence includes two user-confirmed omissions plus provider-marked deletions; it cannot rule out every ASR hallucination."
+  ],
+  "artifacts": "output/eos-regression-2026-11-02: frozen sources, manifests, hashes, original-ASR references, full streaming logs and listening review.",
+  "listening_review": {
+    "flagged_checkpoints": 71,
+    "prior_source_audio_reviews": 2,
+    "source_audio_reviews": 3,
+    "all_added_emissions_listened_to": true,
+    "confirmed_correct_added_emissions": [
+      "4b19g_EN-OL-RC-426_2/begging_paws"
+    ],
+    "qualified_added_emissions": [
+      "5b15k_EN-OL-RC-538_2/damaged_wing"
+    ],
+    "all_added_emissions_human_confirmed": false
+  },
+  "post_evaluation_human_review": {
+    "original_stream_results_unchanged": true,
+    "matcher_changed_after_review": false,
+    "cases": [
+      {
+        "recording": "4b19g_EN-OL-RC-426_2",
+        "checkpoint": "begging_paws",
+        "human_should_emit": "Yes",
+        "clarity": "clear",
+        "classification": "confirmed_correct_trigger",
+        "clip_reference_seconds": null,
+        "clip_start_seconds_original": 30.71,
+        "approx_phrase_location_seconds_original": null,
+        "time_meaning": "User confirms the ending of the supplied 14-second excerpt, starting at original time 30.71 seconds. No exact word-end time was supplied.",
+        "human_word_end_seconds_original": null,
+        "word_end_verified": false,
+        "reviewer": "user (chat)",
+        "date": "2026-11-02",
+        "diagnosis": "User confirms holding out their paws is clearly spoken and the emitted effect is appropriate. Repaired EOF ASR ends with paws; the original ASR ended with pus. Original speech samples and matcher are unchanged.",
+        "matcher_changed_after_review": false
+      },
+      {
+        "recording": "5b15k_EN-OL-RC-538_2",
+        "checkpoint": "damaged_wing",
+        "human_should_emit": "Yes in initial review; endpoint quality subsequently qualified",
+        "clarity": "Phrase heard; final wing is soft and possibly cut off, per user follow-up.",
+        "classification": "audible_phrase_with_qualified_endpoint_quality",
+        "clip_reference_seconds": null,
+        "clip_start_seconds_original": 30.84,
+        "approx_phrase_location_seconds_original": null,
+        "time_meaning": "User confirms the phrase clearly at the end of the last-20-second excerpt. No exact word-end time was supplied.",
+        "human_word_end_seconds_original": null,
+        "word_end_verified": false,
+        "reviewer": "user (chat)",
+        "date": "2026-11-02",
+        "diagnosis": "Final unpadded ASR omits wing and tracking stops at 79/80. The user hears the phrase but qualifies wing as soft/possibly cut off. Two fresh diagnostic streams reproduce the original miss and recover wing plus the effect with two seconds of added digital silence. Speech samples, matcher and recognizer settings are unchanged. This supports trailing-context/end-of-stream sensitivity; the specific implementation/model cause is not isolated. The original held-out results remain unchanged.",
+        "matcher_changed_after_review": false,
+        "endpoint_quality_user_note": "Final wing sounds soft and kind of cut off.",
+        "trigger_acceptance_reconfirmed_after_quality_note": false,
+        "silence_padding_diagnostic": {
+          "report": "benchmarks/results/mps-tail-silence-2026-11-02.json",
+          "original_fresh_control_target_emitted": false,
+          "plus_2s_silence_target_emitted": true,
+          "speech_pcm_identical": true,
+          "matcher_unchanged": true,
+          "recognizer_unchanged": true,
+          "first_full_anchor_callback_audio_end": 51.2,
+          "verified_word_end_latency": false
+        }
+      }
+    ]
+  }
+}

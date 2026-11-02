@@ -1,0 +1,1236 @@
+{
+  "date": "2026-11-02",
+  "scope": "All 15 matched recordings physically available in this project",
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU; Windows client / WSL Ubuntu NeMo",
+    "phonetic_dictionary": "cmudict 1.1.3"
+  },
+  "protocol": {
+    "additional_fresh_reading_streams": 12,
+    "reused_verified_source_identical_reading_streams": 3,
+    "same_asr_callbacks_for_old_and_new": true,
+    "old_guard": "Pre-phonetic TimelyEvidenceMatcher and EffectPermission from the pre-fix source snapshot",
+    "baseline_is_paired_callback_replay_not_a_second_asr_trial": true,
+    "parent_matcher_sources_verified_identical": true,
+    "raw_sources_unchanged": true
+  },
+  "coverage": {
+    "recordings": 15,
+    "unique_passage_texts": 9,
+    "configured_checkpoints": 41,
+    "audio_seconds": 699.6730625,
+    "mps_recordings": 11,
+    "mps_speaker_ids": [
+      "3c29g",
+      "4a18f",
+      "4a35g",
+      "4b25a",
+      "5a21k",
+      "5a28c",
+      "5b2b"
+    ],
+    "supplied_original_story_recordings": 4,
+    "prefix_length_eligible_checkpoints": 34
+  },
+  "totals": {
+    "before": {
+      "emitted": 32,
+      "suppressed": 8,
+      "skipped": 0,
+      "unreached": 1
+    },
+    "after": {
+      "emitted": 33,
+      "suppressed": 7,
+      "skipped": 0,
+      "unreached": 1
+    }
+  },
+  "recordings": [
+    {
+      "recording": "3c29g_EN-OL-RC-234_2",
+      "source": "MPS India",
+      "speaker": "3c29g",
+      "configured": 3,
+      "audio_seconds": 37.01,
+      "reused_verified_stream": false,
+      "audio_sha256": "d10678fa703e76900fc896eb9fff0f6a9029fcf774ba51049644954e6997e522",
+      "manifest_sha256": "4d5354a3fab775cdc12d590be67dae3dbeb6af2626a6c4cfe6caa95dd0b0f530",
+      "before": {
+        "emitted": [
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [
+          "found_in_bush"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [
+          "found_in_bush"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "4a18f_EN-OL-RC-426_1",
+      "source": "MPS India",
+      "speaker": "4a18f",
+      "configured": 3,
+      "audio_seconds": 42.95,
+      "reused_verified_stream": false,
+      "audio_sha256": "4ac2368c51dbab635aab2861cd092ce305dfc4e2b926fc9c276c81de54b5086a",
+      "manifest_sha256": "aa08f1bb7bb0c81a1eac42c33bfbaf79189f17ab9736a353df2c457b10b712f6",
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "4a18f_EN-OL-RC-426_2",
+      "source": "MPS India",
+      "speaker": "4a18f",
+      "configured": 3,
+      "audio_seconds": 46.49,
+      "reused_verified_stream": false,
+      "audio_sha256": "afdd03e1bca69cca388a90c84c80b296c7240240bc9122e84f83734b6756384b",
+      "manifest_sha256": "5532a970811473c2aad4cdffc2c12a95d790057df9e1ebaedf0d23c22370111c",
+      "before": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "4a35g_EN-OL-RC-426_1",
+      "source": "MPS India",
+      "speaker": "4a35g",
+      "configured": 3,
+      "audio_seconds": 48.41,
+      "reused_verified_stream": false,
+      "audio_sha256": "1968faccdc2165043a46de11e0635f904c2faa81b6ef59906a484555b3c1c15a",
+      "manifest_sha256": "e606c95f10c3a9cd56e8f161febf7460bacee61bb3accc3dee8dc8bf94fbbf48",
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "source": "MPS India",
+      "speaker": "4a35g",
+      "configured": 3,
+      "audio_seconds": 40.61,
+      "reused_verified_stream": true,
+      "audio_sha256": "fae5de18f2ee7c5fba0abd7978721285953da51757a0759e127f149b10f38f4f",
+      "manifest_sha256": "11be7686b3c5a7d9846803e910f6d6e275e9ccefbb4adc87b9138634133d182c",
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "4b25a_EN-OL-RC-426_2",
+      "source": "MPS India",
+      "speaker": "4b25a",
+      "configured": 3,
+      "audio_seconds": 32.39,
+      "reused_verified_stream": false,
+      "audio_sha256": "1640e189c01f05863104a6b223cf01cf4d91289dfa8b5e1d20c5abc8c82ac12a",
+      "manifest_sha256": "c8c8cb7411a5f982783446f2900571970551be36c3bf222c3dd421506bc3b295",
+      "before": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hibernate",
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "5a21k_EN-OL-RC-538_1",
+      "source": "MPS India",
+      "speaker": "5a21k",
+      "configured": 3,
+      "audio_seconds": 36.12,
+      "reused_verified_stream": false,
+      "audio_sha256": "46391c5a2653a956fc8c352ba12301450a23be39490f7f5c674f10530edef835",
+      "manifest_sha256": "9ed4cf4269cef75b1fa4b211fcca0408a7193fa79741ee381712814e3e7c16e9",
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "5a21k_EN-OL-RC-538_2",
+      "source": "MPS India",
+      "speaker": "5a21k",
+      "configured": 3,
+      "audio_seconds": 51.8,
+      "reused_verified_stream": false,
+      "audio_sha256": "6e3a13f5472494d39f04eebe852c7eeacee3a06105e5951946696152ff1ee704",
+      "manifest_sha256": "1ac094b39d7c6ef76ecab1dc82e47f4b18f57e9e8ef8d9ff62e07cf93e15b889",
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "5a28c_EN-OL-RC-538_1",
+      "source": "MPS India",
+      "speaker": "5a28c",
+      "configured": 3,
+      "audio_seconds": 37.97,
+      "reused_verified_stream": false,
+      "audio_sha256": "095af866fa785314e797ec9cd5972ec34dd45f0eaae2e037d6451d061e798666",
+      "manifest_sha256": "fc36029f49a3767d8dbd5119aaa1ca630ae65e3e5e1e8c8224ee869b1d62e8a2",
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "source": "MPS India",
+      "speaker": "5b2b",
+      "configured": 3,
+      "audio_seconds": 47.12,
+      "reused_verified_stream": true,
+      "audio_sha256": "4ebc40b991beb65248569a7acf0c3a2e0583fde8c23379bce099ce84f3c054eb",
+      "manifest_sha256": "451fec9104ce5d19ed9acaca55c316f66fcbca90cce54ae70b991c801233d63e",
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "fine_patterns"
+        ],
+        "suppressed": [
+          "small_scales"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [
+        "small_scales"
+      ],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "source": "MPS India",
+      "speaker": "5b2b",
+      "configured": 3,
+      "audio_seconds": 55.37,
+      "reused_verified_stream": true,
+      "audio_sha256": "e5355340540ffeb7636dd0b304384660114c7ab5b67f7046f9fcc1e69848f22e",
+      "manifest_sha256": "677a052d17221ed06d6ba2000eef19a58f534a832d6729711cf4557e320e3cbf",
+      "before": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "fat_cat",
+      "source": "Supplied original recording",
+      "speaker": null,
+      "configured": 2,
+      "audio_seconds": 56.855,
+      "reused_verified_stream": false,
+      "audio_sha256": "c44c9bc85ece10b8af8bb33b3df2fba5422b5c041cd78a683c370d5b03fe9bdc",
+      "manifest_sha256": "bb9eca1df6345363619f5587495e73f5c47892ee14c4b98df4855f9f51171ac3",
+      "before": {
+        "emitted": [
+          "animals_in_hat"
+        ],
+        "suppressed": [
+          "fat_cat_on_mat"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "animals_in_hat"
+        ],
+        "suppressed": [
+          "fat_cat_on_mat"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "horse",
+      "source": "Supplied original recording",
+      "speaker": null,
+      "configured": 1,
+      "audio_seconds": 40.61525,
+      "reused_verified_stream": false,
+      "audio_sha256": "76e92753b625cb09177de4173b8bb18738280bda9166cb1e1eedc8cca43878db",
+      "manifest_sha256": "5fea01db0a186f58e7b025f2a28d294b3d10a94450f0589c0ea0bf48c3590ba6",
+      "before": {
+        "emitted": [
+          "horse_at_farm"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "horse_at_farm"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "little_mermaid",
+      "source": "Supplied original recording",
+      "speaker": null,
+      "configured": 2,
+      "audio_seconds": 33.114625,
+      "reused_verified_stream": false,
+      "audio_sha256": "31447f2e2f9f37ab0f87edd4b7c8e67b2dcc1fb3b25c2365503d8709c904f14c",
+      "manifest_sha256": "4824b9c30db9f65a673144edbfd7fe89378d9f43ab0c31d83625b4b8ffeb319c",
+      "before": {
+        "emitted": [
+          "mermaid_has_legs"
+        ],
+        "suppressed": [
+          "mermaid_cannot_speak"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "mermaid_has_legs"
+        ],
+        "suppressed": [
+          "mermaid_cannot_speak"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    },
+    {
+      "recording": "tea",
+      "source": "Supplied original recording",
+      "speaker": null,
+      "configured": 3,
+      "audio_seconds": 92.8481875,
+      "reused_verified_stream": false,
+      "audio_sha256": "d3437ff93212fa451fa582a87ef48e616eecea0923b8ee7e7c4730aad02ee31c",
+      "manifest_sha256": "7ab7d2a7e2f8e58e1ed265734b39899d75e65a5dfbb53fb78d9eafd719435aba",
+      "before": {
+        "emitted": [
+          "make_a_pot_of_tea"
+        ],
+        "suppressed": [
+          "teapot_on_stove",
+          "little_house_ready"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "make_a_pot_of_tea"
+        ],
+        "suppressed": [
+          "teapot_on_stove",
+          "little_house_ready"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "delivery_audited": true,
+      "app_observer_agreement": true
+    }
+  ],
+  "added_emissions": [
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "checkpoints": [
+        "small_scales"
+      ]
+    }
+  ],
+  "removed_emissions": [],
+  "phonetic_comparison_calls": [
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "checkpoint": "small_scales",
+      "effect_emitted": true,
+      "effect_suppressed": false,
+      "audio_end": 30.976,
+      "reference": "scales",
+      "heard": "cells",
+      "matched": true
+    }
+  ],
+  "fallback_emission_recordings": [
+    "5b2b_EN-OL-RC-538_1"
+  ],
+  "expanded_negative_replay": {
+    "kind": "Saved ASR callbacks from the four previously verified fresh unrelated-speech streams, replayed against all unique local passage policies; not 36 new audio streams",
+    "source_streams": 4,
+    "unique_passages": 9,
+    "comparisons": 36,
+    "before_emissions": 0,
+    "after_emissions": 0,
+    "results": [
+      {
+        "recording": "dog",
+        "passage_representative": "3c29g_EN-OL-RC-234_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dog",
+        "passage_representative": "4a18f_EN-OL-RC-426_1",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dog",
+        "passage_representative": "4a18f_EN-OL-RC-426_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dog",
+        "passage_representative": "5a21k_EN-OL-RC-538_1",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dog",
+        "passage_representative": "5a21k_EN-OL-RC-538_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dog",
+        "passage_representative": "fat_cat",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dog",
+        "passage_representative": "horse",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dog",
+        "passage_representative": "little_mermaid",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dog",
+        "passage_representative": "tea",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dragon",
+        "passage_representative": "3c29g_EN-OL-RC-234_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dragon",
+        "passage_representative": "4a18f_EN-OL-RC-426_1",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dragon",
+        "passage_representative": "4a18f_EN-OL-RC-426_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dragon",
+        "passage_representative": "5a21k_EN-OL-RC-538_1",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dragon",
+        "passage_representative": "5a21k_EN-OL-RC-538_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dragon",
+        "passage_representative": "fat_cat",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dragon",
+        "passage_representative": "horse",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dragon",
+        "passage_representative": "little_mermaid",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "dragon",
+        "passage_representative": "tea",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "nickel",
+        "passage_representative": "3c29g_EN-OL-RC-234_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "nickel",
+        "passage_representative": "4a18f_EN-OL-RC-426_1",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "nickel",
+        "passage_representative": "4a18f_EN-OL-RC-426_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "nickel",
+        "passage_representative": "5a21k_EN-OL-RC-538_1",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "nickel",
+        "passage_representative": "5a21k_EN-OL-RC-538_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "nickel",
+        "passage_representative": "fat_cat",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "nickel",
+        "passage_representative": "horse",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "nickel",
+        "passage_representative": "little_mermaid",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "nickel",
+        "passage_representative": "tea",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "recording_2",
+        "passage_representative": "3c29g_EN-OL-RC-234_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "recording_2",
+        "passage_representative": "4a18f_EN-OL-RC-426_1",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "recording_2",
+        "passage_representative": "4a18f_EN-OL-RC-426_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "recording_2",
+        "passage_representative": "5a21k_EN-OL-RC-538_1",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "recording_2",
+        "passage_representative": "5a21k_EN-OL-RC-538_2",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "recording_2",
+        "passage_representative": "fat_cat",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "recording_2",
+        "passage_representative": "horse",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "recording_2",
+        "passage_representative": "little_mermaid",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      },
+      {
+        "recording": "recording_2",
+        "passage_representative": "tea",
+        "before": {
+          "emitted": [],
+          "suppressed": []
+        },
+        "after": {
+          "emitted": [],
+          "suppressed": []
+        }
+      }
+    ]
+  },
+  "local_data_access": {
+    "matched_readings": 15,
+    "unique_passage_texts": 9,
+    "configured_checkpoints": 41,
+    "matched_audio_seconds": 699.6730625,
+    "additional_stream_audio_seconds": 556.5730625,
+    "mps_recordings": 11,
+    "mps_speaker_ids": [
+      "3c29g",
+      "4a18f",
+      "4a35g",
+      "4b25a",
+      "5a21k",
+      "5a28c",
+      "5b2b"
+    ],
+    "unrelated_recordings": 4,
+    "all_local_original_audio_seconds": 862.5055,
+    "broader_mps_source": {
+      "recordings": 1600,
+      "speaker_ids": 1110,
+      "unique_passage_texts": 6,
+      "downloaded_here": 11
+    },
+    "recordings": [
+      {
+        "id": "3c29g_EN-OL-RC-234_2",
+        "source": "MPS India",
+        "speaker": "3c29g",
+        "seconds": 37.01,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "4a18f_EN-OL-RC-426_1",
+        "source": "MPS India",
+        "speaker": "4a18f",
+        "seconds": 42.95,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "4a18f_EN-OL-RC-426_2",
+        "source": "MPS India",
+        "speaker": "4a18f",
+        "seconds": 46.49,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "4a35g_EN-OL-RC-426_1",
+        "source": "MPS India",
+        "speaker": "4a35g",
+        "seconds": 48.41,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "4a35g_EN-OL-RC-426_2",
+        "source": "MPS India",
+        "speaker": "4a35g",
+        "seconds": 40.61,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": true
+      },
+      {
+        "id": "4b25a_EN-OL-RC-426_2",
+        "source": "MPS India",
+        "speaker": "4b25a",
+        "seconds": 32.39,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "5a21k_EN-OL-RC-538_1",
+        "source": "MPS India",
+        "speaker": "5a21k",
+        "seconds": 36.12,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "5a21k_EN-OL-RC-538_2",
+        "source": "MPS India",
+        "speaker": "5a21k",
+        "seconds": 51.8,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "5a28c_EN-OL-RC-538_1",
+        "source": "MPS India",
+        "speaker": "5a28c",
+        "seconds": 37.97,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "5b2b_EN-OL-RC-538_1",
+        "source": "MPS India",
+        "speaker": "5b2b",
+        "seconds": 47.12,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": true
+      },
+      {
+        "id": "5b2b_EN-OL-RC-538_2",
+        "source": "MPS India",
+        "speaker": "5b2b",
+        "seconds": 55.37,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": true
+      },
+      {
+        "id": "fat_cat",
+        "source": "Supplied original recording",
+        "speaker": null,
+        "seconds": 56.855,
+        "checkpoints": 2,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "horse",
+        "source": "Supplied original recording",
+        "speaker": null,
+        "seconds": 40.61525,
+        "checkpoints": 1,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "little_mermaid",
+        "source": "Supplied original recording",
+        "speaker": null,
+        "seconds": 33.114625,
+        "checkpoints": 2,
+        "prior_phonetic_stream_verified": false
+      },
+      {
+        "id": "tea",
+        "source": "Supplied original recording",
+        "speaker": null,
+        "seconds": 92.8481875,
+        "checkpoints": 3,
+        "prior_phonetic_stream_verified": false
+      }
+    ]
+  },
+  "source_sha256": {
+    "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+    "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+    "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+    "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+    "books_to_life/cli/run_client.py": "1bcecbb1cdfeef9c097919ba59cfe6b50f14aa56462d879a91f3d49fc72652a1",
+    "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+    "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+    "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+    "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+    "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+    "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+    "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+    "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+    "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+    "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+    "books_to_life/matching/alignment_matcher.py": "8ff3451a90bd4674e352e04a987becd002f60425e1cd7686c3f61bb50086f528",
+    "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+    "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+    "books_to_life/matching/effect_permission.py": "e06d6daa32ad788f6459cb4c7a8a0213d71aa3ce156576a20aa22ff996d75c25",
+    "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+    "books_to_life/matching/phonetic_endpoint.py": "c2e80d78aa5616f4e3659831437d1b6f3737efa5c67e18548efa51c56bd70201",
+    "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+    "books_to_life/matching/timely_matcher.py": "f05262564bfc8b34076049b12d77eedca85092c996aa1deefe9582ea4199e7e1",
+    "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+    "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+    "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+    "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+    "books_to_life/runtime/nemo_parakeet.py": "f916f61a2930732f206084a889cb8f51e6d46e93352b79ac96f8f3a0e1f813a6",
+    "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+    "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+    "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+    "benchmarks/live_tracker_probe.py": "135648b7d0e5f620cf405472317c84d4c509e8ba2911b00a0eb9a5b4ad0bc5d1"
+  },
+  "limits": [
+    "Existing development recordings; this is not held-out validation or a correctness/precision score.",
+    "The MPS subset supplies seven speaker IDs reading five passage texts. Four supplied original story recordings add four passages; their reader identities/ages are not inferred.",
+    "Phonetic assistance is exercised only where its strong context guards and a failed spelling endpoint allow it. Unchanged other readings demonstrate regression coverage, not broad pronunciation recovery.",
+    "Effects withheld or unreached need separate listening decisions. No additional human labels or word-end timestamps were invented.",
+    "The larger public MPS source has 1600 recordings and 1110 speaker IDs but only six passage texts; most audio has not been downloaded here.",
+    "Private OCSC source audio referenced by repository documentation is absent from this checkout."
+  ],
+  "local_artifacts": "output/listening-review-2026-11-02/regression/local-sweep"
+}

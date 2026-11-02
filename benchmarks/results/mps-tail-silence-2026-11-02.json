@@ -1,0 +1,130 @@
+{
+  "date": "2026-11-02",
+  "scope": "Diagnostic original vs +2 seconds trailing silence; not a new held-out evaluation.",
+  "recording": "5b15k_EN-OL-RC-538_2",
+  "target": "damaged_wing",
+  "original_recording_seconds": 50.84,
+  "padding_seconds": 2,
+  "original_pcm_preserved_exactly": true,
+  "matcher_unchanged": true,
+  "recognizer_unchanged": true,
+  "model_hash_unchanged": true,
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "source_sha256": {
+    "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+    "benchmarks/live_tracker_probe.py": "135648b7d0e5f620cf405472317c84d4c509e8ba2911b00a0eb9a5b4ad0bc5d1",
+    "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+    "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+    "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+    "benchmarks/run_mps_heldout.py": "08152d6eedb35306e92af41b196524502d50c62946af65e26d7b2bb6f176a804",
+    "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+    "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+    "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+    "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+    "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+    "books_to_life/cli/run_client.py": "1bcecbb1cdfeef9c097919ba59cfe6b50f14aa56462d879a91f3d49fc72652a1",
+    "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+    "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+    "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+    "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+    "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+    "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+    "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+    "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+    "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+    "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+    "books_to_life/matching/alignment_matcher.py": "8ff3451a90bd4674e352e04a987becd002f60425e1cd7686c3f61bb50086f528",
+    "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+    "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+    "books_to_life/matching/effect_permission.py": "e0ec0564e14f0aada70ccdcc9914a871820ebb060254b132453e3e4fefd36b5d",
+    "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+    "books_to_life/matching/phonetic_endpoint.py": "c2e80d78aa5616f4e3659831437d1b6f3737efa5c67e18548efa51c56bd70201",
+    "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+    "books_to_life/matching/timely_matcher.py": "e239b3b7f71d4e221f8ffb470bf0a12db4f137dd85651fe9eec8704c233c73b8",
+    "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+    "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+    "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+    "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+    "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+    "books_to_life/runtime/nemo_parakeet.py": "f916f61a2930732f206084a889cb8f51e6d46e93352b79ac96f8f3a0e1f813a6",
+    "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+    "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+    "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+    "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+    "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "lexicon": {
+    "package": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+  },
+  "runs_per_condition": 1,
+  "trials": [
+    {
+      "condition": "original",
+      "audio_seconds": 50.84,
+      "audio_sha256": "cbfad5237c5d7e77dc3880c3a78c02a2f37d5db660ac246107d24913dcd57ad3",
+      "samples_delivered": 813440,
+      "full_audio_delivery_audited": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "app_observer_agreement": true,
+      "emitted": [
+        "black_circles",
+        "escape_enemies"
+      ],
+      "suppressed": [],
+      "unreached": [
+        "damaged_wing"
+      ],
+      "target_emitted": false,
+      "recognized_full_anchor": false,
+      "first_full_anchor_callback_audio_end": null,
+      "final_asr_tail": "It aims or tries to hit the eye but all that it gets is a bit of the"
+    },
+    {
+      "condition": "plus_2s_silence",
+      "audio_seconds": 52.84,
+      "audio_sha256": "fc06e2485557b75b49ed3518a279ffad71662c5fd74f4b9d2bec82b6fdb1fe83",
+      "samples_delivered": 845440,
+      "full_audio_delivery_audited": true,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "app_observer_agreement": true,
+      "emitted": [
+        "black_circles",
+        "escape_enemies",
+        "damaged_wing"
+      ],
+      "suppressed": [],
+      "unreached": [],
+      "target_emitted": true,
+      "recognized_full_anchor": true,
+      "first_full_anchor_callback_audio_end": 51.2,
+      "final_asr_tail": "aims or tries to hit the eye but all that it gets is a bit of the wing"
+    }
+  ],
+  "limits": [
+    "One diagnostic stream per condition on an inspected recording; original held-out results remain unchanged.",
+    "Padding adds no speech. This test alone cannot distinguish an end-of-stream implementation issue from model sensitivity to trailing context."
+  ]
+}

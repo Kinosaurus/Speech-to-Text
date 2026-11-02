@@ -1,0 +1,303 @@
+{
+  "date": "2026-11-02",
+  "scope": "General phonetic endpoint permission: three reviewed fresh reading streams and four unrelated-speech streams",
+  "change": "Compare dictionary pronunciations under prior local acquisition and an entire exact contiguous prefix of at least four distinct words. No word-pair aliases, checkpoint-specific pronunciation metadata, transcript substitutions, ASR changes, or global spelling-threshold changes.",
+  "phonetic_rule": {
+    "dictionary": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22",
+    "identical_first_phone_and_final_two": true,
+    "minimum_consonants": 2,
+    "maximum_consonant_edits": 1,
+    "vowel_substitution_cost": 0.25,
+    "other_edit_cost": 1,
+    "maximum_distance": 1.25,
+    "maximum_normalized_distance": 0.25,
+    "unknown_words": "No phonetic assistance; existing spelling matching remains",
+    "required_words": "Existing strict spelling check retained"
+  },
+  "no_checkpoint_aliases": true,
+  "original_manifests_unchanged": true,
+  "listening_evidence": {
+    "case_1": "User confirms hibernate omitted",
+    "case_2": "User confirms enemies omitted",
+    "case_3": "User accepts the scales/sales attempt that ASR renders cells",
+    "word_end_timestamps_verified": false
+  },
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU; Windows client / WSL Ubuntu NeMo",
+    "phonetic_dictionary": "cmudict 1.1.3"
+  },
+  "model_provenance": {
+    "repo": "nvidia/parakeet-unified-en-0.6b",
+    "revision": "fe53cd885760c96b6a5f51a0bfd362cb4584a98b",
+    "file": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo"
+  },
+  "baseline": {
+    "fresh_streams": 1,
+    "case": "3",
+    "target_emitted": false,
+    "target_suppressed": true,
+    "emitted": [
+      "wing_colours",
+      "fine_patterns"
+    ],
+    "suppressed": [
+      "small_scales"
+    ]
+  },
+  "after_fix": {
+    "fresh_streams": 3,
+    "all_expected_results_passed": true,
+    "source_unchanged": true,
+    "results": [
+      {
+        "case": "1",
+        "recording": "4a35g_EN-OL-RC-426_2",
+        "target": "hibernate",
+        "expected": false,
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "target_emitted": false,
+        "target_suppressed": true,
+        "passed": true,
+        "samples_delivered": 649760,
+        "audio_seconds": 40.61,
+        "delivery_seconds": 40.59677250008099,
+        "partial_before_eof": true,
+        "stream_done": true,
+        "app_observer_agreement": true,
+        "diagnostic_replay_agreement": true,
+        "audio_sha256": "fae5de18f2ee7c5fba0abd7978721285953da51757a0759e127f149b10f38f4f",
+        "manifest_sha256": "11be7686b3c5a7d9846803e910f6d6e275e9ccefbb4adc87b9138634133d182c"
+      },
+      {
+        "case": "2",
+        "recording": "5b2b_EN-OL-RC-538_2",
+        "target": "escape_enemies",
+        "expected": false,
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "target_emitted": false,
+        "target_suppressed": true,
+        "passed": true,
+        "samples_delivered": 885920,
+        "audio_seconds": 55.37,
+        "delivery_seconds": 55.52935030008666,
+        "partial_before_eof": true,
+        "stream_done": true,
+        "app_observer_agreement": true,
+        "diagnostic_replay_agreement": true,
+        "audio_sha256": "e5355340540ffeb7636dd0b304384660114c7ab5b67f7046f9fcc1e69848f22e",
+        "manifest_sha256": "677a052d17221ed06d6ba2000eef19a58f534a832d6729711cf4557e320e3cbf"
+      },
+      {
+        "case": "3",
+        "recording": "5b2b_EN-OL-RC-538_1",
+        "target": "small_scales",
+        "expected": true,
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "target_emitted": true,
+        "target_suppressed": false,
+        "passed": true,
+        "samples_delivered": 753920,
+        "audio_seconds": 47.12,
+        "delivery_seconds": 48.204789800103754,
+        "partial_before_eof": true,
+        "stream_done": true,
+        "app_observer_agreement": true,
+        "diagnostic_replay_agreement": true,
+        "audio_sha256": "4ebc40b991beb65248569a7acf0c3a2e0583fde8c23379bce099ce84f3c054eb",
+        "manifest_sha256": "451fec9104ce5d19ed9acaca55c316f66fcbca90cce54ae70b991c801233d63e"
+      }
+    ]
+  },
+  "unrelated_speech_controls": {
+    "streams": 4,
+    "comparisons": 12,
+    "emitted": 0,
+    "suppressed": 0,
+    "source_unchanged": true,
+    "results": [
+      {
+        "recording": "dog",
+        "comparisons": 3,
+        "emitted": 0,
+        "suppressed": 0,
+        "samples_delivered": 382188,
+        "partial_before_eof": true,
+        "stream_done": true,
+        "audio_sha256": "d6062d31e4064676948fe3e4f777b2c2af4e2e26d4c6650c5f8685cd678285df",
+        "observer_modes": "Current TimelyEvidenceMatcher, one per frozen passage; no main-app checkpoint manifest"
+      },
+      {
+        "recording": "dragon",
+        "comparisons": 3,
+        "emitted": 0,
+        "suppressed": 0,
+        "samples_delivered": 694466,
+        "partial_before_eof": true,
+        "stream_done": true,
+        "audio_sha256": "c2d69b4e49f405ac16ef224b00b4be4a53bfa0248d8cbafc2602b766cd1e8a6e",
+        "observer_modes": "Current TimelyEvidenceMatcher, one per frozen passage; no main-app checkpoint manifest"
+      },
+      {
+        "recording": "nickel",
+        "comparisons": 3,
+        "emitted": 0,
+        "suppressed": 0,
+        "samples_delivered": 1228649,
+        "partial_before_eof": true,
+        "stream_done": true,
+        "audio_sha256": "2a751b15648c389c40bdeed438f143fda2122a5fc8ecce80bacb1702463253e1",
+        "observer_modes": "Current TimelyEvidenceMatcher, one per frozen passage; no main-app checkpoint manifest"
+      },
+      {
+        "recording": "recording_2",
+        "comparisons": 3,
+        "emitted": 0,
+        "suppressed": 0,
+        "samples_delivered": 300016,
+        "partial_before_eof": true,
+        "stream_done": true,
+        "audio_sha256": "66f882374c1e1029cd75cb7fa1e9151d6fb32265b00093f121a74af6ff7e03d9",
+        "observer_modes": "Current TimelyEvidenceMatcher, one per frozen passage; no main-app checkpoint manifest"
+      }
+    ]
+  },
+  "paired_diagnostic": {
+    "kind": "Saved-callback diagnostic, not fresh ASR",
+    "original_manifest_unchanged": true,
+    "manifest_sha256": "451fec9104ce5d19ed9acaca55c316f66fcbca90cce54ae70b991c801233d63e",
+    "fixed_decisions": [
+      {
+        "checkpoint": "wing_colours",
+        "emitted": true,
+        "suppressed": false,
+        "audio_end": 14.592
+      },
+      {
+        "checkpoint": "small_scales",
+        "emitted": true,
+        "suppressed": false,
+        "audio_end": 30.976
+      },
+      {
+        "checkpoint": "fine_patterns",
+        "emitted": true,
+        "suppressed": false,
+        "audio_end": 47.104
+      }
+    ]
+  },
+  "independent_word_pair_unit_examples": [
+    {
+      "reference": "rough",
+      "heard": "ruff",
+      "accepted": true
+    },
+    {
+      "reference": "through",
+      "heard": "threw",
+      "accepted": true
+    },
+    {
+      "reference": "scene",
+      "heard": "seen",
+      "accepted": true
+    },
+    {
+      "reference": "weight",
+      "heard": "wait",
+      "accepted": true
+    },
+    {
+      "reference": "crane",
+      "heard": "cane",
+      "accepted": true
+    },
+    {
+      "reference": "scales",
+      "heard": "coils",
+      "accepted": false
+    }
+  ],
+  "validation": {
+    "unit_tests_passed": 143,
+    "new_tests": 8,
+    "diff_check_passed": true,
+    "all_streams_delivery_audited": true,
+    "raw_transcripts_and_audio_committed": false
+  },
+  "source_sha256": {
+    "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+    "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+    "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+    "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+    "books_to_life/cli/run_client.py": "1bcecbb1cdfeef9c097919ba59cfe6b50f14aa56462d879a91f3d49fc72652a1",
+    "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+    "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+    "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+    "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+    "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+    "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+    "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+    "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+    "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+    "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+    "books_to_life/matching/alignment_matcher.py": "8ff3451a90bd4674e352e04a987becd002f60425e1cd7686c3f61bb50086f528",
+    "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+    "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+    "books_to_life/matching/effect_permission.py": "e06d6daa32ad788f6459cb4c7a8a0213d71aa3ce156576a20aa22ff996d75c25",
+    "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+    "books_to_life/matching/phonetic_endpoint.py": "c2e80d78aa5616f4e3659831437d1b6f3737efa5c67e18548efa51c56bd70201",
+    "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+    "books_to_life/matching/timely_matcher.py": "f05262564bfc8b34076049b12d77eedca85092c996aa1deefe9582ea4199e7e1",
+    "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+    "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+    "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+    "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+    "books_to_life/runtime/nemo_parakeet.py": "f916f61a2930732f206084a889cb8f51e6d46e93352b79ac96f8f3a0e1f813a6",
+    "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+    "benchmarks/live_tracker_probe.py": "135648b7d0e5f620cf405472317c84d4c509e8ba2911b00a0eb9a5b4ad0bc5d1",
+    "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+    "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb"
+  },
+  "superseded_experiment": {
+    "status": "Removed checkpoint-specific alias",
+    "artifacts": "output/listening-review-2026-11-02/regression/after-fix and paired-replay.json",
+    "excluded_from_current_results": true
+  },
+  "limits": [
+    "One fresh post-fix stream per reading and unrelated recording; not the complete historical 21-reading sweep.",
+    "Negative controls are simultaneous current-matcher observers on the same ASR callbacks, one per passage; the file client has no main checkpoint manifest for these unrelated clips.",
+    "A general rule-based text/phoneme heuristic, not a trained child-pronunciation model or demonstrated held-out accuracy improvement.",
+    "Similar-sounding intentional substitutions can be indistinguishable from pronunciation variants. Strict required-word policies still apply.",
+    "US English dictionary vocabulary; unknown words get no phonetic help. No manually verified word timings or latency improvement claimed."
+  ],
+  "local_artifacts": "output/listening-review-2026-11-02/regression: frozen original manifests, source snapshots, logs, packet/callback events and SRTs."
+}

@@ -267,6 +267,10 @@ if __name__ == '__main__':
                       f"ambiguous={update.ambiguous}, duplicate={update.duplicate}")
                 if update.skipped_checkpoint_ids:
                     print(f"[SKIPPED] {', '.join(update.skipped_checkpoint_ids)}")
+            for ident in getattr(update, 'additional_suppressed_checkpoint_ids', ()):
+                print(f"[SUPPRESSED] {ident}: pending permission closed before a later checkpoint")
+            if getattr(update, 'effect_pending_checkpoint_id', None):
+                print(f"[PENDING] {update.effect_pending_checkpoint_id}: waiting for a complete endpoint")
             if getattr(update, 'effect_suppressed', False):
                 print(f"[SUPPRESSED] {update.checkpoint_id}: {update.effect_suppression_reason}")
             if update.triggered:

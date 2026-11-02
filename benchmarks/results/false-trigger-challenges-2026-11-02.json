@@ -1,0 +1,3969 @@
+{
+  "date": "2026-11-02",
+  "scope": "Frozen full-stream synthetic adult false-trigger challenges",
+  "execution": {
+    "fresh_streams": 45,
+    "anchors": 5,
+    "categories": 9,
+    "manifest_policies_per_callback": 2,
+    "audio_seconds": 492.21,
+    "trials_per_case": 1,
+    "all_trials_retained": true,
+    "all_audio_delivered": true,
+    "all_partial_before_eof": true,
+    "all_stream_done": true,
+    "all_app_observer_replay_agreement": true,
+    "duplicate_target_emissions": 0
+  },
+  "source": "Windows offline Microsoft Zira Desktop, adult female en-US, rate 0, volume 100; 16 kHz mono PCM16.",
+  "expected_policy": "Literal endpoint semantics: actual wrong words, omissions, prompts and skipped anchors should not emit. Correct and reread cases should emit once. Pronunciation-tolerant acceptance can conflict with this strict wrong-word requirement.",
+  "server_environment": {
+    "nemo_toolkit": "3.1.0",
+    "torch": "2.7.1+cu118",
+    "torchaudio": "2.7.1+cu118",
+    "numpy": "2.2.6",
+    "websockets": "16.1.1"
+  },
+  "pre_audio_setup_failures": [
+    {
+      "stage": "prepare",
+      "reason": "Snapshot copy attempted to open __pycache__ as a file; no synthesis or ASR challenge trials ran.",
+      "replacement": "output/false-trigger-challenges-v2-2026-11-02"
+    }
+  ],
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "lexicon": {
+    "package": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+  },
+  "totals": {
+    "default": {
+      "before": {
+        "cases": 45,
+        "script_positive_cases": 10,
+        "script_negative_cases": 35,
+        "positive_emissions": 10,
+        "missed_positive_cases": 0,
+        "false_triggers": 2,
+        "negative_cases_without_trigger": 33
+      },
+      "after": {
+        "cases": 45,
+        "script_positive_cases": 10,
+        "script_negative_cases": 35,
+        "positive_emissions": 10,
+        "missed_positive_cases": 0,
+        "false_triggers": 5,
+        "negative_cases_without_trigger": 30
+      }
+    },
+    "required": {
+      "before": {
+        "cases": 45,
+        "script_positive_cases": 10,
+        "script_negative_cases": 35,
+        "positive_emissions": 10,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 35
+      },
+      "after": {
+        "cases": 45,
+        "script_positive_cases": 10,
+        "script_negative_cases": 35,
+        "positive_emissions": 10,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 35
+      }
+    }
+  },
+  "by_category": {
+    "correct": {
+      "default": {
+        "cases": 5,
+        "script_positive_cases": 5,
+        "script_negative_cases": 0,
+        "positive_emissions": 5,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 0
+      },
+      "required": {
+        "cases": 5,
+        "script_positive_cases": 5,
+        "script_negative_cases": 0,
+        "positive_emissions": 5,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 0
+      }
+    },
+    "omitted": {
+      "default": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      },
+      "required": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      }
+    },
+    "close_wrong_word": {
+      "default": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 5,
+        "negative_cases_without_trigger": 0
+      },
+      "required": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      }
+    },
+    "distant_wrong_word": {
+      "default": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      },
+      "required": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      }
+    },
+    "quoted_prompt": {
+      "default": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      },
+      "required": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      }
+    },
+    "negated_prompt": {
+      "default": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      },
+      "required": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      }
+    },
+    "prefix_then_unrelated": {
+      "default": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      },
+      "required": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      }
+    },
+    "skipped": {
+      "default": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      },
+      "required": {
+        "cases": 5,
+        "script_positive_cases": 0,
+        "script_negative_cases": 5,
+        "positive_emissions": 0,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 5
+      }
+    },
+    "reread": {
+      "default": {
+        "cases": 5,
+        "script_positive_cases": 5,
+        "script_negative_cases": 0,
+        "positive_emissions": 5,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 0
+      },
+      "required": {
+        "cases": 5,
+        "script_positive_cases": 5,
+        "script_negative_cases": 0,
+        "positive_emissions": 5,
+        "missed_positive_cases": 0,
+        "false_triggers": 0,
+        "negative_cases_without_trigger": 0
+      }
+    }
+  },
+  "false_triggers_default": [
+    {
+      "id": "coat-close_wrong_word",
+      "category": "close_wrong_word",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "goat",
+      "default_asr_at_trigger": "We walked along a quiet path beside the trees. Then she carried the winter goat",
+      "scripted_wrong_phrase_present_at_default_trigger": true,
+      "emitted_before": true,
+      "required_observer_emitted": false
+    },
+    {
+      "id": "fan-close_wrong_word",
+      "category": "close_wrong_word",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "van",
+      "default_asr_at_trigger": "We walked along a quiet path beside the trees. Then he switched on the van",
+      "scripted_wrong_phrase_present_at_default_trigger": true,
+      "emitted_before": false,
+      "required_observer_emitted": false
+    },
+    {
+      "id": "seal-close_wrong_word",
+      "category": "close_wrong_word",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "zeal",
+      "default_asr_at_trigger": "We walked along a quiet path beside the trees. Then we spotted a playful zeal",
+      "scripted_wrong_phrase_present_at_default_trigger": true,
+      "emitted_before": true,
+      "required_observer_emitted": false
+    },
+    {
+      "id": "pen-close_wrong_word",
+      "category": "close_wrong_word",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "pin",
+      "default_asr_at_trigger": "We walked along a quiet path beside the trees. Then the child held a red pin",
+      "scripted_wrong_phrase_present_at_default_trigger": true,
+      "emitted_before": false,
+      "required_observer_emitted": false
+    },
+    {
+      "id": "sink-close_wrong_word",
+      "category": "close_wrong_word",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "zinc",
+      "default_asr_at_trigger": "We walked along a quiet path beside the trees. Then he carefully cleaned the white zinc",
+      "scripted_wrong_phrase_present_at_default_trigger": true,
+      "emitted_before": false,
+      "required_observer_emitted": false
+    }
+  ],
+  "matcher_only_text_diagnostics": {
+    "kind": "Constructed word-by-word text snapshots, not ASR/audio trials",
+    "cases": 45,
+    "totals": {
+      "default": {
+        "before": {
+          "false_triggers": 2,
+          "missed_positive_cases": 0
+        },
+        "after": {
+          "false_triggers": 5,
+          "missed_positive_cases": 0
+        }
+      },
+      "required": {
+        "before": {
+          "false_triggers": 0,
+          "missed_positive_cases": 0
+        },
+        "after": {
+          "false_triggers": 0,
+          "missed_positive_cases": 0
+        }
+      }
+    }
+  },
+  "integrity": {
+    "no_asr_or_matcher_tuning": true,
+    "runtime_matches_frozen_heldout_batch": true,
+    "scripts_manifests_and_audio_unchanged": true,
+    "source_sha256": {
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/live_tracker_probe.py": "b772faf20f29fa59f7c0f7aae35c320f547bc4f497ccc61c8b64652b47632976",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+      "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+      "benchmarks/run_false_trigger_challenges.py": "202031e11878e4f6fcd630c246bf1ec4ee17ad9bb9801b8e9358d8bd973f7cb6",
+      "benchmarks/run_mps_heldout.py": "0f29f8f88fcc44f598e74925c4b06f7c02ba40b95797eb2589032ceb58f8ea76",
+      "benchmarks/synthesize_challenges.ps1": "f61f56eac249735969ea724c67da4f4bbff912e658da3a6f9d1f840273b1989f",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "be201bba4e74adec7b0cbb599f80f9479faadbce705cb6c9e53b27f884741955",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "70ec44335b426e2c5efceccc9c05a9d1e7748604b8ae24d3e16685fe83d21836",
+      "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "aa8fefbf3eef926652f68f47f97e7ceebd2d23597cabcde0048bfe1eef1ff888",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phone_features.py": "258a63bd7f7a5589e7b8f6f8a2c6a4359341b7fb13d016612a8ca77a4e3cab8a",
+      "books_to_life/matching/phonetic_endpoint.py": "b74bc5e0548ca3e5c9896a6e839b4b159b50e26a591e5c60f0f00a918ac47d4f",
+      "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+      "books_to_life/matching/timely_matcher.py": "77bba3e6dc35bc3057ac7cfe3ba23aff83f6e9b66d486e96ffb1e165fdd3bc0f",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296"
+    },
+    "baseline_sha256": {
+      "effect_permission.py": "e0ec0564e14f0aada70ccdcc9914a871820ebb060254b132453e3e4fefd36b5d",
+      "phonetic_endpoint.py": "c2e80d78aa5616f4e3659831437d1b6f3737efa5c67e18548efa51c56bd70201",
+      "timely_matcher.py": "9abf477905c827d2372b25ae3681fb552ec343516688d48af3dc6d9a8ce14aa4"
+    },
+    "all_checks_passed": true,
+    "diff_check_passed": true
+  },
+  "listening_review": {
+    "flagged_cases": 5,
+    "human_labels_blank": true,
+    "path": "output/false-trigger-challenges-v2-2026-11-02/review/index.html"
+  },
+  "limits": [
+    "Synthetic adult speech and constructed pauses, not children or real room audio.",
+    "A scripted synthesis request is not an independent human transcript; review failures with the audio and saved ASR.",
+    "The required-word observer is a predeclared policy comparison, not a production-manifest change or a guarantee against close spelling.",
+    "Challenge counts are designed counterexamples, not population precision/recall or child-reading accuracy.",
+    "Both manifest policies share each stream. The required-word observer was predeclared; production manifests were not tightened.",
+    "The previous matcher is replayed on identical current ASR callbacks; this is not an ASR-model comparison.",
+    "Final ASR can differ from the trigger snapshot. Trigger context is recorded separately.",
+    "Required-word checks can reject valid ASR substitutions and cannot prevent false triggers when ASR itself substitutes the expected word."
+  ],
+  "cases": [
+    {
+      "id": "coat-correct",
+      "category": "correct",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then she carried the winter coat. after that we returned safely to the little house.",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "coat",
+      "audio_sha256": "234a815deadcc5c0d27f4147c0b4ad76e7185e0cbdb4c0cf181582282c2526bb",
+      "samples_delivered": 171120,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then she carried the winter coat. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then she carried the winter coat",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then she carried the winter coat",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.695
+    },
+    {
+      "id": "coat-omitted",
+      "category": "omitted",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then she carried the winter. after that we returned safely to the little house.",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "coat",
+      "audio_sha256": "03dcc5d0bd1351112a737a45fc7f6ad686af22cf5ab843303143c7e3bbd5cdb8",
+      "samples_delivered": 152800,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then she carried the winter. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 9.55
+    },
+    {
+      "id": "coat-close_wrong_word",
+      "category": "close_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then she carried the winter goat. after that we returned safely to the little house.",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "goat",
+      "audio_sha256": "a28eea206fd1e4b2703fbf5db1553d97148ea37bbe5f72bec1eb48742f52fee8",
+      "samples_delivered": 170000,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then she carried the winter goat. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": true,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then she carried the winter goat",
+          "scripted_wrong_phrase_present_at_trigger": true
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.625
+    },
+    {
+      "id": "coat-distant_wrong_word",
+      "category": "distant_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then she carried the winter stone. after that we returned safely to the little house.",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "stone",
+      "audio_sha256": "9af04e0b54e4ebf7866c1226e7be9d1f0439bd60fb1b584a85fe705a216c334e",
+      "samples_delivered": 173120,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then she carried the winter stone. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.82
+    },
+    {
+      "id": "coat-quoted_prompt",
+      "category": "quoted_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then please repeat she carried the winter coat. after that we returned safely to the little house.",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "coat",
+      "audio_sha256": "8183b77bfa0ef52900adbe3a0ce5e482b429e8f8b05ea29f01fb15f7b4f8b4be",
+      "samples_delivered": 182400,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then please repeat, she carried the winter coat. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.4
+    },
+    {
+      "id": "coat-negated_prompt",
+      "category": "negated_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then do not say she carried the winter coat. after that we returned safely to the little house.",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "coat",
+      "audio_sha256": "e87e5fe98f027bee75f6ad43f4d420cb439dcf2162280e0366a778017b4a1b63",
+      "samples_delivered": 181360,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then do not say she carried the winter coat. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.335
+    },
+    {
+      "id": "coat-prefix_then_unrelated",
+      "category": "prefix_then_unrelated",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then she carried the winter the television remote has disappeared again. after that we returned safely to the little house.",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "coat",
+      "audio_sha256": "93621930777dd3cda2695985b9dacc3694a9aabe1f0ddc291a401c0fec367678",
+      "samples_delivered": 200480,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then she carried the winter, the television remote has disappeared again. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 12.53
+    },
+    {
+      "id": "coat-skipped",
+      "category": "skipped",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. after that we returned safely to the little house.",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "coat",
+      "audio_sha256": "d3ee7033b84355a9465049515250c0ec0421264a146507499a379ff2a69175e1",
+      "samples_delivered": 114480,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 7.155
+    },
+    {
+      "id": "coat-reread",
+      "category": "reread",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then she carried the winter coat. she carried the winter coat. after that we returned safely to the little house.",
+      "anchor": "she carried the winter coat",
+      "spoken_target_word": "coat",
+      "audio_sha256": "62fec660bc1c8a4a4976c7211949df29ac902c3ad7a87fda276d7b575a1c2d76",
+      "samples_delivered": 218720,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then she carried the winter coat. She carried the winter coat. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then she carried the winter coat",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then she carried the winter coat",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 13.67
+    },
+    {
+      "id": "fan-correct",
+      "category": "correct",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then he switched on the fan. after that we returned safely to the little house.",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "fan",
+      "audio_sha256": "75f9a8c0c8f49fd65374fd95dcc8a13541a49afd1d149632a4e05f05302abce7",
+      "samples_delivered": 169520,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he switched on the fan. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 6.912,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he switched on the fan",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 6.912,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he switched on the fan",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.595
+    },
+    {
+      "id": "fan-omitted",
+      "category": "omitted",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then he switched on the. after that we returned safely to the little house.",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "fan",
+      "audio_sha256": "196655e550bdea4b6d769209ab653483756a32d6387273ed7b685b6e82e260d5",
+      "samples_delivered": 150080,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he switched on the after that we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 9.38
+    },
+    {
+      "id": "fan-close_wrong_word",
+      "category": "close_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then he switched on the van. after that we returned safely to the little house.",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "van",
+      "audio_sha256": "4ac580129908fd84e83d3ffc29750c61f8d27bee999dd5f20672b1fd833b7dae",
+      "samples_delivered": 168560,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he switched on the van. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": true,
+          "missed_target": false,
+          "target_trigger_audio_end": 6.912,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he switched on the van",
+          "scripted_wrong_phrase_present_at_trigger": true
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.535
+    },
+    {
+      "id": "fan-distant_wrong_word",
+      "category": "distant_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then he switched on the lamp. after that we returned safely to the little house.",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "lamp",
+      "audio_sha256": "ff01f0f03e4febc20b48bbda07cb2a7cee4748cb98d85e9d30616c1fb46b73d4",
+      "samples_delivered": 168960,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he switched on the lamp. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.56
+    },
+    {
+      "id": "fan-quoted_prompt",
+      "category": "quoted_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then please repeat he switched on the fan. after that we returned safely to the little house.",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "fan",
+      "audio_sha256": "ffc595e039889df4b4794a6943ad16f40b249d43a15ba0295b6c2e6367b07d78",
+      "samples_delivered": 180880,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then please repeat he switched on the fan. After that we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.305
+    },
+    {
+      "id": "fan-negated_prompt",
+      "category": "negated_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then do not say he switched on the fan. after that we returned safely to the little house.",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "fan",
+      "audio_sha256": "2f6f5efe188a485b2b1d6a4313c38c9e31207de5563d1dd0be50bb2a9996c377",
+      "samples_delivered": 179360,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then do not say he switched on the fan. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.21
+    },
+    {
+      "id": "fan-prefix_then_unrelated",
+      "category": "prefix_then_unrelated",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then he switched on the the television remote has disappeared again. after that we returned safely to the little house.",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "fan",
+      "audio_sha256": "a5219a52e9ccdb83c963c7c3d73713b0a840ec90cc56b4ab1c97656b6b37468e",
+      "samples_delivered": 197840,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he switched on the television remote has disappeared again. After that we return safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 12.365
+    },
+    {
+      "id": "fan-skipped",
+      "category": "skipped",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. after that we returned safely to the little house.",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "fan",
+      "audio_sha256": "d3ee7033b84355a9465049515250c0ec0421264a146507499a379ff2a69175e1",
+      "samples_delivered": 114480,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 7.155
+    },
+    {
+      "id": "fan-reread",
+      "category": "reread",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then he switched on the fan. he switched on the fan. after that we returned safely to the little house.",
+      "anchor": "he switched on the fan",
+      "spoken_target_word": "fan",
+      "audio_sha256": "ed72becd525959b4b8857613ffd17c931b9560f7c62faed76a409fbecc46afb8",
+      "samples_delivered": 215280,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he switched on the fan. He switched on the fan. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 6.912,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he switched on the fan",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 6.912,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he switched on the fan",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 13.455
+    },
+    {
+      "id": "seal-correct",
+      "category": "correct",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then we spotted a playful seal. after that we returned safely to the little house.",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "seal",
+      "audio_sha256": "ca247d8e77e4da8be15bb606f882a5e938297980e4d4463b6e1db3b9627c397d",
+      "samples_delivered": 172480,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then we spotted a playful seal. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then we spotted a playful seal",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then we spotted a playful seal",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.78
+    },
+    {
+      "id": "seal-omitted",
+      "category": "omitted",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then we spotted a playful. after that we returned safely to the little house.",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "seal",
+      "audio_sha256": "c82349d99a6baa4d38998a79d95ed5ceab711c1d656d8ac89180ba9b0dd85eb9",
+      "samples_delivered": 153920,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then we spotted a playful. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 9.62
+    },
+    {
+      "id": "seal-close_wrong_word",
+      "category": "close_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then we spotted a playful zeal. after that we returned safely to the little house.",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "zeal",
+      "audio_sha256": "0a26e3d2d0c823d105f5893b90195a76c05bfa63c57157ff74b4a5327bce4f8d",
+      "samples_delivered": 171520,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then we spotted a playful zeal. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": true,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then we spotted a playful zeal",
+          "scripted_wrong_phrase_present_at_trigger": true
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.72
+    },
+    {
+      "id": "seal-distant_wrong_word",
+      "category": "distant_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then we spotted a playful bird. after that we returned safely to the little house.",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "bird",
+      "audio_sha256": "e30466120e545e9228bd8703c7a4fafbb43edae8892097f7f2dec970de8e5209",
+      "samples_delivered": 170720,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then we spotted a playful bird. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.67
+    },
+    {
+      "id": "seal-quoted_prompt",
+      "category": "quoted_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then please repeat we spotted a playful seal. after that we returned safely to the little house.",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "seal",
+      "audio_sha256": "9743d8c0efe21f5cbbafcd8fcf604a2614884aff76c4766b495dc05f92931400",
+      "samples_delivered": 184320,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then please repeat, we spotted a playful seal. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.52
+    },
+    {
+      "id": "seal-negated_prompt",
+      "category": "negated_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then do not say we spotted a playful seal. after that we returned safely to the little house.",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "seal",
+      "audio_sha256": "0df4e4d943d7b1baa06be00fb9ec80fe332400b95f687e3e6bb028fef0ca19a3",
+      "samples_delivered": 182960,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then do not say we spotted a playful seal. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.435
+    },
+    {
+      "id": "seal-prefix_then_unrelated",
+      "category": "prefix_then_unrelated",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then we spotted a playful the television remote has disappeared again. after that we returned safely to the little house.",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "seal",
+      "audio_sha256": "959a6ee723d316a2ddfb61c49470b567885eec5b68604559775f065e6ff1d8d5",
+      "samples_delivered": 201280,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then we spotted a playful, the television remote has disappeared again. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 12.58
+    },
+    {
+      "id": "seal-skipped",
+      "category": "skipped",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. after that we returned safely to the little house.",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "seal",
+      "audio_sha256": "d3ee7033b84355a9465049515250c0ec0421264a146507499a379ff2a69175e1",
+      "samples_delivered": 114480,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 7.155
+    },
+    {
+      "id": "seal-reread",
+      "category": "reread",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then we spotted a playful seal. we spotted a playful seal. after that we returned safely to the little house.",
+      "anchor": "we spotted a playful seal",
+      "spoken_target_word": "seal",
+      "audio_sha256": "3f9dea70df5178426cb315ceea80ba4669bd12fbbfebe6a60e38e0b89a45062c",
+      "samples_delivered": 221280,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then we spotted a playful seal. We spotted a playful seal. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then we spotted a playful seal.",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then we spotted a playful seal.",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 13.83
+    },
+    {
+      "id": "pen-correct",
+      "category": "correct",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then the child held a red pen. after that we returned safely to the little house.",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "pen",
+      "audio_sha256": "7d7a8e96648da668fb169118986b0515a30023d4d5590ba5e09d2576b4a4a3b1",
+      "samples_delivered": 172240,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then the child held a red pen. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then the child held a red pen",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then the child held a red pen",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.765
+    },
+    {
+      "id": "pen-omitted",
+      "category": "omitted",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then the child held a red. after that we returned safely to the little house.",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "pen",
+      "audio_sha256": "3154ae470cbe13155b3f3ad720fa2ead9e53914ed340fa734733e61fce7f8536",
+      "samples_delivered": 154560,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then the child held a red. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 9.66
+    },
+    {
+      "id": "pen-close_wrong_word",
+      "category": "close_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then the child held a red pin. after that we returned safely to the little house.",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "pin",
+      "audio_sha256": "eee30d9640a29c7d453741357951627359c7ac86b03adf458794cda31e263414",
+      "samples_delivered": 172240,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then the child held a red pin. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": true,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then the child held a red pin",
+          "scripted_wrong_phrase_present_at_trigger": true
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.765
+    },
+    {
+      "id": "pen-distant_wrong_word",
+      "category": "distant_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then the child held a red book. after that we returned safely to the little house.",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "book",
+      "audio_sha256": "fac72b11a254cfcd67d83793a754be918620ff1f0a937aa41a6e879f5a959d1c",
+      "samples_delivered": 171440,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then the child held a red book. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 10.715
+    },
+    {
+      "id": "pen-quoted_prompt",
+      "category": "quoted_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then please repeat the child held a red pen. after that we returned safely to the little house.",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "pen",
+      "audio_sha256": "cdf9af5bb5bd46a5f5fa540128eff9cd270f3507c8f7e9199b69e6943f6d9c94",
+      "samples_delivered": 184320,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then please repeat the child held a red pen. After that we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.52
+    },
+    {
+      "id": "pen-negated_prompt",
+      "category": "negated_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then do not say the child held a red pen. after that we returned safely to the little house.",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "pen",
+      "audio_sha256": "8686b1e302356229469a4dbb7be8f2bfd15bb6ecedfba075f4015b5b068f2ecf",
+      "samples_delivered": 183040,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then do not say the child held a red pen. After that we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.44
+    },
+    {
+      "id": "pen-prefix_then_unrelated",
+      "category": "prefix_then_unrelated",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then the child held a red the television remote has disappeared again. after that we returned safely to the little house.",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "pen",
+      "audio_sha256": "dbeb6dbb00db87d042506185fdca1ebf412304c971f68d2d87e68370d29b140e",
+      "samples_delivered": 202320,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then the child held a red, The television remote has disappeared again. After that, we return safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [
+              "target"
+            ],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 12.645
+    },
+    {
+      "id": "pen-skipped",
+      "category": "skipped",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. after that we returned safely to the little house.",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "pen",
+      "audio_sha256": "d3ee7033b84355a9465049515250c0ec0421264a146507499a379ff2a69175e1",
+      "samples_delivered": 114480,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 7.155
+    },
+    {
+      "id": "pen-reread",
+      "category": "reread",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then the child held a red pen. the child held a red pen. after that we returned safely to the little house.",
+      "anchor": "the child held a red pen",
+      "spoken_target_word": "pen",
+      "audio_sha256": "85c4b245a68cddcc997765feef327f12aa41f81ba933f8d4afbcfc89a4808c3f",
+      "samples_delivered": 220720,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then the child held a red pen. The child held a red pen. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then the child held a red pen",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then the child held a red pen",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 13.795
+    },
+    {
+      "id": "sink-correct",
+      "category": "correct",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then he carefully cleaned the white sink. after that we returned safely to the little house.",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "sink",
+      "audio_sha256": "16585d9f28b9ac4eff769f0f1c4841294703ef6543af1743f3dd274daa2fa4bc",
+      "samples_delivered": 177520,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he carefully cleaned the white sink. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he carefully cleaned the white sink",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he carefully cleaned the white sink",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.095
+    },
+    {
+      "id": "sink-omitted",
+      "category": "omitted",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then he carefully cleaned the white. after that we returned safely to the little house.",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "sink",
+      "audio_sha256": "d74cb7693c00b4b35a5b15d656cc59737fa288ea8ee4161086353de60ba1607e",
+      "samples_delivered": 158960,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he carefully cleaned the white. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 9.935
+    },
+    {
+      "id": "sink-close_wrong_word",
+      "category": "close_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then he carefully cleaned the white zinc. after that we returned safely to the little house.",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "zinc",
+      "audio_sha256": "78c8fb3cff8e4fa9c12e2148379f8687a71ae07c1e405a48cb4c3f5bf338c48d",
+      "samples_delivered": 176560,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he carefully cleaned the white zinc. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": true,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he carefully cleaned the white zinc",
+          "scripted_wrong_phrase_present_at_trigger": true
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.035
+    },
+    {
+      "id": "sink-distant_wrong_word",
+      "category": "distant_wrong_word",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then he carefully cleaned the white chair. after that we returned safely to the little house.",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "chair",
+      "audio_sha256": "05c42ea50f927ae9e5062cb42c08e0f4d925ff205665d46210d62edab877fe4f",
+      "samples_delivered": 177280,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he carefully cleaned the white chair. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.08
+    },
+    {
+      "id": "sink-quoted_prompt",
+      "category": "quoted_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then please repeat he carefully cleaned the white sink. after that we returned safely to the little house.",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "sink",
+      "audio_sha256": "a978b8082bb1aac865eba253294a16db15cf3b14efdd3696ab5414adb752e7cd",
+      "samples_delivered": 188640,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then please repeat, he carefully cleaned the white sink. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "finish"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.79
+    },
+    {
+      "id": "sink-negated_prompt",
+      "category": "negated_prompt",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then do not say he carefully cleaned the white sink. after that we returned safely to the little house.",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "sink",
+      "audio_sha256": "5d10b1ce4a497ed6798c8297e0b0eeaa9498a003451ba5dc1f8ccb257f0dbb1c",
+      "samples_delivered": 187120,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then do not say he carefully cleaned the white sink. After that we return safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 11.695
+    },
+    {
+      "id": "sink-prefix_then_unrelated",
+      "category": "prefix_then_unrelated",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. then he carefully cleaned the white the television remote has disappeared again. after that we returned safely to the little house.",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "sink",
+      "audio_sha256": "fe05b2c8ae9a30cbb7fe19d4190c9f34ff06418e18aa5b1b241850be571c968a",
+      "samples_delivered": 206000,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he carefully cleaned the white, the television remote has disappeared again. After that, we return safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 12.875
+    },
+    {
+      "id": "sink-skipped",
+      "category": "skipped",
+      "expected": false,
+      "script": "we walked along a quiet path beside the trees. after that we returned safely to the little house.",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "sink",
+      "audio_sha256": "d3ee7033b84355a9465049515250c0ec0421264a146507499a379ff2a69175e1",
+      "samples_delivered": 114480,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "after": {
+            "emitted": [
+              "start"
+            ],
+            "suppressed": [
+              "target"
+            ],
+            "skipped": [],
+            "unreached": [
+              "finish"
+            ]
+          },
+          "target_emitted": false,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": null,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": null,
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": false,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 7.155
+    },
+    {
+      "id": "sink-reread",
+      "category": "reread",
+      "expected": true,
+      "script": "we walked along a quiet path beside the trees. then he carefully cleaned the white sink. he carefully cleaned the white sink. after that we returned safely to the little house.",
+      "anchor": "he carefully cleaned the white sink",
+      "spoken_target_word": "sink",
+      "audio_sha256": "3f5383baba9094be38aecd999311266c1375ce6a1be631944241717215f36fc7",
+      "samples_delivered": 231040,
+      "delivery_audit_pass": true,
+      "final_asr": "We walked along a quiet path beside the trees. Then he carefully cleaned the white sink. He carefully cleaned the white sink. After that, we returned safely to the little house",
+      "policies": {
+        "default": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he carefully cleaned the white sink",
+          "scripted_wrong_phrase_present_at_trigger": false
+        },
+        "required": {
+          "before": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "after": {
+            "emitted": [
+              "start",
+              "target",
+              "finish"
+            ],
+            "suppressed": [],
+            "skipped": [],
+            "unreached": []
+          },
+          "target_emitted": true,
+          "false_trigger": false,
+          "missed_target": false,
+          "target_trigger_audio_end": 7.424,
+          "duplicate_target_emissions": 0,
+          "asr_at_target_trigger": "We walked along a quiet path beside the trees. Then he carefully cleaned the white sink",
+          "scripted_wrong_phrase_present_at_trigger": false
+        }
+      },
+      "expected_spoken_anchor_in_final_asr": true,
+      "app_observer_replay_agreement": true,
+      "audio_seconds": 14.44
+    }
+  ],
+  "artifacts": "output/false-trigger-challenges-v2-2026-11-02"
+}

@@ -77,6 +77,74 @@ class EffectPermissionTests(unittest.TestCase):
                        'the small frog jumped into the pond and then we talked about another animal']:
             self.assertFalse(permission.permits(spoken.split())[0])
 
+    def test_phonetic_endpoint_requires_acquisition_and_entire_exact_prefix(self):
+        permission = EffectPermission(dict(checkpoint_text='covered with very small scales'), .8, [])
+        spoken = 'they are covered with very small cells it is'.split()
+        self.assertFalse(permission.permits(spoken)[0])
+        self.assertTrue(permission.permits(spoken, allow_phonetic_endpoint=True)[0])
+        for text in ['covered with small cells', 'covered with really small cells',
+                     'not covered with very small cells', 'covered with very small birds',
+                     'covered with very small coils',
+                     'covered with very small cells and we moved far away']:
+            with self.subTest(text=text):
+                self.assertFalse(permission.permits(text.split(), allow_phonetic_endpoint=True)[0])
+
+    def test_phonetic_endpoint_cannot_replace_required_words_or_missing_endpoints(self):
+        cases = [
+            (dict(checkpoint_text='covered with very small scales', required_words=['scales']),
+             'covered with very small cells'),
+            (dict(checkpoint_text='bears hibernate from October to April', required_words=['hibernate']),
+             'bears from october to april'),
+            (dict(checkpoint_text='they help it to escape from its enemies'),
+             'they help it to escape from its a bird flies away'),
+            (dict(checkpoint_text='covered with very small scales'), 'covered with very small'),
+        ]
+        for checkpoint, text in cases:
+            with self.subTest(text=text):
+                self.assertFalse(EffectPermission(checkpoint, .8, []).permits(
+                    text.split(), allow_phonetic_endpoint=True)[0])
+
+    def test_phonetic_endpoint_rejects_short_and_repetitive_anchor_context(self):
+        for anchor, text in [('very small scales', 'very small cells'),
+                             ('very very very small scales', 'very very very small cells')]:
+            with self.subTest(anchor=anchor):
+                self.assertFalse(EffectPermission(dict(checkpoint_text=anchor), .8, []).permits(
+                    text.split(), allow_phonetic_endpoint=True)[0])
+
+    def test_acquired_checkpoint_accepts_variant_without_rewriting_transcript(self):
+        prefix = ('we admire the brilliant colours of their wings '
+                  'then we see that they are covered with very small')
+        text = prefix + ' scales it is these scales which have colour'
+        cfg = manifest(text, ['the brilliant colours of their wings', 'covered with very small scales'])
+        matcher = TimelyEvidenceMatcher(cfg)
+        self.assertTrue(matcher.process('we admire the brilliant colours of their wings').triggered)
+        self.assertFalse(matcher.process(prefix).triggered)
+        heard = prefix + ' cells it is'
+        update = matcher.process(heard)
+        self.assertTrue(update.triggered)
+        self.assertEqual(update.checkpoint_id, '2')
+        self.assertIn('cells', matcher._buffer)
+        self.assertNotIn('scales', matcher._buffer)
+        self.assertFalse(matcher.process(heard + ' these cells which have colour').triggered)
+
+        cold = TimelyEvidenceMatcher(cfg)
+        update = cold.process(heard)
+        self.assertFalse(update.triggered)
+        self.assertTrue(update.effect_suppressed)
+
+    def test_phonetic_endpoint_applies_to_unrelated_words_without_metadata(self):
+        for anchor, heard in [
+            ('the painted surface felt rough', 'the painted surface felt ruff'),
+            ('the arrow went straight through', 'the arrow went straight threw'),
+            ('children waited in the queue', 'children waited in the cue'),
+            ('she watched the final scene', 'she watched the final seen'),
+            ('the workers checked its weight', 'the workers checked its wait'),
+        ]:
+            with self.subTest(anchor=anchor):
+                permission = EffectPermission(dict(checkpoint_text=anchor), .8, [])
+                self.assertFalse(permission.permits(heard.split())[0])
+                self.assertTrue(permission.permits(heard.split(), allow_phonetic_endpoint=True)[0])
+
     def test_invalid_policy_and_required_words_fail_at_manifest_load(self):
         for settings in [dict(effect_policy='unknown'), dict(required_words='hibernate'),
                          dict(required_words=['not in the anchor'])]:

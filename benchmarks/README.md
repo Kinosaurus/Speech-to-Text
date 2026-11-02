@@ -1,6 +1,212 @@
 # Benchmark child-reading recognition
 
-Latest: [guarded effect and timing evaluation](GUARDED_PILOT_RESULTS.md), 21
+Latest focused challenge: [45 full-stream synthetic adult cases](results/false-trigger-challenges-2026-11-02.json).
+Five anchors each test correct reading, endpoint omission, close/distant wrong
+words, quoted/negated prompts, unrelated continuation after an anchor prefix,
+skipping and rereading. Every case uses offline Microsoft Zira speech and matched
+constructed pauses, then the same real-paced app/ASR pipeline. All trials,
+scripts, default/required observer policies and sources were frozen; no runtime
+tuning or production-manifest edits occurred. All delivery, EOF, hash and
+app/observer/replay checks pass.
+
+The default one-shot policy falsely emits on all five close wrong words with
+the scripted wrong phrase present in ASR at the trigger. Two already occur with
+the previous matcher (coat/goat and seal/zeal); three are new (fan/van, pen/pin,
+sink/zinc). All 30 other negatives stay off; all ten correct/reread cases emit
+once without duplicates. The required-endpoint observer blocks these five
+examples but can also reject valid ASR substitutions; it is not an automatic
+fix. These are designed counterexamples under literal-word expectations, not
+child accuracy or population false-trigger rates. The five-case audio review
+keeps human labels blank.
+
+`run_false_trigger_challenges.py` has `prepare`, `preflight`, `inventory` and
+`run` stages. Use a fresh `--output`; local reference snapshots/model are needed.
+After prepare, run `synthesize_challenges.ps1 -OutputDirectory <output>` and
+inventory the generated WAVs. Preflight records constructed text diagnostics
+separately from fresh audio trials. Run streams each case once; the summarizer
+retains failures, compares the frozen prior matcher on the same ASR callbacks,
+and creates the listening review. One failed setup before synthesis/ASR is
+retained under the original output directory with an `ABORTED.json` marker;
+the completed artifacts use `output/false-trigger-challenges-v2-2026-11-02`.
+
+Latest frozen evaluation: [post-phonetic MPS speaker check](results/mps-heldout-phonetic-2026-11-02.json).
+24 original-file streams from 12 unused IDs exclude all 57 prior IDs. Selection,
+order, all runtime sources, model, lexicon, settings and manifests were frozen
+before download. All trials completed once with full delivery and app/replay
+agreement. Of 72 checkpoints, 64 emit, five are suppressed and three unreached.
+All 46 provider-marked correct anchors emit. This batch has no provider-deleted
+endpoints/essential words and adds no natural omission-control evidence. The
+26-case listening queue is unlabelled. No ASR or matcher tuning occurred; these
+are outcomes on six familiar texts, not a human accuracy or latency score.
+
+Latest repair: [contextual phonetic-feature/progress regression](results/phonetic-feature-regression-2026-11-02.json).
+A complete CMU phone-feature inventory supports bounded close-sound substitutions
+under the existing exact-prefix, prior-progress and effect-permission guards.
+Unique full phonetic anchors can supply local progress candidates; ordinary
+scores, coverage, independent confirmations and required-word checks remain.
+No word aliases, ASR changes, new hints, model changes or transcript replacements
+are used. All 99 saved timelines add only the confirmed hundred_sheep effect,
+with no losses and no emissions on seven provider-deletion controls. Nine fresh
+reviewed readings add that same effect, from 18 to 19 of 27 checkpoints, with six
+suppressed and two unreached. Their ASR timelines are identical to the saved
+outputs; all three fresh omission assertions stay off. Four fresh unrelated
+streams emit zero effects across 24 passage comparisons. Windows: 171 tests pass,
+one unchanged NeMo-only test is skipped. These are inspected-data regressions;
+close intentional word substitutions remain a limitation of lexical matching.
+
+`run_phonetic_feature_regression.py --stage prepare|preflight|run` freezes the
+current sources and unchanged recordings, verifies all 99 previous ledgers, then
+runs the nine asserted readings and four unrelated controls. Its old matcher
+loads the frozen old phonetic helper as well as permission and progress code.
+The summarizer verifies delivery, hashes, assertions, callback agreement and
+source-audio listening notes without rewriting earlier evaluation results.
+
+Earlier frozen evaluation: [post-pending MPS speaker check](results/mps-heldout-pending-2026-11-02.json).
+24 fresh real-paced streams from 12 new IDs exclude all 45 previously used IDs.
+Selection, order, model, full pipeline, lexicon, settings and 72 checkpoints were
+frozen before download. All trials completed once with full audio delivery,
+unchanged hashes and app/audit agreement. Outcomes: 64 emitted, five suppressed,
+three unreached. Of 40 provider-correct anchors, 39 emit; user listening confirms
+the remaining hundred_sheep reading should emit. ASR retains "hundred chip",
+which fails the existing endpoint checks. The approximate 0:10 excerpt endpoint
+maps to 11.36 seconds in the original, without verified word alignment. The one
+provider-deleted endpoint remains unreached and non-emitting. No pending
+decisions were observed. Existing unrelated ASR callbacks replay to zero effects
+in 24 comparisons. The local queue has 33 flagged cases, one with user confirmation. No ASR or
+matcher tuning occurred. This holds out speakers on six familiar passages;
+counts do not establish effect accuracy or real microphone performance.
+
+Earlier repair: [general pending-effect regression](results/pending-regression-2026-11-02.json).
+The matcher can briefly keep a locally acquired, exact-prefix endpoint pending
+while ASR resolves an unfinished word. Existing permission rules still require
+supported content; ASR, word matching, model and thresholds stay unchanged.
+All 75 saved streaming timelines compare both matcher versions, adding only
+the confirmed restart and losing no effects. All six replay omission controls
+stay off. Thirty-one fresh matched streams add that same one effect, increasing
+emissions from 76 to 77; 12 are suppressed and four unreached. All five fresh
+omission cases remain non-emitting. Four fresh unrelated streams emit zero
+effects across 24 passage comparisons. Windows: 163 unit tests pass, one
+unchanged NeMo-only test is skipped. These are inspected-data regressions.
+
+`run_pending_regression.py` has prepare, preflight and run stages. It freezes
+source/manifests and the 75 recorded ASR timelines, verifies previous live ledgers,
+then runs the latest 24 readings plus seven reviewed cases and four unrelated
+controls once each. Use a new `--output` for another run. The summarizer verifies
+completion, omission assertions, pending outcomes, hashes and live-app agreement,
+and creates listening context without changing the historical source results.
+
+Earlier frozen evaluation: [post-EOF MPS speaker check](results/mps-heldout-eos-2026-11-02.json).
+24 fresh real-paced streams from 12 new speaker IDs exclude all 33 previously
+used IDs. The complete repaired pipeline, model, settings, 72 checkpoints,
+selection and order were frozen before audio download. All trials completed
+once with full delivery and unchanged hashes. Outcomes: 62 emitted, seven
+suppressed and three unreached. One of 42 provider-correct anchors does not
+emit; user listening confirms a false negative on an ene-enemies restart. The
+then-current matcher permanently suppresses intermediate enemy before ASR returns
+the full enemy enemies, which would pass the permission rule. That batch's source
+snapshot remains frozen. Both provider-deleted endpoints remain unreached and non-emitting. The
+local review queue has 31 flagged cases, one with a user label.
+Existing repaired-ASR control callbacks emit zero effects in 24 replay
+comparisons. Both replay ledgers use the same matcher and are agreement audits.
+No ASR/matcher tuning or sample replacement occurred. These operational counts
+on six familiar passages are not accuracy, new-book or microphone results.
+
+Earlier EOF repair: [general NeMo end-of-stream regression](results/eos-regression-2026-11-02.json).
+51 fresh original-file streams and four fresh unrelated controls keep the matcher,
+model weights, hints, thresholds and all 153 checkpoints unchanged. Finalization
+uses full chunk/right context and caps decoding at the real remaining frames;
+padding adds no client time or matcher callbacks. All 51 pre-EOF transcripts match
+the earlier runs. Effects increase from 126 to 128, with 18 suppressed, seven
+unreached and none lost. Wing now emits; the user confirms the second added paws
+effect is correct. Both additions have listening notes, with the wing endpoint's
+soft/possibly cut-off qualification retained. All four omission controls remain non-emitting, including
+both user-confirmed omissions. Unrelated audio emits zero effects across 24
+passage comparisons. Windows passes 152 unit tests; the one NeMo-only test passes
+separately in WSL. These are inspected-data regressions, not new held-out scores.
+
+`run_eos_regression.py --stage prepare` copies existing manifests and freezes
+sources, original audio hashes, model, lexicon, order and saved baseline callbacks.
+Its run stage freshly streams all 55 files, verifies real-duration completion and
+compares original/repaired ASR through the identical matcher. Use a new `--output`
+directory for another run. `summarize_eos_regression.py` checks the completed batch
+and creates the portable report plus local listening clips. Added effects remain
+review candidates, and historical held-out reports are preserved.
+
+Latest diagnostic: [original audio versus two seconds of trailing silence](results/mps-tail-silence-2026-11-02.json).
+Two fresh real-paced streams reproduce the unpadded wing miss and recover the
+word plus damaged_wing after adding two seconds of digital silence. All original
+speech samples, matcher, recognizer settings and model hashes are unchanged;
+both streams pass full delivery and app/audit checks. The result supports
+trailing-context/end-of-stream sensitivity without identifying the precise cause.
+This inspected-recording diagnostic leaves the held-out results below unchanged.
+
+Latest speaker test: [untuned post-split MPS speaker test](results/mps-heldout-split-word-2026-11-02.json):
+24 fresh real-paced streams, 12 new speaker IDs, all 21 prior IDs excluded,
+16m43s audio and 72 frozen checkpoints. Sources, model, lexicon and settings
+remain unchanged from the completed split-word regression. Both guards emit
+63 effects, suppress five and leave four unreached; no added/lost emissions or
+new split-word recoveries were observed. One of 47 provider-correct anchors
+does not emit. The user hears the damaged_wing phrase but subsequently qualifies
+wing as soft and possibly cut off, so the earlier clean false-negative label is
+qualified. The final ASR omits wing and tracker progress stops at 79/80. The full
+provider WAV was streamed; the listening excerpt preserves its ending exactly.
+The underlying
+recognition/end-of-stream cause remains unverified; matcher code stays frozen.
+The one provider-deleted endpoint remains unreached, with no effect. The 26-case
+local listening queue has one user label. Saved unrelated ASR replay emits zero effects in 24 comparisons.
+No matcher tuning or outcome-dependent sample changes occurred. The test holds
+out speakers on the same six familiar passages; these are not accuracy scores.
+
+For subsequent batches, give `run_mps_heldout.py` a new `--output` directory and
+the intended `--baseline-snapshot` at prepare time. Selection excludes speaker
+IDs from earlier local results. Pass the completed reference sweep's protocol
+to `summarize_mps_heldout.py --reference-protocol`; portable result names follow
+the output directory name, preserving earlier reports. The current batch's one
+socket-permission startup failure delivered no audio and is archived separately;
+each recording has exactly one completed streaming trial.
+
+Previous: [general split-word regression](results/split-word-regression-2026-11-02.json):
+27 fresh application streams compare the pre-split guard and repaired matcher
+on identical ASR callbacks. Exact full-anchor matching permits each authored
+word to consume one or two adjacent ASR tokens, without word-specific aliases
+or transcript rewriting. Existing local acquisition, prompt and independent
+confirmation guards remain. A complete unique next anchor can reach a split
+endpoint without waiting for another sentence. Of 81 checkpoints, 63 emit
+versus 62 before; riverside is the only addition and none are lost. Both
+human-confirmed omissions and the separate annotated hibernate omission stay
+suppressed; scales still emits. Four fresh unrelated streams produce zero effects
+in 24 passage comparisons. All 31 streams pass delivery and integrity checks;
+all 150 unit tests pass. The previous 24 MPS
+recordings and three reviewed cases are regression coverage, not a new held-out
+evaluation.
+
+`run_split_word_regression.py` prepares a fresh output directory, freezes source,
+model, lexicon and existing manifests, then streams the fixed 27-reading order
+and four unrelated controls. `summarize_split_word_regression.py` checks completion,
+delivery and hashes before writing the portable report. The initial interrupted
+12-reading run is retained separately with its reason; the completed rerun uses
+the final repair, including the generic end-of-audio regression test.
+
+Earlier: [untuned held-out-speaker MPS evaluation](results/mps-heldout-2026-11-02.json):
+24 fresh app streams from 12 new speaker IDs, balanced across Grades 3–5 and
+provider gender labels. Matcher/model/lexicon hashes, six familiar passages,
+72 checkpoints, settings, selection seed and trial order were frozen before
+audio download. All trials were retained: both guards emit 56 effects, with
+12 suppressed and four unreached. The phonetic fallback accepts none of its
+four candidate comparisons; no improvement or changed effect decisions were
+observed on this batch. Post-evaluation user listening confirms the riverside
+suppression as a false negative caused by the recognized river side token split.
+That evaluation's source snapshot remains frozen; other listening labels and exact word timings are
+still unverified.
+
+`run_mps_heldout.py` has separate prepare, download and run stages; it requires
+pinned MPS metadata, the pre-phonetic source snapshot, and the documented NeMo
+server. Use `--metadata`, `--baseline-snapshot` and a fresh `--output` as needed.
+`summarize_mps_heldout.py` verifies the completed batch and creates the portable
+summary plus local context audio and blank review CSV. Raw data stay in ignored
+`output/`. Provider miscues are review evidence, not effect-accuracy gold.
+
+Earlier: [guarded effect and timing evaluation](GUARDED_PILOT_RESULTS.md), 21
 fresh reading streams plus four unrelated-speech streams. Suppressed effects
 are reported separately from emitted and unreached checkpoints.
 

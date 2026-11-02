@@ -1,0 +1,3288 @@
+{
+  "date": "2026-11-02",
+  "scope": "General premature-rejection repair: inspected-data regression",
+  "change": {
+    "no_word_specific_exceptions": true,
+    "no_asr_changes": true,
+    "no_transcript_rewriting": true,
+    "existing_permission_rules_unchanged": true,
+    "reading_progress_independent": true,
+    "acquired_exact_prefix_required": true,
+    "max_pending_effects": 1,
+    "pending_bounds": {
+      "audio_seconds": 2,
+      "fresh_updates": 4,
+      "max_book_words_past_anchor": 3
+    },
+    "requires_fresh_supported_endpoint": true,
+    "completion_can_close_pending": true,
+    "timers_and_duplicates_cannot_trigger": true,
+    "late_checkpoints_do_not_stall": true
+  },
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "lexicon": {
+    "package": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+  },
+  "execution": {
+    "fresh_reading_streams": 31,
+    "fresh_unrelated_streams": 4,
+    "configured_fresh_reading": 93,
+    "fresh_reading_audio_seconds": 1293.8,
+    "all_samples_delivered": true,
+    "all_partial_before_eof": true,
+    "all_stream_done": true,
+    "all_app_observer_agreement": true,
+    "all_pending_effects_resolved": true,
+    "one_trial_per_recording": true,
+    "all_trials_retained": true
+  },
+  "totals": {
+    "before": {
+      "emitted": 76,
+      "suppressed": 13,
+      "skipped": 0,
+      "unreached": 4
+    },
+    "after": {
+      "emitted": 77,
+      "suppressed": 12,
+      "skipped": 0,
+      "unreached": 4
+    }
+  },
+  "saved_callback_regression": {
+    "recordings": 75,
+    "configured": 225,
+    "kind": "Not fresh ASR trials",
+    "before": {
+      "emitted": 190,
+      "suppressed": 25,
+      "skipped": 0,
+      "unreached": 10
+    },
+    "after": {
+      "emitted": 191,
+      "suppressed": 24,
+      "skipped": 0,
+      "unreached": 10
+    },
+    "added": [
+      {
+        "recording": "5b4k_EN-OL-RC-538_2",
+        "checkpoints": [
+          "escape_enemies"
+        ]
+      }
+    ],
+    "removed": [],
+    "omission_controls": [
+      {
+        "recording": "4a35g_EN-OL-RC-426_2",
+        "checkpoint": "hibernate",
+        "emitted": false
+      },
+      {
+        "recording": "5b2b_EN-OL-RC-538_2",
+        "checkpoint": "escape_enemies",
+        "emitted": false
+      },
+      {
+        "recording": "4c15g_EN-OL-RC-426_2",
+        "checkpoint": "hibernate",
+        "emitted": false
+      },
+      {
+        "recording": "3b11b_EN-OL-RC-234_1",
+        "checkpoint": "lost_sheep",
+        "emitted": false
+      },
+      {
+        "recording": "4c50g_EN-OL-RC-426_2",
+        "checkpoint": "begging_paws",
+        "emitted": false
+      },
+      {
+        "recording": "4b20c_EN-OL-RC-426_1",
+        "checkpoint": "keep_away",
+        "emitted": false
+      }
+    ]
+  },
+  "assertions": [
+    {
+      "recording": "5b4k_EN-OL-RC-538_2",
+      "checkpoint": "escape_enemies",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "User-confirmed word restart"
+    },
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "expected_emission": false,
+      "actual_emission": false,
+      "passed": true,
+      "basis": "User-confirmed essential-word omission"
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "checkpoint": "escape_enemies",
+      "expected_emission": false,
+      "actual_emission": false,
+      "passed": true,
+      "basis": "User-confirmed endpoint omission"
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "checkpoint": "small_scales",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "Previously accepted pronunciation"
+    },
+    {
+      "recording": "3a8b_EN-OL-RC-234_1",
+      "checkpoint": "riverside",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "User-confirmed split-word reading"
+    },
+    {
+      "recording": "5b15k_EN-OL-RC-538_2",
+      "checkpoint": "damaged_wing",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "Reviewed soft endpoint recovered by EOF repair"
+    },
+    {
+      "recording": "4b19g_EN-OL-RC-426_2",
+      "checkpoint": "begging_paws",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "User-confirmed correct endpoint trigger"
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "expected_emission": false,
+      "actual_emission": false,
+      "passed": true,
+      "basis": "Provider-annotated essential-word omission"
+    }
+  ],
+  "provider_deletion_controls_fresh": [
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "emitted": false,
+      "suppressed": true,
+      "unreached": false
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "checkpoint": "escape_enemies",
+      "emitted": false,
+      "suppressed": true,
+      "unreached": false
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "emitted": false,
+      "suppressed": true,
+      "unreached": false
+    },
+    {
+      "recording": "4c50g_EN-OL-RC-426_2",
+      "checkpoint": "begging_paws",
+      "emitted": false,
+      "suppressed": false,
+      "unreached": true
+    },
+    {
+      "recording": "4b20c_EN-OL-RC-426_1",
+      "checkpoint": "keep_away",
+      "emitted": false,
+      "suppressed": false,
+      "unreached": true
+    }
+  ],
+  "added_emissions": [
+    {
+      "recording": "5b4k_EN-OL-RC-538_2",
+      "checkpoints": [
+        "escape_enemies"
+      ]
+    }
+  ],
+  "removed_emissions": [],
+  "pending_decisions": {
+    "created": 1,
+    "recovered": 1,
+    "finalized_suppressed": 0
+  },
+  "unrelated_controls": {
+    "fresh_streams": 4,
+    "passage_policies": 6,
+    "comparisons": 24,
+    "emitted": 0,
+    "suppressed": 0,
+    "results": [
+      {
+        "recording": "dog",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "d6062d31e4064676948fe3e4f777b2c2af4e2e26d4c6650c5f8685cd678285df",
+        "samples_delivered": 382188,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      },
+      {
+        "recording": "dragon",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "c2d69b4e49f405ac16ef224b00b4be4a53bfa0248d8cbafc2602b766cd1e8a6e",
+        "samples_delivered": 694466,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      },
+      {
+        "recording": "nickel",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "2a751b15648c389c40bdeed438f143fda2122a5fc8ecce80bacb1702463253e1",
+        "samples_delivered": 1228649,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      },
+      {
+        "recording": "recording_2",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "66f882374c1e1029cd75cb7fa1e9151d6fb32265b00093f121a74af6ff7e03d9",
+        "samples_delivered": 300016,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      }
+    ]
+  },
+  "integrity": {
+    "asr_and_eof_runtime_unchanged": true,
+    "permission_helpers_unchanged": true,
+    "model_hash_unchanged": true,
+    "lexicon_unchanged": true,
+    "source_sha256": {
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/live_tracker_probe.py": "b772faf20f29fa59f7c0f7aae35c320f547bc4f497ccc61c8b64652b47632976",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+      "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+      "benchmarks/run_mps_heldout.py": "7c4ce0f9154852c2b246f459f46bd40858b85953e1439efdb81efcf30f2cadfb",
+      "benchmarks/run_pending_regression.py": "1a651da360bedfe630cd8d7185c04f2444a948006114445d53d68601ed1b2d47",
+      "benchmarks/run_split_word_regression.py": "821cb9c1270b7ad8cd292603184d28d5ab9b77f8bf54a3996d4a07db723c934c",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "be201bba4e74adec7b0cbb599f80f9479faadbce705cb6c9e53b27f884741955",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "70ec44335b426e2c5efceccc9c05a9d1e7748604b8ae24d3e16685fe83d21836",
+      "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "e0ec0564e14f0aada70ccdcc9914a871820ebb060254b132453e3e4fefd36b5d",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phonetic_endpoint.py": "c2e80d78aa5616f4e3659831437d1b6f3737efa5c67e18548efa51c56bd70201",
+      "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+      "books_to_life/matching/timely_matcher.py": "9abf477905c827d2372b25ae3681fb552ec343516688d48af3dc6d9a8ce14aa4",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296",
+      "tests/test_pending_effects.py": "46a7163bc90d4cc9cfb7b98952d7bd06c7c138c58c65168b48569e5d068b6d82"
+    },
+    "sources_unchanged_during_run": true,
+    "audio_and_manifests_unchanged": true
+  },
+  "validation": {
+    "windows_tests_run": 164,
+    "windows_passed": 163,
+    "windows_skipped_requiring_nemo": 1,
+    "new_pending_tests": 11,
+    "unit_log_sha256": "cbc5e9d15996e8a79edb52fb06827efd58ff368015074cd1cdf24087e285a81c",
+    "diff_check_passed": true
+  },
+  "recordings": [
+    {
+      "recording": "5b4k_EN-OL-RC-538_2",
+      "speaker": "5b4k",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 43.42,
+      "audio_sha256": "db94b0017bd414924bc4de32a6a09b3aec5a541b71ff370ed76fe9da567a785f",
+      "manifest_sha256": "b2333b11465d39e4f26c82f07f05db0994222227ffc37422cca250d283e53e17",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [
+        "escape_enemies"
+      ],
+      "removed_emissions": [],
+      "samples_delivered": 694720,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [
+        "escape_enemies"
+      ],
+      "recovered_pending": [
+        "escape_enemies"
+      ],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "assertion": {
+        "checkpoint": "escape_enemies",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "User-confirmed word restart"
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "speaker": "4a35g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 40.61,
+      "audio_sha256": "fae5de18f2ee7c5fba0abd7978721285953da51757a0759e127f149b10f38f4f",
+      "manifest_sha256": "11be7686b3c5a7d9846803e910f6d6e275e9ccefbb4adc87b9138634133d182c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 649760,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "eos-regression-2026-11-02",
+      "assertion": {
+        "checkpoint": "hibernate",
+        "expected_emission": false,
+        "actual_emission": false,
+        "passed": true,
+        "basis": "User-confirmed essential-word omission"
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": true,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 3,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "speaker": "5b2b",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 55.37,
+      "audio_sha256": "e5355340540ffeb7636dd0b304384660114c7ab5b67f7046f9fcc1e69848f22e",
+      "manifest_sha256": "677a052d17221ed06d6ba2000eef19a58f534a832d6729711cf4557e320e3cbf",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 885920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "eos-regression-2026-11-02",
+      "assertion": {
+        "checkpoint": "escape_enemies",
+        "expected_emission": false,
+        "actual_emission": false,
+        "passed": true,
+        "basis": "User-confirmed endpoint omission"
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": true,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 0,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "speaker": "5b2b",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 47.12,
+      "audio_sha256": "4ebc40b991beb65248569a7acf0c3a2e0583fde8c23379bce099ce84f3c054eb",
+      "manifest_sha256": "451fec9104ce5d19ed9acaca55c316f66fcbca90cce54ae70b991c801233d63e",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 753920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "eos-regression-2026-11-02",
+      "assertion": {
+        "checkpoint": "small_scales",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "Previously accepted pronunciation"
+      },
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a8b_EN-OL-RC-234_1",
+      "speaker": "3a8b",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 53.87,
+      "audio_sha256": "d7d2345b2be18ce96a83cd107fdf84d965fa48f6c409426e21a111902e8e3e5e",
+      "manifest_sha256": "53b5c4fb9a46473a25ff0f54390d46c953cd50ba78478a102b50ea716237a6f8",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 861920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "eos-regression-2026-11-02",
+      "assertion": {
+        "checkpoint": "riverside",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "User-confirmed split-word reading"
+      },
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b15k_EN-OL-RC-538_2",
+      "speaker": "5b15k",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 50.84,
+      "audio_sha256": "cbfad5237c5d7e77dc3880c3a78c02a2f37d5db660ac246107d24913dcd57ad3",
+      "manifest_sha256": "f14f41b0aa5d03a1c1584d45933e7fa5906ba2e62bfcbf6769888d10a6ae832c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 813440,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "eos-regression-2026-11-02",
+      "assertion": {
+        "checkpoint": "damaged_wing",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "Reviewed soft endpoint recovered by EOF repair"
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b19g_EN-OL-RC-426_2",
+      "speaker": "4b19g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 44.71,
+      "audio_sha256": "ad250cb551ae9a68a22dad60743962c558b90d5d353eeb6ce341d0368f644008",
+      "manifest_sha256": "6cbd7af9ad8fecf313b0c69960bc48210b2d481125c0aee6c3d1972e14697305",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 715360,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "eos-regression-2026-11-02",
+      "assertion": {
+        "checkpoint": "begging_paws",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "User-confirmed correct endpoint trigger"
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_2",
+      "speaker": "4c15g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 44.68,
+      "audio_sha256": "194b2cd1f02d53c1b809b8fa5624e2b0e0ba11de79711ecba1adad2b2370b4d2",
+      "manifest_sha256": "a9c40ff738e04effe826e5530f724aec3954939342497563b8e4264ae02b501d",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate",
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate",
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 714880,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "eos-regression-2026-11-02",
+      "assertion": {
+        "checkpoint": "hibernate",
+        "expected_emission": false,
+        "actual_emission": false,
+        "passed": true,
+        "basis": "Provider-annotated essential-word omission"
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": true,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b21k_EN-OL-RC-538_2",
+      "speaker": "5b21k",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 32.98,
+      "audio_sha256": "4348bc8c6f4d6e419793b3fa3c7854fe1560add4caee343d572c51f096370dc3",
+      "manifest_sha256": "6f455bcd5cf60de3e5e3228ca4348c940098ab16955b20bdd59054c0910b1d06",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 527680,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c50g_EN-OL-RC-426_1",
+      "speaker": "4c50g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 52.61,
+      "audio_sha256": "1176d290c7917b1f0d22c2ffc5ec3903d7c7920cd7973543267c14e646adae6b",
+      "manifest_sha256": "00d2955872161afcb2513af46884898558a262c699543c98f408904ffb36cb71",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "keep_away"
+        ],
+        "suppressed": [
+          "fish_and_seals"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "keep_away"
+        ],
+        "suppressed": [
+          "fish_and_seals"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 841760,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a37c_EN-OL-RC-538_1",
+      "speaker": "5a37c",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 31.43,
+      "audio_sha256": "c80a5f3a0598677d5446d161d7220cc123da85b6b81f96b4c9f0840d636fe12f",
+      "manifest_sha256": "eeaf2d103560cce2cd1fc0e9bb588c9b4f1f5037155982ee0f14370c339f7403",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 502880,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c50g_EN-OL-RC-426_2",
+      "speaker": "4c50g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 47.5,
+      "audio_sha256": "5b200f179b807c633f7ad3932b6718dfe90cb683f0ee4c9c5d24a4073851c306",
+      "manifest_sha256": "ab74a23c40c1d2da8818bc543a59d30fb78e43ef33520453d2e9d64a5250167b",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 760000,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": true,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b16c_EN-OL-RC-538_2",
+      "speaker": "5b16c",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 38.84,
+      "audio_sha256": "a14c6b61fd3cc19a75f1a1121ae9a973c9ac59c99f9fa17980ae03af87a87dcb",
+      "manifest_sha256": "88d8e105ce882c3dc35c5b97976271ddb4adf0e5e9b93061871d0f2106fc320c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 621440,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b16c_EN-OL-RC-538_1",
+      "speaker": "5b16c",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 36.23,
+      "audio_sha256": "f0d1747dfd2f738833f653b9c192ad01c3e1fbe10715786610f1e523d22aee5b",
+      "manifest_sha256": "bdf77b83b48fc42536667db0744c98e893cfcee93d01dac3de955150f332caa6",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 579680,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4a8h_EN-OL-RC-426_2",
+      "speaker": "4a8h",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 60.38,
+      "audio_sha256": "f57895a5a99b18a7d7012fbae93e02da853b43b0476b0c6cbb78c4f432bc061f",
+      "manifest_sha256": "db57889d44fa5a99f0e5e4b4782b335a51c3a833d2226320577e8588c6d94fdd",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 966080,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 2,
+            "deletions": 3
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b4k_EN-OL-RC-538_1",
+      "speaker": "5b4k",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 35.96,
+      "audio_sha256": "aceaa791d4762fec11e8716b3bcbbe1ea23bb685531bc7f6cef2c81159b535ed",
+      "manifest_sha256": "ab242b2a366afa7dfa00ce49eb45d02015563fdd916ae78d737282ed3be47aa9",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 575360,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a48f_EN-OL-RC-234_1",
+      "speaker": "3a48f",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 30.65,
+      "audio_sha256": "24c6dc135617766b04c68a8d3856dcf3f3c8caa1e341703bde42ef854c09c239",
+      "manifest_sha256": "c821952b7b33ac4653b5caf984fdb213e74b39a57c43f18d52753e1c2d6d34b3",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 490400,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 2,
+            "deletions": 1
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a48f_EN-OL-RC-234_2",
+      "speaker": "3a48f",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 30.74,
+      "audio_sha256": "dc92fa19369253ec4d71a09ea9d87bab49874a22c32aa150457b6d825fe99a35",
+      "manifest_sha256": "8ffb48a726c95973ac1a0c6d84f12889e490a116ef5f42c16e6c60eecf000551",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 491840,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a4c_EN-OL-RC-234_2",
+      "speaker": "3a4c",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 36.77,
+      "audio_sha256": "7c336c7037875fbb1a8f9fc1e802c2d25c0a6600ff054c3f14d7f69c83435f88",
+      "manifest_sha256": "50703336b93035e5c1a17b79a4de68255c3e7a5a549f3882f310fd583ebda4fe",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 588320,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c22g_EN-OL-RC-426_1",
+      "speaker": "4c22g",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 38.57,
+      "audio_sha256": "428653a0059c7b12018da217a7d57086f63a328721d9ebb8cd0635368c2d2061",
+      "manifest_sha256": "2f963e8bbe0a39de5d3774b262eb42f52bc05aa2b0f7529d8fc65e0cce9655a8",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals",
+          "keep_away"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 617120,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c22g_EN-OL-RC-426_2",
+      "speaker": "4c22g",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 36.53,
+      "audio_sha256": "84fc3a8d28ed563e01f9775e3c361e54e1a967910ba33318d2f530c068bba8b5",
+      "manifest_sha256": "ac0b39d4ada7dee15589d50269513de36167bd2a9811bc2abe92fba75fb1a5fe",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 584480,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5a37c_EN-OL-RC-538_2",
+      "speaker": "5a37c",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 35.06,
+      "audio_sha256": "2f01a8da7bc86ef2d6e920a93a1d2a276dc2af6b155ca688b359d43499be86e4",
+      "manifest_sha256": "39face337a9ec1c69cf4329abfb5bc459f3288de1d169bf76fc6931cc707d76f",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 560960,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b33h_EN-OL-RC-234_2",
+      "speaker": "3b33h",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 30.03,
+      "audio_sha256": "4814aff0dc2faafa7d00ab9f8752eb3d48949cf18037e05c8c48c298b11fba26",
+      "manifest_sha256": "c7f0ee088402af1193de70362cbe1b9dad60950fbd6da58836dd1f47bbeb6aa7",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 480480,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a4c_EN-OL-RC-234_1",
+      "speaker": "3a4c",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 42.28,
+      "audio_sha256": "2b08d2dcefab030ebd926e59c4671c70eb6a476dba7b84bc6da70a509d49f107",
+      "manifest_sha256": "f20249264888c402ee8bcf9f9f8e2a8672127cb8f481493a86668941586874fa",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 676480,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b20c_EN-OL-RC-426_1",
+      "speaker": "4b20c",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 42.92,
+      "audio_sha256": "a2cd119bc09ac4ca5145a5b34463428d3539348a2daa4acd1a75bcc08fe49044",
+      "manifest_sha256": "a66901b32743f09318d874c41f28ba4836e525ea5786c92cab353d4a434413a3",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "keep_away"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "fish_and_seals"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "keep_away"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 686720,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": true,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 1,
+            "substitutions": 0,
+            "deletions": 3
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b33h_EN-OL-RC-234_1",
+      "speaker": "3b33h",
+      "grade": "3",
+      "gender": "Female",
+      "audio_seconds": 33.17,
+      "audio_sha256": "fa34c2b25f073256943ceaded06cd6ba7e162ad55ee79187c5c58b1dc297d0e1",
+      "manifest_sha256": "788970b3609fa098a83e4bb863c3e7837890a710b470f0b35c8efe9f593e109c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 530720,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b14g_EN-OL-RC-234_2",
+      "speaker": "3b14g",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 48.53,
+      "audio_sha256": "7e9ee2435ff1c2ac3b315af5acd668de137d7954ac7ac5df30d4ca4378812292",
+      "manifest_sha256": "8a80f40e7fce3b2cedb64762dd1ec2516d7b43aa2f2997145ad08f3ed2b5a164",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "found_in_bush",
+          "carried_home",
+          "happy_friends"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 776480,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "found_in_bush",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "carried_home",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "happy_friends",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b20c_EN-OL-RC-426_2",
+      "speaker": "4b20c",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 35.51,
+      "audio_sha256": "a3f464dd57433fce4854f8ae8102a5aaabb7d5617d810a11c0fae064ad566a8a",
+      "manifest_sha256": "9bc7a7a9d6932e9d2b49a64b583de58fcdee9231c4265c2f703911c5d815e1ea",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "suppressed": [
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "suppressed": [
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 568160,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 3,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b21k_EN-OL-RC-538_1",
+      "speaker": "5b21k",
+      "grade": "5",
+      "gender": "Male",
+      "audio_seconds": 29.99,
+      "audio_sha256": "68b29c025d172c8225c5d75717f9d8c95f2edfb92b22b97c879c092182540db0",
+      "manifest_sha256": "1dadf79492f0fe3575ea19398b01f367f0f54ac2297562172446769c59fb65da",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 479840,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3b14g_EN-OL-RC-234_1",
+      "speaker": "3b14g",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 50.81,
+      "audio_sha256": "38a2e271c508aaf94a8e77d9e095907ca2c0db6d29739ca7b4b72af28a107e62",
+      "manifest_sha256": "69b4a1b735f2167e6d4a5f0434da2987aa9897e3d271b516fbc1753941c0d18b",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 812960,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4a8h_EN-OL-RC-426_1",
+      "speaker": "4a8h",
+      "grade": "4",
+      "gender": "Male",
+      "audio_seconds": 55.69,
+      "audio_sha256": "0871d55ad27cb889d4d9bd3f1ea2ba558508db3e5a2da2085fb85f1d1f70da10",
+      "manifest_sha256": "07d8c2a0c0c852716a959d36ca1133a40a4b3e5738d42ad3fc57db46b56df9a1",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "thick_legs",
+          "keep_away"
+        ],
+        "suppressed": [
+          "fish_and_seals"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "thick_legs",
+          "keep_away"
+        ],
+        "suppressed": [
+          "fish_and_seals"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 891040,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "pending_checkpoints": [],
+      "recovered_pending": [],
+      "expired_pending": [],
+      "group": "mps-heldout-eos-2026-11-02",
+      "checkpoints": [
+        {
+          "id": "thick_legs",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fish_and_seals",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "keep_away",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "All recordings have been inspected; these are regression results, not a new held-out accuracy score.",
+    "The 75 saved-timeline cases exercise the unchanged ASR callbacks. Thirty-one matched recordings and four unrelated controls were freshly streamed.",
+    "Pending eligibility requires local acquisition and an exact recent prefix; other recognition errors can still withhold an effect.",
+    "The window closes on fresh callbacks after its bounds, utterance completion, prompts, loss of locality or a later checkpoint. It never emits on a timer.",
+    "Omission checks cover user-confirmed omissions and provider-marked deletions. They cannot rule out every ASR hallucination.",
+    "Callback times are not human-verified word-end latency measurements."
+  ],
+  "artifacts": "output/pending-regression-2026-11-02: frozen sources/manifests, preflight timelines, streaming events/logs, paired decisions and listening review.",
+  "listening_review": {
+    "flagged_checkpoints": 45,
+    "source_audio_reviews": 4
+  }
+}

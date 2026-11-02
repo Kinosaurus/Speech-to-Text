@@ -49,6 +49,17 @@ omit `--files ...` and `--mute_audio_playback`, select a microphone with
 `--list_input_devices` / `--input_device`, then stop with Ctrl+C. File results do
 not measure microphone quality, background noise, or speaker separation.
 
+At `END_OF_AUDIO`, the NeMo session now finishes the remaining real audio in
+complete encoder windows, supplying digital silence for missing chunk/right
+context. The decoder is capped at the remaining real frames, including a final
+partial frame; it does not transcribe padding-only frames. This uses the
+configured chunk and right-context sizes, with no fixed per-recording padding.
+The server still sends one final completed transcript at the original audio
+duration, followed by `STREAM_DONE`. Internal padding adds no audio packets,
+stream time or independent matcher callbacks. Clients send the original audio;
+the matcher, hints and thresholds are unchanged. Finishing an empty session
+does not run inference, and repeated finish calls do not decode again.
+
 Fresh post-reorganization runs and their limitations are in
 [the 31 October report](../benchmarks/BEST_SETUP_RESULTS.md). Installation is in
 [the running guide](RUNNING.md); the commands above assume prepared environments.

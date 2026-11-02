@@ -1,0 +1,1244 @@
+{
+  "date": "2026-11-02",
+  "scope": "Contextual phonetic-feature and endpoint-progress repair: inspected-data regression",
+  "change": {
+    "asr_unchanged": true,
+    "no_word_aliases": true,
+    "phonetic_features": "Complete CMU phone inventory: equal-length pronunciations, same final phone, at most two one-feature substitutions and at most one changed consonant; existing structural route retained.",
+    "contextual_requirements": "Previously acquired next region; entire exact contiguous prefix of at least four distinct words; latest four endpoint positions; required-word and prompt checks.",
+    "progress": "Unique full anchor may supply a local endpoint candidate with 0.75 credit for the uncertain endpoint; ordinary score, coverage, ambiguity and independent-confirmation rules remain."
+  },
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "lexicon": {
+    "package": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+  },
+  "execution": {
+    "fresh_reading_streams": 9,
+    "fresh_unrelated_streams": 4,
+    "saved_callback_recordings": 99,
+    "configured_fresh_reading": 27,
+    "fresh_reading_audio_seconds": 426.31,
+    "all_samples_delivered": true,
+    "all_partial_before_eof": true,
+    "all_stream_done": true,
+    "all_app_observer_agreement": true,
+    "one_trial_per_recording": true,
+    "all_trials_retained": true
+  },
+  "totals": {
+    "before": {
+      "emitted": 18,
+      "suppressed": 7,
+      "skipped": 0,
+      "unreached": 2
+    },
+    "after": {
+      "emitted": 19,
+      "suppressed": 6,
+      "skipped": 0,
+      "unreached": 2
+    }
+  },
+  "saved_callback_regression": {
+    "recordings": 99,
+    "configured": 297,
+    "kind": "Not fresh ASR trials",
+    "before": {
+      "emitted": 255,
+      "suppressed": 29,
+      "skipped": 0,
+      "unreached": 13
+    },
+    "after": {
+      "emitted": 256,
+      "suppressed": 28,
+      "skipped": 0,
+      "unreached": 13
+    },
+    "added": [
+      {
+        "recording": "3a4h_EN-OL-RC-234_1",
+        "checkpoints": [
+          "hundred_sheep"
+        ]
+      }
+    ],
+    "removed": [],
+    "omission_controls": [
+      {
+        "recording": "4a35g_EN-OL-RC-426_2",
+        "checkpoint": "hibernate",
+        "emitted": false
+      },
+      {
+        "recording": "5b2b_EN-OL-RC-538_2",
+        "checkpoint": "escape_enemies",
+        "emitted": false
+      },
+      {
+        "recording": "4c15g_EN-OL-RC-426_2",
+        "checkpoint": "hibernate",
+        "emitted": false
+      },
+      {
+        "recording": "3b11b_EN-OL-RC-234_1",
+        "checkpoint": "lost_sheep",
+        "emitted": false
+      },
+      {
+        "recording": "4c50g_EN-OL-RC-426_2",
+        "checkpoint": "begging_paws",
+        "emitted": false
+      },
+      {
+        "recording": "4b20c_EN-OL-RC-426_1",
+        "checkpoint": "keep_away",
+        "emitted": false
+      },
+      {
+        "recording": "3b20g_EN-OL-RC-234_1",
+        "checkpoint": "lost_sheep",
+        "emitted": false
+      }
+    ]
+  },
+  "assertions": [
+    {
+      "recording": "3a4h_EN-OL-RC-234_1",
+      "checkpoint": "hundred_sheep",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "User accepted the spoken endpoint"
+    },
+    {
+      "recording": "5b4k_EN-OL-RC-538_2",
+      "checkpoint": "escape_enemies",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "User-confirmed word restart"
+    },
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "expected_emission": false,
+      "actual_emission": false,
+      "passed": true,
+      "basis": "User-confirmed essential-word omission"
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "checkpoint": "escape_enemies",
+      "expected_emission": false,
+      "actual_emission": false,
+      "passed": true,
+      "basis": "User-confirmed endpoint omission"
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "checkpoint": "small_scales",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "Previously accepted pronunciation"
+    },
+    {
+      "recording": "3a8b_EN-OL-RC-234_1",
+      "checkpoint": "riverside",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "User-confirmed split-word reading"
+    },
+    {
+      "recording": "5b15k_EN-OL-RC-538_2",
+      "checkpoint": "damaged_wing",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "Reviewed soft endpoint recovered by EOF repair"
+    },
+    {
+      "recording": "4b19g_EN-OL-RC-426_2",
+      "checkpoint": "begging_paws",
+      "expected_emission": true,
+      "actual_emission": true,
+      "passed": true,
+      "basis": "User-confirmed correct endpoint trigger"
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_2",
+      "checkpoint": "hibernate",
+      "expected_emission": false,
+      "actual_emission": false,
+      "passed": true,
+      "basis": "Provider-annotated essential-word omission"
+    }
+  ],
+  "added_emissions": [
+    {
+      "recording": "3a4h_EN-OL-RC-234_1",
+      "checkpoints": [
+        "hundred_sheep"
+      ]
+    }
+  ],
+  "removed_emissions": [],
+  "unrelated_controls": {
+    "fresh_streams": 4,
+    "passage_policies": 6,
+    "comparisons": 24,
+    "emitted": 0,
+    "suppressed": 0,
+    "results": [
+      {
+        "recording": "dog",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "d6062d31e4064676948fe3e4f777b2c2af4e2e26d4c6650c5f8685cd678285df",
+        "samples_delivered": 382188,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      },
+      {
+        "recording": "dragon",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "c2d69b4e49f405ac16ef224b00b4be4a53bfa0248d8cbafc2602b766cd1e8a6e",
+        "samples_delivered": 694466,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      },
+      {
+        "recording": "nickel",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "2a751b15648c389c40bdeed438f143fda2122a5fc8ecce80bacb1702463253e1",
+        "samples_delivered": 1228649,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      },
+      {
+        "recording": "recording_2",
+        "comparisons": 6,
+        "emitted": 0,
+        "suppressed": 0,
+        "audio_sha256": "66f882374c1e1029cd75cb7fa1e9151d6fb32265b00093f121a74af6ff7e03d9",
+        "samples_delivered": 300016,
+        "delivery_audited": true,
+        "partial_before_eof": true,
+        "stream_done": true
+      }
+    ]
+  },
+  "integrity": {
+    "asr_and_eof_runtime_unchanged": true,
+    "model_hash_unchanged": true,
+    "lexicon_unchanged": true,
+    "sources_unchanged_during_run": true,
+    "audio_and_manifests_unchanged": true,
+    "source_sha256": {
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/live_tracker_probe.py": "b772faf20f29fa59f7c0f7aae35c320f547bc4f497ccc61c8b64652b47632976",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+      "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+      "benchmarks/run_mps_heldout.py": "0f29f8f88fcc44f598e74925c4b06f7c02ba40b95797eb2589032ceb58f8ea76",
+      "benchmarks/run_phonetic_feature_regression.py": "c2e381eb7ea0d3f6d7fe04265a3be58802f13afb9bf7ad3d64d5efa70ca4c6bb",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "be201bba4e74adec7b0cbb599f80f9479faadbce705cb6c9e53b27f884741955",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "70ec44335b426e2c5efceccc9c05a9d1e7748604b8ae24d3e16685fe83d21836",
+      "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "aa8fefbf3eef926652f68f47f97e7ceebd2d23597cabcde0048bfe1eef1ff888",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phone_features.py": "258a63bd7f7a5589e7b8f6f8a2c6a4359341b7fb13d016612a8ca77a4e3cab8a",
+      "books_to_life/matching/phonetic_endpoint.py": "b74bc5e0548ca3e5c9896a6e839b4b159b50e26a591e5c60f0f00a918ac47d4f",
+      "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+      "books_to_life/matching/timely_matcher.py": "77bba3e6dc35bc3057ac7cfe3ba23aff83f6e9b66d486e96ffb1e165fdd3bc0f",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296",
+      "tests/test_contextual_phonetic_progress.py": "de3d518705304030d6137ae7e57a7f6c13ecb7c89a82051a488e9aa1eb1897c3",
+      "tests/test_phonetic_endpoint.py": "68b6cc4f732e18fff5e2599094ce57c3ef0882a38206d873f7ebaefa6c5edbfe"
+    },
+    "baseline_sha256": {
+      "effect_permission.py": "e0ec0564e14f0aada70ccdcc9914a871820ebb060254b132453e3e4fefd36b5d",
+      "phonetic_endpoint.py": "c2e80d78aa5616f4e3659831437d1b6f3737efa5c67e18548efa51c56bd70201",
+      "timely_matcher.py": "9abf477905c827d2372b25ae3681fb552ec343516688d48af3dc6d9a8ce14aa4"
+    }
+  },
+  "asr_callback_agreement": [
+    {
+      "recording": "5b15k_EN-OL-RC-538_2",
+      "same_asr_segments": true
+    },
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "same_asr_segments": true
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "same_asr_segments": true
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "same_asr_segments": true
+    },
+    {
+      "recording": "3a8b_EN-OL-RC-234_1",
+      "same_asr_segments": true
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_2",
+      "same_asr_segments": true
+    },
+    {
+      "recording": "4b19g_EN-OL-RC-426_2",
+      "same_asr_segments": true
+    },
+    {
+      "recording": "5b4k_EN-OL-RC-538_2",
+      "same_asr_segments": true
+    },
+    {
+      "recording": "3a4h_EN-OL-RC-234_1",
+      "same_asr_segments": true
+    }
+  ],
+  "validation": {
+    "windows_tests_run": 172,
+    "windows_passed": 171,
+    "skipped_requiring_nemo": 1,
+    "unit_log_sha256": "7c2a91e722c08194c23b32dca9e9fb4169e29229ab99caa4368db0e888c4e13e"
+  },
+  "recordings": [
+    {
+      "recording": "3a4h_EN-OL-RC-234_1",
+      "speaker": "3a4h",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 45.69,
+      "audio_sha256": "078e00128a64227bd343db668771f745e3235afc2f36c32a7d886f429baacd3f",
+      "manifest_sha256": "193ccb2e80b27d0d9091d4de6875f126c7e37fe876cb4e67b91b06393dec3e05",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "riverside"
+        ],
+        "suppressed": [
+          "hundred_sheep"
+        ],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "added_emissions": [
+        "hundred_sheep"
+      ],
+      "removed_emissions": [],
+      "samples_delivered": 731040,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "assertion": {
+        "checkpoint": "hundred_sheep",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "User accepted the spoken endpoint"
+      },
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 5,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b4k_EN-OL-RC-538_2",
+      "speaker": "5b4k",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 43.42,
+      "audio_sha256": "db94b0017bd414924bc4de32a6a09b3aec5a541b71ff370ed76fe9da567a785f",
+      "manifest_sha256": "b2333b11465d39e4f26c82f07f05db0994222227ffc37422cca250d283e53e17",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 694720,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "assertion": {
+        "checkpoint": "escape_enemies",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "User-confirmed word restart"
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4a35g_EN-OL-RC-426_2",
+      "speaker": "4a35g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 40.61,
+      "audio_sha256": "fae5de18f2ee7c5fba0abd7978721285953da51757a0759e127f149b10f38f4f",
+      "manifest_sha256": "11be7686b3c5a7d9846803e910f6d6e275e9ccefbb4adc87b9138634133d182c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 649760,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "assertion": {
+        "checkpoint": "hibernate",
+        "expected_emission": false,
+        "actual_emission": false,
+        "passed": true,
+        "basis": "User-confirmed essential-word omission"
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": true,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 3,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_2",
+      "speaker": "5b2b",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 55.37,
+      "audio_sha256": "e5355340540ffeb7636dd0b304384660114c7ab5b67f7046f9fcc1e69848f22e",
+      "manifest_sha256": "677a052d17221ed06d6ba2000eef19a58f534a832d6729711cf4557e320e3cbf",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 885920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "assertion": {
+        "checkpoint": "escape_enemies",
+        "expected_emission": false,
+        "actual_emission": false,
+        "passed": true,
+        "basis": "User-confirmed endpoint omission"
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": true,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 0,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b2b_EN-OL-RC-538_1",
+      "speaker": "5b2b",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 47.12,
+      "audio_sha256": "4ebc40b991beb65248569a7acf0c3a2e0583fde8c23379bce099ce84f3c054eb",
+      "manifest_sha256": "451fec9104ce5d19ed9acaca55c316f66fcbca90cce54ae70b991c801233d63e",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 753920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "assertion": {
+        "checkpoint": "small_scales",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "Previously accepted pronunciation"
+      },
+      "checkpoints": [
+        {
+          "id": "wing_colours",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "small_scales",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "fine_patterns",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 3,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "3a8b_EN-OL-RC-234_1",
+      "speaker": "3a8b",
+      "grade": "3",
+      "gender": "Male",
+      "audio_seconds": 53.87,
+      "audio_sha256": "d7d2345b2be18ce96a83cd107fdf84d965fa48f6c409426e21a111902e8e3e5e",
+      "manifest_sha256": "53b5c4fb9a46473a25ff0f54390d46c953cd50ba78478a102b50ea716237a6f8",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 861920,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "assertion": {
+        "checkpoint": "riverside",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "User-confirmed split-word reading"
+      },
+      "checkpoints": [
+        {
+          "id": "hundred_sheep",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "riverside",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "lost_sheep",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "5b15k_EN-OL-RC-538_2",
+      "speaker": "5b15k",
+      "grade": "5",
+      "gender": "Female",
+      "audio_seconds": 50.84,
+      "audio_sha256": "cbfad5237c5d7e77dc3880c3a78c02a2f37d5db660ac246107d24913dcd57ad3",
+      "manifest_sha256": "f14f41b0aa5d03a1c1584d45933e7fa5906ba2e62bfcbf6769888d10a6ae832c",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 813440,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "assertion": {
+        "checkpoint": "damaged_wing",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "Reviewed soft endpoint recovered by EOF repair"
+      },
+      "checkpoints": [
+        {
+          "id": "black_circles",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 6,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "escape_enemies",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "damaged_wing",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 5,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4b19g_EN-OL-RC-426_2",
+      "speaker": "4b19g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 44.71,
+      "audio_sha256": "ad250cb551ae9a68a22dad60743962c558b90d5d353eeb6ce341d0368f644008",
+      "manifest_sha256": "6cbd7af9ad8fecf313b0c69960bc48210b2d481125c0aee6c3d1972e14697305",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 715360,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "assertion": {
+        "checkpoint": "begging_paws",
+        "expected_emission": true,
+        "actual_emission": true,
+        "passed": true,
+        "basis": "User-confirmed correct endpoint trigger"
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 2,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 8,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    },
+    {
+      "recording": "4c15g_EN-OL-RC-426_2",
+      "speaker": "4c15g",
+      "grade": "4",
+      "gender": "Female",
+      "audio_seconds": 44.68,
+      "audio_sha256": "194b2cd1f02d53c1b809b8fa5624e2b0e0ba11de79711ecba1adad2b2370b4d2",
+      "manifest_sha256": "a9c40ff738e04effe826e5530f724aec3954939342497563b8e4264ae02b501d",
+      "configured": 3,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate",
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate",
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added_emissions": [],
+      "removed_emissions": [],
+      "samples_delivered": 714880,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "delivery_audit_pass": true,
+      "app_observer_agreement": true,
+      "assertion": {
+        "checkpoint": "hibernate",
+        "expected_emission": false,
+        "actual_emission": false,
+        "passed": true,
+        "basis": "Provider-annotated essential-word omission"
+      },
+      "checkpoints": [
+        {
+          "id": "hibernate",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": true,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 4,
+            "substitutions": 1,
+            "deletions": 1
+          }
+        },
+        {
+          "id": "clever_bears",
+          "emitted": true,
+          "suppressed": false,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 9,
+            "substitutions": 0,
+            "deletions": 0
+          }
+        },
+        {
+          "id": "begging_paws",
+          "emitted": false,
+          "suppressed": true,
+          "provider_endpoint_deleted": false,
+          "provider_required_word_deleted": false,
+          "review_flags": [
+            "Provider reports anchor substitutions/deletions; pronunciation acceptance unresolved"
+          ],
+          "human_verified": false,
+          "provider_annotation_status": "provider_word_alignment",
+          "provider_counts": {
+            "correct": 7,
+            "substitutions": 1,
+            "deletions": 0
+          }
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "All recordings are inspected regression data. Original frozen held-out results remain unchanged.",
+    "Phonetic features compare dictionary text, not raw audio; a close intentional substitution can be accepted as a recognition error. This is not acoustic verification.",
+    "Omission controls cannot rule out every ASR hallucination or similar-sounding following word.",
+    "User supplied an approximate phrase-end cue, not a verified acoustic alignment or latency score.",
+    "Same familiar MPS passages; this does not validate new books, Singapore accents or physical microphones."
+  ],
+  "listening_review": {
+    "flagged_checkpoints": 16,
+    "source_audio_reviews": 5
+  }
+}

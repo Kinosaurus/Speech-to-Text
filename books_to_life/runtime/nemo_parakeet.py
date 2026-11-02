@@ -1,12 +1,15 @@
 """CUDA buffered Parakeet Unified with NeMo's per-stream phrase boosting.
 
 Uses APIs from NVIDIA NeMo c2368ab (see requirements/requirements-nemo.txt), following its
-speech_to_text_streaming_infer_rnnt.py chunk/context protocol. Incoming audio
-alone advances the stream; no whole-file inference or transcript replacement.
+speech_to_text_streaming_infer_rnnt.py chunk/context protocol. End-of-stream
+silence supplies encoder context only; only real audio frames are decoded.
+No whole-file inference or transcript replacement.
 """
 import numpy as np
 
 from books_to_life.context.book_context import MAX_CONTEXT_CHARS
+
+ENCODER_FRAME_SAMPLES = 1280
 
 
 def hint_phrases(hotwords):
@@ -105,20 +108,25 @@ class NemoParakeetSession:
         if old_request is not None:
             old_request.remove_from_multi_model(self.computer.biasing_multi_model)
 
-    def _decode(self, samples, final=False):
+    def _decode(self, samples, *, decode_samples=None):
         torch = self.torch
         from nemo.collections.asr.parts.utils.rnnt_utils import batched_hyps_to_hypotheses
         with torch.inference_mode():
             data = torch.from_numpy(samples).to(self.model.device).unsqueeze(0)
             lengths = torch.tensor([len(samples)], device=self.model.device, dtype=torch.long)
-            last = torch.tensor([final], device=self.model.device)
-            self.buffer.add_audio_batch_(data, lengths, final, last)
-            encoded, encoded_len = self.model(input_signal=self.buffer.samples,
-                                             input_signal_length=self.buffer.context_size_batch.total())
-            context = self.buffer.context_size.subsample(1280)
-            context_batch = self.buffer.context_size_batch.subsample(1280)
+            last = torch.tensor([False], device=self.model.device)
+            self.buffer.add_audio_batch_(data, lengths, False, last)
+            encoded, _ = self.model(input_signal=self.buffer.samples,
+                                    input_signal_length=self.buffer.context_size_batch.total())
+            context = self.buffer.context_size.subsample(ENCODER_FRAME_SAMPLES)
+            context_batch = self.buffer.context_size_batch.subsample(ENCODER_FRAME_SAMPLES)
             encoded = encoded.transpose(1, 2)[:, context.left:]
-            decode_len = encoded_len - context_batch.left if final else context_batch.chunk
+            decode_len = context_batch.chunk
+            if decode_samples is not None:
+                # Include the final partial real frame, but never decode frames
+                # containing only synthetic end-of-stream context.
+                frames = (decode_samples + ENCODER_FRAME_SAMPLES - 1) // ENCODER_FRAME_SAMPLES
+                decode_len = decode_len.clamp(max=frames)
             if int(decode_len[0]) <= 0:
                 return
             hyps, self.state = self.computer(x=encoded, out_len=decode_len,
@@ -148,8 +156,21 @@ class NemoParakeetSession:
 
     def finish(self):
         if not self.finalized:
-            if len(self.pending) or not self.first:
-                self._decode(self.pending, final=True)
+            # Normal feed has left one right-context region undecoded, plus
+            # any input shorter than a chunk. Give each remaining real frame
+            # the same full encoder context as live chunks. Do not drain the
+            # synthetic silence as extra speech or expose it as client time.
+            remaining = len(self.pending) + (0 if self.first else self.context.right)
+            while remaining > 0:
+                needed = self.context.chunk + self.context.right if self.first else self.context.chunk
+                part = np.zeros(needed, dtype=np.float32)
+                available = self.pending[:needed]
+                part[:len(available)] = available
+                self.pending = self.pending[needed:]
+                decode_samples = min(self.context.chunk, remaining)
+                self._decode(part, decode_samples=decode_samples)
+                self.first = False
+                remaining -= decode_samples
             self.pending = np.empty(0, dtype=np.float32)
             self.finalized = True
         return self.text

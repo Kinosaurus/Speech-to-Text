@@ -42,6 +42,8 @@ class AlignmentUpdate(MatchUpdate):
     effect_suppressed: bool = False
     effect_suppression_reason: str | None = None
     effect_policy: str | None = None
+    effect_pending_checkpoint_id: str | None = None
+    additional_suppressed_checkpoint_ids: tuple[str, ...] = ()
 
 
 def align_words(
