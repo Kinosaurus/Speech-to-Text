@@ -2,15 +2,17 @@
 from books_to_life.matching.alignment_matcher import AlignmentSpan, align_words
 from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
 from books_to_life.matching.checkpoint_matcher import fuzz
-from books_to_life.matching.effect_permission import EffectPermission, similar
+from books_to_life.matching.effect_permission import EffectPermission, NEGATION_WORDS, similar
+from books_to_life.matching.phonetic_endpoint import phonetic_endpoint_match
 from dataclasses import replace
+from collections import Counter
 
 
 class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     mode = 'experimental contextual alignment with timely anchor recovery'
     _permission_grace_seconds = 2.0
     _permission_grace_updates = 4
-    _prompt_words = {'not', 'never', 'dont', "don't", 'say', 'repeat'}
+    _negation_words = NEGATION_WORDS
 
     def __init__(self, *args, **kwargs):
         self._pending_effect = None
@@ -18,7 +20,40 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         self._effect_permissions = {
             str(cp['id']): EffectPermission(cp, self.default_min_coverage, self.words[max(0, start-3):start])
             for cp, (start, end) in zip(self.checkpoints, self.checkpoint_ranges)}
+        # Full checkpoint text/ranges are validated by the base matcher and
+        # remain book context. An authored cue supplies this effect's boundary.
+        self.tracking_checkpoint_ranges = tuple(self.checkpoint_ranges)
+        self.checkpoint_ranges = [
+            (start + self._effect_permissions[str(cp['id'])].cue_offset,
+             start + self._effect_permissions[str(cp['id'])].cue_offset
+                 + len(self._effect_permissions[str(cp['id'])].anchor))
+            for cp, (start, end) in zip(self.checkpoints, self.tracking_checkpoint_ranges)]
+        self._checkpoint_ends = [end for start, end in self.checkpoint_ranges]
+        self._bounded_candidates = set()
+        self._bounded_selection = False
+        self._accepted_context_words = 0
+        self._bounded_context_counts = {}
         self.suppressed_checkpoint_ids = set()
+        self._confirmation_prefix = None
+        self._interrupted_prefix = None
+        self._interruption_context = None
+        self._interruption_scenes = set()
+        self._exact_prefixes = {}
+        prefix_counts = {}
+        # A prefix is evidence, not an accepted alignment or effect. Require
+        # nearly the normal minimum length, the existing distinct-word guard,
+        # and the existing final-three-word neighbourhood. Completed candidates
+        # still pass the unchanged score, coverage and stability requirements.
+        for scene, (start, end) in enumerate(self.checkpoint_ranges):
+            for stop in range(max(start+self.minimum_words-1, end-3), end):
+                phrase = tuple(self.words[start:stop])
+                if len(set(phrase)) < 3 or len(phrase) > self.transcript_words:
+                    continue
+                if len(phrase) not in prefix_counts:
+                    prefix_counts[len(phrase)] = Counter(tuple(self.words[i:i+len(phrase)])
+                        for i in range(len(self.words)-len(phrase)+1))
+                if prefix_counts[len(phrase)][phrase] == 1:
+                    self._exact_prefixes.setdefault(len(phrase), {})[phrase] = (scene, stop)
 
     @property
     def completed(self):
@@ -30,6 +65,10 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         return self.checkpoints[self.current_index] if self.current_index < len(self.checkpoints) else None
 
     def process(self, transcript, segments=None):
+        self._bounded_selection = False
+        self._accepted_context_words = 0
+        self._interruption_context = None
+        self._interruption_scenes = set()
         previous_index = self.current_index
         previous_position = self.tracked_word_position
         if previous_index >= len(self.checkpoints) and self._pending_effect is not None:
@@ -54,11 +93,23 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         permission = self._effect_permissions[update.checkpoint_id]
         # Extra permission routes belong to the acquired NEXT checkpoint;
         # a cold-start match or a jump to a later scene cannot use this aid.
-        locally_acquired = (previous_position > 0
+        locally_acquired = self._bounded_selection or (previous_position > 0
                             and update.checkpoint_id == str(self.checkpoints[previous_index]['id'])
                             and previous_position >= self.checkpoint_ranges[previous_index][0])
         allowed, reason = permission.permits(self._buffer, allow_phonetic_endpoint=locally_acquired,
-                                             allow_word_boundaries=locally_acquired)
+                                             allow_word_boundaries=locally_acquired,
+                                             allow_phonetic_internal=(locally_acquired
+                                                 and (len(permission.anchor) >= self.minimum_words
+                                                      or self._bounded_selection)),
+                                             allow_context_suffix=(permission.has_explicit_cue
+                                                 and previous_position > 0
+                                                 and update.checkpoint_id == str(self.checkpoints[previous_index]['id'])
+                                                 and self.checkpoint_ranges[previous_index][0]-self.backtrack_words <= previous_position
+                                                 and update.alignment_start is not None
+                                                 and update.alignment_start <= self.checkpoint_ranges[previous_index][1]-3
+                                                 and self._accepted_context_words >= self.minimum_words))
+        if not allowed and locally_acquired:
+            allowed = self._interrupted_permission(update.checkpoint_id)
         if allowed:
             return replace(update, effect_policy=permission.policy, completed=self.completed,
                            additional_suppressed_checkpoint_ids=extra_suppressed)
@@ -80,7 +131,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     def _can_defer(self, permission, acquired, update):
         if (not acquired or update.ambiguous or update.recovering or update.skipped_checkpoint_ids
                 or (self._segments and self._segments[-1]['completed'])
-                or set(self._buffer[-16:]) & self._prompt_words
+                or set(self._buffer[-16:]) & self._negation_words
                 or any(similar(permission.anchor[-1], word) for word in self._buffer[-4:])):
             return False
         # An exact, recent prefix and at most one unfinished/restarted token
@@ -116,17 +167,17 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                 # omitted word. A revised completion of the old one still can.
                 prior = [s for s in self._segments if s['start'] <= pending['segment_start']]
                 buffer = ' '.join(s['text'] for s in prior).split()[-self.transcript_words:]
-        prompted = bool(set(self._buffer[-16:]) & self._prompt_words)
+        negated = bool(set(self._buffer[-16:]) & self._negation_words)
         fresh = (not update.duplicate and self._fresh_updates > pending['fresh_update']
                  and tuple(buffer) != pending['text']
                  and (not self._segments or self._audio_time > pending['time'] or completed))
-        if not expired and not prompted and fresh and permission.permits(
+        if not expired and not negated and fresh and permission.permits(
                 buffer, allow_phonetic_endpoint=True, allow_word_boundaries=True)[0]:
             self._pending_effect = None
             self.triggered_checkpoint_ids.add(saved.checkpoint_id)
             return replace(saved, triggered=True, effect_policy=permission.policy,
                            tracked_word_position=self.tracked_word_position, completed=self.completed)
-        if expired or prompted or completed or changed_segment:
+        if expired or negated or completed or changed_segment:
             self._close_pending()
             return replace(saved, triggered=False, effect=None, effect_suppressed=True,
                            effect_policy=permission.policy, tracked_word_position=self.tracked_word_position,
@@ -153,12 +204,16 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         return max(alternatives, key=lambda span: (span.score, span.matched_words)) if alternatives else best
 
     def _ingest(self, transcript, segments):
+        previous_source = self._prefix_source()
         fresh = super()._ingest(transcript, segments)
+        if fresh:
+            self._acquire_confirmation_prefix(previous_source)
+            self._acquire_interrupted_prefix()
         if not fresh or self._ending_supported():
             return fresh
         start,end = self.checkpoint_ranges[self.current_index]
         tail = self._buffer[-12:]
-        if set(tail) & {'not','never','dont',"don't",'say','repeat'}:
+        if set(tail) & self._negation_words:
             return fresh
         # ASR may append fillers/repetitions in the same update as a clean
         # prefix. Recognize a unique exact five-word book run followed by at
@@ -176,13 +231,201 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                 break
         return fresh
 
+    def _acquire_interrupted_prefix(self):
+        """Retain observed words of the acquired next anchor across an aside."""
+        prior = self._interrupted_prefix
+        if prior is not None:
+            owner = next((s for s in self._segments if s['start'] == prior['segment_start']), None)
+            invalid_owner = (owner is not None and
+                tuple(owner['text'].split()[:len(prior['head'])]) != prior['head'])
+            if owner is not None and owner['completed']:
+                prior['committed'] = True
+                continuation = owner['text'].split()[len(prior['head']):]
+                start,end = self.checkpoint_ranges[prior['scene']]
+                expected = self.words[start+len(prior['words'])]
+                if len(continuation) >= self.minimum_words and not similar(expected,continuation[0]):
+                    prior['interrupted'] = True
+            if (prior['scene'] != self.current_index or invalid_owner
+                    or self._audio_time-prior['time'] > 12
+                    or prior['reading_updates'] > 12
+                    or set(self._buffer[-16:]) & self._negation_words
+                    or (owner is None and not prior['committed'])):
+                self._interrupted_prefix = None
+        if not self._segments or self.current_index >= len(self.checkpoints):
+            return
+        start,end = self.checkpoint_ranges[self.current_index]
+        if not start < self.tracked_word_position < end:
+            return  # This aid cannot acquire a cold checkpoint or jump ahead.
+        segment = self._segments[-1];text = segment['text'].split()
+        if set(text[-16:]) & self._negation_words:
+            return
+        anchor = self.words[start:end]
+        for length in range(len(anchor)-1,1,-1):
+            phrase = anchor[:length]
+            if (len(set(phrase)) >= 2 and text[-length:] == phrase
+                    and sum(self.words[i:i+length] == phrase
+                            for i in range(len(self.words)-length+1)) == 1):
+                old = self._interrupted_prefix
+                head = tuple(text)
+                if old is None or old['head'] != head or old['segment_start'] != segment['start']:
+                    self._interrupted_prefix = dict(scene=self.current_index, words=phrase,
+                        head=head, segment_start=segment['start'], committed=segment['completed'],
+                        time=self._audio_time, update=self._fresh_updates,
+                        reading_updates=0, last_reading_update=self._fresh_updates, interrupted=False)
+                break
+
+    def _interrupted_candidates(self, low, high):
+        prefix = self._interrupted_prefix
+        if prefix is None or prefix['scene'] != self.current_index:
+            return []
+        if not (prefix['committed'] and prefix['interrupted']
+                and self._segments[-1]['start'] > prefix['segment_start']):
+            return []
+        start,end = self.checkpoint_ranges[self.current_index]
+        if not low <= start < end <= high:
+            return []
+        anchor = self.words[start:end];permission = self._effect_permissions[str(self.current_checkpoint['id'])]
+        tail = self._segments[-1]['text'].split()[-self.transcript_words:]
+        choices = []; candidates = []
+        for i,word in enumerate(tail):
+            # Resume where the observed prefix stopped. Off-book words never
+            # become reading evidence, and no missing book word is supplied.
+            if not similar(anchor[len(prefix['words'])], word):
+                continue
+            # Match the same final-four-token endpoint neighbourhood used by
+            # ordinary permission; following callback words are not part of
+            # this anchor's alignment score.
+            for extra in range(min(4,len(tail)-i)):
+                spoken = prefix['words']+tail[i:len(tail)-extra]
+                if len(spoken) > self.transcript_words:
+                    continue
+                allowed = permission.permits(spoken,
+                        allow_phonetic_endpoint=True, allow_word_boundaries=True)[0]
+                spans = [s for s in align_words(spoken,self.words[low:high],low,
+                            self.minimum_words,self._minimum_coverage)
+                         if start+len(prefix['words']) < s.end <= end
+                         and s.start <= start+len(prefix['words'])-2
+                         and (s.end < end or allowed)]
+                candidates.extend(spans)
+                full = [s for s in spans if s.end == end]
+                if full:
+                    choices.append((max(s.score for s in full),spoken))
+        if choices:
+            _,spoken = max(choices,key=lambda c:c[0])
+            self._interruption_context = dict(id=str(self.current_checkpoint['id']), words=spoken)
+        if candidates and prefix['last_reading_update'] != self._fresh_updates:
+            # An off-book aside does not consume reading confirmations. The
+            # audio-time bound still expires independently of recognition.
+            prefix['reading_updates'] += 1
+            prefix['last_reading_update'] = self._fresh_updates
+            if prefix['reading_updates'] > 12:
+                self._interrupted_prefix = None
+                self._interruption_context = None
+                return []
+        self._interruption_scenes = {self._scene(s.end) for s in candidates}
+        return candidates
+
+    def _interrupted_permission(self, ident):
+        context = self._interruption_context
+        return bool(context and context['id'] == ident
+                    and self._effect_permissions[ident].permits(context['words'],
+                        allow_phonetic_endpoint=True,allow_word_boundaries=True)[0])
+
+    def _prefix_source(self):
+        if self._segments:
+            segment = self._segments[-1]
+            return segment['start'], tuple(segment['text'].split()[-self.transcript_words:])
+        return None, tuple(self._buffer)
+
+    def _exact_anchor_at_tail(self, scene):
+        start, end = self.checkpoint_ranges[scene]
+        anchor = tuple(self.words[start:end]);_, text = self._prefix_source()
+        return any(text[len(text)-extra-len(anchor):len(text)-extra] == anchor
+                   for extra in range(min(4, len(text)-len(anchor)+1)))
+
+    def _acquire_confirmation_prefix(self, previous_source):
+        # Retained earlier segments are useful to normal alignment, but cannot
+        # impersonate newly spoken prefix words in this additional evidence path.
+        segment_start, text = self._prefix_source()
+        prior = self._confirmation_prefix
+        if (set(text[-16:]) & self._negation_words or
+                (prior is not None and (prior['scene'] < self.current_index
+                 or self._audio_time-prior['time'] > 12
+                 or self._fresh_updates-prior['update'] > 12
+                 or segment_start != prior['segment_start']))):
+            self._confirmation_prefix = None
+        if set(text[-16:]) & self._negation_words:
+            return
+        matches = {}
+        for length, prefixes in self._exact_prefixes.items():
+            for extra in (0, 1):
+                stop = len(text)-extra
+                if stop < length:
+                    continue
+                found = prefixes.get(text[stop-length:stop])
+                if found is None:
+                    continue
+                scene, book_end = found
+                if scene < self.current_index or self._exact_anchor_at_tail(scene):
+                    continue
+                if extra and not (self.words[book_end].startswith(text[-1])
+                                  and self.words[book_end] != text[-1]):
+                    continue
+                if scene not in matches or book_end > matches[scene]:
+                    matches[scene] = book_end
+        if len(matches) > 1:
+            self._confirmation_prefix = None
+            return
+        prior = self._confirmation_prefix
+        if prior is not None and prior['scene'] not in matches and not self._exact_anchor_at_tail(prior['scene']):
+            # A contradictory revision or unrelated continuation abandons the
+            # prefix. It cannot later be resurrected by a standalone endpoint.
+            self._confirmation_prefix = None
+        if (segment_start, text) != previous_source and matches:
+            scene, book_end = next(iter(matches.items()))
+            self._confirmation_prefix = dict(scene=scene, end=book_end, text=text,
+                buffer=tuple(self._buffer), time=self._audio_time,
+                update=self._fresh_updates, segment_start=segment_start)
+
+    def _reject_candidate(self, ambiguous):
+        super()._reject_candidate(ambiguous)
+        if ambiguous:
+            self._confirmation_prefix = None
+            self._interrupted_prefix = None
+
+    def _confirm_from_prefix(self, scene, best):
+        prefix = self._confirmation_prefix
+        if prefix is None or scene != prefix['scene'] or scene < self.current_index:
+            return False
+        start, end = self.checkpoint_ranges[scene]
+        segment_start, text = self._prefix_source()
+        if not (0 < self._fresh_updates-prefix['update'] <= 12
+                and 0 < self._audio_time-prefix['time'] <= 12
+                and text != prefix['text']
+                and segment_start == prefix['segment_start']
+                and not (set(text[-16:]) & self._negation_words)
+                and best.end >= end and best.start <= prefix['end']-2
+                and self._exact_anchor_at_tail(scene)):
+            return False
+        self._confirmation_prefix = None
+        if self._pending_scene == scene and self.confirmations > 0:
+            return False  # That scene already has a vote; never count it twice.
+        self._pending_scene = scene
+        self.confirmations = 1
+        self._evidence_end = prefix['end']
+        self._evidence_time = prefix['time']
+        self._evidence_update = prefix['update']
+        self._evidence_text = prefix['buffer']
+        self._evidence_completed = False
+        return True
+
     def _live_prefix(self, scene):
         prefix = self._boundary_prefix
         return (prefix is not None and scene == self.current_index == prefix['scene']
                 and 0 < self._fresh_updates-prefix['update'] <= 12
                 and (not self._segments or 0 < self._audio_time-prefix['time'] <= 12)
                 and tuple(self._buffer) != prefix['text']
-                and not (set(self._buffer[-16:]) & {'not','never','dont',"don't",'say','repeat'}))
+                and not (set(self._buffer[-16:]) & self._negation_words))
 
     def _ending_supported(self):
         end = self.checkpoint_ranges[self.current_index][1]
@@ -196,12 +439,17 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         # A recent prefix of THIS next anchor is local acquisition, not a
         # book-wide recovery guess. Restore the configured threshold only for
         # a fresh, recognizably similar ending; unrelated scenes keep 92.
-        if self._live_prefix(scene) and self._ending_supported():
+        if ((self._live_prefix(scene) and self._ending_supported())
+                or scene in self._interruption_scenes):
             recovering = False
         return super()._threshold(scene, recovering)
 
     def _alignment_candidates(self, low, high):
         candidates = super()._alignment_candidates(low, high)
+        bounded = self._bounded_acquisition_candidates(low, high)
+        self._bounded_candidates = {(s.start, s.end, s.score) for s in bounded}
+        candidates.extend(bounded)
+        candidates.extend(self._interrupted_candidates(low,high))
         start, end = self.checkpoint_ranges[self.current_index]
         anchor = self.words[start:end]
         # Reading progress and effect permission share contextual phonetic
@@ -244,7 +492,82 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                               if s.end == end)
         return candidates
 
+    def _bounded_acquisition_candidates(self, low, high):
+        """One observed internal sound variant in unique, nearby book context.
+
+        This can acquire only the next unread cue. It supplies real-word spans
+        to the normal score/ambiguity/confirmation path; no progress is assigned
+        here. Missing words, required-word variants and compound uncertainty
+        cannot be filled by this route.
+        """
+        start, end = self.checkpoint_ranges[self.current_index]
+        if (self.tracked_word_position <= 0 or self.tracked_word_position < start-self.backtrack_words
+                or self.tracked_word_position > end+3 or not low <= start < end <= high):
+            return []
+        _, source = self._prefix_source()
+        query = list(source)[-self.transcript_words:]
+        if len(query) < self.minimum_words or set(query[-16:]) & self._negation_words:
+            return []
+        permission = self._effect_permissions[str(self.current_checkpoint['id'])]
+        stop = min(len(self.words), end+3)
+        if self.current_index+1 < len(self.checkpoint_ranges):
+            stop = min(stop, self.checkpoint_ranges[self.current_index+1][0])
+        candidates = []
+        for begin in range(max(low, start-self.minimum_words+1), start+1):
+            for finish in range(max(end, begin+self.minimum_words), stop+1):
+                reference = self.words[begin:finish]
+                if len(reference) > self.transcript_words or len(set(reference)) < 3:
+                    continue
+                length = len(reference)
+                if length not in self._bounded_context_counts:
+                    self._bounded_context_counts[length] = Counter(
+                        tuple(self.words[i:i+length]) for i in range(len(self.words)-length+1))
+                if self._bounded_context_counts[length][tuple(reference)] != 1:
+                    continue
+                for query_end in range(len(query), max(0, len(query)-4), -1):
+                    if query_end < length:
+                        continue
+                    observed = query[query_end-length:query_end]
+                    # Exact cue and context endpoints keep the uncertainty
+                    # internal, as in the existing permission support rule.
+                    if observed[-1] != reference[-1] or observed[end-begin-1] != self.words[end-1]:
+                        continue
+                    unsupported = []
+                    credit = 0.0
+                    for i, (expected, heard) in enumerate(zip(reference, observed)):
+                        ratio = fuzz.ratio(expected, heard)/100
+                        required = expected in permission.required
+                        if (required and not similar(expected, heard, 85)) or (not required and ratio < .75):
+                            unsupported.append(i)
+                        else:
+                            credit += ratio
+                    if len(unsupported) != 1:
+                        continue
+                    i = unsupported[0]
+                    if (not start < begin+i < end-1 or reference[i] in permission.required
+                            or observed[i-1] != reference[i-1] or observed[i+1] != reference[i+1]
+                            or len({reference[j] for j in range(length) if j != i}) < 3
+                            or not phonetic_endpoint_match(reference[i], observed[i])):
+                        continue
+                    # The existing uncertain-endpoint candidate uses .75 word
+                    # credit. Reuse it for one observed internal token; numeric
+                    # thresholds, coverage and independent votes stay unchanged.
+                    candidates.append(AlignmentSpan(begin, finish, 100*(credit+.75)/length,
+                                                    length, length))
+        return candidates
+
     def _confirm_candidate(self, scene, best):
+        self._accepted_context_words = best.matched_words
+        start, end = self.checkpoint_ranges[self.current_index]
+        # A stronger ordinary alignment may win while the SAME cue has a
+        # qualifying bounded context span. Keep that observed support only if
+        # the accepted alignment still overlaps the cue, and the context span
+        # passes the unchanged threshold independently.
+        self._bounded_selection = (scene == self.current_index and best.start <= end-2
+            and best.end >= end and any(self._scene(stop) == scene and score >=
+                self._threshold(scene, self._misses >= self.recovery_after)
+                for begin, stop, score in self._bounded_candidates))
+        self._confirm_from_prefix(scene, best)
         target = self.current_index
         start,end = self.checkpoint_ranges[target]
         live = self._live_prefix(scene)
@@ -265,12 +588,12 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         if (end-3 <= best.end < end and best.end-start >= 3
                 and best.start <= best.end-3
                 and len(set(self.words[start:best.end]) & set(self._buffer[-16:])) >= 3
-                and not (set(self._buffer[-16:]) & {'not','never','dont',"don't",'say','repeat'})):
+                and not (set(self._buffer[-16:]) & self._negation_words)):
             self._boundary_prefix = dict(scene=target,end=best.end,time=self._audio_time,
                                          update=self._fresh_updates,text=tuple(self._buffer))
         elif (end-start <= 6 and start+2 <= best.end < end
                 and self.tracked_word_position >= start
-                and not (set(self._buffer[-16:]) & {'not','never','dont',"don't",'say','repeat'})):
+                and not (set(self._buffer[-16:]) & self._negation_words)):
             # A short, function-word-heavy anchor may first arrive as only
             # "a bit". Count its PREVIOUS callback only with an acquired local
             # position and a unique exact five-word run including book context

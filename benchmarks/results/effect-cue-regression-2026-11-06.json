@@ -1,0 +1,1450 @@
+{
+  "date": "2026-11-06",
+  "scope": "Report separate cue behavior, essential omissions and known ASR limitations.",
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "lexicon": {
+    "package": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+  },
+  "server_environment": {
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "packages": {
+      "nemo_toolkit": "3.1.0",
+      "torch": "2.7.1+cu118",
+      "torchaudio": "2.7.1+cu118",
+      "numpy": "2.2.6",
+      "websockets": "16.1.1"
+    }
+  },
+  "execution": {
+    "fresh_streams": 42,
+    "audio_seconds": 1329.3224375,
+    "legacy_streams": 25,
+    "authored_cue_streams": 9,
+    "new_synthetic_streams": 8,
+    "legacy_saved_comparisons": 383,
+    "authored_saved_comparisons": 54,
+    "all_inputs_and_order_fixed_before_recognition": true,
+    "all_trials_retained": true,
+    "one_trial_per_input": true,
+    "new_holdout_accuracy_claim": false
+  },
+  "integrity": {
+    "asr_model_lexicon_hints_and_numeric_thresholds_unchanged": true,
+    "changed_runtime_files": [
+      "books_to_life/matching/effect_permission.py",
+      "books_to_life/matching/timely_matcher.py"
+    ],
+    "all_delivery_eof_interim_pacing_and_app_observer_replay_audits_pass": true,
+    "required_identical_asr_streams": 33,
+    "required_identical_asr_streams_pass": true,
+    "historical_optional_prefix_asr_identical": false,
+    "source_sha256": {
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/live_tracker_probe.py": "b772faf20f29fa59f7c0f7aae35c320f547bc4f497ccc61c8b64652b47632976",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/pilot_effect_policy.json": "51273d8e5889c8541a2fe3de5aa9078d0b86539de727a2dbbe7b8db2a7541c35",
+      "benchmarks/prepare_mps_expansion.py": "e82502a2ffd7549eef31fd4dc0c76475cdcc898bda2a6edaa4722e70b2c36fcf",
+      "benchmarks/replay_policy_batch.py": "590de6aa9a7b754a15673043e7673bc5ea9be760be9504f3e4cd01e27efb6284",
+      "benchmarks/run_effect_cue_regression.py": "df04eeb69a6bfdfb1d3e801dc74701499d39d9968c1128732fb11aac15f16799",
+      "benchmarks/run_mps_heldout.py": "99541043a91dbd6a4fb4a4d0be97bc6e247d25a94c632e8939ccd9371a7114d8",
+      "benchmarks/run_pending_regression.py": "1a651da360bedfe630cd8d7185c04f2444a948006114445d53d68601ed1b2d47",
+      "benchmarks/run_shared_reading.py": "a060d2761d226c415f788574272c307bbae4f8350eab462b864bc8354b98036d",
+      "benchmarks/synthesize_shared_reading.ps1": "0e6865e5ec44bb420c891337d684d76360bec9bbc892a8ea365de305ef38a834",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "be201bba4e74adec7b0cbb599f80f9479faadbce705cb6c9e53b27f884741955",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "06bc85cbfc7d29e1872cde1ea147b4a84f609348dacc7928b3b0018a2cf24d49",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "70ec44335b426e2c5efceccc9c05a9d1e7748604b8ae24d3e16685fe83d21836",
+      "books_to_life/matching/boundary_matcher.py": "e1779573fb99794a9d81c51a80a22cb8a65f3e2e94e507e680b5880e6b49093d",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "85650c47aa688cc39abde0f24a934e80ec73356204b18020b48a6c249169aa00",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phone_features.py": "258a63bd7f7a5589e7b8f6f8a2c6a4359341b7fb13d016612a8ca77a4e3cab8a",
+      "books_to_life/matching/phonetic_endpoint.py": "b74bc5e0548ca3e5c9896a6e839b4b159b50e26a591e5c60f0f00a918ac47d4f",
+      "books_to_life/matching/split_matcher.py": "c526a1bfff1c8c91c8227c06e43d8f3ca01ec5abf4fd2712cfd01ecf36241c45",
+      "books_to_life/matching/timely_matcher.py": "2b757f623e95ee11cbb063399a96455d2c3ba112ae2e63628e59cdf54823f8df",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "books_to_life/runtime/streaming_utterances.py": "8e911e3edc2560d258488623f9715c63a28cee915a1170c6731848190c737f40",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296",
+      "tests/test_alignment_matcher.py": "8df6348f0303fd6808a2df6e61ef33525be2e84666154a206492d2871586f0e3",
+      "tests/test_benchmark_metrics.py": "aa15f8e97134d207818905d3025794b0846de187ae0b50e1033860071c6fc8c8",
+      "tests/test_book_context.py": "dbd3206f4ad88ef9937f95f2276798f6bf7b63c53838aacb2b75260a1d567b54",
+      "tests/test_book_context_transport.py": "9c2b7ecbafcfcdd00a5f737f2f9be25ab866a3b5576331fb519d3c46c98903aa",
+      "tests/test_boundary_matcher.py": "b8322170c012f30d37aab8489ef15db183fe2ce1989c434fa4bba9803ef03ddd",
+      "tests/test_checkpoint_matcher.py": "567d241235bea250132fdda39342a0acf22d15b672dfd59b7a5eb7c6f2a0b619",
+      "tests/test_childes_reference.py": "4d53f011a06f9a9b228bf66d83aa3e160ee13f863b5287d60230f556c31827ed",
+      "tests/test_contextual_phonetic_progress.py": "a81163e47cf5bf6caaf4d0ded492e13595665d87a65968e60907a186361da74c",
+      "tests/test_effect_cues.py": "ae70dfa42e2622b30dd0891e1dde5b87d017783bc040b40eaaec6889b4d848e8",
+      "tests/test_effect_permission.py": "1fc1e0c2c6a1dc313fab24854902e9a3006f149265aa22a48e1691684e4afce5",
+      "tests/test_evidence_matcher.py": "ff2615a70fd15533e412f4b173e312313282680a2d39169d76483a736726da0f",
+      "tests/test_internal_phonetic_support.py": "9784822aaa7c68733425c38397b900490480198ab5716daf4e5704a89a82e409",
+      "tests/test_interrupted_reading.py": "b278c993a3db646d76bd339bbdb8a10db9f995f05c81c1a2f458b82f27d18185",
+      "tests/test_model_preparation.py": "3dccbd95f9b6f878b5b0ba406fe7c3fb418c11e34db47dcbfc077c6f56ae8239",
+      "tests/test_native_stream.py": "bdb1448a2c8e908eb98a5fadb563e3f83322f8c6a791386a2c837963867124cc",
+      "tests/test_nemo_eos_decoder.py": "00c3927e1f760a41fdd5a3fb64430174a08e5e5f1a7a88e2943bb43aa0c98ff0",
+      "tests/test_nemo_transport.py": "0c92ace4897bbf9ec7d2aae53e2ad2f0127159eff71e0a54985db7d5a6645fda",
+      "tests/test_observer_manifests.py": "cfdc744e0d2b2a89ef8dfe943d13f6e0d4bf225dc263b41499a060d480a75e43",
+      "tests/test_ocsc_local_bundle.py": "141706eac9de33ea2edea1427f15f28fe505d6d0a67aebc947cc8eadde238cb8",
+      "tests/test_pending_effects.py": "e9e5bb90db9f4eba90927c51c4d987f2fce16e1a2f6353fe28d4820da4ad7ddd",
+      "tests/test_phonetic_endpoint.py": "68b6cc4f732e18fff5e2599094ce57c3ef0882a38206d873f7ebaefa6c5edbfe",
+      "tests/test_pod_runtime.py": "e6c631348b6a8b8f29ac52ee79bd45b48cb9ac614ce61c58cd69556e6eaffb58",
+      "tests/test_prefix_confirmation.py": "da980d5f5d61664418bc69402edee05bb9743980bb2292b458ad2d5938980a70",
+      "tests/test_reading_expansion.py": "15b992597e65e7ebcf2125f113c73f369193c91c57ffde9dec31b924c38fe0d5",
+      "tests/test_recording_audio.py": "9c093a03c1028d71ab1ea22a110df0b8c473514446ff50e36a77dedb6003d686",
+      "tests/test_recording_library.py": "53d0d7c597e93717352ff6dfa638ecd9b93dec8fce408cd75f7a0d7c0aa6a162",
+      "tests/test_split_matcher.py": "08f428e74f55661d55cb0dd408d47b050a5b9ea7f3799e8e9944227a9593aa7c",
+      "tests/test_streaming_utterances.py": "ac089a9664965e6920cb4181a3a16830e1c6ab357e26933adda67afcd558c8f9",
+      "tests/test_timely_matcher.py": "fa6f134fe40575d71e9558c35c006591509d1d17e25ab8d6dde1a1f1ce89f1ce",
+      "tests/test_word_boundaries.py": "ee458f385029c2a8722716634e01a46fb9c5ce21e5deff975590c2dadc023de5"
+    },
+    "baseline_sha256": {
+      "benchmarks/__init__.py": "55b8505a2b5909510cd7c9b3dcda6101e128112afdf8dbcd3cbd7b53b1a073b0",
+      "benchmarks/annotate_mps_timing.py": "3d5a0103a310eb182dd9c261938426b86b3ff7d493cc026905fbbb6fc66a92bb",
+      "benchmarks/checkpoint_latency.py": "97e9f52f4e9bdac0a1533796c98181bb3dca578fe98a1b37343480114eae6a6c",
+      "benchmarks/common.py": "170ddd25d73f34e991f4150d94bb382b05dd90fe659dd564307b33cd9b4833f6",
+      "benchmarks/diagnose_missed_scenes.py": "d185d659b7a6d84f84f0c73287af6e24abcb4f9f21536203f183b9850eb5770d",
+      "benchmarks/diagnose_stove.py": "fe3cb302e65733eec3cefebede9f90681702676a76a6538326721d1431d9ff70",
+      "benchmarks/estimate_checkpoint_words.py": "b8cee4acb9997bb640ffcacb98674c666f25ed5af7da8feb7d0cb6d33c3110f6",
+      "benchmarks/estimate_timing.py": "c3ba47d1a3385725efe073b151c10882154c34b4dde3411832665229a9c78d66",
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/investigate_mps_progress.py": "d93a261f67d2e01cc4c39d6c548002569783a9feec29aa6f43320b9781e0ee3e",
+      "benchmarks/investigate_pause_asr.py": "9fd4a7e0ed85a930e1cfe19ff879c06effabe1e16ce8c1289156566da9e46bf7",
+      "benchmarks/live_tracker_probe.py": "b772faf20f29fa59f7c0f7aae35c320f547bc4f497ccc61c8b64652b47632976",
+      "benchmarks/metrics.py": "76f9c7b822bb84cf4abd6b5a755dbd3bf90dd00bc2ec0754024338a5d0475140",
+      "benchmarks/migrate_recordings_to_library.py": "e892fa8939c58bdd88445b3f7dfe625dfb046deaba364d5b46327fb4c9f67c0d",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/ocsc_local_bundle.py": "bbcc705c0bf03177cc62319a3f99fd8227928ef80ebe3b4f42db9cbf6759a9ca",
+      "benchmarks/organize_recording_library.py": "5c5714606dd86c4c052fc0bbc1f4d94b62be1936395ae2f58fa7006a7e0c4224",
+      "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+      "benchmarks/pod_pronunciation_review.py": "83f3942e9aba99b5eaa4285462ada6b1b7c3df70186b2a9d3b6a1b0fac6510a3",
+      "benchmarks/prepare.py": "3ebb86609c900ba30515c0629752ec5311f88174ed98fa1d69a0df99f5192c82",
+      "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+      "benchmarks/rebuild_published_passages.py": "283748c988e14948f1bd84d9fe64e80253d823c29f02013c3d75a32d8d8af5a7",
+      "benchmarks/replay_evidence.py": "d167ce34c91faebf95922bb8457c3a7ddadce75dff1898c01d25de59ea3dc69b",
+      "benchmarks/replay_policy_batch.py": "590de6aa9a7b754a15673043e7673bc5ea9be760be9504f3e4cd01e27efb6284",
+      "benchmarks/review_flagged_readings.py": "a292cea87c0d21b264528232dfdfe36cd40d9fda3f9dfd31c53abf3ca9e73d55",
+      "benchmarks/run.py": "bd1a7470ec4dbda4c37a22856d1f19b222777cfa5bdc2132d762b3326874b949",
+      "benchmarks/run_best_setup.py": "b51e2072e3b94b8fa7f0bb954a5f2b414137f8e315b7906c1da44c660e74392a",
+      "benchmarks/run_boundary_comparison.py": "7c7cbb3c15ecff8f60592b554728b846756b11774de553fbd0a6cae04494d1d4",
+      "benchmarks/run_childes_streaming.py": "f10d0dc23f0793cd0b3adeb9e463acf40fc1f6aad6acc98a550263d7b290ee9d",
+      "benchmarks/run_eos_regression.py": "380cbb600bb9a3e433d10727ccfb9aba71392fd3315d489440ec272473e4fc51",
+      "benchmarks/run_false_trigger_challenges.py": "202031e11878e4f6fcd630c246bf1ec4ee17ad9bb9801b8e9358d8bd973f7cb6",
+      "benchmarks/run_guarded_pilot.py": "12eb7769210213b65c6ed43041a2be181284e645ec9bdd15d2f87638d1df8d91",
+      "benchmarks/run_hint_comparison.py": "5ea65e6bdee42cced3751dea361b35d813ed7e32f3044a0f261b60bd80c54b29",
+      "benchmarks/run_internal_phonetic_regression.py": "7b2413968a53ee97975237132adfbfc6122c203072c307022109958e6dada76a",
+      "benchmarks/run_live_tracker_comparison.py": "12dc7948781822a48eaf59cc1ed421b49bcc8213afb9fca4cbae2ca26dbb9664",
+      "benchmarks/run_mps_frozen_streaming.py": "498d400182de601b9230ee80553461965b229c78c7d4b8d2bd368cfede5cd843",
+      "benchmarks/run_mps_heldout.py": "0f29f8f88fcc44f598e74925c4b06f7c02ba40b95797eb2589032ceb58f8ea76",
+      "benchmarks/run_mps_streaming.py": "00a72d61fd0cb77b6ebeca3a85d516b029d76382786cf02d3aea363d2274eeb8",
+      "benchmarks/run_ocsc_streaming.py": "2820acd884fa46cf931a82567fa4a6ad4013a0f4c477c554480280623c481726",
+      "benchmarks/run_pending_regression.py": "1a651da360bedfe630cd8d7185c04f2444a948006114445d53d68601ed1b2d47",
+      "benchmarks/run_phonetic_feature_regression.py": "c2e381eb7ea0d3f6d7fe04265a3be58802f13afb9bf7ad3d64d5efa70ca4c6bb",
+      "benchmarks/run_prefix_confirmation_regression.py": "36c5d4aabe909eff6f4add585d6e83aeb397f76f39c5e40e57df15e4748a0409",
+      "benchmarks/run_reading_expansion.py": "d8ae6b50026a0f12bd91f70d0e1ee9b34daad7f56f5ea6f0b86193fbefaa06df",
+      "benchmarks/run_resumption_regression.py": "0134393118c70d3cc856fc55da62dee892b76e544d14e1c2b55775352f74132e",
+      "benchmarks/run_shared_policy_regression.py": "a0a19d825ad84257e2a6f8bb70732edeb152cfdb4129efc0b845cdf903f9e550",
+      "benchmarks/run_shared_reading.py": "a060d2761d226c415f788574272c307bbae4f8350eab462b864bc8354b98036d",
+      "benchmarks/run_split_word_regression.py": "821cb9c1270b7ad8cd292603184d28d5ab9b77f8bf54a3996d4a07db723c934c",
+      "benchmarks/score_guarded_pilot.py": "f760cf0b808344e7ef949a432cc5c6b5450384cb5a34b14d4db2a3891bc2cfd5",
+      "benchmarks/score_published_passages.py": "4898fff03f701b5c85bc6460ec498432f1ae26e5ecce3dc84fd7709fbf091c66",
+      "benchmarks/score_reading_expansion.py": "742d2ad44723e10808866ebab4dbe594a056ccc17e11ff9926015ddfe828828e",
+      "benchmarks/stream_timing.py": "66d16b23c7f978a305c2d07e33bc5c30d55a12011edc7a05f62b424487fc2ac0",
+      "benchmarks/summarize_boundary_comparison.py": "8fdfc6fa4f197ccb21d2f8f0660b4dfdd45825cd83e879cbf52f4637b2b92336",
+      "benchmarks/summarize_childes_streaming.py": "2f54f9f845613c8b544dd5208c0de4f1cf1cd592b64cd1ec14dfb9f2d120f654",
+      "benchmarks/summarize_eos_regression.py": "85b04ab57d71f3bc4804e7d54635737e6b620a330ce57786d451db567011c6f2",
+      "benchmarks/summarize_false_trigger_challenges.py": "051075f10a1596855321823d4214b2a0fb472377255f8bece947a43a2c793b15",
+      "benchmarks/summarize_hint_comparison.py": "efbaa7a3acf6590b848e1d47d0cf1bf74dc41ff36d7363c6367af77c1b7613bb",
+      "benchmarks/summarize_internal_phonetic_regression.py": "ec62987d5fb60d5f0e4ecee3d63b0cf30a281e2fb4b1f9bfc86de1b0594c61ce",
+      "benchmarks/summarize_live_tracker.py": "19faba5780184492f7559c94762a5813521e34f3cd60996ebdb4b594ba6993c1",
+      "benchmarks/summarize_mps_heldout.py": "06fc73345f7678abb142285ad870461c2850c7a483f384295a17cf79b5088778",
+      "benchmarks/summarize_mps_progress_investigation.py": "ecf26b7722fe4cb9bd70c0cc77d68bf2cdf490e874b4a0e610238ad9c9ecc249",
+      "benchmarks/summarize_mps_streaming.py": "e107f1820d96a56f8efa08579bc59463d6f17a171035fd0d30b5fe9b151e0dcd",
+      "benchmarks/summarize_ocsc_streaming.py": "03bb73bee85624dcf6088e78c92f1c4bc1179d441953b53fed4cba7f7118ca8f",
+      "benchmarks/summarize_pending_regression.py": "88e9f78c9ebace7f56158977255d75ec09adfafbb9e1dfa87e552a7f441e6bfb",
+      "benchmarks/summarize_phonetic_feature_regression.py": "6530faa993282fea308763d03c32b3abeb3fee1c8b259697727491b2855d5e49",
+      "benchmarks/summarize_prefix_confirmation_regression.py": "7dc4f376f4a09a82d2082e6a72e4050b2a5bddeaf14c0a9fbf154a669cd74b5d",
+      "benchmarks/summarize_resumption_regression.py": "9da934271daa6814e9ba6b4d970b23524222d16caab6d027f631b7b852b9df98",
+      "benchmarks/summarize_shared_policy_regression.py": "f5f11b1563fc1d3c93dee9ec372d9a2e7ac445cd3d5530e15d5d695f86bb5f63",
+      "benchmarks/summarize_shared_reading.py": "cbe4e79662e16845719d8386af3ab8584a4a4daad0b9abade1afcf6bae5804ab",
+      "benchmarks/summarize_split_word_regression.py": "7642453cbbc883d133371ff7efe648b78f0ede7890b8515f189748f5a4e3a2b7",
+      "benchmarks/verify_recording_library.py": "92c9ad2104e140921a3ae5b8b1037762fca691b565337408f6b69577d0c85f40",
+      "benchmarks/worker.py": "50e3de594efbd80125abc47979c15c04c3063dcaef97b664cbc403a57bcd1701",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "be201bba4e74adec7b0cbb599f80f9479faadbce705cb6c9e53b27f884741955",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "06bc85cbfc7d29e1872cde1ea147b4a84f609348dacc7928b3b0018a2cf24d49",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "70ec44335b426e2c5efceccc9c05a9d1e7748604b8ae24d3e16685fe83d21836",
+      "books_to_life/matching/boundary_matcher.py": "e1779573fb99794a9d81c51a80a22cb8a65f3e2e94e507e680b5880e6b49093d",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "6ab3b86a7135512b740d3257a735d6304d2049108dc20c3ccec922db56a6b7b1",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phone_features.py": "258a63bd7f7a5589e7b8f6f8a2c6a4359341b7fb13d016612a8ca77a4e3cab8a",
+      "books_to_life/matching/phonetic_endpoint.py": "b74bc5e0548ca3e5c9896a6e839b4b159b50e26a591e5c60f0f00a918ac47d4f",
+      "books_to_life/matching/split_matcher.py": "c526a1bfff1c8c91c8227c06e43d8f3ca01ec5abf4fd2712cfd01ecf36241c45",
+      "books_to_life/matching/timely_matcher.py": "5f12b3d862db5407fd8793e7497e96979ef9d5cda567fe29fa2e98a28c6e7cd2",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "books_to_life/runtime/streaming_utterances.py": "8e911e3edc2560d258488623f9715c63a28cee915a1170c6731848190c737f40",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296",
+      "tests/test_alignment_matcher.py": "8df6348f0303fd6808a2df6e61ef33525be2e84666154a206492d2871586f0e3",
+      "tests/test_benchmark_metrics.py": "aa15f8e97134d207818905d3025794b0846de187ae0b50e1033860071c6fc8c8",
+      "tests/test_book_context.py": "dbd3206f4ad88ef9937f95f2276798f6bf7b63c53838aacb2b75260a1d567b54",
+      "tests/test_book_context_transport.py": "9c2b7ecbafcfcdd00a5f737f2f9be25ab866a3b5576331fb519d3c46c98903aa",
+      "tests/test_boundary_matcher.py": "b8322170c012f30d37aab8489ef15db183fe2ce1989c434fa4bba9803ef03ddd",
+      "tests/test_checkpoint_matcher.py": "567d241235bea250132fdda39342a0acf22d15b672dfd59b7a5eb7c6f2a0b619",
+      "tests/test_childes_reference.py": "4d53f011a06f9a9b228bf66d83aa3e160ee13f863b5287d60230f556c31827ed",
+      "tests/test_contextual_phonetic_progress.py": "a81163e47cf5bf6caaf4d0ded492e13595665d87a65968e60907a186361da74c",
+      "tests/test_effect_permission.py": "1fc1e0c2c6a1dc313fab24854902e9a3006f149265aa22a48e1691684e4afce5",
+      "tests/test_evidence_matcher.py": "ff2615a70fd15533e412f4b173e312313282680a2d39169d76483a736726da0f",
+      "tests/test_internal_phonetic_support.py": "9784822aaa7c68733425c38397b900490480198ab5716daf4e5704a89a82e409",
+      "tests/test_interrupted_reading.py": "b278c993a3db646d76bd339bbdb8a10db9f995f05c81c1a2f458b82f27d18185",
+      "tests/test_model_preparation.py": "3dccbd95f9b6f878b5b0ba406fe7c3fb418c11e34db47dcbfc077c6f56ae8239",
+      "tests/test_native_stream.py": "bdb1448a2c8e908eb98a5fadb563e3f83322f8c6a791386a2c837963867124cc",
+      "tests/test_nemo_eos_decoder.py": "00c3927e1f760a41fdd5a3fb64430174a08e5e5f1a7a88e2943bb43aa0c98ff0",
+      "tests/test_nemo_transport.py": "0c92ace4897bbf9ec7d2aae53e2ad2f0127159eff71e0a54985db7d5a6645fda",
+      "tests/test_observer_manifests.py": "cfdc744e0d2b2a89ef8dfe943d13f6e0d4bf225dc263b41499a060d480a75e43",
+      "tests/test_ocsc_local_bundle.py": "141706eac9de33ea2edea1427f15f28fe505d6d0a67aebc947cc8eadde238cb8",
+      "tests/test_pending_effects.py": "e9e5bb90db9f4eba90927c51c4d987f2fce16e1a2f6353fe28d4820da4ad7ddd",
+      "tests/test_phonetic_endpoint.py": "68b6cc4f732e18fff5e2599094ce57c3ef0882a38206d873f7ebaefa6c5edbfe",
+      "tests/test_pod_runtime.py": "e6c631348b6a8b8f29ac52ee79bd45b48cb9ac614ce61c58cd69556e6eaffb58",
+      "tests/test_prefix_confirmation.py": "da980d5f5d61664418bc69402edee05bb9743980bb2292b458ad2d5938980a70",
+      "tests/test_reading_expansion.py": "15b992597e65e7ebcf2125f113c73f369193c91c57ffde9dec31b924c38fe0d5",
+      "tests/test_recording_audio.py": "9c093a03c1028d71ab1ea22a110df0b8c473514446ff50e36a77dedb6003d686",
+      "tests/test_recording_library.py": "53d0d7c597e93717352ff6dfa638ecd9b93dec8fce408cd75f7a0d7c0aa6a162",
+      "tests/test_split_matcher.py": "08f428e74f55661d55cb0dd408d47b050a5b9ea7f3799e8e9944227a9593aa7c",
+      "tests/test_streaming_utterances.py": "ac089a9664965e6920cb4181a3a16830e1c6ab357e26933adda67afcd558c8f9",
+      "tests/test_timely_matcher.py": "fa6f134fe40575d71e9558c35c006591509d1d17e25ab8d6dde1a1f1ce89f1ce",
+      "tests/test_word_boundaries.py": "ee458f385029c2a8722716634e01a46fb9c5ce21e5deff975590c2dadc023de5"
+    },
+    "protocol_sha256": "dcbe09337580f2a58cd72cf71032487dfa2769442af2426be2aebe11329f99c9"
+  },
+  "unit_tests": {
+    "run": 223,
+    "passed": 222,
+    "skipped": 1,
+    "skip": "Existing NeMo-only test skipped in Windows; ASR sources unchanged."
+  },
+  "legacy_results": {
+    "saved_comparisons": 383,
+    "all_outcomes_identical": true,
+    "fresh_streams": 25,
+    "all_prior_emissions_preserved": true,
+    "all_reviewed_assertions_pass": true
+  },
+  "authored_results": {
+    "saved_comparisons": 54,
+    "same_authored_policy_added": 13,
+    "same_authored_policy_removed": 0,
+    "changes": [
+      {
+        "id": "cued-reading-3b23k_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside",
+            "lost_sheep"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-reading-3b24c_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside",
+            "lost_sheep"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-reading-3d48g_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside",
+            "lost_sheep"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-reading-3b11b_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep"
+          ],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "lost_sheep"
+          ],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-reading-3b41a_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "riverside"
+          ],
+          "suppressed": [
+            "hundred_sheep"
+          ],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "riverside",
+            "lost_sheep"
+          ],
+          "suppressed": [
+            "hundred_sheep"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-reading-3b20g_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside",
+            "lost_sheep"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-reading-3b28h_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside",
+            "lost_sheep"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-latest-3b4c_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [
+            "hundred_sheep"
+          ],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "lost_sheep"
+          ],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [
+            "hundred_sheep"
+          ],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-latest-3a21c_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep"
+          ],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "lost_sheep"
+          ],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-diagnostic-3b4c_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [
+            "hundred_sheep"
+          ],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "lost_sheep"
+          ],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [
+            "hundred_sheep"
+          ],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-diagnostic-3a21c_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep"
+          ],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "lost_sheep"
+          ],
+          "suppressed": [
+            "riverside"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-diagnostic-3b20g_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside",
+            "lost_sheep"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cued-diagnostic-3b24c_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ],
+        "before": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "lost_sheep"
+          ]
+        },
+        "after": {
+          "emitted": [
+            "hundred_sheep",
+            "riverside",
+            "lost_sheep"
+          ],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": []
+        }
+      }
+    ],
+    "fresh_supported_cases": 8,
+    "fresh_supported_cases_emitted": 8,
+    "stricter_policy_withheld_against_original_book_policy": [
+      {
+        "id": "cued-reading-3a8b_EN-OL-RC-234_1",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-shared-3a8b_EN-OL-RC-234_1-baseline",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-shared-3a8b_EN-OL-RC-234_1-inserted_aside",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-shared-3a8b_EN-OL-RC-234_1-overlap",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-latest-shared-3a8b_EN-OL-RC-234_1-baseline",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-latest-shared-3a8b_EN-OL-RC-234_1-inserted_aside",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-latest-shared-3a8b_EN-OL-RC-234_1-overlap",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-latest-reading-3a8b_EN-OL-RC-234_1",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-resumption-shared-3a8b_EN-OL-RC-234_1-baseline",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-resumption-shared-3a8b_EN-OL-RC-234_1-coaching_before_reading",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-resumption-shared-3a8b_EN-OL-RC-234_1-overlap",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-resumption-reading-3a8b_EN-OL-RC-234_1",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-internal-shared-3a8b_EN-OL-RC-234_1-coaching_before_reading",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      },
+      {
+        "id": "cued-internal-reading-3a8b_EN-OL-RC-234_1",
+        "source_recordings": [
+          "3a8b_EN-OL-RC-234_1"
+        ],
+        "previously_emitted": [
+          "lost_sheep"
+        ],
+        "diagnosis": "New authored essential-word requirement rejects unsupported ASR. Original-policy outcome remains preserved separately; no new human omission label is assigned."
+      }
+    ],
+    "stricter_policy_distinct_original_recordings": [
+      "3a8b_EN-OL-RC-234_1"
+    ]
+  },
+  "synthetic_results": {
+    "positive_cases": 4,
+    "positive_emitted": 4,
+    "essential_omission_cases": 4,
+    "essential_omission_emitted": 0,
+    "source": "Fixed scripts, two installed synthetic adult voices; not natural child/accent accuracy."
+  },
+  "omission_controls": {
+    "fresh_word_omission_targets": 13,
+    "emitted": 0,
+    "fresh_declared_essential_word_omissions": 7,
+    "declared_essential_word_emitted": 0,
+    "cases": [
+      {
+        "id": "legacy-shared-4a35g_EN-OL-RC-426_2-inserted_aside",
+        "target": "hibernate",
+        "required": [
+          "hibernate"
+        ],
+        "outcomes": {
+          "emitted": [
+            "clever_bears"
+          ],
+          "suppressed": [
+            "hibernate"
+          ],
+          "skipped": [],
+          "unreached": [
+            "begging_paws"
+          ]
+        }
+      },
+      {
+        "id": "legacy-reading-4a35g_EN-OL-RC-426_2",
+        "target": "hibernate",
+        "required": [
+          "hibernate"
+        ],
+        "outcomes": {
+          "emitted": [
+            "clever_bears"
+          ],
+          "suppressed": [
+            "hibernate"
+          ],
+          "skipped": [],
+          "unreached": [
+            "begging_paws"
+          ]
+        }
+      },
+      {
+        "id": "legacy-reading-5b2b_EN-OL-RC-538_2",
+        "target": "escape_enemies",
+        "required": [],
+        "outcomes": {
+          "emitted": [
+            "black_circles",
+            "damaged_wing"
+          ],
+          "suppressed": [
+            "escape_enemies"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "legacy-reading-4c15g_EN-OL-RC-426_2",
+        "target": "hibernate",
+        "required": [
+          "hibernate"
+        ],
+        "outcomes": {
+          "emitted": [
+            "clever_bears"
+          ],
+          "suppressed": [
+            "hibernate",
+            "begging_paws"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "legacy-challenge-coat-omitted",
+        "target": "target",
+        "required": [],
+        "outcomes": {
+          "emitted": [
+            "start",
+            "finish"
+          ],
+          "suppressed": [
+            "target"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "legacy-challenge-fan-omitted",
+        "target": "target",
+        "required": [],
+        "outcomes": {
+          "emitted": [
+            "start",
+            "finish"
+          ],
+          "suppressed": [
+            "target"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "legacy-challenge-pen-omitted",
+        "target": "target",
+        "required": [],
+        "outcomes": {
+          "emitted": [
+            "start",
+            "finish"
+          ],
+          "suppressed": [
+            "target"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "legacy-challenge-seal-omitted",
+        "target": "target",
+        "required": [],
+        "outcomes": {
+          "emitted": [
+            "start",
+            "finish"
+          ],
+          "suppressed": [
+            "target"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "legacy-challenge-sink-omitted",
+        "target": "target",
+        "required": [],
+        "outcomes": {
+          "emitted": [
+            "start",
+            "finish"
+          ],
+          "suppressed": [
+            "target"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cue-synthetic-0-essential_omitted",
+        "target": "event",
+        "required": [
+          "lost"
+        ],
+        "outcomes": {
+          "emitted": [
+            "start",
+            "finish"
+          ],
+          "suppressed": [
+            "event"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cue-synthetic-1-essential_omitted",
+        "target": "event",
+        "required": [
+          "jumped"
+        ],
+        "outcomes": {
+          "emitted": [
+            "start",
+            "finish"
+          ],
+          "suppressed": [
+            "event"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cue-synthetic-2-essential_omitted",
+        "target": "event",
+        "required": [
+          "popped"
+        ],
+        "outcomes": {
+          "emitted": [
+            "start",
+            "finish"
+          ],
+          "suppressed": [
+            "event"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      },
+      {
+        "id": "cue-synthetic-3-essential_omitted",
+        "target": "event",
+        "required": [
+          "opened"
+        ],
+        "outcomes": {
+          "emitted": [
+            "start",
+            "finish"
+          ],
+          "suppressed": [
+            "event"
+          ],
+          "skipped": [],
+          "unreached": []
+        }
+      }
+    ]
+  },
+  "unrelated_controls": {
+    "fresh_source_streams": 4,
+    "authored_policies": 6,
+    "callback_replays": 24,
+    "emitted": 0,
+    "results": [
+      {
+        "id": "legacy-unrelated-dog",
+        "policy": 1,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "black_circles",
+            "damaged_wing",
+            "escape_enemies"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dog",
+        "policy": 2,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "begging_paws",
+            "clever_bears",
+            "hibernate"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dog",
+        "policy": 3,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "fine_patterns",
+            "small_scales",
+            "wing_colours"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dog",
+        "policy": 4,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "hundred_sheep",
+            "lost_sheep",
+            "riverside"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dog",
+        "policy": 5,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "fish_and_seals",
+            "keep_away",
+            "thick_legs"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dog",
+        "policy": 6,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "carried_home",
+            "found_in_bush",
+            "happy_friends"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dragon",
+        "policy": 1,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "black_circles",
+            "damaged_wing",
+            "escape_enemies"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dragon",
+        "policy": 2,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "begging_paws",
+            "clever_bears",
+            "hibernate"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dragon",
+        "policy": 3,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "fine_patterns",
+            "small_scales",
+            "wing_colours"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dragon",
+        "policy": 4,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "hundred_sheep",
+            "lost_sheep",
+            "riverside"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dragon",
+        "policy": 5,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "fish_and_seals",
+            "keep_away",
+            "thick_legs"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-dragon",
+        "policy": 6,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "carried_home",
+            "found_in_bush",
+            "happy_friends"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-nickel",
+        "policy": 1,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "black_circles",
+            "damaged_wing",
+            "escape_enemies"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-nickel",
+        "policy": 2,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "begging_paws",
+            "clever_bears",
+            "hibernate"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-nickel",
+        "policy": 3,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "fine_patterns",
+            "small_scales",
+            "wing_colours"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-nickel",
+        "policy": 4,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "hundred_sheep",
+            "lost_sheep",
+            "riverside"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-nickel",
+        "policy": 5,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "fish_and_seals",
+            "keep_away",
+            "thick_legs"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-nickel",
+        "policy": 6,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "carried_home",
+            "found_in_bush",
+            "happy_friends"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-recording_2",
+        "policy": 1,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "black_circles",
+            "damaged_wing",
+            "escape_enemies"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-recording_2",
+        "policy": 2,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "begging_paws",
+            "clever_bears",
+            "hibernate"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-recording_2",
+        "policy": 3,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "fine_patterns",
+            "small_scales",
+            "wing_colours"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-recording_2",
+        "policy": 4,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "hundred_sheep",
+            "lost_sheep",
+            "riverside"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-recording_2",
+        "policy": 5,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "fish_and_seals",
+            "keep_away",
+            "thick_legs"
+          ]
+        }
+      },
+      {
+        "id": "legacy-unrelated-recording_2",
+        "policy": 6,
+        "outcomes": {
+          "emitted": [],
+          "suppressed": [],
+          "skipped": [],
+          "unreached": [
+            "carried_home",
+            "found_in_bush",
+            "happy_friends"
+          ]
+        }
+      }
+    ]
+  },
+  "known_asr_limitation": {
+    "id": "cue-essential-asr-limitation",
+    "human_accepted": true,
+    "target_emitted": false,
+    "explanation": "The authored cue now requires lost. Existing ASR supplies locked in this accepted source. The strict essential-word check withholds it; no alias, guessed missing action, ASR rewrite or human-omission relabel is introduced."
+  },
+  "target_expectation_misses": [
+    {
+      "id": "cue-essential-asr-limitation",
+      "category": "authored_cue_asr_limitation",
+      "outcomes": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "known_human_accepted": true
+    }
+  ],
+  "policy_notes": [
+    "Cue text is one unique contiguous phrase within checkpoint_text; pages and full checkpoint ranges remain original book context.",
+    "Short cues use unchanged context alignment requirements. A confirmed alignment can support an exact three-distinct-word cue suffix when only nonessential leading words are absent.",
+    "Bounded acquisition uses the next nearby cue, unique context of at least the configured minimum words, one existing internal pronunciation match, exact neighbours/endpoints, and unchanged score/coverage/confirmation.",
+    "Legacy omission expectations remain unchanged. Missing descriptive words outside an authored cue are not missing essential action words; this is a separate authoring policy.",
+    "Declaring an essential action can expose ASR false negatives previously hidden by whole-phrase tolerance; the accepted locked/lost source remains visible."
+  ],
+  "local_artifacts": "output/effect-cue-regression-v4-2026-11-06",
+  "preparation_attempts": [
+    {
+      "directory": "output/effect-cue-regression-2026-11-06",
+      "fresh_audio_trials": 0
+    },
+    {
+      "directory": "output/effect-cue-regression-v2-2026-11-06",
+      "fresh_audio_trials": 0
+    },
+    {
+      "directory": "output/effect-cue-regression-v3-2026-11-06",
+      "fresh_audio_trials": 0
+    }
+  ],
+  "limitations": [
+    "Inspected regression sources and synthetic controls, not untouched-reader or microphone/room validation.",
+    "Callback/segment ends are not human-verified word-end latency.",
+    "Most additional authored-cue outcomes have no new independent human acceptance label."
+  ]
+}

@@ -176,7 +176,9 @@ def main():
             cp['effect_policy'] = policy['default_effect_policy']
             for rule in policy['rules']:
                 if normalize_text(cp['checkpoint_text']) == normalize_text(rule['checkpoint_text']):
-                    cp['required_words'] = rule['required_words']
+                    for field in ('effect_cue', 'required_words'):
+                        if field in rule:
+                            cp[field] = rule[field]
         previous = folder / 'checkpoints.json'
         if previous.exists() and json.loads(previous.read_text(encoding='utf-8')) != manifest:
             history = folder / 'history/before-effect-policy-2026-11-02'

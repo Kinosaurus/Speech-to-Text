@@ -94,11 +94,17 @@ class PendingEffectTests(unittest.TestCase):
         self.assertEqual(matcher.suppressed_checkpoint_ids,{'2'})
         self.assertEqual(matcher.triggered_checkpoint_ids,{'1','3'})
 
-    def test_prompts_close_pending_without_emitting(self):
+    def test_negated_instruction_closes_pending_without_emitting(self):
         matcher=self.pending()
-        update=step(matcher,PREFIX+' puppy please repeat puppies',3.5)
+        update=step(matcher,PREFIX+' puppy never repeat puppies',3.5)
         self.assertFalse(update.triggered)
         self.assertTrue(update.effect_suppressed)
+
+    def test_parent_can_complete_pending_phrase_without_replaying_effect(self):
+        matcher=self.pending()
+        reading=PREFIX+' puppy please repeat we looked for the small puppies'
+        self.assertTrue(step(matcher,reading,3.5).triggered)
+        self.assertFalse(step(matcher,reading+' we looked for the small puppies',4).triggered)
 
     def test_new_utterance_cannot_borrow_an_old_incomplete_prefix(self):
         matcher=self.pending()

@@ -1,20 +1,432 @@
 # Books to Life Pod: current flow, handover and verification
 
-Singapore CHILDES access inspection, 2 November: the user-downloaded archive
-passes ZIP integrity checks and contains 168 CHAT transcripts. One matching
-recording, e5d6a.mp3 (195.42 seconds), decodes successfully; three contextual
-16 kHz mono clips and a blank listening sheet are prepared locally under
-`output/childes-singapore-2026-11-02/`. This is classroom conversation with
-transcripts of actual speech; an independent intended reading passage is absent.
-Use it for separately labelled regional ASR/streaming diagnostics after listening
-review. No Singapore streaming trials or human speech-quality labels are recorded
-yet. The local archive/audio remain Git-ignored; the initial truncated audio
+Separate effect cues and bounded acquisition, 6 November: the
+[completed regression](../benchmarks/results/effect-cue-regression-2026-11-06.json)
+adds optional authored `effect_cue` phrases while preserving full checkpoint text
+as book context. Required words belong to the cue and retain strict spelling
+support. Short cues use normal confirmed context; an exact suffix with three
+distinct cue words can tolerate an absent nonessential opening fragment. The
+next nearby cue may also use one existing internal pronunciation comparison
+inside a unique contiguous context run with exact neighbours/endpoints. The
+normal minimum context length, score, coverage, ambiguity and independent votes
+remain authoritative. See [the policy contract](EFFECT_POLICIES.md#separate-authored-effect-cues).
+
+Only `effect_permission.py` and `timely_matcher.py` change in the runtime. ASR,
+model, lexicon, book hints and numeric thresholds are unchanged. The pilot's
+authored lost-sheep cue is "one sheep was lost", with required word `lost`;
+the following sentence remains tracking context. This declaration is book data,
+not a transcript replacement or a speaker/word exception. New importer output
+copies authored cues alongside required words. Original manifests and all old
+reports remain preserved; versioned cue manifests are used for comparison.
+
+All 383 saved legacy ledgers reproduce and remain identical under the new
+matcher. With the same authored essential-word declarations on both sides, 54
+saved cue comparisons add 13 emissions and remove none. A changed book policy
+can still withhold an old emission: explicitly requiring `lost` blocks the
+human-accepted 3a8b source where ASR says "locked". Fourteen repeated saved
+conditions involve that same underlying source, not fourteen readers. This is
+kept visible as an ASR false negative, with no alias or invented action word.
+
+All 42 final fresh streams complete once in fixed order (1329.32 seconds): 25
+legacy inputs, nine authored-cue inputs and eight fixed synthetic inputs. The
+eight supported authored-cue cases emit, including both recent misses and the
+optional-opening-word regression. All four synthetic positives emit; all four
+synthetic essential-word omissions stay off. Across the full batch, seven
+declared-essential omission targets and all thirteen word-omission targets stay
+off. Four fresh unrelated timelines against six authored policies produce zero
+effects in 24 callback replays. Previous pause/phase, interruption, endpoint and
+reviewed MPS assertions still pass. The known `locked`/`lost` source remains the
+one human-positive target miss under the stricter authored cue policy.
+
+All 33 required ASR callback comparisons are identical; the additional historical
+optional-prefix input is reported separately. Model/source/lexicon/manifest/audio
+hashes, delivery, interim/EOF, pacing and app/observer/replay checks pass. Windows
+runs 223 tests: 222 pass and the existing NeMo-only test is skipped. The server is
+stopped. Final raw artifacts, source snapshots and listening page are under
+`output/effect-cue-regression-v4-2026-11-06/`. Three earlier preparation/preflight
+attempts retain their artifacts and `ABORTED.json`; none ran fresh recognition.
+These are inspected regressions and synthetic controls, not new-reader accuracy,
+room/microphone validation or verified word-end latency.
+
+Recognition/progress investigation, 6 November: the
+[read-only diagnosis](../benchmarks/results/mps-progress-investigation-2026-11-06.json)
+replays 147 original MPS callback histories (74 speakers, 441 checkpoints),
+including all 24 readings of the lost-sheep passage. All 8033 instrumented saved
+updates exactly agree with an independent vanilla frozen tracker and reproduce
+their existing ledgers. Seven fixed, outcome-informed diagnostic cases also
+stream their original full WAVs once through the unchanged current server
+(311.02 seconds, 376 callbacks). Every checkpoint outcome repeats. The four
+latest callback sequences are identical; three historical sequences change
+slightly under current streaming but retain their outcomes. These are diagnostic
+reruns, not new holdout or human-listening accuracy evidence.
+
+In the user's reported recording, progress finishes at normalized word 55,
+before the final anchor's start at 57. Actual recognition supplies six spelling
+matches where seven of eight are required. No acceptable final alignment is
+selected, and even the current local permission aids cannot support that ASR
+tail. A counterfactual text-only replay substitutes prefixes of the user's
+transcription into six corresponding final hypotheses, retaining all earlier
+recognition and existing callback times. The unchanged tracker then emits
+`lost_sheep`. This isolates the recognition/evidence issue; it does not measure
+ASR accuracy or establish an acoustic correction.
+
+Across the 24 saved lost-sheep histories, 14 emit and ten remain unreached:
+five have all crossing candidates filtered, three choose another alignment,
+and two lack confirmed crossing progress. Four of those misses contain the
+exact first sentence in ASR; seven have a provider-correct first sentence.
+The four-word event cannot independently meet the five-word alignment minimum,
+and the authored eight-word checkpoint additionally depends on the following
+sentence. One other recent miss could pass existing local permission aids but
+never acquires the anchor, so permission support alone is not progress recovery.
+None of the ten missed histories ever passes ordinary permission; no universal
+progress-only fix is established. Eight saved provider-deleted endpoint/essential
+controls stay off, including actual omitted following sentences. Such omissions
+must not silently become positives under a changed checkpoint-authoring policy.
+
+No ASR, matcher, phonetic rule, model, threshold, hints, manifest or original audio
+changes are made. The server is stopped. Protocols, exact per-callback traces,
+original-input reruns, the oracle-text probe and seven exact PCM review crops
+are retained in `output/mps-progress-investigation-2026-11-06/`. Next work should
+separate effect-bearing cues from following descriptive text and investigate
+bounded contextual acquisition using existing evidence, with further listening
+and unchanged omission controls before approving a general repair.
+
+Frozen new-speaker evaluation, 6 November: the current runtime is unchanged from
+the internal-pronunciation regression below. The
+[completed MPS streaming batch](../benchmarks/results/mps-frozen-streaming-2026-11-06.json)
+selects 12 new speaker IDs, balanced across grades 3–5 and provider gender labels,
+after excluding all 69 previously used IDs found in local artifacts. Both
+paragraphs per speaker are streamed once in a fixed seeded order: 24 original
+recordings, 1014.48 seconds and 72 checkpoints. Selection, source snapshots,
+model/lexicon hashes and manifests are frozen before download/recognition. No
+ASR, matcher, threshold, hint, checkpoint or audio tuning is applied. The 24 audio
+hashes also have no overlap with 215 distinct audio hashes in prior result files.
+
+All 37 provider-marked correct anchors emit. The single provider-marked essential
+word deletion (`hibernate`) stays off. Overall outcomes are 53 emitted, 14
+suppressed, one skipped and four unreached; the 19 non-emitting anchors all have
+provider-marked substitutions or deletions. These are not automatically correct
+rejections: pronunciation acceptance and remaining ASR misses need listening.
+One reader emits no effects in the first sheep passage and one in the second,
+so aggregate provider-correct coverage does not establish a good experience for
+every reader. Four saved unrelated ASR timelines replay against the six passage
+policies with zero effects in 24 comparisons; these are not fresh audio trials.
+
+All source/model/lexicon/manifest/audio hashes, full delivery, interim results,
+EOF, pacing and app/observer/replay audits pass. The local ASR server is stopped.
+The ignored folder `output/mps-frozen-streaming-2026-11-06/` preserves the complete
+source snapshot, fixed protocol, original WAVs, logs, transcripts and a local
+listening page with 35 flagged checkpoints. No production source changes are
+made. This is new-speaker evidence on the same six familiar Indian MPS texts,
+not unseen-book, Southeast Asian reader, microphone/room or word-latency evidence.
+
+Subsequent [listening diagnosis](../benchmarks/results/mps-listening-review-2026-11-06.json):
+for the zero-effect sheep recording, the user hears "he took the sheep to the
+river" and "one sheep was lost; the sheep was sad" and asks whether they should
+count. The pod-policy recommendation accepts both; that recommendation is kept
+separate from the user's independent word transcription. The ordinary effect
+guard already accepts the latter wording in isolation. Actual ASR instead ends
+"one ship was lost the ship was said", fails that guard and never reaches the
+checkpoint in streaming. The river case is separately blocked by its one-shot
+endpoint requirement. Existing ambience policy is suitable for background scene
+catch-up after progress is established; it does not promise exact word timing.
+`hundred_sheep` has no new listening assessment. No runtime or manifest changes
+are made, and these inspected phrases are now regression/diagnostic material.
+
+Internal pronunciation repair, 4 November: the user confirms the previously
+flagged sheep excerpt is very clear and should count. It is now recovered by
+[a guarded general rule](../benchmarks/results/internal-phonetic-regression-2026-11-04.json),
+with no ASR, model, numeric-threshold, word-alias or input-audio changes. After
+ordinary alignment acquires the next checkpoint, one internal observed token
+may use the existing pronunciation comparison if it is uniquely bracketed by
+exact ordered neighbours and the endpoint is exact. Ordinary support must fall
+exactly one match short; required words retain their stricter spelling checks.
+Missing tokens cannot supply this match. See [the contract](EFFECT_POLICIES.md#guarded-internal-pronunciation-support).
+
+The phrase still reaches ASR as "one ship was locked ...". Spelling supports six
+of eight anchor words; sheep/ship adds one supported match, reaching the existing
+seven-word coverage requirement. Lost/locked remains unmatched. Both coached and
+uncoached fresh readings now emit `lost_sheep`; every ASR callback sequence in
+the 25-stream batch is identical to the prior version (844.94 seconds). All nine
+reviewed MPS target checks pass, as do the earlier pause/aside recoveries and all
+four pause/phase cases. Eight fresh word-omission controls and seven saved
+provider-deletion controls stay off. Four unrelated recordings produce zero
+effects across 24 policy replays. All delivery, EOF, model/source/audio hashes
+and app/observer/replay audits pass; no duplicate effects occur.
+
+All 327 saved old ledgers reproduce. The new matcher removes no emitted effects
+and changes no checkpoint skips. Twelve comparisons gain only `lost_sheep` across
+repeated conditions for this same underlying child recording; they are not twelve
+new readers or independent accuracy observations. Windows runs 211 unit tests:
+210 pass and the unchanged NeMo-only check is skipped, with its passing WSL
+decoder-budget check retained and source hashes verified. The user confirmation
+and resolution are attached separately to the original resumption report; its
+raw trials remain unchanged. The frozen output directory retains its 3 November
+start label. The local ASR server has been stopped.
+
+General resumption repair, 3 November: the two user-accepted misses now emit in
+[the completed final regression](../benchmarks/results/resumption-regression-2026-11-03.json).
+NeMo completes an utterance after a full existing right-context of digital zero
+PCM and starts a fresh decoder when nonzero audio resumes. Book position and
+one-shot history continue. The matcher can retain an observed unique prefix of
+the acquired next anchor across a completed off-book aside, then align observed
+continuation words with the normal filters. An old completed utterance's negation
+does not poison a new exact prefix. Model weights, chunk/right context, lexicon,
+score/coverage/stability thresholds, hints and input audio remain unchanged.
+There are no word exceptions or phase-specific padding rules. See [the contract](EFFECT_POLICIES.md#reading-across-an-unrelated-aside).
+
+The final v3 batch streams 81 selected inputs once each (1893.09 seconds): the
+32 earlier regression inputs, 45 synthetic challenges and four pause/phase
+inputs. All delivery, EOF, model/source/audio hashes and app/observer/replay audits
+pass. All 246 saved old ledgers reproduce and remain unchanged with the new
+matcher. All nine fresh reviewed MPS targets pass, with their complete outcomes
+unchanged. Three fresh natural word omissions, five synthetic endpoint omissions
+and seven saved provider-deletion controls remain off. The 20 accepted synthetic
+positives emit; all 25 synthetic negatives stay off. Four unrelated recordings
+produce zero effects across 24 book-policy replays. All four pause/phase targets
+emit, and the Singapore left-hand trigger is preserved. No duplicate effects occur.
+
+On the fresh audio, five effects are added versus the original runs and one
+then-unreviewed effect is withheld: `lost_sheep` in the coached sheep variant changes
+after ASR hears "locked" instead of "lost". Both old and new matchers withhold
+that effect on the new ASR. It was unconfirmed at that evaluation; subsequent
+user listening confirms the regression and the repair above recovers it. Its listening excerpt is
+under the final output's `review/`. The long-pause recovery needs the ASR change;
+the accepted child aside additionally needs the interrupted-reading matcher path.
+
+Windows runs 204 unit tests: 203 pass and one NeMo-only test is skipped; that
+decoder-budget test passes separately in the installed WSL NeMo environment.
+Two preliminary batches remain retained: the first stopped in preflight before
+audio after ordinary-reading changes were found; v2 retains 29 audited streams
+and any partial artifacts after the prior-negation confirmation issue appeared.
+Final metrics use only `output/resumption-regression-v3-2026-11-03/`. These are
+inspected regressions with reused sources, not new-speaker accuracy. Digital quiet
+is handled without an amplitude threshold; nonzero noise and soft speech pass
+through unchanged. Real microphone/room validation remains pending. The task's
+ASR server has been stopped.
+
+Pause/interruption listening and ASR investigation, 3 November: the user confirms
+the long-pause rabbit phrase is clear (independently hearing "a small rabbit")
+and wants the child phrase across the inserted aside to count. Both remain
+misses. The synthetic overlapping case is somewhat unclear with optional success;
+the child overlap is too chaotic to require a trigger. These labels apply to
+`target` in the synthetic clips and `clever_bears` in the child excerpts, not to
+the child recording's separate omitted `hibernate` checkpoint. Original trials
+and omission controls remain unchanged. See the [user listening assessment](../benchmarks/results/pause-interruption-listening-2026-11-03.json).
+
+A [fixed four-stream diagnostic](../benchmarks/results/pause-asr-diagnostic-2026-11-03.json)
+crosses short/long inserted silence with two positions inside the same 560-ms
+ASR chunks. All four use byte-identical sentence PCM and unchanged runtime,
+model, hints and thresholds. Both short phases succeed; the original long gap
+reproduces the missing "A small" and withheld target. Extending that long gap by
+280 ms changes its chunk phase and restores the complete phrase and effect.
+All 76.06 seconds pass full packet, EOF and app/observer/replay audits. Baseline
+and original long-gap callback sequences reproduce exactly. This points to an
+interaction of silence and chunk alignment for this input; it does not isolate
+the decoder mechanism or justify a 280-ms production padding rule. General
+silence/resumption handling and the accepted interrupted child phrase remain
+open. The ASR server started for this diagnostic has been stopped.
+
+User pronunciation review, 3 November: all five previously flagged close-word
+recordings are accepted for the pod: coat/goat, fan/van, seal/zeal, pen/pin and
+sink/zinc. The user wants pronunciation tolerance when the surrounding phrase
+and reading context support the event. The current matcher already emits all
+five; no ASR, matcher or threshold change is needed. These five are accepted
+behavior, not unresolved pod false-trigger defects. The user separately
+transcribed "goat"; the other four labels confirm acceptance without independently
+transcribing the word. See the [listening assessment](../benchmarks/results/pronunciation-acceptance-review-2026-11-03.json).
+
+Original strict-literal trial counts remain historical measurements, with the
+later acceptance attached to the reports. Omitted essential words and unrelated
+speech retain their expectations. These synthetic adult examples do not establish
+child-accent accuracy or acceptance of every future substitution.
+
+General prefix-confirmation repair, 3 November: the split matcher now records a
+unique exact leading anchor prefix even before ordinary alignment can acquire
+it. A later accepted ordinary candidate can use that prior vote only when the
+complete exact anchor is present in the current ASR segment, with changed text,
+newer audio and existing freshness bounds. Prefix acquisition does not advance
+position, invent endpoint words, alter scores or reduce configured stability.
+Only timely_matcher changes relative to the shared-reading policy baseline.
+See [the contract](EFFECT_POLICIES.md#exact-prefix-confirmation-during-recovery).
+
+The corrected implementation passes 190 unit tests: 189 pass and one unchanged
+NeMo-only test is skipped. All 214 saved old ledgers reproduce exactly; the new
+matcher adds eight effects with no losses, including Singapore left hand and
+the adult-spoken coached hibernate. All 123 MPS reading outcomes remain unchanged.
+Seven provider-deletion controls, omitted/negated challenge targets and unrelated
+speech remain non-emitting; the five close-word emissions are now user-accepted.
+
+The [completed prefix-confirmation regression](../benchmarks/results/prefix-confirmation-regression-2026-11-03.json)
+runs 32 final fresh streams once each: one complete Singapore recording, the
+same eighteen shared-reading inputs, nine reviewed MPS recordings and four
+unrelated recordings (1324.82 seconds). Every ASR callback sequence is identical
+to its original. All delivery, EOF, source/model/audio hashes and app/observer/
+paired-replay checks pass. On the same fresh callbacks, effects increase from
+54 to 58 with no losses or duplicates: left hand, adult-coached hibernate and
+the later finish effects in the omitted-target and overlap cases are recovered.
+All nine reviewed target assertions pass, including all three original omissions.
+Four fresh unrelated timelines produce zero effects across six policy replays
+each. Shared target goals move from fifteen to sixteen of eighteen, and complete
+controlled goals from seven to eight of ten. At that evaluation, long-pause and
+overlap target ASR misses remained; the later resumption repair above addresses
+the accepted pause/aside cases. The five reviewed
+close-word emissions are accepted under the later pronunciation policy above.
+
+Singapore left hand uses a five-word prefix at callback 124.928 s and the complete
+phrase at 125.440 s, with an ordinary alignment score of 100. Coached hibernate
+uses four prefix words at 3.584 s and the complete phrase at 4.096 s, also score
+100. These are callback markers, not verified word latency. The coached clip
+contains the adult-spoken word and is not an omission control. Singapore's earlier
+two checkpoints are skipped under existing recovery rules: one remains unclear
+and the other remains an ASR error. The local 32-case listening review is under
+`output/prefix-confirmation-regression-v2-2026-11-03/review/`.
+
+The first batch is retained
+under `output/prefix-confirmation-regression-2026-11-03/` with ABORTED.json: an extra
+segmented-transcript check exposed re-acquisition of older segment words. The
+corrected path captures only latest-segment text and does not refresh on older
+context revisions. That first version completed fourteen streams before its
+fifteenth was interrupted; those outcomes are excluded from the final batch.
+
+Shared-reading policy, 3 November: the user chose to count supported story text
+from either voice, including positive coaching. The guarded split matcher now
+removes positive "say/repeat" vetoes from permission, prefix support, split-word
+assistance and pending resolution. Explicit negation guards remain. Normal score,
+coverage, word-presence, freshness, ambiguity, search and one-shot rules are
+unchanged. A parent reading a later supported line can use existing forward-jump
+rules and skip earlier checkpoints. The policy is documented in
+[effect policies](EFFECT_POLICIES.md#shared-reading-and-coaching).
+
+The complete old runtime was captured before edits and replayed in a separate
+process. All 214 saved comparison ledgers reproduce their original outcomes.
+The new policy adds eight effects, all on positive quoted/coaching cases, with
+no losses. All 123 MPS reading outcomes remain unchanged (320 emitted, 33
+suppressed, 16 unreached across 369 checkpoints); seven provider-deletion controls
+and 24 unrelated comparisons stay off. Five positive quoted challenges now count;
+five negated prompts and five literal omissions remain off. The five close-word
+emissions are unchanged and subsequently user-accepted. Windows runs 179 tests: 178 pass and
+one unchanged NeMo-only check is skipped. Six initial sandbox temp-folder errors
+were resolved by using a verified workspace-local temporary directory.
+
+The [completed policy regression](../benchmarks/results/shared-policy-regression-2026-11-03.json)
+runs 31 fresh streams once each: the same 18 shared-reading inputs, nine reviewed
+MPS recordings and four unrelated recordings, totaling 1129.40 seconds. All 31
+ASR callback sequences are identical to their originals. Transport, EOF, source/
+model/audio hashes and app/observer/replay checks pass. On the same fresh callbacks,
+shared emissions increase from 32 to 35 with no losses: the controlled coached
+sentence with/without a child repeat and the parent's riverside phrase now emit.
+No repeated effect is emitted. Under the new policy for both implementations,
+target goals move from 12 to 15 of 18; controlled complete-effect goals move from
+five to seven of ten. Long pause, overlap and a coached hibernate phrase remain
+target misses. That last phrase appears exactly in ASR but receives only one of
+two confirmations; the policy does not bypass evidence requirements.
+
+All nine reviewed assertions pass, including the three original omission cases;
+their complete checkpoint outcomes remain unchanged (19 emitted, six suppressed,
+two unreached). Four fresh unrelated recordings emit zero effects across six
+policy replays each (24 comparisons, not 24 audio trials). Audio, ASR, model,
+lexicon, thresholds, hints and checkpoint manifests remain fixed. The local
+31-case listening review is under `output/shared-policy-regression-2026-11-03/review/`.
+These are inspected regressions, not natural-family accuracy or room validation.
+The original reports below remain historical and retain their previous
+coaching-negative expectations. Those results alone did not resolve the Singapore
+prefix-confirmation miss; the later repair above does. The five close-word
+emissions are subsequently user-accepted, as recorded above.
+
+Shared-reading stress test, 3 November: [18 frozen fresh streams](../benchmarks/results/shared-reading-2026-11-03.json)
+run once each with unchanged ASR, matcher, model, lexicon, thresholds and disabled
+book hints. Ten controlled cases use Microsoft Zira and David as two adult reading
+roles; eight variants reuse two inspected MPS child recordings with inserted or
+mixed synthetic adult speech. Total audio is 540.26 seconds. Selection, scripts
+and composition recipes are fixed before synthesis/recognition. All samples,
+interim responses, EOF and app/observer/replay audits pass. These are constructed
+stress tests, with blank listening labels, rather than natural family reading,
+new-speaker accuracy, Singapore speech, room testing or verified latency.
+
+Six of ten controlled cases meet all declared effect goals: single voice, handoff
+and handback, parent finishing, repeated line, unrelated aside and coaching-only.
+Seven meet the target-only goal. Long pause, coaching followed by legitimate
+reading, and overlap miss the target; omission and overlap also miss the final
+effect. No target-negative case emits the target, and no target emits before its
+legitimate reading begins. The repeat case emits every intended effect once.
+The long-pause ASR drops "a small"; overlap corrupts the target transcript.
+
+The clearest tracking failure is coaching consumption. In the controlled case,
+ASR correctly retains both "Can you say [the target sentence]?" and the subsequent
+legitimate reading. Permission blocks the coached effect, but tracking advances
+past that checkpoint, so the real reading never gets its effect. Coaching before
+the recorded sheep passage similarly suppresses riverside and skips hundred_sheep;
+both baseline emissions are lost. It adds lost_sheep, whose correctness is not
+human-confirmed. Normal handoffs succeed in these examples; speaker identification
+would not address the quoted-coaching state transition.
+
+The sheep source's aside/overlap variants preserve baseline emissions, but those
+effects occur before the midpoint interruption and do not prove recovery after it.
+The bears source's aside and overlap both lose clever_bears, which emits after the
+midpoint in its fresh baseline. Its child-omitted hibernate stays off in all four
+variants: three retain literal absence, while one contains the word only in an
+adult coaching prompt. Child samples are preserved under common 0.4 gain; midpoint
+insertions may split a word, and equal-RMS mixing does not reproduce room acoustics.
+The local 18-case listening review is under `output/shared-reading-2026-11-03/review/`.
+No runtime repair or tuning occurred during that frozen evaluation. The subsequent
+shared-reading policy above accepts positive coaching as reading. Interruption
+recognition remains open; the subsequent prefix repair above addresses the
+confirmation issue. The five reviewed close-word emissions are accepted above.
+
+Singapore CHILDES streaming diagnostic, 2 November: [four fresh streams](../benchmarks/results/childes-singapore-streaming-2026-11-02.json)
+cover the one downloaded classroom recording, e5d6a.mp3 (195.42 seconds),
+and its three previously selected context clips. These are one source recording
+and three unique CHAT-derived anchors, with six checkpoint opportunities.
+No checkpoints emit or are suppressed; all six opportunities remain unreached.
+ASR, matcher, model, hints, thresholds and selected audio remain unchanged.
+
+The full stream captures "you draw on her left hand" exactly at callback
+125.440 seconds. Alignment scores 100 and gains one of two required confirmations;
+the next changed hypothesis arrives at 165.888 seconds, beyond the 12-second
+evidence window. Thus the tracker misses a phrase present in ASR. The other two
+full-stream references are not recognized exactly. The first two cropped streams
+return empty final transcripts; the third returns unrelated text. CHAT timestamps
+are machine-aligned and unverified, and the full stream recognizes the third
+target before its nominal crop begins. The crops therefore need listening/timing
+review before they can establish recognition failures on audible target speech.
+
+All audio samples are delivered, EOF completes and app/observer/replay agree.
+Two streams produce interim text; the other two produce only empty EOF results.
+The harness initially stopped on an assertion requiring interim text. A recorded
+audit/resume amendment retains those first two trials without repeating audio,
+then finishes the remaining clips. Runtime, audio and checkpoint hashes do not
+change. The full-source ASR timeline replays against six existing MPS policies
+with zero effects; these are six comparisons, not new audio trials or omission
+controls. Three CHAT parser tests pass. The listening review is under
+`output/childes-singapore-streaming-2026-11-02/review/`.
+
+Post-evaluation user listening covers the three wider full-source excerpts.
+The first phrase is unclear and remains unresolved, without an omission label.
+The second is clear and accepted, establishing a full-stream false negative;
+ASR retains "or in the cafe" in place of the transcript's carpet phrase. The
+third is explicitly accepted as "you draw on her left hand", confirming the
+full-stream tracking miss above. User marks place it around 0:07–0:10 in the
+wider excerpt, approximately 120.44–123.44 seconds in the source, before the
+original short crop starts at 127.125 seconds. That crop misses the target
+because of timing and does not establish a target-speech recognition failure.
+The other short crops were not separately reviewed; the second phrase's raw
+approximate mark "0.7" is retained without assigning an exact onset/end. These
+are two confirmed full-stream false negatives and one unresolved case; original
+stream outcomes, runtime and model remain unchanged. Listening marks are not
+verified word timing or a latency score.
+
+The downloaded archive contains 168 transcripts but only one complete recording
+is available locally. This is group conversation and an incomplete transcript of
+actual speech, without an independent intended reading passage. These diagnostics
+do not establish Singapore reading accuracy, speaker-disjoint performance or
+word latency. The local archive/audio remain Git-ignored; the initial truncated
 download is retained as a failed artifact. Access to the published Singapore
 children's English reading corpus has not been obtained.
 
-Known close-word false-trigger risk, 2 November: [45 frozen synthetic adult-speech challenges](../benchmarks/results/false-trigger-challenges-2026-11-02.json)
+Historical strict-literal challenge, 2 November: [45 frozen synthetic adult-speech challenges](../benchmarks/results/false-trigger-challenges-2026-11-02.json)
 test five anchors across correct readings, omissions, close/distant wrong words,
-quoted/negated prompts, unrelated continuations, skips and rereading. The current
+quoted/negated prompts, unrelated continuations, skips and rereading. The evaluated
 default one-shot policy emits on all five close wrong words while ASR correctly
 retains those words: coat/goat and seal/zeal already pass the previous spelling
 rules; fan/van, pen/pin and sink/zinc are newly accepted after the phonetic/progress
@@ -26,10 +438,10 @@ A required-endpoint observer blocks these five cases, but that is a predeclared
 policy comparison, not a production change or a general fix: stricter spelling
 can also reject accepted ASR substitutions and cannot prevent ASR itself replacing
 the wrong word with the book word. ASR, matcher, source/model/audio hashes and
-all trials remain unchanged. Actual child pronunciation acceptance versus wrong-word
-rejection needs an explicit policy and evidence beyond one ASR text hypothesis.
-The five-case listening review has blank human labels. Resolve this risk before
-treating the successful speaker check below as proof of precise event detection.
+all trials remain unchanged. On 3 November the user listened and accepted all
+five close variants for the pod. Their listening labels are now recorded; the
+required-endpoint observer would reject all five accepted cases. Broader child
+pronunciation performance still needs evidence beyond these synthetic examples.
 
 Untuned post-phonetic speaker check, 2 November: [24 fresh streams from 12 new MPS speaker IDs](../benchmarks/results/mps-heldout-phonetic-2026-11-02.json)
 exclude all 57 previously used IDs. Selection, order, runtime, model, lexicon,
@@ -473,9 +885,9 @@ integration testing. The full audio benchmark was not rerun on 27 October.
       and evaluation sets separate. Repeat trials to measure ASR variability.
 - [ ] Test repeated phonics, short books/final sentences, skipped lines,
       backwards rereading, pauses and alternate readings.
-- [ ] Test parent prompts, quoted story sentences, negation, similar off-book
-      wording and two speakers. An adult reading the expected sentence may look
-      identical to child reading to this text-only tracker.
+- [ ] Extend the frozen constructed prompt, negation, off-book, interruption and
+      two-voice checks to held-out books and natural family readings. Either
+      voice supplying supported story text counts under the chosen pod policy.
 - [ ] Validate/tune the split proxy beyond key pot/key put; test ambiguous
       compounds and first-scene failures. Its conservative guards can miss valid
       readings as well as prevent wrong matches.

@@ -1,0 +1,1999 @@
+{
+  "date": "2026-11-04",
+  "freeze_label_date": "2026-11-03",
+  "scope": "One guarded internal pronunciation match after ordinary acquisition",
+  "rule": "After ordinary alignment/confirmation acquires the next checkpoint, one internal observed token can supply the last missing coverage match using the existing pronunciation rule. It must be unambiguously bracketed by exact ordered neighbours, with an exact endpoint and at least three distinct ordinary anchor words. Required words retain stricter spelling. It cannot fill a token gap or supply two extra matches.",
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "lexicon": {
+    "package": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+  },
+  "server_environment": {
+    "wsl_distribution": "Ubuntu",
+    "packages": {
+      "nemo_toolkit": "3.1.0",
+      "torch": "2.7.1+cu118",
+      "torchaudio": "2.7.1+cu118",
+      "numpy": "2.2.6",
+      "websockets": "16.1.1"
+    },
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "configuration_matches_reference": true
+  },
+  "execution": {
+    "fresh_streams": 25,
+    "audio_seconds": 844.9424375,
+    "saved_comparisons": 327,
+    "fresh_paired_comparisons": 25,
+    "all_asr_callback_sequences_identical_to_previous": true,
+    "all_delivery_eof_app_observer_replay_audits_pass": true,
+    "one_trial_per_selected_input": true,
+    "all_trials_retained": true
+  },
+  "user_listening": {
+    "date": "2026-11-03",
+    "id": "shared-3a8b_EN-OL-RC-234_1-coaching_before_reading",
+    "checkpoint": "lost_sheep",
+    "reference": "One sheep was lost. The shepherd was sad.",
+    "source_audio_sha256": "a9390c0d455825eb41acce4c20ff4a93f0d216058cfdef1c83ae84afaf93c186",
+    "clip_sha256": "727262c7236b328d79127e6699b227802e742fc881a9d0cf2ac3c10aa959992d",
+    "raw_user_reply": "yes it is super clear and should be allowed",
+    "human_should_emit": true,
+    "human_heard": null,
+    "reviewer": "user",
+    "classification": "user_confirmed_clear_regression",
+    "note": "User explicitly accepts the reference phrase in the excerpt. No separate word-by-word transcription was supplied.",
+    "original_emitted": true,
+    "resumption_version_emitted": false,
+    "original_trials_unchanged": true,
+    "resolution": {
+      "date": "2026-11-04",
+      "emitted": true,
+      "report": "benchmarks/results/internal-phonetic-regression-2026-11-04.json",
+      "general_rule": "One guarded internal pronunciation match using the existing dictionary comparison.",
+      "model_and_numeric_thresholds_unchanged": true,
+      "asr_callbacks_unchanged": true,
+      "no_word_exceptions": true
+    }
+  },
+  "confirmed_recovery": {
+    "id": "shared-3a8b_EN-OL-RC-234_1-coaching_before_reading",
+    "checkpoint": "lost_sheep",
+    "before": false,
+    "after": true,
+    "permission_trace": [
+      {
+        "checkpoint": "lost_sheep",
+        "audio_end": 57.75,
+        "asr_window": [
+          "only",
+          "ninety",
+          "nine",
+          "one",
+          "ship",
+          "was",
+          "locked",
+          "the",
+          "shepherd",
+          "was",
+          "sad"
+        ],
+        "spelling_support": 6,
+        "phonetic_credit": 1,
+        "required_support": 7,
+        "anchor_words": 8,
+        "substitutions": [
+          {
+            "reference": "sheep",
+            "asr": "ship"
+          }
+        ]
+      }
+    ],
+    "asr_text_unchanged": true,
+    "explanation": "Existing pronunciation comparison supports sheep/ship between exact one/was neighbours. Spelling supplies six of eight anchor words; one phonetic match reaches the existing seven-word requirement. Lost/locked remains unmatched; the ASR transcript is not rewritten."
+  },
+  "saved_comparisons": {
+    "comparisons": 327,
+    "all_old_ledgers_reproduced": true,
+    "no_emitted_effects_removed": true,
+    "all_skips_unchanged": true,
+    "omission_and_unrelated_controls_pass": true,
+    "requested_recovery_pass": true,
+    "changes": [
+      {
+        "id": "reading-3a8b_EN-OL-RC-234_1",
+        "group": "saved_mps",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "shared-3a8b_EN-OL-RC-234_1-baseline",
+        "group": "saved_shared",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "shared-3a8b_EN-OL-RC-234_1-inserted_aside",
+        "group": "saved_shared",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "shared-3a8b_EN-OL-RC-234_1-overlap",
+        "group": "saved_shared",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "latest-shared-3a8b_EN-OL-RC-234_1-baseline",
+        "group": "latest_recorded_child_constructed_interruption",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "latest-shared-3a8b_EN-OL-RC-234_1-inserted_aside",
+        "group": "latest_recorded_child_constructed_interruption",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "latest-shared-3a8b_EN-OL-RC-234_1-overlap",
+        "group": "latest_recorded_child_constructed_interruption",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "latest-reading-3a8b_EN-OL-RC-234_1",
+        "group": "latest_reviewed_mps",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "resumption-shared-3a8b_EN-OL-RC-234_1-baseline",
+        "group": "resumption_recorded_child_constructed_interruption",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "resumption-shared-3a8b_EN-OL-RC-234_1-coaching_before_reading",
+        "group": "resumption_recorded_child_constructed_interruption",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "resumption-shared-3a8b_EN-OL-RC-234_1-overlap",
+        "group": "resumption_recorded_child_constructed_interruption",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "resumption-reading-3a8b_EN-OL-RC-234_1",
+        "group": "resumption_reviewed_mps",
+        "added": [
+          "lost_sheep"
+        ]
+      }
+    ]
+  },
+  "saved_additions": {
+    "changed_comparisons": 12,
+    "new_effect_events": 12,
+    "effect_ids": [
+      "lost_sheep"
+    ],
+    "scope": "Repeated conditions/timelines for the same underlying sheep recording, not new independent readers."
+  },
+  "fresh_comparison": {
+    "changes": [
+      {
+        "id": "shared-3a8b_EN-OL-RC-234_1-coaching_before_reading",
+        "added": [
+          "lost_sheep"
+        ]
+      },
+      {
+        "id": "reading-3a8b_EN-OL-RC-234_1",
+        "added": [
+          "lost_sheep"
+        ]
+      }
+    ],
+    "removed_effects": 0,
+    "all_skips_unchanged": true
+  },
+  "omissions": {
+    "fresh_word_omission_controls": 8,
+    "target_emissions": 0,
+    "saved_provider_deletion_controls": 7,
+    "all_saved_controls_non_emitting": true
+  },
+  "other_fresh_regressions": {
+    "reviewed_mps": 9,
+    "all_target_assertions_pass": true,
+    "prior_long_pause_and_child_aside_recoveries_preserved": true,
+    "pause_phase_cases": 4,
+    "all_phase_targets_emit": true
+  },
+  "unrelated": {
+    "fresh_recordings": 4,
+    "policy_replay_comparisons": 24,
+    "effects": 0
+  },
+  "unit_tests": {
+    "run": 211,
+    "passed": 210,
+    "skipped": 1,
+    "installed_nemo_test": {
+      "log": "output/resumption-regression-v2-2026-11-03/nemo-unit-tests.log",
+      "sha256": "bc571945624f99d373bae4f44ead485e4c84350b90414bd3baec3c15a6a120b4",
+      "passed": true,
+      "test_count": 1,
+      "files_unchanged_since_passing_check": {
+        "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+        "books_to_life/runtime/streaming_utterances.py": "8e911e3edc2560d258488623f9715c63a28cee915a1170c6731848190c737f40",
+        "tests/test_nemo_eos_decoder.py": "00c3927e1f760a41fdd5a3fb64430174a08e5e5f1a7a88e2943bb43aa0c98ff0"
+      }
+    }
+  },
+  "integrity": {
+    "model_asr_lexicon_thresholds_audio_and_manifests_unchanged": true,
+    "asr_callbacks_unchanged": true,
+    "changed_runtime_files": [
+      "books_to_life/matching/effect_permission.py",
+      "books_to_life/matching/timely_matcher.py"
+    ],
+    "source_sha256": {
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/live_tracker_probe.py": "b772faf20f29fa59f7c0f7aae35c320f547bc4f497ccc61c8b64652b47632976",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+      "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+      "benchmarks/replay_policy_batch.py": "590de6aa9a7b754a15673043e7673bc5ea9be760be9504f3e4cd01e27efb6284",
+      "benchmarks/run_internal_phonetic_regression.py": "7b2413968a53ee97975237132adfbfc6122c203072c307022109958e6dada76a",
+      "benchmarks/run_mps_heldout.py": "0f29f8f88fcc44f598e74925c4b06f7c02ba40b95797eb2589032ceb58f8ea76",
+      "benchmarks/run_pending_regression.py": "1a651da360bedfe630cd8d7185c04f2444a948006114445d53d68601ed1b2d47",
+      "benchmarks/run_shared_policy_regression.py": "a0a19d825ad84257e2a6f8bb70732edeb152cfdb4129efc0b845cdf903f9e550",
+      "benchmarks/run_shared_reading.py": "a060d2761d226c415f788574272c307bbae4f8350eab462b864bc8354b98036d",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "be201bba4e74adec7b0cbb599f80f9479faadbce705cb6c9e53b27f884741955",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "06bc85cbfc7d29e1872cde1ea147b4a84f609348dacc7928b3b0018a2cf24d49",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "70ec44335b426e2c5efceccc9c05a9d1e7748604b8ae24d3e16685fe83d21836",
+      "books_to_life/matching/boundary_matcher.py": "e1779573fb99794a9d81c51a80a22cb8a65f3e2e94e507e680b5880e6b49093d",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "6ab3b86a7135512b740d3257a735d6304d2049108dc20c3ccec922db56a6b7b1",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phone_features.py": "258a63bd7f7a5589e7b8f6f8a2c6a4359341b7fb13d016612a8ca77a4e3cab8a",
+      "books_to_life/matching/phonetic_endpoint.py": "b74bc5e0548ca3e5c9896a6e839b4b159b50e26a591e5c60f0f00a918ac47d4f",
+      "books_to_life/matching/split_matcher.py": "c526a1bfff1c8c91c8227c06e43d8f3ca01ec5abf4fd2712cfd01ecf36241c45",
+      "books_to_life/matching/timely_matcher.py": "5f12b3d862db5407fd8793e7497e96979ef9d5cda567fe29fa2e98a28c6e7cd2",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "books_to_life/runtime/streaming_utterances.py": "8e911e3edc2560d258488623f9715c63a28cee915a1170c6731848190c737f40",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296",
+      "tests/test_alignment_matcher.py": "8df6348f0303fd6808a2df6e61ef33525be2e84666154a206492d2871586f0e3",
+      "tests/test_benchmark_metrics.py": "aa15f8e97134d207818905d3025794b0846de187ae0b50e1033860071c6fc8c8",
+      "tests/test_book_context.py": "dbd3206f4ad88ef9937f95f2276798f6bf7b63c53838aacb2b75260a1d567b54",
+      "tests/test_book_context_transport.py": "9c2b7ecbafcfcdd00a5f737f2f9be25ab866a3b5576331fb519d3c46c98903aa",
+      "tests/test_boundary_matcher.py": "b8322170c012f30d37aab8489ef15db183fe2ce1989c434fa4bba9803ef03ddd",
+      "tests/test_checkpoint_matcher.py": "567d241235bea250132fdda39342a0acf22d15b672dfd59b7a5eb7c6f2a0b619",
+      "tests/test_childes_reference.py": "4d53f011a06f9a9b228bf66d83aa3e160ee13f863b5287d60230f556c31827ed",
+      "tests/test_contextual_phonetic_progress.py": "a81163e47cf5bf6caaf4d0ded492e13595665d87a65968e60907a186361da74c",
+      "tests/test_effect_permission.py": "1fc1e0c2c6a1dc313fab24854902e9a3006f149265aa22a48e1691684e4afce5",
+      "tests/test_evidence_matcher.py": "ff2615a70fd15533e412f4b173e312313282680a2d39169d76483a736726da0f",
+      "tests/test_internal_phonetic_support.py": "9784822aaa7c68733425c38397b900490480198ab5716daf4e5704a89a82e409",
+      "tests/test_interrupted_reading.py": "b278c993a3db646d76bd339bbdb8a10db9f995f05c81c1a2f458b82f27d18185",
+      "tests/test_model_preparation.py": "3dccbd95f9b6f878b5b0ba406fe7c3fb418c11e34db47dcbfc077c6f56ae8239",
+      "tests/test_native_stream.py": "bdb1448a2c8e908eb98a5fadb563e3f83322f8c6a791386a2c837963867124cc",
+      "tests/test_nemo_eos_decoder.py": "00c3927e1f760a41fdd5a3fb64430174a08e5e5f1a7a88e2943bb43aa0c98ff0",
+      "tests/test_nemo_transport.py": "0c92ace4897bbf9ec7d2aae53e2ad2f0127159eff71e0a54985db7d5a6645fda",
+      "tests/test_observer_manifests.py": "cfdc744e0d2b2a89ef8dfe943d13f6e0d4bf225dc263b41499a060d480a75e43",
+      "tests/test_ocsc_local_bundle.py": "141706eac9de33ea2edea1427f15f28fe505d6d0a67aebc947cc8eadde238cb8",
+      "tests/test_pending_effects.py": "e9e5bb90db9f4eba90927c51c4d987f2fce16e1a2f6353fe28d4820da4ad7ddd",
+      "tests/test_phonetic_endpoint.py": "68b6cc4f732e18fff5e2599094ce57c3ef0882a38206d873f7ebaefa6c5edbfe",
+      "tests/test_pod_runtime.py": "e6c631348b6a8b8f29ac52ee79bd45b48cb9ac614ce61c58cd69556e6eaffb58",
+      "tests/test_prefix_confirmation.py": "da980d5f5d61664418bc69402edee05bb9743980bb2292b458ad2d5938980a70",
+      "tests/test_reading_expansion.py": "15b992597e65e7ebcf2125f113c73f369193c91c57ffde9dec31b924c38fe0d5",
+      "tests/test_recording_audio.py": "9c093a03c1028d71ab1ea22a110df0b8c473514446ff50e36a77dedb6003d686",
+      "tests/test_recording_library.py": "53d0d7c597e93717352ff6dfa638ecd9b93dec8fce408cd75f7a0d7c0aa6a162",
+      "tests/test_split_matcher.py": "08f428e74f55661d55cb0dd408d47b050a5b9ea7f3799e8e9944227a9593aa7c",
+      "tests/test_streaming_utterances.py": "ac089a9664965e6920cb4181a3a16830e1c6ab357e26933adda67afcd558c8f9",
+      "tests/test_timely_matcher.py": "fa6f134fe40575d71e9558c35c006591509d1d17e25ab8d6dde1a1f1ce89f1ce",
+      "tests/test_word_boundaries.py": "ee458f385029c2a8722716634e01a46fb9c5ce21e5deff975590c2dadc023de5"
+    },
+    "baseline_sha256": {
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/live_tracker_probe.py": "b772faf20f29fa59f7c0f7aae35c320f547bc4f497ccc61c8b64652b47632976",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+      "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+      "benchmarks/replay_policy_batch.py": "590de6aa9a7b754a15673043e7673bc5ea9be760be9504f3e4cd01e27efb6284",
+      "benchmarks/run_mps_heldout.py": "0f29f8f88fcc44f598e74925c4b06f7c02ba40b95797eb2589032ceb58f8ea76",
+      "benchmarks/run_pending_regression.py": "1a651da360bedfe630cd8d7185c04f2444a948006114445d53d68601ed1b2d47",
+      "benchmarks/run_resumption_regression.py": "0134393118c70d3cc856fc55da62dee892b76e544d14e1c2b55775352f74132e",
+      "benchmarks/run_shared_reading.py": "a060d2761d226c415f788574272c307bbae4f8350eab462b864bc8354b98036d",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "be201bba4e74adec7b0cbb599f80f9479faadbce705cb6c9e53b27f884741955",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "06bc85cbfc7d29e1872cde1ea147b4a84f609348dacc7928b3b0018a2cf24d49",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "70ec44335b426e2c5efceccc9c05a9d1e7748604b8ae24d3e16685fe83d21836",
+      "books_to_life/matching/boundary_matcher.py": "e1779573fb99794a9d81c51a80a22cb8a65f3e2e94e507e680b5880e6b49093d",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "9e789fd3260729c844b9ac975ec7a6ffaee1d773d0ec05d7f9a60c53043c4f64",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phone_features.py": "258a63bd7f7a5589e7b8f6f8a2c6a4359341b7fb13d016612a8ca77a4e3cab8a",
+      "books_to_life/matching/phonetic_endpoint.py": "b74bc5e0548ca3e5c9896a6e839b4b159b50e26a591e5c60f0f00a918ac47d4f",
+      "books_to_life/matching/split_matcher.py": "c526a1bfff1c8c91c8227c06e43d8f3ca01ec5abf4fd2712cfd01ecf36241c45",
+      "books_to_life/matching/timely_matcher.py": "18acd2d3eefb2268951c1a460630c77bc62a3fa3b44253e48456475361ae6e00",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "books_to_life/runtime/streaming_utterances.py": "8e911e3edc2560d258488623f9715c63a28cee915a1170c6731848190c737f40",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296",
+      "tests/test_alignment_matcher.py": "8df6348f0303fd6808a2df6e61ef33525be2e84666154a206492d2871586f0e3",
+      "tests/test_benchmark_metrics.py": "aa15f8e97134d207818905d3025794b0846de187ae0b50e1033860071c6fc8c8",
+      "tests/test_book_context.py": "dbd3206f4ad88ef9937f95f2276798f6bf7b63c53838aacb2b75260a1d567b54",
+      "tests/test_book_context_transport.py": "9c2b7ecbafcfcdd00a5f737f2f9be25ab866a3b5576331fb519d3c46c98903aa",
+      "tests/test_boundary_matcher.py": "b8322170c012f30d37aab8489ef15db183fe2ce1989c434fa4bba9803ef03ddd",
+      "tests/test_checkpoint_matcher.py": "567d241235bea250132fdda39342a0acf22d15b672dfd59b7a5eb7c6f2a0b619",
+      "tests/test_childes_reference.py": "4d53f011a06f9a9b228bf66d83aa3e160ee13f863b5287d60230f556c31827ed",
+      "tests/test_contextual_phonetic_progress.py": "a81163e47cf5bf6caaf4d0ded492e13595665d87a65968e60907a186361da74c",
+      "tests/test_effect_permission.py": "1fc1e0c2c6a1dc313fab24854902e9a3006f149265aa22a48e1691684e4afce5",
+      "tests/test_evidence_matcher.py": "ff2615a70fd15533e412f4b173e312313282680a2d39169d76483a736726da0f",
+      "tests/test_interrupted_reading.py": "b278c993a3db646d76bd339bbdb8a10db9f995f05c81c1a2f458b82f27d18185",
+      "tests/test_model_preparation.py": "3dccbd95f9b6f878b5b0ba406fe7c3fb418c11e34db47dcbfc077c6f56ae8239",
+      "tests/test_native_stream.py": "bdb1448a2c8e908eb98a5fadb563e3f83322f8c6a791386a2c837963867124cc",
+      "tests/test_nemo_eos_decoder.py": "00c3927e1f760a41fdd5a3fb64430174a08e5e5f1a7a88e2943bb43aa0c98ff0",
+      "tests/test_nemo_transport.py": "0c92ace4897bbf9ec7d2aae53e2ad2f0127159eff71e0a54985db7d5a6645fda",
+      "tests/test_observer_manifests.py": "cfdc744e0d2b2a89ef8dfe943d13f6e0d4bf225dc263b41499a060d480a75e43",
+      "tests/test_ocsc_local_bundle.py": "141706eac9de33ea2edea1427f15f28fe505d6d0a67aebc947cc8eadde238cb8",
+      "tests/test_pending_effects.py": "e9e5bb90db9f4eba90927c51c4d987f2fce16e1a2f6353fe28d4820da4ad7ddd",
+      "tests/test_phonetic_endpoint.py": "68b6cc4f732e18fff5e2599094ce57c3ef0882a38206d873f7ebaefa6c5edbfe",
+      "tests/test_pod_runtime.py": "e6c631348b6a8b8f29ac52ee79bd45b48cb9ac614ce61c58cd69556e6eaffb58",
+      "tests/test_prefix_confirmation.py": "da980d5f5d61664418bc69402edee05bb9743980bb2292b458ad2d5938980a70",
+      "tests/test_reading_expansion.py": "15b992597e65e7ebcf2125f113c73f369193c91c57ffde9dec31b924c38fe0d5",
+      "tests/test_recording_audio.py": "9c093a03c1028d71ab1ea22a110df0b8c473514446ff50e36a77dedb6003d686",
+      "tests/test_recording_library.py": "53d0d7c597e93717352ff6dfa638ecd9b93dec8fce408cd75f7a0d7c0aa6a162",
+      "tests/test_split_matcher.py": "08f428e74f55661d55cb0dd408d47b050a5b9ea7f3799e8e9944227a9593aa7c",
+      "tests/test_streaming_utterances.py": "ac089a9664965e6920cb4181a3a16830e1c6ab357e26933adda67afcd558c8f9",
+      "tests/test_timely_matcher.py": "fa6f134fe40575d71e9558c35c006591509d1d17e25ab8d6dde1a1f1ce89f1ce",
+      "tests/test_word_boundaries.py": "ee458f385029c2a8722716634e01a46fb9c5ce21e5deff975590c2dadc023de5"
+    }
+  },
+  "limits": [
+    "These are inspected regressions and reused sources, not held-out child accuracy.",
+    "Twenty-five fresh streams are separate from the 327 saved callback comparisons.",
+    "The default permission policy is pronunciation-tolerant; close intentional word choices may be indistinguishable from mispronunciation.",
+    "The ASR and silence handling are unchanged from the preceding resumption version; microphone/room validation remains pending."
+  ],
+  "cases": [
+    {
+      "id": "shared-3a8b_EN-OL-RC-234_1-coaching_before_reading",
+      "group": "recorded_child_constructed_interruption",
+      "category": "coaching_before_reading",
+      "source_id": "3a8b_EN-OL-RC-234_1",
+      "target": "riverside",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [
+          "hundred_sheep"
+        ],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "riverside",
+          "audio_end": 3.5046875
+        },
+        {
+          "id": "lost_sheep",
+          "audio_end": 57.75
+        }
+      ],
+      "samples_delivered": 926560,
+      "audio_seconds": 57.91,
+      "audio_sha256": "a9390c0d455825eb41acce4c20ff4a93f0d216058cfdef1c83ae84afaf93c186",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [
+          "hundred_sheep"
+        ],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [
+          "hundred_sheep"
+        ],
+        "unreached": []
+      },
+      "added": [
+        "lost_sheep"
+      ]
+    },
+    {
+      "id": "shared-long_pause",
+      "group": "controlled_synthetic_roles",
+      "category": "long_pause",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.2786875
+        },
+        {
+          "id": "target",
+          "audio_end": 22.7549375
+        },
+        {
+          "id": "finish",
+          "audio_end": 26.4193125
+        }
+      ],
+      "samples_delivered": 425200,
+      "audio_seconds": 26.575,
+      "audio_sha256": "972a3eb8c85a2641a9115b0a7ff97326ae5a3c71d17a3107cdb97b7683691395",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "Maya opened the wooden gate and stepped into the garden A small rabbit rested beside the old apple tree She filled the watering can and walked back home"
+    },
+    {
+      "id": "shared-4a35g_EN-OL-RC-426_2-inserted_aside",
+      "group": "recorded_child_constructed_interruption",
+      "category": "inserted_aside",
+      "source_id": "4a35g_EN-OL-RC-426_2",
+      "target": "hibernate",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "decisions": [
+        {
+          "id": "clever_bears",
+          "audio_end": 32.0
+        }
+      ],
+      "samples_delivered": 753760,
+      "audio_seconds": 47.11,
+      "audio_sha256": "eee750d98f2142351d5aa2657ab1d354f5d2f148e7bf06bec4e676903c1051e5",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added": []
+    },
+    {
+      "id": "reading-4a35g_EN-OL-RC-426_2",
+      "group": "reviewed_mps",
+      "category": "original_recording",
+      "source_id": "4a35g_EN-OL-RC-426_2",
+      "target": "hibernate",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "decisions": [
+        {
+          "id": "clever_bears",
+          "audio_end": 25.856
+        }
+      ],
+      "samples_delivered": 649760,
+      "audio_seconds": 40.61,
+      "audio_sha256": "fae5de18f2ee7c5fba0abd7978721285953da51757a0759e127f149b10f38f4f",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "added": []
+    },
+    {
+      "id": "reading-5b2b_EN-OL-RC-538_2",
+      "group": "reviewed_mps",
+      "category": "original_recording",
+      "source_id": "5b2b_EN-OL-RC-538_2",
+      "target": "escape_enemies",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "black_circles",
+          "audio_end": 15.872
+        },
+        {
+          "id": "damaged_wing",
+          "audio_end": 55.04
+        }
+      ],
+      "samples_delivered": 885920,
+      "audio_seconds": 55.37,
+      "audio_sha256": "e5355340540ffeb7636dd0b304384660114c7ab5b67f7046f9fcc1e69848f22e",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "damaged_wing"
+        ],
+        "suppressed": [
+          "escape_enemies"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": []
+    },
+    {
+      "id": "reading-4c15g_EN-OL-RC-426_2",
+      "group": "reviewed_mps",
+      "category": "original_recording",
+      "source_id": "4c15g_EN-OL-RC-426_2",
+      "target": "hibernate",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate",
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "clever_bears",
+          "audio_end": 29.1650625
+        }
+      ],
+      "samples_delivered": 714880,
+      "audio_seconds": 44.68,
+      "audio_sha256": "194b2cd1f02d53c1b809b8fa5624e2b0e0ba11de79711ecba1adad2b2370b4d2",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate",
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate",
+          "begging_paws"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": []
+    },
+    {
+      "id": "reading-3a4h_EN-OL-RC-234_1",
+      "group": "reviewed_mps",
+      "category": "original_recording",
+      "source_id": "3a4h_EN-OL-RC-234_1",
+      "target": "hundred_sheep",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "decisions": [
+        {
+          "id": "hundred_sheep",
+          "audio_end": 12.544
+        },
+        {
+          "id": "riverside",
+          "audio_end": 17.92
+        }
+      ],
+      "samples_delivered": 731040,
+      "audio_seconds": 45.69,
+      "audio_sha256": "078e00128a64227bd343db668771f745e3235afc2f36c32a7d886f429baacd3f",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "lost_sheep"
+        ]
+      },
+      "added": []
+    },
+    {
+      "id": "reading-5b4k_EN-OL-RC-538_2",
+      "group": "reviewed_mps",
+      "category": "original_recording",
+      "source_id": "5b4k_EN-OL-RC-538_2",
+      "target": "escape_enemies",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "black_circles",
+          "audio_end": 10.752
+        },
+        {
+          "id": "escape_enemies",
+          "audio_end": 21.8925
+        },
+        {
+          "id": "damaged_wing",
+          "audio_end": 43.07
+        }
+      ],
+      "samples_delivered": 694720,
+      "audio_seconds": 43.42,
+      "audio_sha256": "db94b0017bd414924bc4de32a6a09b3aec5a541b71ff370ed76fe9da567a785f",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": []
+    },
+    {
+      "id": "reading-5b2b_EN-OL-RC-538_1",
+      "group": "reviewed_mps",
+      "category": "original_recording",
+      "source_id": "5b2b_EN-OL-RC-538_1",
+      "target": "small_scales",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "wing_colours",
+          "audio_end": 14.567125
+        },
+        {
+          "id": "small_scales",
+          "audio_end": 29.696
+        },
+        {
+          "id": "fine_patterns",
+          "audio_end": 46.74
+        }
+      ],
+      "samples_delivered": 753920,
+      "audio_seconds": 47.12,
+      "audio_sha256": "4ebc40b991beb65248569a7acf0c3a2e0583fde8c23379bce099ce84f3c054eb",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "wing_colours",
+          "small_scales",
+          "fine_patterns"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": []
+    },
+    {
+      "id": "reading-3a8b_EN-OL-RC-234_1",
+      "group": "reviewed_mps",
+      "category": "original_recording",
+      "source_id": "3a8b_EN-OL-RC-234_1",
+      "target": "riverside",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "hundred_sheep",
+          "audio_end": 13.568
+        },
+        {
+          "id": "riverside",
+          "audio_end": 22.016
+        },
+        {
+          "id": "lost_sheep",
+          "audio_end": 53.71
+        }
+      ],
+      "samples_delivered": 861920,
+      "audio_seconds": 53.87,
+      "audio_sha256": "d7d2345b2be18ce96a83cd107fdf84d965fa48f6c409426e21a111902e8e3e5e",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside",
+          "lost_sheep"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [
+        "lost_sheep"
+      ]
+    },
+    {
+      "id": "reading-5b15k_EN-OL-RC-538_2",
+      "group": "reviewed_mps",
+      "category": "original_recording",
+      "source_id": "5b15k_EN-OL-RC-538_2",
+      "target": "damaged_wing",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "black_circles",
+          "audio_end": 12.9050625
+        },
+        {
+          "id": "escape_enemies",
+          "audio_end": 25.8355
+        },
+        {
+          "id": "damaged_wing",
+          "audio_end": 50.44
+        }
+      ],
+      "samples_delivered": 813440,
+      "audio_seconds": 50.84,
+      "audio_sha256": "cbfad5237c5d7e77dc3880c3a78c02a2f37d5db660ac246107d24913dcd57ad3",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "black_circles",
+          "escape_enemies",
+          "damaged_wing"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": []
+    },
+    {
+      "id": "reading-4b19g_EN-OL-RC-426_2",
+      "group": "reviewed_mps",
+      "category": "original_recording",
+      "source_id": "4b19g_EN-OL-RC-426_2",
+      "target": "begging_paws",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "clever_bears",
+          "audio_end": 29.696
+        },
+        {
+          "id": "begging_paws",
+          "audio_end": 44.71
+        }
+      ],
+      "samples_delivered": 715360,
+      "audio_seconds": 44.71,
+      "audio_sha256": "ad250cb551ae9a68a22dad60743962c558b90d5d353eeb6ce341d0368f644008",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "clever_bears",
+          "begging_paws"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": []
+    },
+    {
+      "id": "challenge-coat-omitted",
+      "group": "synthetic_challenge",
+      "category": "omitted",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.26
+        },
+        {
+          "id": "finish",
+          "audio_end": 9.384625
+        }
+      ],
+      "samples_delivered": 152800,
+      "audio_seconds": 9.55,
+      "audio_sha256": "03dcc5d0bd1351112a737a45fc7f6ad686af22cf5ab843303143c7e3bbd5cdb8",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "We walked along a quiet path beside the trees Then she carried the winter After that we returned safely to the little house"
+    },
+    {
+      "id": "challenge-fan-omitted",
+      "group": "synthetic_challenge",
+      "category": "omitted",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.26
+        },
+        {
+          "id": "finish",
+          "audio_end": 9.214625
+        }
+      ],
+      "samples_delivered": 150080,
+      "audio_seconds": 9.38,
+      "audio_sha256": "196655e550bdea4b6d769209ab653483756a32d6387273ed7b685b6e82e260d5",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "We walked along a quiet path beside the trees Then he switched on the After that we returned safely to the little house"
+    },
+    {
+      "id": "challenge-pen-omitted",
+      "group": "synthetic_challenge",
+      "category": "omitted",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.26
+        },
+        {
+          "id": "finish",
+          "audio_end": 9.494625
+        }
+      ],
+      "samples_delivered": 154560,
+      "audio_seconds": 9.66,
+      "audio_sha256": "3154ae470cbe13155b3f3ad720fa2ead9e53914ed340fa734733e61fce7f8536",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "We walked along a quiet path beside the trees Then the child held a red After that we returned safely to the little house"
+    },
+    {
+      "id": "challenge-seal-omitted",
+      "group": "synthetic_challenge",
+      "category": "omitted",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.26
+        },
+        {
+          "id": "finish",
+          "audio_end": 9.454625
+        }
+      ],
+      "samples_delivered": 153920,
+      "audio_seconds": 9.62,
+      "audio_sha256": "c82349d99a6baa4d38998a79d95ed5ceab711c1d656d8ac89180ba9b0dd85eb9",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "We walked along a quiet path beside the trees Then we spotted a playful After that we returned safely to the little house"
+    },
+    {
+      "id": "challenge-sink-omitted",
+      "group": "synthetic_challenge",
+      "category": "omitted",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.26
+        },
+        {
+          "id": "finish",
+          "audio_end": 9.769625
+        }
+      ],
+      "samples_delivered": 158960,
+      "audio_seconds": 9.935,
+      "audio_sha256": "d74cb7693c00b4b35a5b15d656cc59737fa288ea8ee4161086353de60ba1607e",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "We walked along a quiet path beside the trees Then he carefully cleaned the white After that we returned safely to the little house"
+    },
+    {
+      "id": "phase-short_phase_a",
+      "group": "controlled_synthetic_roles",
+      "category": "pause_phase_diagnostic",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.2786875
+        },
+        {
+          "id": "target",
+          "audio_end": 7.3549375
+        },
+        {
+          "id": "finish",
+          "audio_end": 11.0193125
+        }
+      ],
+      "samples_delivered": 178800,
+      "audio_seconds": 11.175,
+      "audio_sha256": "7b6d10897f68123f895ee4123916b5c024161c8c9e5c5a53fa76c2e55319e8f5",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "Maya opened the wooden gate and stepped into the garden A small rabbit rested beside the old apple tree She filled the watering can and walked back home"
+    },
+    {
+      "id": "phase-long_phase_b",
+      "group": "controlled_synthetic_roles",
+      "category": "pause_phase_diagnostic",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.2786875
+        },
+        {
+          "id": "target",
+          "audio_end": 22.7549375
+        },
+        {
+          "id": "finish",
+          "audio_end": 26.4193125
+        }
+      ],
+      "samples_delivered": 425200,
+      "audio_seconds": 26.575,
+      "audio_sha256": "972a3eb8c85a2641a9115b0a7ff97326ae5a3c71d17a3107cdb97b7683691395",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "Maya opened the wooden gate and stepped into the garden A small rabbit rested beside the old apple tree She filled the watering can and walked back home"
+    },
+    {
+      "id": "phase-short_phase_b",
+      "group": "controlled_synthetic_roles",
+      "category": "pause_phase_diagnostic",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.2786875
+        },
+        {
+          "id": "target",
+          "audio_end": 7.6349375
+        },
+        {
+          "id": "finish",
+          "audio_end": 11.2993125
+        }
+      ],
+      "samples_delivered": 183280,
+      "audio_seconds": 11.455,
+      "audio_sha256": "30a0e7f9867e1f5a008448a184359ea237afcd6325a0ce622aaafa0cbbb960c2",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "Maya opened the wooden gate and stepped into the garden A small rabbit rested beside the old apple tree She filled the watering can and walked back home"
+    },
+    {
+      "id": "phase-long_phase_a",
+      "group": "controlled_synthetic_roles",
+      "category": "pause_phase_diagnostic",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.2786875
+        },
+        {
+          "id": "target",
+          "audio_end": 23.0349375
+        },
+        {
+          "id": "finish",
+          "audio_end": 26.6993125
+        }
+      ],
+      "samples_delivered": 429680,
+      "audio_seconds": 26.855,
+      "audio_sha256": "a4c4b22b8eed6989cc6780b7c5b3816f247d554d415cab91ee9298b285f79e41",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "after": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "added": [],
+      "final_asr": "Maya opened the wooden gate and stepped into the garden A small rabbit rested beside the old apple tree She filled the watering can and walked back home"
+    },
+    {
+      "id": "unrelated-dog",
+      "group": "unrelated",
+      "category": "unrelated",
+      "source_id": "dog",
+      "target": "black_circles",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "decisions": [],
+      "samples_delivered": 382188,
+      "audio_seconds": 23.88675,
+      "audio_sha256": "d6062d31e4064676948fe3e4f777b2c2af4e2e26d4c6650c5f8685cd678285df",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "after": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "added": []
+    },
+    {
+      "id": "unrelated-dragon",
+      "group": "unrelated",
+      "category": "unrelated",
+      "source_id": "dragon",
+      "target": "black_circles",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "decisions": [],
+      "samples_delivered": 694466,
+      "audio_seconds": 43.404125,
+      "audio_sha256": "c2d69b4e49f405ac16ef224b00b4be4a53bfa0248d8cbafc2602b766cd1e8a6e",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "after": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "added": []
+    },
+    {
+      "id": "unrelated-nickel",
+      "group": "unrelated",
+      "category": "unrelated",
+      "source_id": "nickel",
+      "target": "black_circles",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "decisions": [],
+      "samples_delivered": 1228649,
+      "audio_seconds": 76.7905625,
+      "audio_sha256": "2a751b15648c389c40bdeed438f143fda2122a5fc8ecce80bacb1702463253e1",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "after": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "added": []
+    },
+    {
+      "id": "unrelated-recording_2",
+      "group": "unrelated",
+      "category": "unrelated",
+      "source_id": "recording_2",
+      "target": "black_circles",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "decisions": [],
+      "samples_delivered": 300016,
+      "audio_seconds": 18.751,
+      "audio_sha256": "66f882374c1e1029cd75cb7fa1e9151d6fb32265b00093f121a74af6ff7e03d9",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "asr_callbacks_identical_to_previous": true,
+      "before": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "after": {
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      "added": []
+    }
+  ],
+  "artifacts": "output/internal-phonetic-regression-2026-11-03"
+}

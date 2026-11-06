@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-06",
+  "recording": "3b4c_EN-OL-RC-234_1",
+  "source_audio_sha256": "18ef69291b2538b66c0796286f0f66ef095de9515cc3470f7bc3236bf28c5900",
+  "source_recording": "output/mps-frozen-streaming-2026-11-06/inputs/3b4c_EN-OL-RC-234_1/audio.wav",
+  "frozen_protocol_sha256": "c49a7b10c46e9119bc4675c5e130d770a1f028a6ee30423f801885be78b09c1f",
+  "frozen_report": "benchmarks/results/mps-frozen-streaming-2026-11-06.json",
+  "raw_user_reply": "he took the sheep to the river > he didnt say side, should we still accept?\n\none sheep was lost. the sheep was sad > should accept right? i know its off",
+  "subsequent_user_reply": "ok then what",
+  "cases": [
+    {
+      "recording": "3b4c_EN-OL-RC-234_1",
+      "checkpoint": "riverside",
+      "reference": "he took the sheep to the riverside.",
+      "human_heard": "he took the sheep to the river",
+      "human_reviewer": "user",
+      "human_word_end_seconds": null,
+      "human_should_emit": null,
+      "assistant_pod_policy_should_emit": true,
+      "acceptance_label_basis": "The user asks whether these variants should count; the assistant recommends accepting both for the pod. Keep the independent listening transcription separate from that policy recommendation.",
+      "frozen_outcome": "suppressed",
+      "diagnostic_human_text_permission": false,
+      "diagnostic_scope": "Isolated permission check on user-reported wording, not a full streaming result or a new audio trial."
+    },
+    {
+      "recording": "3b4c_EN-OL-RC-234_1",
+      "checkpoint": "lost_sheep",
+      "reference": "One sheep was lost. The shepherd was sad.",
+      "human_heard": "one sheep was lost. the sheep was sad",
+      "human_reviewer": "user",
+      "human_word_end_seconds": null,
+      "human_should_emit": null,
+      "assistant_pod_policy_should_emit": true,
+      "acceptance_label_basis": "The user asks whether these variants should count; the assistant recommends accepting both for the pod. Keep the independent listening transcription separate from that policy recommendation.",
+      "frozen_outcome": "unreached",
+      "diagnostic_human_text_permission": true,
+      "diagnostic_scope": "Isolated permission check on user-reported wording, not a full streaming result or a new audio trial."
+    }
+  ],
+  "unreviewed_checkpoints": [
+    "hundred_sheep"
+  ],
+  "actual_final_asr": "One day lived a ship in a village. He was a kind and good man. He had human ship one day he took the ship to the river. There was a loss of grass grasses there for the ship in the event the ship took them back home. He count the ship there were only 9 one ship was lost the ship was said",
+  "diagnosis": {
+    "riverside": "The existing one-shot guard requires its authored endpoint; the heard shorter location is a product-policy/authoring question. Existing ambience policy instead allows scene catch-up after reading progress is established.",
+    "lost_sheep": "The existing ordinary permission check accepts the user-reported wording. Actual ASR instead contains one ship was lost the ship was said, which fails permission even with current local aids; actual streaming also never reaches this checkpoint. Recognition/progress must be investigated separately."
+  },
+  "no_recognizer_matcher_model_threshold_or_manifest_changes": true,
+  "original_trials_unchanged": true,
+  "evaluation_status": "These two inspected phrases are now diagnostic/regression material; they are no longer untouched holdout evidence for future repairs."
+}

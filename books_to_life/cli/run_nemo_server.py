@@ -12,6 +12,7 @@ from websockets.exceptions import ConnectionClosed
 
 from books_to_life.context.book_context import CONTEXT_PROTOCOL_VERSION, parse_context_message
 from books_to_life.runtime.nemo_parakeet import NemoParakeetSession, hint_phrases, load_model
+from books_to_life.runtime.streaming_utterances import SilenceBoundedSession
 
 
 def handle_connection(socket, factory, lock, max_seconds=3600):
@@ -38,7 +39,9 @@ def handle_connection(socket, factory, lock, max_seconds=3600):
         revision = 0
         samples = 0
         def transcript(text, final=False):
-            send(segments=[{'start': 0, 'end': samples / 16000, 'text': text, 'completed': final}])
+            segments = text if isinstance(text, list) else [
+                {'start': 0, 'end': samples / 16000, 'text': text, 'completed': final}]
+            send(segments=segments)
         for packet in socket:
             if isinstance(packet, str):
                 try:
@@ -106,7 +109,9 @@ def main():
     print(f'[ASR] Parakeet Unified CUDA {torch.cuda.get_device_name()}, bfloat16; phrase boosting={args.boost}', flush=True)
     print(f'[ASR] Buffered streaming: 5600 ms left, {args.chunk_ms} ms chunk, {args.right_ms} ms right.', flush=True)
     lock = threading.Lock()
-    factory = lambda: NemoParakeetSession(model, args.chunk_ms, args.right_ms, args.boost)
+    factory = lambda: SilenceBoundedSession(
+        lambda: NemoParakeetSession(model, args.chunk_ms, args.right_ms, args.boost),
+        args.right_ms * 16)
     with serve(lambda ws: handle_connection(ws, factory, lock, args.max_seconds),
                args.host, args.port, max_size=65536) as server:
         print(f'[READY] ws://{args.host}:{args.port}', flush=True)

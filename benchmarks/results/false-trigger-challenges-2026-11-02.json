@@ -418,8 +418,11 @@
   },
   "listening_review": {
     "flagged_cases": 5,
-    "human_labels_blank": true,
-    "path": "output/false-trigger-challenges-v2-2026-11-02/review/index.html"
+    "human_labels_blank": false,
+    "path": "output/false-trigger-challenges-v2-2026-11-02/review/index.html",
+    "user_accepted_cases": 5,
+    "independent_word_transcriptions": 1,
+    "flagged_cases_basis": "Originally flagged under strict literal-word expectations; subsequently accepted by the user for the pod."
   },
   "limits": [
     "Synthetic adult speech and constructed pauses, not children or real room audio.",
@@ -3965,5 +3968,94 @@
       "audio_seconds": 14.44
     }
   ],
-  "artifacts": "output/false-trigger-challenges-v2-2026-11-02"
+  "artifacts": "output/false-trigger-challenges-v2-2026-11-02",
+  "post_evaluation_pronunciation_review": {
+    "date": "2026-11-03",
+    "reviewer": "user",
+    "review": "benchmarks/results/pronunciation-acceptance-review-2026-11-03.json",
+    "cases": [
+      {
+        "id": "coat-close_wrong_word",
+        "book_anchor": "she carried the winter coat",
+        "requested_variant_word": "goat",
+        "audio_sha256": "a28eea206fd1e4b2703fbf5db1553d97148ea37bbe5f72bec1eb48742f52fee8",
+        "human_heard_word": "goat",
+        "hearing_note": "User explicitly transcribed goat.",
+        "user_should_emit": true,
+        "classification": "user_accepted_contextual_pronunciation_variant",
+        "original_strict_literal_expected_emit": false,
+        "default_emitted": true,
+        "required_word_observer_emitted": false
+      },
+      {
+        "id": "fan-close_wrong_word",
+        "book_anchor": "he switched on the fan",
+        "requested_variant_word": "van",
+        "audio_sha256": "4ac580129908fd84e83d3ffc29750c61f8d27bee999dd5f20672b1fd833b7dae",
+        "human_heard_word": null,
+        "hearing_note": "User confirmed acceptance; no separate word transcription was provided.",
+        "user_should_emit": true,
+        "classification": "user_accepted_contextual_pronunciation_variant",
+        "original_strict_literal_expected_emit": false,
+        "default_emitted": true,
+        "required_word_observer_emitted": false
+      },
+      {
+        "id": "seal-close_wrong_word",
+        "book_anchor": "we spotted a playful seal",
+        "requested_variant_word": "zeal",
+        "audio_sha256": "0a26e3d2d0c823d105f5893b90195a76c05bfa63c57157ff74b4a5327bce4f8d",
+        "human_heard_word": null,
+        "hearing_note": "User confirmed acceptance; no separate word transcription was provided.",
+        "user_should_emit": true,
+        "classification": "user_accepted_contextual_pronunciation_variant",
+        "original_strict_literal_expected_emit": false,
+        "default_emitted": true,
+        "required_word_observer_emitted": false
+      },
+      {
+        "id": "pen-close_wrong_word",
+        "book_anchor": "the child held a red pen",
+        "requested_variant_word": "pin",
+        "audio_sha256": "eee30d9640a29c7d453741357951627359c7ac86b03adf458794cda31e263414",
+        "human_heard_word": null,
+        "hearing_note": "User confirmed acceptance; no separate word transcription was provided.",
+        "user_should_emit": true,
+        "classification": "user_accepted_contextual_pronunciation_variant",
+        "original_strict_literal_expected_emit": false,
+        "default_emitted": true,
+        "required_word_observer_emitted": false
+      },
+      {
+        "id": "sink-close_wrong_word",
+        "book_anchor": "he carefully cleaned the white sink",
+        "requested_variant_word": "zinc",
+        "audio_sha256": "78c8fb3cff8e4fa9c12e2148379f8687a71ae07c1e405a48cb4c3f5bf338c48d",
+        "human_heard_word": null,
+        "hearing_note": "User confirmed acceptance; no separate word transcription was provided.",
+        "user_should_emit": true,
+        "classification": "user_accepted_contextual_pronunciation_variant",
+        "original_strict_literal_expected_emit": false,
+        "default_emitted": true,
+        "required_word_observer_emitted": false
+      }
+    ],
+    "reviewed_cases": 5,
+    "accepted_cases": 5,
+    "pod_false_triggers_among_reviewed": 0,
+    "basis": "User explicitly accepts these five contextual variants for the pronunciation-tolerant shared-reading pod. Historical strict-literal counters are retained and are not current pod defect counts.",
+    "runtime_asr_and_trial_measurements_unchanged": true,
+    "scope": "Only the listed recordings have these listening/acceptance labels. This does not label unreviewed substitutions or alter omission/unrelated-speech expectations."
+  },
+  "historical_metric_basis": "Original trial expectations and literal-word counters are retained. The later user acceptance assessment is separate; these five emissions are accepted pod behavior.",
+  "original_interpretation_limits": [
+    "Synthetic adult speech and constructed pauses, not children or real room audio.",
+    "A scripted synthesis request is not an independent human transcript; review failures with the audio and saved ASR.",
+    "The required-word observer is a predeclared policy comparison, not a production-manifest change or a guarantee against close spelling.",
+    "Challenge counts are designed counterexamples, not population precision/recall or child-reading accuracy.",
+    "Both manifest policies share each stream. The required-word observer was predeclared; production manifests were not tightened.",
+    "The previous matcher is replayed on identical current ASR callbacks; this is not an ASR-model comparison.",
+    "Final ASR can differ from the trigger snapshot. Trigger context is recorded separately.",
+    "Required-word checks can reject valid ASR substitutions and cannot prevent false triggers when ASR itself substitutes the expected word."
+  ]
 }

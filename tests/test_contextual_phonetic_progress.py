@@ -44,14 +44,15 @@ class ContextualPhoneticProgressTests(unittest.TestCase):
             self.assertEqual(first.triggered, newer_time == 2)
             self.assertFalse(callback(matcher, prefix + ' goat', newer_time).triggered)
 
-    def test_permission_keeps_required_word_prefix_prompt_and_recency_guards(self):
+    def test_permission_keeps_required_word_prefix_negation_and_recency_guards(self):
         anchor = 'she carried the winter coat'
         normal = EffectPermission(dict(checkpoint_text=anchor), .8, [])
         required = EffectPermission(dict(checkpoint_text=anchor, required_words=['coat']), .8, [])
         self.assertTrue(normal.supports_phonetic_anchor('she carried the winter goat'.split()))
+        self.assertTrue(normal.supports_phonetic_anchor('repeat she carried the winter goat'.split()))
         self.assertFalse(required.supports_phonetic_anchor('she carried the winter goat'.split()))
         for text in ('she carried the winter', 'she carried winter goat',
-                     'repeat she carried the winter goat',
+                     'never repeat she carried the winter goat',
                      'she carried the winter goat and then we went home',
                      'she carried the winter cone'):
             with self.subTest(text=text):

@@ -51,9 +51,230 @@ the child actually read the word correctly. Long paragraph checkpoints may need
 shorter authored effect anchors/checkpoints rather than relying on full-paragraph
 recognition in a 32-word buffer.
 
-Prompt-like wording just before the matched anchor is rejected unless that
-prefix belongs to the authored book context. This bounded text rule is not
-speaker identification or general understanding of negation or adult prompting.
+## Separate authored effect cues
+
+Split mode accepts an optional `effect_cue` inside the checkpoint's tracking
+phrase. It must be a non-empty, unique contiguous phrase within
+`checkpoint_text`. The full pages, checkpoint text and `word_start`/`word_end`
+remain the original book reference. The cue supplies the effect boundary and
+recent effect-permission phrase; surrounding book text remains available for
+alignment. Existing manifests without this field keep their original anchor.
+
+```json
+{
+  "id": "balloon_pop",
+  "checkpoint_text": "The red balloon popped. Everyone looked up.",
+  "effect_cue": "The red balloon popped.",
+  "required_words": ["popped"],
+  "effect_policy": "one_shot",
+  "effect": {"effect_id": "balloon_pop"}
+}
+```
+
+This is a fragment; the normal book, position, page and range fields still
+apply. Required words must belong to the effect cue and retain the existing
+strict spelling support. The book author declares what an effect represents;
+the runtime does not infer synonyms or arbitrary paraphrases. Cue text is book
+data, never a correction applied to the ASR transcript. The comparison modes
+remain baselines; use `--matching_mode split` for these permissions.
+
+A short cue still needs reading context. Ordinary alignment keeps its configured
+minimum words, score, coverage, ambiguity and independent confirmations. Once
+that alignment confirms the next nearby cue, an absent nonessential leading
+fragment may be tolerated if at least three distinct exact words of the remaining
+cue suffix, its endpoint and every declared essential word are present recently.
+The accepted alignment must overlap that suffix. This route supplies no progress
+or confirmation on its own. It cannot fill a missing required action, introduce
+a sound substitution into that exact suffix, or grant a bare short phrase
+permission at a cold start.
+
+Missing descriptive words outside the authored cue are a different policy from
+missing essential words inside it. Original full-anchor omission trials retain
+their original manifests and labels. Authored-cue comparisons are reported
+separately. Declaring an essential word may also expose a recognition miss:
+an actual word transcribed as a different unsupported word remains blocked.
+
+## Bounded acquisition using observed pronunciation
+
+The next unread cue may use the existing pronunciation comparison during
+acquisition, before reading position has entered the cue. Previous book progress
+must be nonzero and within the existing backtrack bound. Cold starts, distant
+scenes and jumps to a different checkpoint cannot use this route.
+
+The latest ASR segment must contain a contiguous context run with at least the
+configured minimum number of words, at least three distinct ordinary supported
+words, and one occurrence in the full book. It must cover the cue. Only one
+observed nonessential internal cue word may need pronunciation support, with
+exact immediate neighbours and exact cue/context endpoints. Missing tokens,
+unknown pronunciations, uncertain essential words and multiple unsupported
+tokens fail closed. Context can include the existing last-three-word endpoint
+neighbourhood, without crossing the next cue.
+
+The run supplies an ordinary alignment candidate with the existing 0.75 word
+credit for one uncertain observed token. Normal score, coverage, ambiguity and
+independent-confirmation checks still decide progress. A stronger ordinary
+alignment may share this support only while it overlaps the same cue and the
+bounded context passes its threshold independently. Old-segment edits, duplicate
+text and timestamp-only changes do not supply fresh votes. ASR words are never
+rewritten, and declared essential words receive no pronunciation substitution.
+
+The model, phonetic dictionary/rule and configured numeric thresholds are
+unchanged: normal score 82, recovery 92, coverage 0.8, stability two and minimum
+context length five by default. Per-book settings remain authoritative.
+
+## Shared reading and coaching
+
+Either voice may supply supported story text. Positive coaching such as "can you
+say" or "please repeat" does not veto an otherwise eligible effect or its prior
+prefix evidence. A parent saying a complete story phrase can advance progress
+and emit its effect; a child repeating it does not replay that one-shot. The
+system does not infer a speaker's identity or distinguish coaching intent from
+reading intent. No voice-specific aliases, ASR rewrites or new manifest fields
+are used.
+
+Ordinary search bounds, ambiguity, score, coverage, fresh-confirmation, endpoint
+and required-word checks still apply. Unrelated conversation is not eligible
+merely because both voices are trusted. A supported later phrase can use the
+existing forward-recovery rules and skip earlier checkpoints; parent and child
+receive the same treatment. This policy does not guarantee a trigger for every
+audible phrase or fix overlapping speech and confirmation failures.
+
+Explicit negation just before the matched anchor continues to veto one-shot
+permission unless that prefix belongs to the authored book context. Prefix
+assistance likewise retains its negation guards. Alignment progress and effect
+permission remain separate: a negated phrase can still advance progress while
+its effect is suppressed. These bounded text checks are not a general understanding
+of intent. Earlier frozen prompt-negative reports describe the previous policy;
+positive quoted phrases now have a different expected outcome. A coaching clip
+that contains a formerly omitted word is not a literal-word omission control.
+
+## Pronunciation acceptance for the pod
+
+The user accepts the five reviewed contextual variants: coat/goat, fan/van,
+seal/zeal, pen/pin and sink/zinc. A close pronunciation with strong surrounding
+phrase and reading-context evidence should count in these cases. The existing
+matcher already emits all five, so this is an acceptance-label correction with
+no ASR, threshold, matcher or manifest change. No word-specific exception is added.
+
+The [user listening assessment](../benchmarks/results/pronunciation-acceptance-review-2026-11-03.json)
+is attached separately to historical reports. Their original literal-word
+measurements remain intact. These five emissions are accepted pod behavior;
+requiring exact endpoints to reject them would reject user-approved readings.
+Essential-word omissions, unrelated speech and other controls retain their
+expectations. Acceptance does not extend automatically to every substitution.
+The reviewed voices are synthetic adults; this is not child-accent validation.
+
+## Guarded internal pronunciation support
+
+After ordinary alignment and independent confirmations have acquired the next
+checkpoint, split mode may count one observed internal word using the
+[existing pronunciation comparison](#contextual-phonetic-endpoints). The anchor
+must meet its configured minimum alignment length. This aid applies only when
+ordinary spelling support falls exactly one match below the unchanged coverage
+requirement. It cannot change acquisition, candidate scores, book position,
+ambiguity handling or configured thresholds.
+
+The endpoint must match exactly. The internal ASR token must be unused by the
+ordinary ordered alignment and lie between exact matches for its two immediate
+reference neighbours. At least three distinct ordinary anchor words must already
+be supported. Exactly one internal sound-match candidate may qualify; competing
+candidates fail closed. Missing tokens, unknown dictionary words and non-adjacent
+neighbours cannot supply this match. Essential `required_words` retain their
+ordinary stricter spelling checks and receive no phonetic credit.
+
+The ASR transcript is preserved. In the confirmed sheep case, spelling supplies
+six of eight anchor words and the existing sound rule supports sheep/ship between
+one/was. This reaches the existing seven-word requirement; lost/locked remains
+unmatched. There is no word-specific alias or recognition rewrite. These remain
+dictionary/text heuristics; a deliberately spoken close word may be accepted
+under the same pronunciation-tolerant pod policy.
+
+## Reading across an unrelated aside
+
+For the already-acquired next checkpoint, split mode can retain an exact leading
+prefix with at least two distinct words and one occurrence in the book. This
+stores only words actually observed in ASR and grants no effect or extra vote.
+The additional continuation route becomes eligible only after that prefix's
+source utterance completes with an off-book continuation of at least the existing
+minimum alignment length whose first word does not match the next anchor word.
+Ordinary uninterrupted reading keeps its existing path.
+
+A later utterance must resume at the next expected anchor word. Its observed
+suffix and the saved observed prefix are aligned with the normal score, coverage,
+minimum-length, ambiguity and confirmation checks. Required words and the endpoint
+must still be supported; no book word is filled in. Up to three following words
+use the existing endpoint neighbourhood. An accepted incomplete continuation may
+supply the normal earlier boundary evidence for a later endpoint. The ASR text is
+preserved separately from this proposed reading evidence.
+
+The prefix expires after twelve real-audio seconds or twelve supported reading
+updates. Unrelated updates do not consume reading evidence. A retracted prefix,
+negation, ambiguity or change of checkpoint abandons it. A completed old utterance
+cannot support arbitrary later reading outside these bounds. One-shot history
+and book position persist across ASR utterance changes.
+
+## Digital silence and ASR utterances
+
+The NeMo server completes an ASR utterance after a full existing encoder
+right-context of exact zero PCM. It flushes the real pending frames with the
+model's existing finalization method and starts a fresh decoder when nonzero
+audio resumes. Additional digital quiet retains its original stream time without
+being fed through a stale decoder. All nonzero audio is preserved, independent of
+network packet boundaries. This adds no phase-specific padding, replacement words,
+new amplitude threshold, ASR weights or matcher threshold changes.
+
+Completed transcript segments remain available to the book tracker. Only ASR
+utterance state restarts; reading position and one-shot history continue. Final
+timestamps retain the original recording duration. Segment/callback markers are
+not human-verified word timing. This detector handles digital quiet; nonzero room
+noise and soft speech pass through unchanged rather than being classified as
+silence. Microphone/room behaviour still needs its own testing.
+
+The [completed resumption regression](../benchmarks/results/resumption-regression-2026-11-03.json)
+runs 81 fresh streams with the same model and thresholds. Both accepted misses
+recover, all four pause/phase targets emit, and the tested word omissions and
+unrelated controls remain off. The report preserves an unreviewed ASR change in
+the coached sheep variant instead of assuming every changed effect is correct.
+
+## Exact prefix confirmation during recovery
+
+The split matcher can retain one unique exact leading prefix of an unread
+checkpoint without advancing reading position. The prefix needs at least
+`minimum_words - 1` words (four with the normal five-word minimum), at least three
+distinct words, and at most three anchor words still to come. Its exact text must
+occur once in the whole book. One additional token may be a proper unfinished
+prefix of the next authored word; no word-specific mappings are used. Prefix
+occurrence counts are indexed once when loading the book.
+
+This evidence can support an accepted ordinary candidate at that checkpoint,
+including a later checkpoint reached through existing recovery searches. The
+new callback must contain the complete exact anchor in the recent tail, and its
+accepted alignment must overlap at least two prefix words. The ordinary search,
+score, coverage, ambiguity, minimum alignment length and effect permission checks
+still run. No candidate score or threshold is changed.
+
+Both pieces must come from the same ASR segment, with changed text, newer audio,
+and the existing bounds of twelve audio seconds/twelve fresh updates. Capture
+uses the latest segment's words, so retained older segments cannot impersonate
+fresh prefix evidence. Revising older context or changing timestamps alone does
+not refresh its age. Contradictory/unrelated continuations, negation, ambiguity,
+expiry and segment changes clear this additional evidence path.
+
+A completed phrase cannot create its own earlier prefix vote. The prefix supplies
+at most one vote and cannot double-count a vote already held for that checkpoint;
+a stability requirement of three still needs three pieces of evidence. Whole
+phrase duplicates and silence never supply extra confirmation. Fuzzy, phonetic,
+split-word and existing local-prefix routes retain their separate rules; this
+new route requires exact complete text and does not replace omitted words.
+
+The [frozen prefix regression](../benchmarks/results/prefix-confirmation-regression-2026-11-03.json)
+replays 214 saved comparisons and runs 32 fresh streams with unchanged ASR and
+thresholds. Both reviewed confirmation misses recover; the three fresh natural
+omissions and seven saved provider-deletion controls remain off. Existing ASR
+errors remain separate limitations. The five reviewed close-word emissions are
+accepted under the pod pronunciation policy above. The initial
+batch was retained and aborted after an additional segment-binding check; final
+metrics use the corrected frozen version.
 
 ## Exact split words
 
@@ -68,7 +289,7 @@ For example, snow man can supply snowman, and note book can supply notebook.
 Partial words, intervening words, substitutions, or omitted required words do
 not satisfy this route. It does not reinterpret several authored words as a
 single different recognized word. The last supporting ASR token must remain
-within the latest four tokens, and the existing prompt checks still apply.
+within the latest four tokens, and the existing negation checks still apply.
 Raw recognition snapshots and the matcher's buffer are unchanged.
 
 The normal score, coverage, independent-confirmation and phonetic-endpoint
@@ -109,7 +330,7 @@ rhoticity and glide destination. No phone insertion, deletion, multi-feature
 change or vowel/consonant interchange is supported by this route. This is a
 general lexical heuristic, not a measured ASR-confusion model or acoustic check.
 
-Cold-start jumps, prompt rejection, strict `required_words`, coverage and
+Cold-start jumps, negation rejection, strict `required_words`, coverage and
 candidate ranking retain their existing checks. For an acquired next checkpoint,
 a complete phonetic anchor unique in the book can also supply a local progress
 candidate. Its uncertain endpoint receives 0.75 word credit; configured score,
@@ -129,7 +350,9 @@ book expects coat, fan, seal, pen or sink, and the default one-shot guard emits.
 The previous spelling rules already accept two of these; the newer phonetic
 route adds three. Required-word checks block these five short-word examples,
 but can reject valid ASR substitutions and do not establish literal-word
-correctness. No production policies were changed after this evaluation.
+correctness. The user subsequently accepted all five examples for the pod;
+the required-word observer rejects all five accepted cases. See the pronunciation
+acceptance policy above. No runtime or manifest change follows from that review.
 The earlier checkpoint-specific endpoint-variant experiment was removed; its
 local streams remain historical artifacts and are not current validation.
 
@@ -151,7 +374,7 @@ A rejected one-shot can remain pending when the reader has already acquired
 the next checkpoint, its full exact prefix ends at the transcript tail with
 at most one unfinished/restarted token, and the endpoint is not yet supported.
 The prefix needs at least two words and two distinct words. Completed utterances,
-prompts, recovery jumps, ambiguity and already-passed phrase context do not
+negated instructions, recovery jumps, ambiguity and already-passed phrase context do not
 receive this aid. Reading position continues to advance independently.
 
 At most one effect can wait. Its window is bounded by two seconds of audio and
@@ -159,11 +382,11 @@ four fresh ASR updates, checked when callbacks arrive, and it closes if progress
 moves more than three book words past the anchor or another checkpoint commits.
 A fresh, changed hypothesis over newer audio can resolve it; final utterance
 completion may also supply changed endpoint text at the same audio time. The
-ordinary endpoint, ordered coverage, required-word, prompt, split-word and
+ordinary endpoint, ordered coverage, required-word, negation, split-word and
 phonetic permission rules must all still pass. Neither a duplicate callback nor
 a timer invents a word or emits an effect. Raw ASR tokens remain unchanged.
 
-If support never arrives, completion, expiry, prompts or leaving the local scene
+If support never arrives, completion, expiry, negation or leaving the local scene
 finalize suppression. A new utterance cannot borrow an old incomplete prefix.
 A later checkpoint can still emit on the callback that closes the old pending
 effect. There are no per-word exceptions, altered spelling thresholds or new
@@ -216,7 +439,7 @@ as “a bit of the wing” without counting one hypothesis twice.
 ## Evaluation and remaining work
 
 The new regression tests cover omitted endpoints, essential words, progress
-after suppression, ambience catch-up, wording variants, prompts, stale anchors,
+after suppression, ambience catch-up, wording variants, shared coaching, negation, stale anchors,
 and bounded near-tie ranking. Saved-callback diagnostics also check the earlier
 whole-passage-hint Tom regression; that early comic-books effect is suppressed.
 Diagnostic replay is kept separate from fresh audio trials.

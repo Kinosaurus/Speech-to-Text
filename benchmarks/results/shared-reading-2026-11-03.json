@@ -1,0 +1,1210 @@
+{
+  "date": "2026-11-03",
+  "scope": "Offline shared-reading handoff and interruption stress test",
+  "sources": {
+    "controlled_synthetic_voices": [
+      "Microsoft Zira Desktop",
+      "Microsoft David Desktop"
+    ],
+    "controlled_synthetic_streams": 10,
+    "recorded_child_sources": 2,
+    "child_composite_streams": 8,
+    "previously_inspected": true,
+    "source_ids": [
+      "3a8b_EN-OL-RC-234_1",
+      "4a35g_EN-OL-RC-426_2"
+    ],
+    "human_listening_labels": 0
+  },
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "lexicon": {
+    "package": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+  },
+  "client_environment": {
+    "numpy": "2.4.6",
+    "scipy": "1.18.1",
+    "soundfile": "0.14.0",
+    "rapidfuzz": "3.14.6",
+    "cmudict": "1.1.3",
+    "websocket-client": "1.9.2",
+    "PyAudio": "0.2.14"
+  },
+  "server_environment": {
+    "nemo_toolkit": "3.1.0",
+    "torch": "2.7.1+cu118",
+    "torchaudio": "2.7.1+cu118",
+    "numpy": "2.2.6",
+    "websockets": "16.1.1"
+  },
+  "execution": {
+    "fresh_streams": 18,
+    "total_audio_seconds": 540.26,
+    "one_trial_per_selected_input": true,
+    "all_trials_retained": true,
+    "all_samples_delivered": true,
+    "streams_with_interim_text": 18,
+    "all_eof_and_app_observer_replay_audits_pass": true
+  },
+  "controlled_synthetic": {
+    "cases": 10,
+    "target_goals_met": 7,
+    "complete_effect_goals_met": 6,
+    "missed_target_goals": [
+      "long_pause",
+      "coaching_then_reading",
+      "overlap"
+    ],
+    "emissions_on_target_negative_cases": [],
+    "premature_targets": []
+  },
+  "recorded_child": {
+    "cases": 8,
+    "target_goals_met": 7,
+    "source_baseline_outcomes": {
+      "3a8b_EN-OL-RC-234_1": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "4a35g_EN-OL-RC-426_2": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      }
+    },
+    "comparisons": [
+      {
+        "id": "3a8b_EN-OL-RC-234_1-baseline",
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      },
+      {
+        "id": "3a8b_EN-OL-RC-234_1-inserted_aside",
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      },
+      {
+        "id": "3a8b_EN-OL-RC-234_1-coaching_before_reading",
+        "added_emissions": [
+          "lost_sheep"
+        ],
+        "lost_emissions": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "baseline_effect_callback_markers_after_midpoint": [],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      },
+      {
+        "id": "3a8b_EN-OL-RC-234_1-overlap",
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      },
+      {
+        "id": "4a35g_EN-OL-RC-426_2-baseline",
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [
+          "clever_bears"
+        ],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      },
+      {
+        "id": "4a35g_EN-OL-RC-426_2-inserted_aside",
+        "added_emissions": [],
+        "lost_emissions": [
+          "clever_bears"
+        ],
+        "baseline_effect_callback_markers_after_midpoint": [
+          "clever_bears"
+        ],
+        "lost_effects_with_baseline_callbacks_after_midpoint": [
+          "clever_bears"
+        ]
+      },
+      {
+        "id": "4a35g_EN-OL-RC-426_2-coaching_before_reading",
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [
+          "clever_bears"
+        ],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      },
+      {
+        "id": "4a35g_EN-OL-RC-426_2-overlap",
+        "added_emissions": [],
+        "lost_emissions": [
+          "clever_bears"
+        ],
+        "baseline_effect_callback_markers_after_midpoint": [
+          "clever_bears"
+        ],
+        "lost_effects_with_baseline_callbacks_after_midpoint": [
+          "clever_bears"
+        ]
+      }
+    ],
+    "omissions": {
+      "source_id": "4a35g_EN-OL-RC-426_2",
+      "target": "hibernate",
+      "cases": 4,
+      "literal_absence_variants": 3,
+      "quoted_coaching_variant": 1,
+      "note": "The child omits the word in all four. The coaching variant contains the word in an adult prompt, so only three variants preserve literal absence throughout the composite.",
+      "emitting_cases": []
+    }
+  },
+  "interpretation": "Counts compare outcomes with predeclared constructed goals, not independently confirmed correctness or population accuracy. Exact ASR anchor text can be coaching. Paired child baselines use the same common source attenuation. Preserving only effects whose baseline callbacks precede an interruption does not demonstrate recovery after it.",
+  "composition": {
+    "sample_rate": 16000,
+    "sentence_gap_seconds": 0.4,
+    "source_gain": 0.4,
+    "child_interruption_position": "Exactly half the original sample count, regardless of ASR or book words; may split a word.",
+    "no_child_frames_removed": true,
+    "mixing": "Add a David aside at the midpoint, equal RMS to the complete child source before common attenuation; retain both tracks. Peak safety scaling recorded.",
+    "coaching": "Explicit Can you say prompt. Whole anchor is coaching, not a reading event. Subsequent legitimate reading should remain eligible.",
+    "repeat_policy": "Reading either voice counts. Repeat a previously emitted line without duplicate one-shot effects."
+  },
+  "limits": [
+    "Two adult TTS voices proxy controlled reading roles; neither is a child or natural parent-child handoff.",
+    "Recorded child variants reuse two inspected Indian MPS sources; not new speakers, Singapore or held-out accuracy.",
+    "Midpoint insertions can interrupt a word. They preserve every child sample but do not simulate a natural pause.",
+    "Digital equal-RMS mixing is not room acoustics or a microphone test. Human listening fields start blank.",
+    "Expected outcomes are predeclared design goals. Failed outcomes are retained, never repaired by sample tuning.",
+    "No latency or population accuracy is claimed. Existing close-word false-trigger limitations remain unresolved."
+  ],
+  "integrity": {
+    "asr_matcher_model_lexicon_unchanged": true,
+    "hints_disabled": true,
+    "selections_scripts_and_recipes_fixed_before_synthesis_and_recognition": true,
+    "original_child_files_unchanged": true,
+    "no_child_samples_removed": true,
+    "all_composed_audio_hashes_unchanged": true,
+    "source_sha256": {
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/live_tracker_probe.py": "b772faf20f29fa59f7c0f7aae35c320f547bc4f497ccc61c8b64652b47632976",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+      "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+      "benchmarks/run_mps_heldout.py": "0f29f8f88fcc44f598e74925c4b06f7c02ba40b95797eb2589032ceb58f8ea76",
+      "benchmarks/run_pending_regression.py": "1a651da360bedfe630cd8d7185c04f2444a948006114445d53d68601ed1b2d47",
+      "benchmarks/run_shared_reading.py": "fb643a8d1572f2275f33c2f89166e23e9f230a94d6247ffbcf9ece9ab4dd19d2",
+      "benchmarks/synthesize_shared_reading.ps1": "0e6865e5ec44bb420c891337d684d76360bec9bbc892a8ea365de305ef38a834",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "be201bba4e74adec7b0cbb599f80f9479faadbce705cb6c9e53b27f884741955",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "70ec44335b426e2c5efceccc9c05a9d1e7748604b8ae24d3e16685fe83d21836",
+      "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "aa8fefbf3eef926652f68f47f97e7ceebd2d23597cabcde0048bfe1eef1ff888",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phone_features.py": "258a63bd7f7a5589e7b8f6f8a2c6a4359341b7fb13d016612a8ca77a4e3cab8a",
+      "books_to_life/matching/phonetic_endpoint.py": "b74bc5e0548ca3e5c9896a6e839b4b159b50e26a591e5c60f0f00a918ac47d4f",
+      "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+      "books_to_life/matching/timely_matcher.py": "77bba3e6dc35bc3057ac7cfe3ba23aff83f6e9b66d486e96ffb1e165fdd3bc0f",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296"
+    }
+  },
+  "cases": [
+    {
+      "id": "single_voice",
+      "group": "controlled_synthetic_roles",
+      "category": "single_voice",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        },
+        {
+          "id": "target",
+          "audio_end": 7.424
+        },
+        {
+          "id": "finish",
+          "audio_end": 11.03
+        }
+      ],
+      "samples_delivered": 176480,
+      "audio_seconds": 11.03,
+      "audio_sha256": "7836692a1272948763e19bd367ae1719691c5f11e441c5e8fe39f1ac89f087a0",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": true,
+      "first_exact_target_callback_audio_end": 7.424,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 28,
+      "final_asr_sha256": "793140c40cea1e5d723e077791b696a72caf7ff35a4049e0707995b12079b7fc",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. A small rabbit rested beside the old apple tree. She filled the watering can and walked back home"
+    },
+    {
+      "id": "handoff_and_back",
+      "group": "controlled_synthetic_roles",
+      "category": "handoff_and_back",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        },
+        {
+          "id": "target",
+          "audio_end": 7.424
+        },
+        {
+          "id": "finish",
+          "audio_end": 11.175
+        }
+      ],
+      "samples_delivered": 178800,
+      "audio_seconds": 11.175,
+      "audio_sha256": "7b6d10897f68123f895ee4123916b5c024161c8c9e5c5a53fa76c2e55319e8f5",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": true,
+      "first_exact_target_callback_audio_end": 7.424,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 28,
+      "final_asr_sha256": "793140c40cea1e5d723e077791b696a72caf7ff35a4049e0707995b12079b7fc",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. A small rabbit rested beside the old apple tree. She filled the watering can and walked back home"
+    },
+    {
+      "id": "parent_finishes",
+      "group": "controlled_synthetic_roles",
+      "category": "parent_finishes",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        },
+        {
+          "id": "target",
+          "audio_end": 7.424
+        },
+        {
+          "id": "finish",
+          "audio_end": 11.07
+        }
+      ],
+      "samples_delivered": 177120,
+      "audio_seconds": 11.07,
+      "audio_sha256": "e7b7ce99fa3a7ca3f2156f5d630b4e7a6e5c951240eb1ea4263e7cd673ba490a",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": true,
+      "first_exact_target_callback_audio_end": 7.424,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 28,
+      "final_asr_sha256": "793140c40cea1e5d723e077791b696a72caf7ff35a4049e0707995b12079b7fc",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. A small rabbit rested beside the old apple tree. She filled the watering can and walked back home"
+    },
+    {
+      "id": "repeat_line",
+      "group": "controlled_synthetic_roles",
+      "category": "repeat_line",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        },
+        {
+          "id": "target",
+          "audio_end": 7.424
+        },
+        {
+          "id": "finish",
+          "audio_end": 15.08
+        }
+      ],
+      "samples_delivered": 241280,
+      "audio_seconds": 15.08,
+      "audio_sha256": "87dd1fc2765c9aca8c1cd9c65e269883962788e6af5c84093f545a7d83d19a60",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": true,
+      "first_exact_target_callback_audio_end": 7.424,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 37,
+      "final_asr_sha256": "950c7b0df418db7018345b61b9192fd1782a718777b8df981e8b309a566deb56",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. A small rabbit rested beside the old apple tree. A small rabbit rested beside the old apple tree. She filled the watering can and walked back home"
+    },
+    {
+      "id": "unrelated_aside",
+      "group": "controlled_synthetic_roles",
+      "category": "unrelated_aside",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        },
+        {
+          "id": "target",
+          "audio_end": 13.568
+        },
+        {
+          "id": "finish",
+          "audio_end": 16.896
+        }
+      ],
+      "samples_delivered": 274080,
+      "audio_seconds": 17.13,
+      "audio_sha256": "c4b10b5ac2f1cbdb6ec7c302225356e41fbf08cd3542f9385884202a89ee4e5e",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": true,
+      "first_exact_target_callback_audio_end": 13.568,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 43,
+      "final_asr_sha256": "91d82e1df44a137b52419d8d720b88659124e173b2d22f925d1d672f8af92bef",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. Please bring my blue notebook from the kitchen. We need to check the shopping list. A small rabbit rested beside the old apple tree. She filled the watering can and walked back home"
+    },
+    {
+      "id": "long_pause",
+      "group": "controlled_synthetic_roles",
+      "category": "long_pause",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        },
+        {
+          "id": "finish",
+          "audio_end": 26.368
+        }
+      ],
+      "samples_delivered": 425200,
+      "audio_seconds": 26.575,
+      "audio_sha256": "972a3eb8c85a2641a9115b0a7ff97326ae5a3c71d17a3107cdb97b7683691395",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": false,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [
+        "target"
+      ],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": false,
+      "first_exact_target_callback_audio_end": null,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 26,
+      "final_asr_sha256": "25870b118e95ca07439dc95c024bbc2d41661d1e9834447e3c169cc8b9768891",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden rabbit rested beside the old apple tree. She filled the watering can and walked back home"
+    },
+    {
+      "id": "coaching_then_reading",
+      "group": "controlled_synthetic_roles",
+      "category": "coaching_then_reading",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        },
+        {
+          "id": "finish",
+          "audio_end": 16.125
+        }
+      ],
+      "samples_delivered": 258000,
+      "audio_seconds": 16.125,
+      "audio_sha256": "c07213f05108cace3162e18c178a1eeb058a765d183eb7452b5b60c126580302",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": false,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [
+        "target"
+      ],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": true,
+      "first_exact_target_callback_audio_end": 8.448,
+      "exact_target_can_come_from_coaching": true,
+      "final_asr_words": 40,
+      "final_asr_sha256": "51927b01d2196358406a8d5c03647b41706add2ff3bd03753c76389e44c72748",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. Can you say, a small rabbit rested beside the old apple tree? A small rabbit rested beside the old apple tree. She filled the watering can and walked back home"
+    },
+    {
+      "id": "coaching_only",
+      "group": "controlled_synthetic_roles",
+      "category": "coaching_only",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        },
+        {
+          "id": "finish",
+          "audio_end": 12.22
+        }
+      ],
+      "samples_delivered": 195520,
+      "audio_seconds": 12.22,
+      "audio_sha256": "6de4fec851ed616f302f9e68ab67ba59105cb799624bc4ac2b20e2a2ac3914a0",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "finish"
+      ],
+      "missing_expected": [],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": true,
+      "first_exact_target_callback_audio_end": 8.448,
+      "exact_target_can_come_from_coaching": true,
+      "final_asr_words": 31,
+      "final_asr_sha256": "fef56b0e3eb5e0cdf48f413f9a478e369d752886547eab81eae19efb85ddf3b1",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. Can you say, a small rabbit rested beside the old apple tree? She filled the watering can and walked back home"
+    },
+    {
+      "id": "omitted",
+      "group": "controlled_synthetic_roles",
+      "category": "omitted",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": [
+          "finish"
+        ]
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        }
+      ],
+      "samples_delivered": 114000,
+      "audio_seconds": 7.125,
+      "audio_sha256": "f1bd370fb7cc7e8540b6b91802401a1753684187840882e80d09ba04765ae9e0",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "expected_emitted": [
+        "start",
+        "finish"
+      ],
+      "missing_expected": [
+        "finish"
+      ],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": false,
+      "first_exact_target_callback_audio_end": null,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 19,
+      "final_asr_sha256": "35962da95a3ccd371eef215ffdc2aba3039b8e3a26c2378e44c1b6166d3d3975",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. She filled the watering can and walked back home"
+    },
+    {
+      "id": "overlap",
+      "group": "controlled_synthetic_roles",
+      "category": "overlap",
+      "source_id": null,
+      "target": "target",
+      "expected_target_emit": true,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "start"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": [
+          "finish"
+        ]
+      },
+      "decisions": [
+        {
+          "id": "start",
+          "audio_end": 3.584
+        }
+      ],
+      "samples_delivered": 211600,
+      "audio_seconds": 13.225,
+      "audio_sha256": "815f725de077fc0e23bdde9ffb2cae790734137d32527e3434c4c850b7cb9108",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": false,
+      "expected_emitted": [
+        "start",
+        "target",
+        "finish"
+      ],
+      "missing_expected": [
+        "finish",
+        "target"
+      ],
+      "unexpected_emitted": [],
+      "target_before_legitimate_reading": [],
+      "exact_target_in_any_asr_callback": false,
+      "first_exact_target_callback_audio_end": null,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 32,
+      "final_asr_sha256": "25003c3253c0ec98c7fb806729fbea3a12b07689db72a4e9655a4fbeb393d83c",
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. Please bring my old apple tree. We need to check the shopping list. She filled the watering can and walked back home"
+    },
+    {
+      "id": "3a8b_EN-OL-RC-234_1-baseline",
+      "group": "recorded_child_constructed_interruption",
+      "category": "baseline",
+      "source_id": "3a8b_EN-OL-RC-234_1",
+      "target": "riverside",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "hundred_sheep",
+          "audio_end": 13.568
+        },
+        {
+          "id": "riverside",
+          "audio_end": 22.016
+        }
+      ],
+      "samples_delivered": 861920,
+      "audio_seconds": 53.87,
+      "audio_sha256": "5ec2ee9576cfcabcf63b23afd0cd586256d37f92040d18f586bd385ac694c16c",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "emissions_before_child_reading": [],
+      "exact_target_in_any_asr_callback": false,
+      "first_exact_target_callback_audio_end": null,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 66,
+      "final_asr_sha256": "d4841707486d6788e9e9ef696f1c64e6de2d23740de8d2cdc2d6d16c95c801c5",
+      "relative_to_fresh_child_baseline": {
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      }
+    },
+    {
+      "id": "3a8b_EN-OL-RC-234_1-inserted_aside",
+      "group": "recorded_child_constructed_interruption",
+      "category": "inserted_aside",
+      "source_id": "3a8b_EN-OL-RC-234_1",
+      "target": "riverside",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "hundred_sheep",
+          "audio_end": 13.568
+        },
+        {
+          "id": "riverside",
+          "audio_end": 22.016
+        }
+      ],
+      "samples_delivered": 965920,
+      "audio_seconds": 60.37,
+      "audio_sha256": "28d355973bd09f33c7fbb7e1bcfb7728d2c01b58ed38b07845be632fc81522ff",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "emissions_before_child_reading": [],
+      "exact_target_in_any_asr_callback": false,
+      "first_exact_target_callback_audio_end": null,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 80,
+      "final_asr_sha256": "cb1395267b99ce6d8782fc10164d969255e9b373017c327e1749035bd003eca0",
+      "relative_to_fresh_child_baseline": {
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      }
+    },
+    {
+      "id": "3a8b_EN-OL-RC-234_1-coaching_before_reading",
+      "group": "recorded_child_constructed_interruption",
+      "category": "coaching_before_reading",
+      "source_id": "3a8b_EN-OL-RC-234_1",
+      "target": "riverside",
+      "expected_target_emit": true,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "lost_sheep"
+        ],
+        "suppressed": [
+          "riverside"
+        ],
+        "skipped": [
+          "hundred_sheep"
+        ],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "lost_sheep",
+          "audio_end": 57.856
+        }
+      ],
+      "samples_delivered": 926560,
+      "audio_seconds": 57.91,
+      "audio_sha256": "a9390c0d455825eb41acce4c20ff4a93f0d216058cfdef1c83ae84afaf93c186",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": false,
+      "emissions_before_child_reading": [],
+      "exact_target_in_any_asr_callback": true,
+      "first_exact_target_callback_audio_end": 3.584,
+      "exact_target_can_come_from_coaching": true,
+      "final_asr_words": 77,
+      "final_asr_sha256": "99fad06729c6c9e34864c3f933c545975ce8dc58caed07864a18c92f59df9019",
+      "relative_to_fresh_child_baseline": {
+        "added_emissions": [
+          "lost_sheep"
+        ],
+        "lost_emissions": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "baseline_effect_callback_markers_after_midpoint": [],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      }
+    },
+    {
+      "id": "3a8b_EN-OL-RC-234_1-overlap",
+      "group": "recorded_child_constructed_interruption",
+      "category": "overlap",
+      "source_id": "3a8b_EN-OL-RC-234_1",
+      "target": "riverside",
+      "expected_target_emit": true,
+      "target_emitted": true,
+      "outcomes": {
+        "emitted": [
+          "hundred_sheep",
+          "riverside"
+        ],
+        "suppressed": [
+          "lost_sheep"
+        ],
+        "skipped": [],
+        "unreached": []
+      },
+      "decisions": [
+        {
+          "id": "hundred_sheep",
+          "audio_end": 13.568
+        },
+        {
+          "id": "riverside",
+          "audio_end": 22.016
+        }
+      ],
+      "samples_delivered": 861920,
+      "audio_seconds": 53.87,
+      "audio_sha256": "460028439089cbf4cb2e9a15667fbeaf7f7a6d174ca28377aaff5fe6a8416cdf",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "emissions_before_child_reading": [],
+      "exact_target_in_any_asr_callback": false,
+      "first_exact_target_callback_audio_end": null,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 75,
+      "final_asr_sha256": "577e29b8098ad9d36d7177e3fb54b77a03c035a9579ec97d66fabdcb9c694ea3",
+      "relative_to_fresh_child_baseline": {
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      }
+    },
+    {
+      "id": "4a35g_EN-OL-RC-426_2-baseline",
+      "group": "recorded_child_constructed_interruption",
+      "category": "baseline",
+      "source_id": "4a35g_EN-OL-RC-426_2",
+      "target": "hibernate",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "decisions": [
+        {
+          "id": "clever_bears",
+          "audio_end": 25.856
+        }
+      ],
+      "samples_delivered": 649760,
+      "audio_seconds": 40.61,
+      "audio_sha256": "a246df28da1729c6a303d48ec5f790fd6348d190ec937a2242bbe3501a49f0f4",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "emissions_before_child_reading": [],
+      "exact_target_in_any_asr_callback": false,
+      "first_exact_target_callback_audio_end": null,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 65,
+      "final_asr_sha256": "9a131bd4c0a61d7a7fd15c052c288af453cb8972fb27db054d8d90a8453c0ff8",
+      "relative_to_fresh_child_baseline": {
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [
+          "clever_bears"
+        ],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      }
+    },
+    {
+      "id": "4a35g_EN-OL-RC-426_2-inserted_aside",
+      "group": "recorded_child_constructed_interruption",
+      "category": "inserted_aside",
+      "source_id": "4a35g_EN-OL-RC-426_2",
+      "target": "hibernate",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [],
+        "suppressed": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "decisions": [],
+      "samples_delivered": 753760,
+      "audio_seconds": 47.11,
+      "audio_sha256": "eee750d98f2142351d5aa2657ab1d354f5d2f148e7bf06bec4e676903c1051e5",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "emissions_before_child_reading": [],
+      "exact_target_in_any_asr_callback": false,
+      "first_exact_target_callback_audio_end": null,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 77,
+      "final_asr_sha256": "a897f7c5ad11d324850c64b4df3cb0622f55591e763ef0934bd3b50e3d227ae3",
+      "relative_to_fresh_child_baseline": {
+        "added_emissions": [],
+        "lost_emissions": [
+          "clever_bears"
+        ],
+        "baseline_effect_callback_markers_after_midpoint": [
+          "clever_bears"
+        ],
+        "lost_effects_with_baseline_callbacks_after_midpoint": [
+          "clever_bears"
+        ]
+      }
+    },
+    {
+      "id": "4a35g_EN-OL-RC-426_2-coaching_before_reading",
+      "group": "recorded_child_constructed_interruption",
+      "category": "coaching_before_reading",
+      "source_id": "4a35g_EN-OL-RC-426_2",
+      "target": "hibernate",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [
+          "clever_bears"
+        ],
+        "suppressed": [
+          "hibernate"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "decisions": [
+        {
+          "id": "clever_bears",
+          "audio_end": 30.464
+        }
+      ],
+      "samples_delivered": 722480,
+      "audio_seconds": 45.155,
+      "audio_sha256": "2fa79c810d9d58a12c6f6b440189c942f48e5cf030321b8f64ab2a93f72c4375",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "emissions_before_child_reading": [],
+      "exact_target_in_any_asr_callback": true,
+      "first_exact_target_callback_audio_end": 4.096,
+      "exact_target_can_come_from_coaching": true,
+      "final_asr_words": 74,
+      "final_asr_sha256": "1e0281e17dcad03b1ab36d002d93f9cd5638df7886b56b7a55e8a29cdcad4c46",
+      "relative_to_fresh_child_baseline": {
+        "added_emissions": [],
+        "lost_emissions": [],
+        "baseline_effect_callback_markers_after_midpoint": [
+          "clever_bears"
+        ],
+        "lost_effects_with_baseline_callbacks_after_midpoint": []
+      }
+    },
+    {
+      "id": "4a35g_EN-OL-RC-426_2-overlap",
+      "group": "recorded_child_constructed_interruption",
+      "category": "overlap",
+      "source_id": "4a35g_EN-OL-RC-426_2",
+      "target": "hibernate",
+      "expected_target_emit": false,
+      "target_emitted": false,
+      "outcomes": {
+        "emitted": [],
+        "suppressed": [
+          "hibernate",
+          "clever_bears"
+        ],
+        "skipped": [],
+        "unreached": [
+          "begging_paws"
+        ]
+      },
+      "decisions": [],
+      "samples_delivered": 649760,
+      "audio_seconds": 40.61,
+      "audio_sha256": "a4eb3941107022fdbe55344a3f206e8ef31058679430dc0db3295d7017f72065",
+      "delivery_audit_pass": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "partial_before_eof": true,
+      "target_expectation_met": true,
+      "emissions_before_child_reading": [],
+      "exact_target_in_any_asr_callback": false,
+      "first_exact_target_callback_audio_end": null,
+      "exact_target_can_come_from_coaching": false,
+      "final_asr_words": 67,
+      "final_asr_sha256": "b79cad75f4cbeb44669a3a2349398bd117a5a10bb8939f53ba532f88a6768198",
+      "relative_to_fresh_child_baseline": {
+        "added_emissions": [],
+        "lost_emissions": [
+          "clever_bears"
+        ],
+        "baseline_effect_callback_markers_after_midpoint": [
+          "clever_bears"
+        ],
+        "lost_effects_with_baseline_callbacks_after_midpoint": [
+          "clever_bears"
+        ]
+      }
+    }
+  ],
+  "listening_review": {
+    "cases": 18,
+    "human_fields_blank": true,
+    "html": "output/shared-reading-2026-11-03/review/index.html"
+  },
+  "artifacts": "output/shared-reading-2026-11-03"
+}

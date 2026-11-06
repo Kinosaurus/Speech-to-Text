@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-03",
+  "id": "shared-3a8b_EN-OL-RC-234_1-coaching_before_reading",
+  "checkpoint": "lost_sheep",
+  "reference": "One sheep was lost. The shepherd was sad.",
+  "source_audio_sha256": "a9390c0d455825eb41acce4c20ff4a93f0d216058cfdef1c83ae84afaf93c186",
+  "clip_sha256": "727262c7236b328d79127e6699b227802e742fc881a9d0cf2ac3c10aa959992d",
+  "raw_user_reply": "yes it is super clear and should be allowed",
+  "human_should_emit": true,
+  "human_heard": null,
+  "reviewer": "user",
+  "classification": "user_confirmed_clear_regression",
+  "note": "User explicitly accepts the reference phrase in the excerpt. No separate word-by-word transcription was supplied.",
+  "original_emitted": true,
+  "resumption_version_emitted": false,
+  "original_trials_unchanged": true,
+  "resolution": {
+    "date": "2026-11-04",
+    "emitted": true,
+    "report": "benchmarks/results/internal-phonetic-regression-2026-11-04.json",
+    "general_rule": "One guarded internal pronunciation match using the existing dictionary comparison.",
+    "model_and_numeric_thresholds_unchanged": true,
+    "asr_callbacks_unchanged": true,
+    "no_word_exceptions": true
+  }
+}

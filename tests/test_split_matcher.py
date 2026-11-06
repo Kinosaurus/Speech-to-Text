@@ -32,14 +32,20 @@ class SplitTests(unittest.TestCase):
   m=ready()
   for _ in range(4):
    self.assertFalse(feed(m,'see put the key pot on the stove',22).triggered)
- def test_reject_negation_prompt_and_wrong_objects(self):
-  for prefix in ['do not','never','can you say','please repeat','she said']:
+ def test_reject_negation_and_wrong_objects(self):
+  for prefix in ['do not','never',"don't say"]:
    m=ready()
    feed(m,prefix+' see put the key pot on the',20)
    self.assertFalse(feed(m,prefix+' see put the key pot on the stove',22).triggered)
   for noun in ['cups','phone','cat']:
    m=ready();feed(m,'see put the '+noun+' on the',20)
    self.assertFalse(feed(m,'see put the '+noun+' on the stove',22).triggered)
+ def test_positive_coaching_counts_with_existing_split_word_guards(self):
+  for prefix in ['can you say','please repeat','she said']:
+   m=ready()
+   self.assertFalse(feed(m,prefix+' see put the key pot on the',20).triggered)
+   self.assertTrue(feed(m,prefix+' see put the key pot on the stove',22).triggered)
+   self.assertFalse(feed(m,'see put the key pot on the stove',23).triggered)
  def test_old_prefix_cannot_confirm(self):
   m=ready();feed(m,'see put the key pot on the',20)
   self.assertFalse(feed(m,'see put the key pot on the stove',40).triggered)

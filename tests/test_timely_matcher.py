@@ -37,8 +37,8 @@ class TimelyTests(unittest.TestCase):
             feed(m,'grandma has a big house with',1)
             self.assertFalse(feed(m,text,t).triggered)
 
-    def test_wrong_ending_and_prompts_do_not_get_repeat_credit(self):
-        for prefix,ending in [('', 'doors'),('do not ', 'steps'),('please repeat ', 'steps')]:
+    def test_wrong_ending_and_negations_do_not_get_repeat_credit(self):
+        for prefix,ending in [('', 'doors'),('do not ', 'steps'),('never repeat ', 'steps')]:
             m=TimelyEvidenceMatcher(config())
             feed(m,prefix+'grandma has a big house with',1)
             self.assertFalse(feed(m,prefix+'grandma has a big house with with a lot of '+ending,2).triggered)

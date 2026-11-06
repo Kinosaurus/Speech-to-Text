@@ -11,6 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from benchmarks.run_mps_heldout import read,write,check_frozen,digest
 from benchmarks.run_false_trigger_challenges import verify,KINDS
+from benchmarks.pod_pronunciation_review import annotate,reviewed_cases
 from books_to_life.matching.checkpoint_matcher import normalize_text
 
 
@@ -42,6 +43,7 @@ def enrich(output,rows,jobs):
 
 def review(output,rows,jobs):
     dest=output/'review';dest.mkdir(exist_ok=True); cards=[];sheet=[]
+    accepted=reviewed_cases()
     ordered=sorted(rows,key=lambda r:(not r['policies']['default']['false_trigger'],
         not any(r['policies'][p]['missed_target'] for p in ('default','required')),r['id']))
     for row in ordered:
@@ -49,30 +51,40 @@ def review(output,rows,jobs):
         if not any(row['policies'][p]['false_trigger'] or row['policies'][p]['missed_target'] for p in ('default','required')):
             continue
         esc=lambda value:html.escape(str(value))
+        label=accepted.get(row['id'])
+        if label and digest(Path(job['audio']))!=label['audio_sha256']:
+            label=None
+        acceptance=('<p><b>User accepted: should count for the pod (3 November).</b> '
+            +esc(label['hearing_note'])+'</p>') if label else '<p>Awaiting user listening review.</p>'
         cards.append('<article><h2>'+esc(row['id'])+'</h2><p><b>Book anchor:</b> '+esc(row['anchor'])+'</p>'
             '<p><b>Requested synthetic speech:</b> '+esc(row['script'])+'</p>'
             '<audio controls preload="none" src="../inputs/'+esc(row['id'])+'/audio.wav"></audio>'
-            '<p>Script-based expectation: '+esc(row['expected'])+'. Default target emitted: '+esc(state['target_emitted'])
+            +acceptance+'<p>Original strict-literal expectation: '+esc(row['expected'])+'. Default target emitted: '+esc(state['target_emitted'])
             +'. Required-word observer emitted: '+esc(other['target_emitted'])+'.</p>'
             '<details><summary>Recognition and automated diagnosis</summary><p>Default trigger ASR: '
             +esc(state['asr_at_target_trigger'])+'</p><p>Final ASR: '+esc(row['final_asr'])+'</p></details></article>')
         sheet.append(dict(id=row['id'],category=row['category'],book_anchor=row['anchor'],script=row['script'],
             script_expected_emit=row['expected'],default_emitted=state['target_emitted'],required_observer_emitted=other['target_emitted'],
             asr_at_default_trigger=state['asr_at_target_trigger'] or '',final_asr=row['final_asr'],
-            audio=str(Path(job['audio']).resolve()),human_heard='',human_should_emit='',reviewer='',notes=''))
+            audio=str(Path(job['audio']).resolve()),human_heard=(label['human_heard_word'] or '') if label else '',
+            human_should_emit=label['user_should_emit'] if label else '',reviewer='user' if label else '',
+            notes=('User accepts this contextual variant for the pod. '+label['hearing_note']+
+                ' Original strict-literal expectation retained separately.') if label else ''))
     if sheet:
         path=dest/'manual_review.csv'
         if not path.exists():
             with path.open('w',encoding='utf-8',newline='') as f:
                 writer=csv.DictWriter(f,fieldnames=list(sheet[0]));writer.writeheader();writer.writerows(sheet)
     (dest/'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8">'
-        '<meta name="viewport" content="width=device-width,initial-scale=1"><title>False-trigger challenge review</title>'
+        '<meta name="viewport" content="width=device-width,initial-scale=1"><title>Pronunciation acceptance review</title>'
         '<style>body{max-width:950px;margin:35px auto;padding:0 22px;font:17px/1.6 system-ui;color:#203040}'
         'article{border-top:2px solid #ccd5df;padding:22px 0}audio{width:100%}summary{cursor:pointer}</style>'
-        '<h1>False-trigger challenge review</h1><p>Synthetic adult Microsoft Zira speech. '
+        '<h1>Pronunciation acceptance review</h1><p>Synthetic adult Microsoft Zira speech. '
         'Scripts are synthesis requests, not independent human transcriptions. All 45 trials are retained. '
-        'Human labels remain blank; listen to confirm failures before treating them as acoustic ground truth.</p>'
-        '<p>'+str(len(sheet))+' flagged cases. <a href="manual_review.csv">Review CSV</a></p>'+''.join(cards)+'</html>',encoding='utf-8')
+        'These cases were originally flagged under strict literal-word expectations. '
+        'Later user acceptance is shown separately and does not change the original trials. '
+        'Unreviewed cases retain blank human labels.</p>'
+        '<p>'+str(len(sheet))+' originally flagged cases. <a href="manual_review.csv">Review CSV</a></p>'+''.join(cards)+'</html>',encoding='utf-8')
     return len(sheet)
 
 
@@ -123,6 +135,7 @@ def main():
             'Final ASR can differ from the trigger snapshot. Trigger context is recorded separately.',
             'Required-word checks can reject valid ASR substitutions and cannot prevent false triggers when ASR itself substitutes the expected word.'],
         cases=rows,artifacts=output.relative_to(ROOT).as_posix())
+    annotate(report)
     write(output/'summary.json',report)
     write(ROOT/'benchmarks/results/false-trigger-challenges-2026-11-02.json',report)
     print(json.dumps({k:report[k] for k in ('execution','totals','false_triggers_default','listening_review')},indent=2))

@@ -1,0 +1,834 @@
+{
+  "date": "2026-11-02",
+  "scope": "Initial Singapore CHILDES conversation streaming probe",
+  "source": {
+    "corpus": "CHILDES English-Mandarin Singapore",
+    "media_id": "e5d6a",
+    "corpus_url": "https://talkbank.org/childes/access/Biling/Singapore.html",
+    "independent_source_recordings": 1,
+    "other_background_speakers_present": true,
+    "selected_child_codes": [
+      "IVA",
+      "STA"
+    ],
+    "human_listening_labels": 3
+  },
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "lexicon": {
+    "package": "cmudict",
+    "version": "1.1.3",
+    "data_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+  },
+  "server_environment": {
+    "nemo_toolkit": "3.1.0",
+    "torch": "2.7.1+cu118",
+    "torchaudio": "2.7.1+cu118",
+    "numpy": "2.2.6",
+    "websockets": "16.1.1"
+  },
+  "client_environment": {
+    "numpy": "2.4.6",
+    "scipy": "1.18.1",
+    "soundfile": "0.14.0",
+    "rapidfuzz": "3.14.6",
+    "cmudict": "1.1.3",
+    "websocket-client": "1.9.2",
+    "PyAudio": "0.2.14"
+  },
+  "execution": {
+    "fresh_streams": 4,
+    "complete_source_streams": 1,
+    "context_clip_streams": 3,
+    "independent_source_recordings": 1,
+    "audio_seconds": 216.912125,
+    "unique_transcript_anchors": 3,
+    "checkpoint_opportunities": 6,
+    "one_trial_per_selected_input": true,
+    "all_trials_retained": true,
+    "all_samples_delivered": true,
+    "streams_with_partial_before_eof": 2,
+    "all_stream_done": true,
+    "all_app_observer_replay_agreement": true
+  },
+  "matched_outcomes": {
+    "full_recording": {
+      "emitted": [],
+      "suppressed": [],
+      "skipped": [],
+      "unreached": [
+        "utterance_01",
+        "utterance_02",
+        "utterance_03"
+      ]
+    },
+    "context_clips": {
+      "emitted": 0,
+      "suppressed": 0,
+      "skipped": 0,
+      "unreached": 3
+    }
+  },
+  "full_recording_alignment_trace": [
+    {
+      "audio_end": 41.472,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": false,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 42.24,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": false,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 42.752,
+      "checkpoint": "utterance_01",
+      "score": 96.36363636363636,
+      "confirmations": 1,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": false,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 52.736,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": false,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 58.368,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": false,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 58.88,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": false,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 59.392,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 66.816,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 67.328,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 78.08,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 84.736,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 85.248,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 86.272,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 100.864,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 101.376,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 112.64,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 115.968,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 119.296,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 120.064,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 120.576,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 121.088,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 122.88,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 124.416,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 124.928,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 125.44,
+      "checkpoint": "utterance_03",
+      "score": 100.0,
+      "confirmations": 1,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 165.888,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 166.4,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 176.64,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    },
+    {
+      "audio_end": 195.4220625,
+      "checkpoint": "utterance_01",
+      "score": 0.0,
+      "confirmations": 0,
+      "required": 2,
+      "position": 0,
+      "duplicate": false,
+      "recovering": true,
+      "ambiguous": false
+    }
+  ],
+  "offbook_replay": {
+    "kind": "Same fresh full-source ASR callbacks replayed against six existing MPS passage policies; no additional ASR trials.",
+    "comparisons": 6,
+    "emitted": 0,
+    "results": [
+      {
+        "policy": "passage-1.json",
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "black_circles",
+          "damaged_wing",
+          "escape_enemies"
+        ]
+      },
+      {
+        "policy": "passage-2.json",
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "fish_and_seals",
+          "keep_away",
+          "thick_legs"
+        ]
+      },
+      {
+        "policy": "passage-3.json",
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "fine_patterns",
+          "small_scales",
+          "wing_colours"
+        ]
+      },
+      {
+        "policy": "passage-4.json",
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "begging_paws",
+          "clever_bears",
+          "hibernate"
+        ]
+      },
+      {
+        "policy": "passage-5.json",
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "hundred_sheep",
+          "lost_sheep",
+          "riverside"
+        ]
+      },
+      {
+        "policy": "passage-6.json",
+        "emitted": [],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": [
+          "carried_home",
+          "found_in_bush",
+          "happy_friends"
+        ]
+      }
+    ]
+  },
+  "integrity": {
+    "asr_and_matcher_unchanged": true,
+    "model_hash_unchanged": true,
+    "source_audio_and_chat_unchanged": true,
+    "manifests_and_clips_fixed_before_recognition": true,
+    "no_hints_or_outcome_tuning": true,
+    "runtime_matches_reference": "C:\\Users\\heart\\Speech-to-Text\\output\\mps-heldout-phonetic-2026-11-02\\protocol.json",
+    "source_sha256": {
+      "benchmarks/import_mps_samples.py": "718f8882bf15c106e779c81ad6a9355526c0dee302c60bf4ae9147ed478cf6a0",
+      "benchmarks/live_tracker_probe.py": "b772faf20f29fa59f7c0f7aae35c320f547bc4f497ccc61c8b64652b47632976",
+      "benchmarks/metrics.py": "76f9c7b822bb84cf4abd6b5a755dbd3bf90dd00bc2ec0754024338a5d0475140",
+      "benchmarks/observer_manifests.py": "bc61124b9ecd5285b5be866c6a4c53ba80db966ef3b127be74836e607234aa12",
+      "benchmarks/pilot_effect_policy.json": "5b3f78b763da04127e0a909c8b3c9671183262857c0935a27ad8b12345e564cb",
+      "benchmarks/prepare_mps_expansion.py": "5388adb8db2b6c241b2d6d50602200b961f3566bcd5c5b1fbdee053ee37957cd",
+      "benchmarks/run_childes_streaming.py": "f10d0dc23f0793cd0b3adeb9e463acf40fc1f6aad6acc98a550263d7b290ee9d",
+      "benchmarks/run_mps_heldout.py": "0f29f8f88fcc44f598e74925c4b06f7c02ba40b95797eb2589032ceb58f8ea76",
+      "books_to_life/__init__.py": "6fdd9df5fa22a55cf31c076a850b24e4fedb0d7d0d18c4b957ad5d5911416e03",
+      "books_to_life/cli/__init__.py": "7837a0242ac6ee43ae828f08bee26c4eea09b3f5e9a1c7d3fcd7d0c8483527a9",
+      "books_to_life/cli/checkpoint_demo.py": "0dada21cb0e820946882a1b8932fb868e69a831e7302b0eb869337c435a4ea24",
+      "books_to_life/cli/prepare_models.py": "5380068c7e7538853732dbbfc6d0e2be4926db7eb5b67e112c32e6f32d4d0034",
+      "books_to_life/cli/prepare_nemo_model.py": "addfa5b935fb257a1445000e74029b4d9d6ecfdd9a3bb9a44238ca4a11109226",
+      "books_to_life/cli/run_client.py": "be201bba4e74adec7b0cbb599f80f9479faadbce705cb6c9e53b27f884741955",
+      "books_to_life/cli/run_native_server.py": "5364d99e8e192ef09ffeec3973c27abf8dead890bf0695bd5454f4b20f20fe89",
+      "books_to_life/cli/run_nemo_server.py": "760493658c33093660bda031d89063236e32be633fbe6b23188e70aa812189af",
+      "books_to_life/cli/run_server.py": "b5065ad5ed57f5ac1db04566870a47cdf277810e71b07435c2f1fe577cc45926",
+      "books_to_life/context/__init__.py": "a7cee65be5dae8b2f7607fcf3edaef288b16ed5346a4d1e92e78ba97bf682524",
+      "books_to_life/context/book_context.py": "9297dc7a9216855cbb68d0ed28b92b26e7209d21da04538e02f4e579f97a7891",
+      "books_to_life/context/book_context_client.py": "a310b916a5a17e053c78b988974ea637d6a5bfaa8f2f29c600338481ce651a99",
+      "books_to_life/context/book_context_server.py": "dea71cbf7fce46ccc360aff662782663ce050945f23e20036ab81cbf4dc66b73",
+      "books_to_life/data/__init__.py": "df0606823fc2bddcda6c280e2c54d1ad477762f8a879c63b52c55ea3ea0d4800",
+      "books_to_life/data/recording_library.py": "76eb161776c51c0361af043b4b92d7dcb17ed4f6b3ea7211aa62ef3f05c4dae3",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "70ec44335b426e2c5efceccc9c05a9d1e7748604b8ae24d3e16685fe83d21836",
+      "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+      "books_to_life/matching/checkpoint_matcher.py": "ef3332594683a056daa9d5ff1db7ef3de69d2496710be0e5565eee17859579f2",
+      "books_to_life/matching/effect_permission.py": "aa8fefbf3eef926652f68f47f97e7ceebd2d23597cabcde0048bfe1eef1ff888",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phone_features.py": "258a63bd7f7a5589e7b8f6f8a2c6a4359341b7fb13d016612a8ca77a4e3cab8a",
+      "books_to_life/matching/phonetic_endpoint.py": "b74bc5e0548ca3e5c9896a6e839b4b159b50e26a591e5c60f0f00a918ac47d4f",
+      "books_to_life/matching/split_matcher.py": "7fcbfaedac3a636fc84c024112035e7abc2653bf0ff8af683604e7c22d968eca",
+      "books_to_life/matching/timely_matcher.py": "77bba3e6dc35bc3057ac7cfe3ba23aff83f6e9b66d486e96ffb1e165fdd3bc0f",
+      "books_to_life/matching/word_boundaries.py": "ee3e1d2e436b3a78cdd023304f5a054147f12febc49a169cd16c738824ff215e",
+      "books_to_life/runtime/__init__.py": "4ef508867ea40fad694f3f70ec2562f74257a6423e731b86b61747dc719bc506",
+      "books_to_life/runtime/asr_runtime.py": "aff3841b06b790bca7b6257bda0d530c8b912709d79867ccadd202ebdf83461d",
+      "books_to_life/runtime/audio_runtime.py": "f09074f61e75fa0ccb4477dc0e4db5021b6d840c8b2811508e2316606e09a4f5",
+      "books_to_life/runtime/native_stream_client.py": "de1149a0a32b89a68ef183c2ed19465d2cddc7ad199e125d78437984bff4bd9f",
+      "books_to_life/runtime/nemo_parakeet.py": "82058698e28318dac4c4b56077b30d0cb84980f1524e9dbf0b81e16969fb4b51",
+      "requirements/requirements-asr.txt": "ce680a6c1cdbd81bcea4203964814ff430f98dcdb2f16ff426a844d3228efb74",
+      "requirements/requirements-client.txt": "7eb4c609b4a83372484d2bebda625985f703b62444672cbdc14201a0e797a8b3",
+      "requirements/requirements-cpu.txt": "10d7ad919a386cb0ff9f9fee7eb0c818f85979b0153f3b76ea317802e8589a86",
+      "requirements/requirements-native.txt": "a67cf1701c53bddf1e8d448a05bb8a1d782eee1b7c6ba84009459857b762dd36",
+      "requirements/requirements-nemo.txt": "f478579282090996d51c6ff94d2b01e461656f4cba79c29445fb1fb7691a7296"
+    },
+    "original_inputs_sha256": {
+      "C:\\Users\\heart\\Speech-to-Text\\output\\childes-singapore-2026-11-02\\audio\\e5d6a.mp3": "b572234605c9c6393812d862c35bd47ef48f2c670db3db6c61b2e6fef01c17a5",
+      "C:\\Users\\heart\\Speech-to-Text\\output\\childes-singapore-2026-11-02\\transcripts\\e5d6a.cha": "4dde4af204a5ff3d78e882a6c709f5dedc4b38301d01494ee9dcefe77ea9b8ca",
+      "C:\\Users\\heart\\Speech-to-Text\\output\\childes-singapore-2026-11-02\\inspection-clips.json": "33d4bb6b74b68f91fa4f87e3990947726e2198327948fd62101214d04e27575f"
+    },
+    "harness_amendments": [
+      {
+        "reason": "Audit assumed every stream yields interim text. clip_01 legitimately returned only a completed empty transcript. Treat missing interim text as an outcome; retain both existing audio trials and continue remaining clips once.",
+        "scope": "Runner audit and resume only; no ASR, matcher, model, settings, source audio, manifest or checkpoint changes.",
+        "before_sha256": "2257ae593d64e7ae432659ee029c8a6b2ef881704591dce77ccdb4976daec296",
+        "after_sha256": "f10d0dc23f0793cd0b3adeb9e463acf40fc1f6aad6acc98a550263d7b290ee9d",
+        "completed_transport_trials_before_amendment": [
+          "full_recording",
+          "clip_01"
+        ],
+        "original_protocol": "harness-revisions/initial-protocol.json"
+      }
+    ]
+  },
+  "validation": {
+    "new_chat_parser_tests_passed": 3,
+    "diff_check_passed": true
+  },
+  "limits": [
+    "Transcript-derived reference is what was transcribed, not an independent authored reading passage.",
+    "Group classroom audio has other/background speakers and incomplete teacher transcription; no population WER or reading correctness score.",
+    "Three cropped streams repeat source material and cannot count as new speakers or independent samples.",
+    "Every selected trial is retained once. No outcome-based tuning or crop replacement.",
+    "CHAT contains machine-aligned timing; these are not independently verified acoustic or word-end labels.",
+    "Exact text in an ASR callback is recognition evidence, not independent confirmation that the reference was audible.",
+    "No verified end-to-end word latency, population WER, reading accuracy or omission score is claimed.",
+    "Existing close-word false-trigger limitations of the frozen matcher remain unresolved."
+  ],
+  "post_evaluation_human_review": {
+    "cases": [
+      {
+        "stream": "full_recording",
+        "target": "utterance_01",
+        "audibility": "unclear",
+        "reference_accepted": null,
+        "should_emit": null,
+        "classification": "unresolved",
+        "note": "Unclear is not an omission label and does not establish a false negative."
+      },
+      {
+        "stream": "full_recording",
+        "target": "utterance_02",
+        "audibility": "clear",
+        "reference_accepted": true,
+        "should_emit": true,
+        "classification": "confirmed_false_negative",
+        "clip_time_raw": "0.7",
+        "timing_verified": false,
+        "note": "User accepts the phrase in the wider excerpt. Approximate timestamp notation is retained verbatim; no exact onset/end or short-crop audibility is assigned."
+      },
+      {
+        "stream": "full_recording",
+        "target": "utterance_03",
+        "audibility": "clear_enough_to_accept",
+        "reference_accepted": true,
+        "should_emit": true,
+        "classification": "confirmed_false_negative",
+        "approximate_clip_start_seconds": 7,
+        "approximate_clip_end_seconds": 10,
+        "review_clip_source_start_seconds": 113.44,
+        "approximate_source_start_seconds": 120.44,
+        "approximate_source_end_seconds": 123.44,
+        "timing_verified": false,
+        "note": "User explicitly accepts left hand after clarification. Approximate listening marks only. Original clip_03 starts at 127.125 seconds, after the accepted phrase; no recognition failure is assigned to that short crop."
+      }
+    ],
+    "confirmed_false_negatives": 2,
+    "unresolved": 1,
+    "original_stream_results_unchanged": true,
+    "matcher_tuned_after_review": false,
+    "scope": "Post-evaluation listening to the three wider full-recording review excerpts; original short test crops were not separately reviewed."
+  },
+  "streams": [
+    {
+      "id": "full_recording",
+      "kind": "Continuous complete classroom source, converted once to mono 16 kHz PCM16",
+      "audio_seconds": 195.4220625,
+      "audio_sha256": "783ecf29ed82694d0ce68ea6706202e01be0e28830f4c591239e5236321b1043",
+      "manifest_sha256": "84c2309a688b5cd630178cf448fab6bee9cbe22d1dd398cfa298603fbd157f87",
+      "samples_delivered": 3126753,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "delivery_audit_pass": true,
+      "emitted": [],
+      "suppressed": [],
+      "skipped": [],
+      "unreached": [
+        "utterance_01",
+        "utterance_02",
+        "utterance_03"
+      ],
+      "pending": [],
+      "callback_count": 29,
+      "targets": [
+        {
+          "id": "utterance_01",
+          "speaker": "STA",
+          "age_from_chat": "6;02.",
+          "chat_start_original": 34.919,
+          "chat_end_original": 40.563,
+          "emitted": false,
+          "suppressed": false,
+          "skipped": false,
+          "exact_phrase_in_any_callback": false,
+          "reference_words": 9,
+          "first_exact_phrase_callback_audio_end": null,
+          "human_review": {
+            "stream": "full_recording",
+            "target": "utterance_01",
+            "audibility": "unclear",
+            "reference_accepted": null,
+            "should_emit": null,
+            "classification": "unresolved",
+            "note": "Unclear is not an omission label and does not establish a false negative."
+          }
+        },
+        {
+          "id": "utterance_02",
+          "speaker": "IVA",
+          "age_from_chat": "6;02.",
+          "chat_start_original": 117.356,
+          "chat_end_original": 120.0,
+          "emitted": false,
+          "suppressed": false,
+          "skipped": false,
+          "exact_phrase_in_any_callback": false,
+          "reference_words": 7,
+          "first_exact_phrase_callback_audio_end": null,
+          "human_review": {
+            "stream": "full_recording",
+            "target": "utterance_02",
+            "audibility": "clear",
+            "reference_accepted": true,
+            "should_emit": true,
+            "classification": "confirmed_false_negative",
+            "clip_time_raw": "0.7",
+            "timing_verified": false,
+            "note": "User accepts the phrase in the wider excerpt. Approximate timestamp notation is retained verbatim; no exact onset/end or short-crop audibility is assigned."
+          }
+        },
+        {
+          "id": "utterance_03",
+          "speaker": "STA",
+          "age_from_chat": "6;02.",
+          "chat_start_original": 128.125,
+          "chat_end_original": 135.327,
+          "emitted": false,
+          "suppressed": false,
+          "skipped": false,
+          "exact_phrase_in_any_callback": true,
+          "reference_words": 6,
+          "first_exact_phrase_callback_audio_end": 125.44,
+          "human_review": {
+            "stream": "full_recording",
+            "target": "utterance_03",
+            "audibility": "clear_enough_to_accept",
+            "reference_accepted": true,
+            "should_emit": true,
+            "classification": "confirmed_false_negative",
+            "approximate_clip_start_seconds": 7,
+            "approximate_clip_end_seconds": 10,
+            "review_clip_source_start_seconds": 113.44,
+            "approximate_source_start_seconds": 120.44,
+            "approximate_source_end_seconds": 123.44,
+            "timing_verified": false,
+            "note": "User explicitly accepts left hand after clarification. Approximate listening marks only. Original clip_03 starts at 127.125 seconds, after the accepted phrase; no recognition failure is assigned to that short crop."
+          }
+        }
+      ],
+      "final_asr_words": 42,
+      "final_asr_sha256": "cc7d5f9b1f419339f6d1e82f5b6a28349494e958fe69eb410691b4e60ea5fb4b"
+    },
+    {
+      "id": "clip_01",
+      "kind": "Previously selected context clip from the same source; not an independent recording",
+      "audio_seconds": 7.644,
+      "audio_sha256": "5377cb985add6227d07227ecbcd96b0798d2e93000c6db81e0e1cc8ffd8519b4",
+      "manifest_sha256": "69fbcce7c95603f3e0e7552878d78d61d1b72e4a56edc3ed642399f1c69c25dd",
+      "samples_delivered": 122304,
+      "partial_before_eof": false,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "delivery_audit_pass": true,
+      "emitted": [],
+      "suppressed": [],
+      "skipped": [],
+      "unreached": [
+        "utterance_01"
+      ],
+      "pending": [],
+      "callback_count": 1,
+      "targets": [
+        {
+          "id": "utterance_01",
+          "speaker": "STA",
+          "age_from_chat": "6;02.",
+          "chat_start_original": 34.919,
+          "chat_end_original": 40.563,
+          "emitted": false,
+          "suppressed": false,
+          "skipped": false,
+          "exact_phrase_in_any_callback": false,
+          "reference_words": 9,
+          "first_exact_phrase_callback_audio_end": null
+        }
+      ],
+      "final_asr_words": 0,
+      "final_asr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "clip_02",
+      "kind": "Previously selected context clip from the same source; not an independent recording",
+      "audio_seconds": 4.644,
+      "audio_sha256": "4b5c9bfdc2a6b767b5bb5946004962f2643f34772fd0ef267d3197caa1418c15",
+      "manifest_sha256": "12529c432e06dc6cb1e4415646420fb7429c44cb72b2a740341a3df5ccbe3dc4",
+      "samples_delivered": 74304,
+      "partial_before_eof": false,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "delivery_audit_pass": true,
+      "emitted": [],
+      "suppressed": [],
+      "skipped": [],
+      "unreached": [
+        "utterance_02"
+      ],
+      "pending": [],
+      "callback_count": 1,
+      "targets": [
+        {
+          "id": "utterance_02",
+          "speaker": "IVA",
+          "age_from_chat": "6;02.",
+          "chat_start_original": 117.356,
+          "chat_end_original": 120.0,
+          "emitted": false,
+          "suppressed": false,
+          "skipped": false,
+          "exact_phrase_in_any_callback": false,
+          "reference_words": 7,
+          "first_exact_phrase_callback_audio_end": null
+        }
+      ],
+      "final_asr_words": 0,
+      "final_asr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "clip_03",
+      "kind": "Previously selected context clip from the same source; not an independent recording",
+      "audio_seconds": 9.2020625,
+      "audio_sha256": "4ef1d3e0e3f25721c0482bdb8c28ddea536042cf5b35d00576670bd017822667",
+      "manifest_sha256": "1c436873caa8a47bac3992756b85307b1c34372472be4b7215934df784ced668",
+      "samples_delivered": 147233,
+      "partial_before_eof": true,
+      "stream_done": true,
+      "app_observer_replay_agreement": true,
+      "delivery_audit_pass": true,
+      "emitted": [],
+      "suppressed": [],
+      "skipped": [],
+      "unreached": [
+        "utterance_03"
+      ],
+      "pending": [],
+      "callback_count": 3,
+      "targets": [
+        {
+          "id": "utterance_03",
+          "speaker": "STA",
+          "age_from_chat": "6;02.",
+          "chat_start_original": 128.125,
+          "chat_end_original": 135.327,
+          "emitted": false,
+          "suppressed": false,
+          "skipped": false,
+          "exact_phrase_in_any_callback": false,
+          "reference_words": 6,
+          "first_exact_phrase_callback_audio_end": null
+        }
+      ],
+      "final_asr_words": 4,
+      "final_asr_sha256": "8194c6015655c03ceb81ec90fdee016fb38eafc6c80cf8ad62777629fb2f3541"
+    }
+  ],
+  "listening_review": {
+    "cases": 6,
+    "human_labels_blank": false,
+    "reviewed_cases": 3,
+    "html": "output/childes-singapore-streaming-2026-11-02/review/index.html"
+  },
+  "artifacts": "output/childes-singapore-streaming-2026-11-02"
+}

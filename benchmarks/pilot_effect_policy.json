@@ -5,6 +5,12 @@
       "checkpoint_text": "bears hibernate from October to April",
       "required_words": ["hibernate"],
       "reason": "This one-shot represents hibernation; a date phrase alone must not grant effect permission."
+    },
+    {
+      "checkpoint_text": "One sheep was lost. The shepherd was sad.",
+      "effect_cue": "One sheep was lost.",
+      "required_words": ["lost"],
+      "reason": "The effect represents the lost-sheep event. The following sentence is tracking context; the event word must still be supported."
     }
   ],
   "note": "Authored effect semantics, not ASR substitutions. Passage text and anchor word ranges remain unchanged. Ambience catch-up must be explicitly selected by a book author."

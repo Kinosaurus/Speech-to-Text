@@ -8,6 +8,7 @@ import numpy as np
 
 from books_to_life.runtime.nemo_parakeet import NemoParakeetSession, hint_phrases, reset_phrase_state
 from books_to_life.cli.run_nemo_server import handle_connection
+from books_to_life.runtime.streaming_utterances import SilenceBoundedSession
 
 
 class Socket:
@@ -88,6 +89,22 @@ class NemoTransportTests(unittest.TestCase):
         self.assertEqual([s['completed'] for s in segments], [False, True])
         self.assertEqual(segments[-1]['text'], 'a bit of the wing')
         self.assertEqual(socket.sent[-1]['message'], 'STREAM_DONE')
+
+    def test_utterance_segments_keep_global_clock_through_skipped_quiet(self):
+        cores=[]
+        def factory():
+            core=Mock();core.feed.return_value=['reading'];core.finish.return_value='sentence'
+            cores.append(core);return core
+        session=SilenceBoundedSession(factory,4)
+        pcm=np.array([1,0,0,0,0,0,0,2],dtype='<f4')
+        socket=Socket([pcm.tobytes(),b'END_OF_AUDIO'])
+        handle_connection(socket,lambda:session,threading.Lock())
+        final=[m['segments'] for m in socket.sent if 'segments' in m][-1]
+        self.assertEqual([s['start'] for s in final],[0,7/16000])
+        self.assertEqual(final[-1]['end'],8/16000)
+        self.assertTrue(all(s['completed'] for s in final))
+        self.assertEqual(socket.sent[-1]['message'],'STREAM_DONE')
+        self.assertEqual(len(cores),2)
 
     def test_live_hints_stay_out_of_audio_and_stale_revision_is_rejected(self):
         pcm = np.array([0.25, -0.5], dtype='<f4')

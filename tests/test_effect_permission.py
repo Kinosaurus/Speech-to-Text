@@ -70,12 +70,21 @@ class EffectPermissionTests(unittest.TestCase):
                                ('with lots of steps', 'with lots of stops')]:
             self.assertTrue(EffectPermission(dict(checkpoint_text=anchor), .8, []).permits(spoken.split())[0])
 
-    def test_old_endpoint_and_prompt_cannot_grant_one_shot_permission(self):
+    def test_old_endpoint_and_negated_instruction_cannot_grant_permission(self):
         permission = EffectPermission(dict(checkpoint_text='the small frog jumped into the pond'), .8, [])
         for spoken in ['do not say the small frog jumped into the pond',
-                       'please repeat the small frog jumped into the pond',
+                       'never repeat the small frog jumped into the pond',
+                       "don't say the small frog jumped into the pond",
                        'the small frog jumped into the pond and then we talked about another animal']:
             self.assertFalse(permission.permits(spoken.split())[0])
+
+    def test_positive_coaching_uses_the_same_content_checks_as_reading(self):
+        permission = EffectPermission(dict(checkpoint_text='the small frog jumped into the pond',
+                                           required_words=['jumped']), .8, [])
+        for prefix in ('can you say', 'please repeat', 'she said', 'he asked'):
+            self.assertTrue(permission.permits((prefix+' the small frog jumped into the pond').split())[0])
+            self.assertFalse(permission.permits((prefix+' the small frog jumped into the').split())[0])
+            self.assertFalse(permission.permits((prefix+' the small frog into the pond').split())[0])
 
     def test_phonetic_endpoint_requires_acquisition_and_entire_exact_prefix(self):
         permission = EffectPermission(dict(checkpoint_text='covered with very small scales'), .8, [])

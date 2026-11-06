@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-03",
+  "raw_user_reply": "1 is clear, i can hear “a small rabbit”. why did the long pause make ASR miss the start? 2 is abit unclear but if it works thats good, i want 3 to be considered valid, 4 nono too chaotic,",
+  "cases": [
+    {
+      "id": "shared-long_pause",
+      "clip_sha256": "972a3eb8c85a2641a9115b0a7ff97326ae5a3c71d17a3107cdb97b7683691395",
+      "source_audio_sha256": "972a3eb8c85a2641a9115b0a7ff97326ae5a3c71d17a3107cdb97b7683691395",
+      "reference_phrase": "A small rabbit rested beside the old apple tree.",
+      "user_accepts_as_positive": true,
+      "human_should_emit": true,
+      "human_heard": "a small rabbit",
+      "classification": "user_confirmed_clear_positive",
+      "note": "User says #1 is clear and independently transcribes a small rabbit.",
+      "reviewed_checkpoint_id": "target",
+      "acceptance_scope": "Only the referenced phrase in this reviewed clip; no label for other checkpoints in the recording."
+    },
+    {
+      "id": "shared-overlap",
+      "clip_sha256": "815f725de077fc0e23bdde9ffb2cae790734137d32527e3434c4c850b7cb9108",
+      "source_audio_sha256": "815f725de077fc0e23bdde9ffb2cae790734137d32527e3434c4c850b7cb9108",
+      "reference_phrase": "A small rabbit rested beside the old apple tree.",
+      "user_accepts_as_positive": null,
+      "human_should_emit": null,
+      "human_heard": null,
+      "classification": "unclear_optional_success",
+      "note": "User finds #2 somewhat unclear; would welcome success but does not establish a mandatory positive or negative control.",
+      "reviewed_checkpoint_id": "target",
+      "acceptance_scope": "Only the referenced phrase in this reviewed clip; no label for other checkpoints in the recording."
+    },
+    {
+      "id": "shared-4a35g_EN-OL-RC-426_2-inserted_aside",
+      "clip_sha256": "027002f3a4484592bde11650422e34b59d05bc80c34d8d11049922b75e70bfc0",
+      "source_audio_sha256": "eee750d98f2142351d5aa2657ab1d354f5d2f148e7bf06bec4e676903c1051e5",
+      "reference_phrase": "they can smell very well and are very clever",
+      "user_accepts_as_positive": true,
+      "human_should_emit": true,
+      "human_heard": null,
+      "classification": "user_accepted_interrupted_reading",
+      "note": "User explicitly wants #3 to count. No independent word-by-word transcription was provided.",
+      "reviewed_checkpoint_id": "clever_bears",
+      "acceptance_scope": "Only the referenced phrase in this reviewed clip; no label for other checkpoints in the recording."
+    },
+    {
+      "id": "shared-4a35g_EN-OL-RC-426_2-overlap",
+      "clip_sha256": "76cb702663fd82839b26e5af5cb9c2c7eeae429449ad4109ad147a3035bdf8ea",
+      "source_audio_sha256": "a4eb3941107022fdbe55344a3f206e8ef31058679430dc0db3295d7017f72065",
+      "reference_phrase": "they can smell very well and are very clever",
+      "user_accepts_as_positive": false,
+      "human_should_emit": null,
+      "human_heard": null,
+      "classification": "too_chaotic_no_required_trigger",
+      "note": "User rejects #4 as too chaotic. Do not require a trigger; this is not a literal omission or a strict unrelated-speech negative control.",
+      "reviewed_checkpoint_id": "clever_bears",
+      "acceptance_scope": "Only the referenced phrase in this reviewed clip; no label for other checkpoints in the recording."
+    }
+  ],
+  "newly_confirmed_required_positive_misses": 2,
+  "unclear_optional_cases": 1,
+  "too_chaotic_not_required_cases": 1,
+  "original_trials_unchanged": true,
+  "omission_and_unrelated_controls_unchanged": true
+}

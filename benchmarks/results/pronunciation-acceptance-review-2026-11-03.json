@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-03",
+  "scope": "Post-evaluation user listening and pod acceptance, five synthetic adult recordings",
+  "raw_user_reply": "goat, should count, 2 should count, 3 should count, 4 should count, 5 should count too. kids mispronounce all the time, theres so much evidence going for these recordings.",
+  "policy": "Accept the five listed close contextual variants for the shared-reading pod. Strong phrase/reading-context evidence matters; literal spelling difference alone does not make these five events wrong.",
+  "matcher_change_required": false,
+  "omission_and_unrelated_speech_expectations_unchanged": true,
+  "limits": [
+    "These clips use a synthetic adult voice; the user accepts their behavior as appropriate for the pod, not as a child-accent accuracy measurement.",
+    "Only goat was separately transcribed by the user; the other four have explicit acceptance labels but no independent word transcription.",
+    "No inference that every future wrong word or unclear phrase is acceptable."
+  ],
+  "cases": [
+    {
+      "id": "coat-close_wrong_word",
+      "book_anchor": "she carried the winter coat",
+      "requested_variant_word": "goat",
+      "audio_sha256": "a28eea206fd1e4b2703fbf5db1553d97148ea37bbe5f72bec1eb48742f52fee8",
+      "human_heard_word": "goat",
+      "hearing_note": "User explicitly transcribed goat.",
+      "user_should_emit": true,
+      "classification": "user_accepted_contextual_pronunciation_variant",
+      "original_strict_literal_expected_emit": false,
+      "default_emitted": true,
+      "required_word_observer_emitted": false
+    },
+    {
+      "id": "fan-close_wrong_word",
+      "book_anchor": "he switched on the fan",
+      "requested_variant_word": "van",
+      "audio_sha256": "4ac580129908fd84e83d3ffc29750c61f8d27bee999dd5f20672b1fd833b7dae",
+      "human_heard_word": null,
+      "hearing_note": "User confirmed acceptance; no separate word transcription was provided.",
+      "user_should_emit": true,
+      "classification": "user_accepted_contextual_pronunciation_variant",
+      "original_strict_literal_expected_emit": false,
+      "default_emitted": true,
+      "required_word_observer_emitted": false
+    },
+    {
+      "id": "seal-close_wrong_word",
+      "book_anchor": "we spotted a playful seal",
+      "requested_variant_word": "zeal",
+      "audio_sha256": "0a26e3d2d0c823d105f5893b90195a76c05bfa63c57157ff74b4a5327bce4f8d",
+      "human_heard_word": null,
+      "hearing_note": "User confirmed acceptance; no separate word transcription was provided.",
+      "user_should_emit": true,
+      "classification": "user_accepted_contextual_pronunciation_variant",
+      "original_strict_literal_expected_emit": false,
+      "default_emitted": true,
+      "required_word_observer_emitted": false
+    },
+    {
+      "id": "pen-close_wrong_word",
+      "book_anchor": "the child held a red pen",
+      "requested_variant_word": "pin",
+      "audio_sha256": "eee30d9640a29c7d453741357951627359c7ac86b03adf458794cda31e263414",
+      "human_heard_word": null,
+      "hearing_note": "User confirmed acceptance; no separate word transcription was provided.",
+      "user_should_emit": true,
+      "classification": "user_accepted_contextual_pronunciation_variant",
+      "original_strict_literal_expected_emit": false,
+      "default_emitted": true,
+      "required_word_observer_emitted": false
+    },
+    {
+      "id": "sink-close_wrong_word",
+      "book_anchor": "he carefully cleaned the white sink",
+      "requested_variant_word": "zinc",
+      "audio_sha256": "78c8fb3cff8e4fa9c12e2148379f8687a71ae07c1e405a48cb4c3f5bf338c48d",
+      "human_heard_word": null,
+      "hearing_note": "User confirmed acceptance; no separate word transcription was provided.",
+      "user_should_emit": true,
+      "classification": "user_accepted_contextual_pronunciation_variant",
+      "original_strict_literal_expected_emit": false,
+      "default_emitted": true,
+      "required_word_observer_emitted": false
+    }
+  ]
+}

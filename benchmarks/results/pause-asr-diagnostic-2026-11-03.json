@@ -1,0 +1,144 @@
+{
+  "date": "2026-11-03",
+  "scope": "Controlled 2x2 silence duration and ASR chunk phase investigation",
+  "execution": {
+    "fresh_streams": 4,
+    "audio_seconds": 76.06,
+    "trials_per_input": 1,
+    "all_samples_delivered": true,
+    "all_eof_and_app_observer_replay_checks_pass": true,
+    "all_trials_retained": true,
+    "baseline_and_original_long_gap_callback_sequences_reproduced": true
+  },
+  "configuration": {
+    "model": "parakeet-nemo",
+    "matching": "split",
+    "hints": false,
+    "hotwords": null,
+    "chunk_ms": 560,
+    "right_ms": 560,
+    "left_ms": 5600,
+    "packet_samples": 4096,
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "device": "RTX 4060 Laptop GPU / WSL NeMo"
+  },
+  "model": {
+    "path": "model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo",
+    "bytes": 2474055680,
+    "mtime_ns": 1793366874092865400,
+    "sha256": "ec23ed9150c8fde49072c3e2d61678ab903dbcef389d658db833420cbc1da35b"
+  },
+  "server_environment": {
+    "wsl_distribution": "Ubuntu",
+    "packages": {
+      "nemo_toolkit": "3.1.0",
+      "torch": "2.7.1+cu118",
+      "torchaudio": "2.7.1+cu118",
+      "numpy": "2.2.6",
+      "websockets": "16.1.1"
+    },
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "configuration_matches_reference": true
+  },
+  "speech_pcm_identical_in_all_four_cases": true,
+  "target_sentence_pcm_sha256": "f76a4b5451cc91e78b949e3a0190f343ebd9ee29711b3078f61ca199488add27",
+  "result": "Both short-gap phases recognize A small rabbit and emit. The original long-gap phase loses A small and suppresses. Extending that long gap by 280 ms changes chunk phase and restores the complete phrase and effect.",
+  "inference": "Recognition depends on the interaction of long silence and chunk phase for this fixed input. Silence alone is insufficient to explain the miss; chunk phase alone is insufficient because both short-gap phases succeed.",
+  "unresolved": "The decoder-level cause is not isolated. No universal reset/endpointing fix follows from four single trials.",
+  "next_step": "Evaluate general silence/utterance-boundary handling on a predeclared range of pauses and chunk offsets; do not add a 280-ms padding rule or alter matcher coverage to fit this sentence.",
+  "integrity": {
+    "runtime_asr_model_matcher_thresholds_unchanged": true,
+    "originals_unchanged": true,
+    "sources_match_completed_prefix_regression": true,
+    "diagnostic_script_sha256": "9fd4a7e0ed85a930e1cfe19ff879c06effabe1e16ce8c1289156566da9e46bf7"
+  },
+  "protocol_metadata_clarification": "The protocol field original_pcm_sha256 contains the complete source WAV file hash. The target-sentence PCM hash is recorded separately here after direct byte comparisons.",
+  "cases": [
+    {
+      "id": "short_phase_a",
+      "inserted_silence_seconds": 0.0,
+      "target_start_seconds": 3.845,
+      "target_chunk_phase_ms": 485.0,
+      "target_emitted": true,
+      "a_small_rabbit_in_final_asr": true,
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. A small rabbit rested beside the old apple tree. She filled the watering can and walked back home",
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      }
+    },
+    {
+      "id": "long_phase_b",
+      "inserted_silence_seconds": 15.4,
+      "target_start_seconds": 19.245,
+      "target_chunk_phase_ms": 205.0,
+      "target_emitted": false,
+      "a_small_rabbit_in_final_asr": false,
+      "final_asr": "Maya opened the wooden gate and stepped into the garden rabbit rested beside the old apple tree. She filled the watering can and walked back home",
+      "outcomes": {
+        "emitted": [
+          "start",
+          "finish"
+        ],
+        "suppressed": [
+          "target"
+        ],
+        "skipped": [],
+        "unreached": []
+      }
+    },
+    {
+      "id": "short_phase_b",
+      "inserted_silence_seconds": 0.28,
+      "target_start_seconds": 4.125,
+      "target_chunk_phase_ms": 205.0,
+      "target_emitted": true,
+      "a_small_rabbit_in_final_asr": true,
+      "final_asr": "Maya opened the wooden gate and stepped into the garden. A small rabbit rested beside the old apple tree. She filled the watering can and walked back home",
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      }
+    },
+    {
+      "id": "long_phase_a",
+      "inserted_silence_seconds": 15.68,
+      "target_start_seconds": 19.525,
+      "target_chunk_phase_ms": 485.0,
+      "target_emitted": true,
+      "a_small_rabbit_in_final_asr": true,
+      "final_asr": "Maya opened the wooden gate and stepped into the garden A small rabbit rested beside the old apple tree. She filled the watering can and walked back home",
+      "outcomes": {
+        "emitted": [
+          "start",
+          "target",
+          "finish"
+        ],
+        "suppressed": [],
+        "skipped": [],
+        "unreached": []
+      }
+    }
+  ],
+  "listening_review": "benchmarks/results/pause-interruption-listening-2026-11-03.json",
+  "limits": [
+    "Inspected synthetic adult sentence; not new child accuracy.",
+    "Four single trials distinguish this fixed grid only; no population or universal causal claim.",
+    "No silence reset, hints, model parameters, matcher thresholds or words are modified."
+  ],
+  "artifacts": "output/pause-asr-diagnostic-2026-11-03"
+}

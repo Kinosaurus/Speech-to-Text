@@ -24,7 +24,7 @@ class WordBoundaryTests(unittest.TestCase):
             with self.subTest(ref=ref, heard=heard):
                 self.assertFalse(exact_boundary_match(ref, heard))
 
-    def test_internal_and_final_boundaries_preserve_recency_and_prompts(self):
+    def test_internal_and_final_boundaries_preserve_recency_and_negation(self):
         for anchor, heard in [
             ('we opened the red notebook', 'we opened the red note book'),
             ('she put the teapot on the stove', 'she put the tea pot on the stove'),
@@ -33,7 +33,8 @@ class WordBoundaryTests(unittest.TestCase):
             permission = EffectPermission(dict(checkpoint_text=anchor), 1, [])
             with self.subTest(anchor=anchor):
                 self.assertTrue(permission.permits(heard.split(), allow_word_boundaries=True)[0])
-                self.assertFalse(permission.permits(('please repeat '+heard).split(), allow_word_boundaries=True)[0])
+                self.assertTrue(permission.permits(('please repeat '+heard).split(), allow_word_boundaries=True)[0])
+                self.assertFalse(permission.permits(('never repeat '+heard).split(), allow_word_boundaries=True)[0])
                 self.assertFalse(permission.permits((heard+' and then we walked away').split(), allow_word_boundaries=True)[0])
 
     def test_required_words_may_split_but_cannot_disappear(self):

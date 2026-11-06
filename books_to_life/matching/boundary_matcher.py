@@ -5,6 +5,7 @@ Only an accepted candidate ending at the next checkpoint can use this credit;
 silence, stale text and a timer cannot trigger a scene.
 """
 from books_to_life.matching.split_matcher import SplitEvidenceMatcher
+from books_to_life.matching.effect_permission import NEGATION_WORDS
 
 
 class BoundaryEvidenceMatcher(SplitEvidenceMatcher):
@@ -24,13 +25,13 @@ class BoundaryEvidenceMatcher(SplitEvidenceMatcher):
         target = self.current_index
         start, end = self.checkpoint_ranges[target]
         text = tuple(self._buffer)
-        # Do not turn a quoted instruction/negated ending into extra support.
-        prompt = set(text[-16:]) & {'not', 'never', 'dont', "don't", 'say', 'repeat'}
+        # Positive coaching may supply ordinary independent reading evidence.
+        negated = set(text[-16:]) & NEGATION_WORDS
         fresh = (prefix is not None and self._fresh_updates > prefix['update']
                  and self._fresh_updates - prefix['update'] <= 12
                  and (not self._segments or 0 < self._audio_time-prefix['time'] <= 12)
                  and text != prefix['text'])
-        if (fresh and not prompt and scene == target == prefix['scene']
+        if (fresh and not negated and scene == target == prefix['scene']
                 and best.end == end and best.start <= prefix['end']-2
                 and text[-1] == self.words[end-1]
                 and self._pending_scene != scene):
@@ -47,7 +48,7 @@ class BoundaryEvidenceMatcher(SplitEvidenceMatcher):
         # Require actual anchor words near the end, not unrelated earlier book
         # progress. Keep one vote, independent of how many callbacks repeat it.
         anchor_prefix = self.words[start:best.end]
-        if (not prompt and end-2 <= best.end < end and best.end-start >= 3
+        if (not negated and end-2 <= best.end < end and best.end-start >= 3
                 and best.start <= best.end-3
                 and len(set(anchor_prefix) & set(text[-16:])) >= 3):
             self._boundary_prefix = dict(scene=target, end=best.end,

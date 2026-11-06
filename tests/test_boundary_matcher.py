@@ -45,11 +45,18 @@ class BoundaryTests(unittest.TestCase):
         for end in range(1, 5):
             self.assertFalse(feed(m, 'alpha bravo cedar delta eagle forest', end).triggered)
 
-    def test_prompt_does_not_supply_boundary_credit(self):
-        for prefix in ('do not', 'please repeat', 'can you say'):
+    def test_negated_instruction_does_not_supply_boundary_credit(self):
+        for prefix in ('do not', 'never repeat', "don't say"):
             m = BoundaryEvidenceMatcher(config())
             feed(m, prefix + ' alpha bravo cedar delta eagle', 5)
             self.assertFalse(feed(m, prefix + ' alpha bravo cedar delta eagle forest', 6).triggered)
+
+    def test_positive_coaching_supplies_independent_prefix_and_endpoint(self):
+        for prefix in ('please repeat', 'can you say'):
+            m=BoundaryEvidenceMatcher(config())
+            self.assertFalse(feed(m,prefix+' alpha bravo cedar delta eagle',5).triggered)
+            self.assertTrue(feed(m,prefix+' alpha bravo cedar delta eagle forest',6).triggered)
+            self.assertFalse(feed(m,'alpha bravo cedar delta eagle forest',7).triggered)
 
     def test_no_credit_for_jumping_over_an_unread_checkpoint(self):
         cfg = copy.deepcopy(config())
