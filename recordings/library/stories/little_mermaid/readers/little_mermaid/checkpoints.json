@@ -36,6 +36,8 @@
       "checkpoint_position": 2,
       "page": 1,
       "checkpoint_text": "And the little mermaid could not speak",
+      "effect_cue": "the little mermaid could not speak",
+      "required_words": ["speak"],
       "word_start": 37,
       "word_end": 44,
       "effect": {
