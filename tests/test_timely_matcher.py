@@ -120,4 +120,29 @@ class SkyGardenInterruptionTests(unittest.TestCase):
         self.assertFalse(any(update.triggered for update in updates))
 
 
+class ContextualEndingConfirmationTests(unittest.TestCase):
+    def test_authored_cue_reuses_context_only_with_new_audio_and_exact_final_word(self):
+        manifest = (Path(__file__).resolve().parents[1] / "recordings/library/stories/little_mermaid"
+                    / "readers/little_mermaid/checkpoints.json")
+        for ending, endpoint_time, expected in [
+                ("speak", 28, True), ("sneak", 28, False), ("speak", 27.4, False)]:
+            with self.subTest(ending=ending, endpoint_time=endpoint_time):
+                matcher = TimelyEvidenceMatcher.from_file(manifest, stability=2)
+                intro = "The next thing she knew the little mermaid woke up she had the prettiest life"
+                feed(matcher, intro, 9.7)
+                intro += " on earth"
+                feed(matcher, intro, 10.1)
+                context = (intro + " and in front of her stood the handsome prince who are you asked "
+                           "the prince where do you come from")
+                feed(matcher, context, 25.2)
+                feed(matcher, context + " the little mer", 26.8)
+                prefix = context + " the little merry could not"
+                self.assertFalse(feed(matcher, prefix, 27.4).triggered)
+                update = feed(matcher, prefix + " " + ending, endpoint_time)
+                self.assertEqual(update.triggered, expected)
+                if expected:
+                    self.assertEqual(update.confirmations, 2)
+                    self.assertEqual(update.checkpoint_id, "mermaid_cannot_speak")
+
+
 if __name__=='__main__':unittest.main()

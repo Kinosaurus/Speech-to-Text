@@ -18,6 +18,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     def __init__(self, *args, **kwargs):
         self._pending_effect = None
         self._cue_prefix = None
+        self._previous_segment = None
         super().__init__(*args, **kwargs)
         self._effect_permissions = {
             str(cp['id']): EffectPermission(cp, self.default_min_coverage, self.words[max(0, start-3):start])
@@ -76,6 +77,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         previous_position = self.tracked_word_position
         previous_prefix = self._cue_prefix
         previous_segment = self._segments[-1] if self._segments else None
+        self._previous_segment = previous_segment
         if previous_index >= len(self.checkpoints) and self._pending_effect is not None:
             # Ingest fresh final-word revisions even after reading reaches EOF.
             # Bypass the next-anchor helper, which requires an unread checkpoint.
@@ -644,6 +646,28 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         return (appended[-len(suffix):] == suffix
                 and not self._negation_words.intersection(before_suffix))
 
+    def _confirm_contextual_ending(self, scene, best, start, end):
+        """Carry one accepted vote across the boundary of an authored cue."""
+        if (scene != self.current_index or best.end != end or best.start >= start
+                or self.tracked_word_position != end-1 or self._evidence_end != end-1
+                or self._pending_scene != self._scene(end-1) or self.confirmations == 0
+                or best.matched_words < self.minimum_words or not self._segments):
+            return
+        checkpoint = self.current_checkpoint
+        permission = self._effect_permissions[str(checkpoint['id'])]
+        endpoint = self.words[end-1]
+        previous = self._previous_segment
+        segment = self._segments[-1]
+        if (checkpoint.get('stability', self.default_stability) == 2
+                and permission.has_explicit_cue and endpoint in permission.required
+                and previous is not None and previous['end'] == self._evidence_time
+                and segment['start'] == previous['start'] and segment['end'] > previous['end']
+                and previous['text'].split()[-2:] == self.words[end-3:end-1]
+                and segment['text'] == previous['text'] + ' ' + endpoint
+                and permission.supports_context_suffix(self._buffer)):
+            self._pending_scene = scene
+            self.confirmations = 1
+
     def _confirm_candidate(self, scene, best):
         self._accepted_context_words = best.matched_words
         start, end = self.checkpoint_ranges[self.current_index]
@@ -655,6 +679,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
             and best.end >= end and any(self._scene(stop) == scene and score >=
                 self._threshold(scene, self._misses >= self.recovery_after)
                 for begin, stop, score in self._bounded_candidates))
+        self._confirm_contextual_ending(scene, best, start, end)
         self._confirm_from_prefix(scene, best)
         target = self.current_index
         start,end = self.checkpoint_ranges[target]
