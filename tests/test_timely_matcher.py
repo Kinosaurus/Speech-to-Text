@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 import unittest
 
 from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
@@ -57,6 +59,65 @@ class TimelyTests(unittest.TestCase):
         m=TimelyEvidenceMatcher(config())
         feed(m,'has a big house with a lot',1)
         self.assertTrue(feed(m,'has a big house with a lot of steps',2).triggered)
+
+
+class SkyGardenInterruptionTests(unittest.TestCase):
+    def replay(self, turns, stability=1, cumulative=False):
+        manifest_path = (
+            Path(__file__).resolve().parents[1]
+            / "recordings/library/stories/sample/readers/demo/checkpoints.json"
+        )
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        matcher = TimelyEvidenceMatcher(manifest, stability=stability)
+        segments = []
+        updates = []
+        for start, end, text in turns:
+            segments.append(dict(start=start, end=end, text=text, completed=True))
+            transcript = " ".join(segment["text"] for segment in segments)
+            snapshot = ([dict(start=0, end=end, text=transcript, completed=False)]
+                        if cumulative else segments)
+            updates.append(matcher.process(transcript, snapshot))
+        return updates
+
+    def test_child_finishes_after_parent_question(self):
+        updates = self.replay([
+            (0.0, 1.4, "Mila found a tiny silver"),
+            (2.0, 4.5, "Take your time, what does that word say?"),
+            (5.0, 6.6, "seed beside the old gate"),
+            (7.0, 8.6, "seed beside the old gate"),
+        ])
+        self.assertEqual([update.tracked_word_position for update in updates[:3]], [5, 5, 10])
+        self.assertEqual([update.triggered for update in updates], [False, False, True, False])
+        self.assertEqual(updates[2].checkpoint_id, "seed_found")
+
+    def test_parent_can_finish_after_long_pause_at_either_stability(self):
+        for stability in (1, 2):
+            with self.subTest(stability=stability):
+                updates = self.replay([
+                    (0.0, 1.4, "Mila found a tiny silver"),
+                    (90.0, 91.6, "seed beside the old gate"),
+                    (92.0, 93.6, "seed beside the old gate"),
+                ], stability=stability)
+                self.assertEqual([update.triggered for update in updates], [False, True, False])
+                self.assertEqual(updates[1].checkpoint_id, "seed_found")
+
+    def test_cumulative_parakeet_snapshot_preserves_interrupted_cue(self):
+        updates = self.replay([
+            (0.0, 1.4, "Mila found a tiny silver"),
+            (2.0, 4.5, "Take your time, what does that word say?"),
+            (90.0, 91.6, "seed beside the old gate"),
+            (92.0, 93.6, "seed beside the old gate"),
+        ], stability=2, cumulative=True)
+        self.assertEqual([update.triggered for update in updates], [False, False, True, False])
+        self.assertEqual(updates[2].checkpoint_id, "seed_found")
+
+    def test_stray_endpoint_after_conversation_does_not_finish_cue(self):
+        updates = self.replay([
+            (0.0, 1.4, "Mila found a tiny silver"),
+            (2.0, 4.5, "Take your time, what does that word say?"),
+            (90.0, 90.5, "gate"),
+        ])
+        self.assertFalse(any(update.triggered for update in updates))
 
 
 if __name__=='__main__':unittest.main()
