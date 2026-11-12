@@ -145,4 +145,35 @@ class ContextualEndingConfirmationTests(unittest.TestCase):
                     self.assertEqual(update.checkpoint_id, "mermaid_cannot_speak")
 
 
+class VerifiedCueConfirmationTests(unittest.TestCase):
+    def test_mermaid_waits_for_confirmation_and_revalidates_the_saved_words(self):
+        manifest = (Path(__file__).resolve().parents[1] / "recordings/library/stories/little_mermaid"
+                    / "readers/little_mermaid/checkpoints.json")
+        opening = ("the next thing she knew the little mermaid woke up she had the prettiest "
+                   "lines on earth and in front of her stood the handsome prince who are you "
+                   "asked the prince where do you come from")
+        prefix = opening + " i'm the little mermaid she could not "
+        for ending, end_time, expected in [
+                ("speak", 32.48, True), ("sleep", 32.48, False), ("speak", 38.0, False)]:
+            with self.subTest(ending=ending, end_time=end_time):
+                matcher = TimelyEvidenceMatcher.from_file(manifest, stability=2)
+                for text, time in [
+                        (opening.split(" lines on earth")[0], 8.4),
+                        (opening.split(" in front")[0], 10.08),
+                        (opening.split(" of her")[0], 12.32),
+                        (opening, 24.08),
+                        (opening + " the little mermaid", 26.32),
+                        (opening + " i'm the little mermaid", 28.0)]:
+                    feed(matcher, text, time)
+                first = feed(matcher, prefix + "speak she could not", 30.24)
+                self.assertEqual(first.confirmations, 1)
+                self.assertFalse(first.triggered)
+                later = prefix + ending + " she could only look at the prince with her"
+                update = feed(matcher, later, end_time)
+                self.assertEqual(update.checkpoint_id, "mermaid_cannot_speak")
+                self.assertEqual(update.confirmations, 2)
+                self.assertEqual(update.triggered, expected)
+                self.assertFalse(feed(matcher, later + " deep blue eyes", end_time + 2).triggered)
+
+
 if __name__=='__main__':unittest.main()

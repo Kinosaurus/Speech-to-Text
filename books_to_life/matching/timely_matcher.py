@@ -12,11 +12,13 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     mode = 'experimental contextual alignment with timely anchor recovery'
     _permission_grace_seconds = 2.0
     _permission_grace_updates = 4
+    _verified_cue_grace_seconds = 6.0
     _negation_words = NEGATION_WORDS
     _prompt_words = {'not', 'never', 'dont', "don't", 'say', 'repeat'}
 
     def __init__(self, *args, **kwargs):
         self._pending_effect = None
+        self._verified_cue = None
         self._cue_prefix = None
         self._previous_segment = None
         super().__init__(*args, **kwargs)
@@ -86,6 +88,9 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                              completed=False, duplicate=not fresh, skipped_checkpoint_ids=())
         else:
             update = super().process(transcript, segments)
+        verified_cue = self._update_verified_cue(update, previous_index) if segments else False
+        if not segments:
+            self._verified_cue = None
         if self.current_index != previous_index:
             self._cue_prefix = None
         extra_suppressed = ()
@@ -116,6 +121,8 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                                                  and update.alignment_start is not None
                                                  and update.alignment_start <= self.checkpoint_ranges[previous_index][1]-3
                                                  and self._accepted_context_words >= self.minimum_words))
+        if not allowed and verified_cue:
+            allowed = True
         if not allowed and locally_acquired:
             allowed = self._interrupted_permission(update.checkpoint_id)
         if not allowed and self._resumed_cue:
@@ -146,6 +153,56 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         return replace(update, triggered=False, effect=None, effect_suppressed=True,
                        effect_suppression_reason=reason, effect_policy=permission.policy,
                        completed=self.completed, additional_suppressed_checkpoint_ids=extra_suppressed)
+
+    def _update_verified_cue(self, update, previous_index):
+        """Carry effect permission while ordinary alignment confirms the next cue."""
+        saved = self._verified_cue
+        self._verified_cue = None
+        if (previous_index >= len(self.checkpoints) or update.ambiguous
+                or (update.triggered and update.skipped_checkpoint_ids)):
+            return False
+        cue_id = str(self.checkpoints[previous_index]['id'])
+        if update.checkpoint_id != cue_id:
+            return False
+
+        if saved is not None and saved['index'] == previous_index:
+            owner = next((segment for segment in self._segments
+                          if segment['start'] == saved['segment_start']), None)
+            if (owner is not None and owner['end'] >= saved['segment_end']
+                    and self._audio_time - saved['time'] <= self._verified_cue_grace_seconds
+                    and self._fresh_updates - saved['update'] <= self._permission_grace_updates):
+                start = saved['offset']
+                heard = owner['text'].split()[start:start + len(saved['words'])]
+                if heard == saved['words']:
+                    if update.triggered:
+                        return True
+                    if self._pending_scene == previous_index:
+                        self._verified_cue = saved
+
+        if (update.triggered or update.duplicate or self._pending_scene != previous_index
+                or self._evidence_update != self._fresh_updates or update.alignment_end is None):
+            return False
+        _, cue_end = self.checkpoint_ranges[previous_index]
+        if update.alignment_start > cue_end - 2 or update.alignment_end < cue_end:
+            return False
+        permission = self._effect_permissions[cue_id]
+        if permission.policy != 'one_shot':
+            return False
+
+        # Keep the observed cue neighbourhood in its source segment. A later
+        # revision must still contain those same words at that offset.
+        segment = self._segments[-1]
+        heard = segment['text'].split()
+        width = min(self.transcript_words, max(12, len(permission.anchor) + 8))
+        for end in range(len(heard), max(0, len(heard) - 4), -1):
+            start = max(0, len(heard) - width)
+            words = heard[start:end]
+            if heard[end - 1] == permission.anchor[-1] and permission.permits(words)[0]:
+                self._verified_cue = dict(index=previous_index, segment_start=segment['start'],
+                                          segment_end=segment['end'], offset=start, words=words,
+                                          time=self._audio_time, update=self._fresh_updates)
+                break
+        return False
 
     def _can_defer(self, permission, acquired, update):
         if (not acquired or update.ambiguous or update.recovering or update.skipped_checkpoint_ids
