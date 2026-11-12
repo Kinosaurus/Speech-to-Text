@@ -113,6 +113,36 @@ class PendingEffectTests(unittest.TestCase):
         self.assertFalse(update.triggered)
         self.assertTrue(update.effect_suppressed)
 
+    def interrupted(self):
+        matcher = TimelyEvidenceMatcher(config())
+        self.assertTrue(step(matcher, INTRO, 1).triggered)
+        self.assertFalse(step(matcher, PREFIX, 2, completed=True).triggered)
+        prefix = dict(start=0, end=2, text=PREFIX, completed=True)
+        aside = dict(start=3, end=4, text='well', completed=False)
+        update = matcher.process(PREFIX + ' well', [prefix, aside])
+        self.assertEqual(update.effect_pending_checkpoint_id, '2')
+        aside = dict(aside, end=5, text='well the bag is outside', completed=True)
+        update = matcher.process(PREFIX + ' ' + aside['text'], [prefix, aside])
+        self.assertEqual(update.effect_pending_checkpoint_id, '2')
+        return matcher, prefix, aside
+
+    def test_interrupted_pending_cue_accepts_isolated_exact_endpoint_once(self):
+        matcher, prefix, aside = self.interrupted()
+        finish = dict(start=22, end=23, text='puppies', completed=False)
+        segments = [prefix, aside, finish]
+        update = matcher.process(PREFIX + ' ' + aside['text'] + ' puppies', segments)
+        self.assertTrue(update.triggered)
+        self.assertEqual(update.checkpoint_id, '2')
+        self.assertFalse(matcher.process(PREFIX + ' ' + aside['text'] + ' puppies', segments).triggered)
+
+    def test_interrupted_pending_cue_rejects_endpoint_inside_conversation(self):
+        matcher, prefix, aside = self.interrupted()
+        talk = dict(start=22, end=23, text='the puppies are outside', completed=True)
+        update = matcher.process(PREFIX + ' ' + aside['text'] + ' ' + talk['text'],
+                                 [prefix, aside, talk])
+        self.assertFalse(update.triggered)
+        self.assertTrue(update.effect_suppressed)
+
     def test_missing_required_word_is_not_deferred_by_an_existing_endpoint(self):
         cfg=config('garden')
         cp=cfg['checkpoints'][1];cp['required_words']=['small']

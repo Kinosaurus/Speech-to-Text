@@ -74,6 +74,8 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         self._resumed_cue = False
         previous_index = self.current_index
         previous_position = self.tracked_word_position
+        previous_prefix = self._cue_prefix
+        previous_segment = self._segments[-1] if self._segments else None
         if previous_index >= len(self.checkpoints) and self._pending_effect is not None:
             # Ingest fresh final-word revisions even after reading reaches EOF.
             # Bypass the next-anchor helper, which requires an unread checkpoint.
@@ -86,13 +88,12 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
             self._cue_prefix = None
         extra_suppressed = ()
         if self._pending_effect is not None:
-            pending = self._pending_effect
             if update.triggered:
                 # A later checkpoint takes priority. Never replay an old effect
                 # after that new scene, and do not lose the new scene's event.
                 extra_suppressed = (self._close_pending(),)
             else:
-                return self._resolve_pending(update)
+                return self._resolve_pending(update, previous_segment)
         if not update.triggered:
             return update
         permission = self._effect_permissions[update.checkpoint_id]
@@ -124,10 +125,18 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         # Reading progress advances independently of this effect decision.
         self.triggered_checkpoint_ids.discard(update.checkpoint_id)
         if self._can_defer(permission, locally_acquired, update):
+            end = self.checkpoint_ranges[previous_index][1]
+            prefix_words = tuple(permission.anchor[:-1])
+            resume_prefix = None
+            if (previous_prefix is not None and previous_prefix['end'] == previous_position == end-1
+                    and self.tracked_word_position == end and len(prefix_words) >= self.minimum_words
+                    and self._exact_prefixes.get(len(prefix_words), {}).get(prefix_words)
+                    == (previous_index, end-1) and self.words.count(permission.anchor[-1]) == 1):
+                resume_prefix = previous_prefix
             self._pending_effect = dict(update=update, time=self._audio_time,
                 fresh_update=self._fresh_updates, text=tuple(self._buffer),
-                end=self.checkpoint_ranges[self.current_index-1][1],
-                segment_start=self._segments[-1]['start'] if self._segments else None)
+                end=end, segment_start=self._segments[-1]['start'] if self._segments else None,
+                resume_prefix=resume_prefix)
             return replace(update, triggered=False, effect=None, completed=False,
                            effect_policy=permission.policy, effect_pending_checkpoint_id=update.checkpoint_id,
                            additional_suppressed_checkpoint_ids=extra_suppressed)
@@ -158,7 +167,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         self._pending_effect = None
         return ident
 
-    def _resolve_pending(self, update):
+    def _resolve_pending(self, update, previous_segment):
         pending = self._pending_effect
         saved = pending['update']
         permission = self._effect_permissions[saved.checkpoint_id]
@@ -179,19 +188,56 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         fresh = (not update.duplicate and self._fresh_updates > pending['fresh_update']
                  and tuple(buffer) != pending['text']
                  and (not self._segments or self._audio_time > pending['time'] or completed))
-        if not expired and not negated and fresh and permission.permits(
-                buffer, allow_phonetic_endpoint=True, allow_word_boundaries=True)[0]:
+        waiting, resumed = self._pending_interruption(update, permission, previous_segment)
+        if not negated and fresh and (resumed or (not expired and permission.permits(
+                buffer, allow_phonetic_endpoint=True, allow_word_boundaries=True)[0])):
             self._pending_effect = None
             self.triggered_checkpoint_ids.add(saved.checkpoint_id)
             return replace(saved, triggered=True, effect_policy=permission.policy,
                            tracked_word_position=self.tracked_word_position, completed=self.completed)
-        if expired or negated or completed or changed_segment:
+        if negated or ((expired or completed or changed_segment) and not waiting):
             self._close_pending()
             return replace(saved, triggered=False, effect=None, effect_suppressed=True,
                            effect_policy=permission.policy, tracked_word_position=self.tracked_word_position,
                            effect_suppression_reason='one-shot endpoint remained unsupported before its pending window closed',
                            completed=self.completed)
         return replace(update, completed=False, effect_pending_checkpoint_id=saved.checkpoint_id)
+
+    def _pending_interruption(self, update, permission, previous_segment):
+        """Check for a separate aside after a verified near-complete cue."""
+        pending = self._pending_effect
+        prefix = pending['resume_prefix']
+        if (prefix is None or not self._segments or update.ambiguous
+                or self.tracked_word_position != pending['end']):
+            return False, False
+        owner_index = next((i for i, segment in enumerate(self._segments)
+                            if segment['start'] == prefix['segment_start']), None)
+        if owner_index is None or owner_index == len(self._segments)-1:
+            return False, False
+        owner = self._segments[owner_index]
+        head = owner['text'].split()[prefix['offset']:]
+        if not owner['completed'] or head != permission.anchor[:-1]:
+            return False, False
+        following = self._segments[owner_index+1:]
+        heard = [word for segment in following for word in segment['text'].split()]
+        if len(head) + len(heard) > self.transcript_words:
+            return False, False
+        endpoint = permission.anchor[-1]
+        if endpoint not in heard:
+            # A single incomplete token stays subject to the short revision
+            # window. More speech in a separate segment can be an aside.
+            return len(heard) >= 2, False
+        segment = following[-1]
+        resumed = (
+            previous_segment is not None
+            and previous_segment['completed']
+            and owner['start'] < previous_segment['start'] < segment['start']
+            and previous_segment['end'] <= segment['start'] < segment['end']
+            and len(heard) >= 3 and heard.count(endpoint) == 1
+            and segment['text'] == endpoint
+            and permission.permits(head + [endpoint])[0]
+        )
+        return False, resumed
 
     def _select_candidate(self, candidates):
         best = super()._select_candidate(candidates)
