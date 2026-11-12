@@ -223,18 +223,26 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         if len(head) + len(heard) > self.transcript_words:
             return False, False
         endpoint = permission.anchor[-1]
-        if endpoint not in heard:
+        segment = following[-1]
+        # Parakeet can transcribe an isolated spoken "tea" as the letter "T".
+        tea_as_letter = (endpoint == 'tea' and segment['text'] == 't'
+                         and endpoint not in permission.required)
+        if endpoint not in heard and not (tea_as_letter and segment['completed']):
             # A single incomplete token stays subject to the short revision
             # window. More speech in a separate segment can be an aside.
             return len(heard) >= 2, False
-        segment = following[-1]
+        if tea_as_letter and previous_segment is not None and previous_segment['start'] == segment['start']:
+            # A partial "T" could still grow into a longer utterance.
+            if previous_segment['completed'] or previous_segment['text'] != 't':
+                return False, False
+            previous_segment = following[-2] if len(following) > 1 else None
         resumed = (
             previous_segment is not None
             and previous_segment['completed']
             and owner['start'] < previous_segment['start'] < segment['start']
             and previous_segment['end'] <= segment['start'] < segment['end']
-            and len(heard) >= 3 and heard.count(endpoint) == 1
-            and segment['text'] == endpoint
+            and len(heard) >= 3 and endpoint not in heard[:-1]
+            and (segment['text'] == endpoint or tea_as_letter)
             and permission.permits(head + [endpoint])[0]
         )
         return False, resumed
