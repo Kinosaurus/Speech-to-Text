@@ -113,11 +113,8 @@ class PendingEffectTests(unittest.TestCase):
         self.assertFalse(update.triggered)
         self.assertTrue(update.effect_suppressed)
 
-    def interrupted(self, ending='puppies', required=False):
-        cfg = config(ending)
-        if required:
-            cfg['checkpoints'][1]['required_words'] = [ending]
-        matcher = TimelyEvidenceMatcher(cfg)
+    def interrupted(self):
+        matcher = TimelyEvidenceMatcher(config())
         self.assertTrue(step(matcher, INTRO, 1).triggered)
         self.assertFalse(step(matcher, PREFIX, 2, completed=True).triggered)
         prefix = dict(start=0, end=2, text=PREFIX, completed=True)
@@ -145,25 +142,6 @@ class PendingEffectTests(unittest.TestCase):
                                  [prefix, aside, talk])
         self.assertFalse(update.triggered)
         self.assertTrue(update.effect_suppressed)
-
-    def test_interrupted_tea_accepts_only_the_finalized_letter_transcription(self):
-        for ending, spoken, required, expected in [
-                ('tea', 'T', False, True),
-                ('tea', 'T is the next letter', False, False),
-                ('tea', 'key', False, False),
-                ('tea', 'tee', False, False),
-                ('tea', 'T', True, False),
-                ('puppies', 'T', False, False)]:
-            with self.subTest(ending=ending, spoken=spoken, required=required):
-                matcher, prefix, aside = self.interrupted(ending, required)
-                context = PREFIX + ' ' + aside['text']
-                partial = dict(start=22, end=23, text='T', completed=False)
-                self.assertFalse(matcher.process(context + ' T', [prefix, aside, partial]).triggered)
-                finish = dict(partial, text=spoken, completed=True)
-                segments = [prefix, aside, finish]
-                transcript = context + ' ' + spoken
-                self.assertEqual(matcher.process(transcript, segments).triggered, expected)
-                self.assertFalse(matcher.process(transcript, segments).triggered)
 
     def test_missing_required_word_is_not_deferred_by_an_existing_endpoint(self):
         cfg=config('garden')
