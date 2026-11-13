@@ -1,4 +1,2 @@
-# The development server (server.py) uses only the Python standard library,
-# so there are no third-party Python packages to install.
-#
-# Requires Python 3.8 or newer.
+rapidfuzz>=3.14,<4
+cmudict==1.1.3

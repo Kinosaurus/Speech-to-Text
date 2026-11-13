@@ -30,37 +30,40 @@ function getContext() {
   return audioContext;
 }
 
-async function createRecordingStream() {
+let destination = null;
+let playback = null;
+
+function recordingStream() {
+  if (!destination || destination.stream.getTracks().some(track => track.readyState === 'ended')) {
+    destination = getContext().createMediaStreamDestination();
+    destination.channelCount = 1;
+  }
+  return destination.stream;
+}
+
+export async function startRecordingPlayback() {
+  if (mode !== 'recording' || !recording) return;
   const ctx = getContext();
   if (ctx.state === 'suspended') await ctx.resume();
-
-  const destination = ctx.createMediaStreamDestination();
-  destination.channelCount = 1; // mono, like a microphone
-
-  // No recording chosen yet (e.g. during initialisation): a silent stream.
-  if (!recording) return destination.stream;
+  stopRecordingPlayback();
+  recordingStream();
 
   const source = ctx.createBufferSource();
   source.buffer = recording.buffer;
   source.connect(destination);
+  playback = source;
+  source.addEventListener('ended', () => {
+    if (playback === source) playback = null;
+    source.disconnect();
+  });
   source.start(ctx.currentTime + LEAD_IN_SECONDS);
+}
 
-  const stopPlayback = () => {
-    try { source.stop(); } catch { /* already stopped */ }
-    try { source.disconnect(); } catch { /* already disconnected */ }
-  };
-
-  // When the SDK stops the "microphone" (the Stop button, or the SDK's own
-  // probe during initialisation) the recording must stop too.
-  for (const track of destination.stream.getTracks()) {
-    const originalStop = track.stop.bind(track);
-    track.stop = () => {
-      stopPlayback();
-      originalStop();
-    };
-  }
-
-  return destination.stream;
+export function stopRecordingPlayback() {
+  if (!playback) return;
+  const source = playback;
+  playback = null;
+  source.stop();
 }
 
 /** Call once, before KeenASR is used. Safe to call repeatedly. */
@@ -75,7 +78,7 @@ export function installAudioSource() {
     const wantsAudioOnly = constraints?.audio && !constraints?.video;
 
     if (mode === 'recording' && wantsAudioOnly) {
-      return createRecordingStream();
+      return recordingStream();
     }
 
     return realGetUserMedia(constraints);

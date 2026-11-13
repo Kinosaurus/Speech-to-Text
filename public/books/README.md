@@ -8,4 +8,5 @@ books/<book-name>/
 └── checkpoints.json     phrases that trigger events (see the main README)
 ```
 
-To switch book, change `BOOK_NAME` at the top of `public/src/app.js`.
+The default is Little Mermaid. Open `/?book=tea` for Tea.
+Register new book folders in the browser selector and in `guarded_sessions.py`.

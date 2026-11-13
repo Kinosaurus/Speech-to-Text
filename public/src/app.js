@@ -12,14 +12,15 @@ import {
 } from 'https://esm.sh/preact@10.13.2/hooks';
 
 import KeenASR, { TextAligner } from '../vendor/keenasr/keenasr-web.js';
-import { createCheckpointEngine } from './checkpointEngine.js';
 import { normalize, getWords } from './textUtils.js';
 import {
   installAudioSource,
   setAudioMode,
   setRecording,
   setRecordingFromUrl,
-  hasRecording
+  hasRecording,
+  startRecordingPlayback,
+  stopRecordingPlayback
 } from './audioSource.js';
 
 // Must run before KeenASR asks for the microphone.
@@ -30,7 +31,7 @@ installAudioSource();
 // --------------------------------------------------
 
 // Folder name under public/books/ containing full_text.txt and checkpoints.json
-const BOOK_NAME = 'little-mermaid';
+const BOOK_NAME = new URLSearchParams(location.search).get('book') === 'tea' ? 'tea' : 'little-mermaid';
 
 const TEXT_URL = new URL(
   `../books/${BOOK_NAME}/full_text.txt`,
@@ -49,6 +50,23 @@ const MODEL_URL = new URL(
   '../vendor/keenasr/models/keenAK3m-nnet3chain-en-us.tgz',
   import.meta.url
 );
+
+const LISTENING_VAD = {
+  timeoutForNoSpeech: 25,
+  timeoutEndSilenceForGoodMatch: 25,
+  timeoutEndSilenceForAnyMatch: 25,
+  timeoutMaxDuration: 120
+};
+
+async function readingRequest(action, body) {
+  const response = await fetch('/api/reading/' + action, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body)
+  });
+  if (!response.ok) throw new Error(`Reading matcher request failed (HTTP ${response.status}).`);
+  return response.json();
+}
 
 let readingText = '';
 let bookConfig = null;
@@ -183,6 +201,7 @@ function App() {
   const [transcript, setTranscript] = useState('');
   const [isReady, setIsReady] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isStarting, setIsStarting] = useState(false);
   const [isStopping, setIsStopping] = useState(false);
   const [furthestWord, setFurthestWord] = useState(-1);
   const [metrics, setMetrics] = useState(null);
@@ -190,17 +209,13 @@ function App() {
   const [recordingInfo, setRecordingInfo] = useState('');
   const [bundledRecordings, setBundledRecordings] = useState([]);
 
-  const engineRef = useRef(null);
+  const attemptRef = useRef(null);
   const listeningRef = useRef(false);
   const mountedRef = useRef(true);
   const initRef = useRef(false);
   const stoppingRef = useRef(false);
-  const stopTimerRef = useRef(null);
 
-  // Called once the previous attempt has really finished, so a late final
-  // result can never end the next attempt.
   function finishStopping() {
-    clearTimeout(stopTimerRef.current);
     stoppingRef.current = false;
     setIsStopping(false);
   }
@@ -218,20 +233,37 @@ function App() {
     setCheckpoints(states);
   }
 
-  function handleAlignment(alignment, spokenText, isFinal = false) {
-    if (!engineRef.current) return;
-
-    const result = engineRef.current.update(
-      alignment,
-      spokenText,
-      isFinal
-    );
-
-    if (Number.isInteger(result.furthestIndex)) {
-      setFurthestWord(result.furthestIndex);
-    }
-
+  function showMatcherState(result) {
+    setFurthestWord(result.position - 1);
     updateCheckpointView(result.checkpoints);
+    if (result.trigger) appendEvent(`Triggered ${result.trigger}.`);
+  }
+
+  function submitTranscript(attempt, text, completed) {
+    const seconds = (performance.now() - attempt.started) / 1000;
+    attempt.updates = attempt.updates.then(async () => {
+      if (attemptRef.current !== attempt || attempt.failed || attempt.cancelled) return;
+      const result = await readingRequest('update', {attempt: attempt.id, text, seconds, completed});
+      if (attemptRef.current === attempt && !attempt.cancelled) showMatcherState(result);
+    }).catch(error => {
+      attempt.failed = true;
+      if (attemptRef.current === attempt) setError(error.message);
+    });
+    return attempt.updates;
+  }
+
+  async function closeAttempt(attempt) {
+    attemptRef.current = null;
+    try {
+      if (attempt) await readingRequest('close', {attempt: attempt.id});
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      listeningRef.current = false;
+      setIsListening(false);
+      finishStopping();
+      setStatus('Reading attempt finished.');
+    }
   }
 
   // Load both files when the page opens.
@@ -405,89 +437,38 @@ function App() {
 
       textAligner = new TextAligner(readingText, KeenASR);
 
-      engineRef.current = createCheckpointEngine(
-        bookConfig,
-        event => {
-          appendEvent(event.message);
-
-          if (event.type === 'triggered') {
-            // Hook your projector or sound-effect controller here later.
-            // This demo logs the event only; it does not play effects.
-          }
-        }
-      );
-
-      KeenASR.setVADParameters({
-        timeoutForNoSpeech: 10,
-        timeoutEndSilenceForGoodMatch: 5,
-        timeoutEndSilenceForAnyMatch: 5,
-        timeoutMaxDuration: 30
-      });
-
-      // Process every partial result to maintain incremental alignment.
       KeenASR.onPartialResult = partialResult => {
-        const partialText = partialResult?.text ?? '';
-
-        if (!partialText || !textAligner) return;
-
-        setTranscript(partialText);
-
-        try {
-          const alignment = textAligner.incrementalAlign(
-            partialText
-          );
-
-          handleAlignment(alignment, partialText);
-        } catch (alignmentError) {
-          console.error('Partial alignment error:', alignmentError);
-        }
+        const attempt = attemptRef.current;
+        const text = partialResult?.text ?? '';
+        if (!attempt || stoppingRef.current || !text) return;
+        setTranscript(text);
+        submitTranscript(attempt, text, false);
       };
 
-      // Process the final result before resetting for the next attempt.
       KeenASR.onFinalResponse = async finalResponse => {
-        const asrResult =
-          finalResponse?.asrResult ??
-          finalResponse?.result ??
-          {};
-
-        const finalText = asrResult.text ?? '';
-
+        const attempt = attemptRef.current;
+        if (!attempt || stoppingRef.current) return;
+        stoppingRef.current = true;
+        setIsStopping(true);
+        stopRecordingPlayback();
+        const finalText = (finalResponse?.asrResult ?? finalResponse?.result)?.text ?? '';
         setTranscript(finalText);
-
-        let alignment = null;
-
-        try {
-          if (textAligner && finalText) {
-            alignment = textAligner.incrementalAlign(finalText);
-            handleAlignment(alignment, finalText, true);
+        if (finalText) {
+          try {
+            const alignment = textAligner.incrementalAlign(finalText);
+            setMetrics({
+              accuracy: alignment.refLength > 0 ? alignment.matches / alignment.refLength : null,
+              wordErrorRate: alignment.wordErrorRate ?? null
+            });
+          } catch (error) {
+            console.error('Final alignment error:', error);
           }
-        } catch (alignmentError) {
-          console.error('Final alignment error:', alignmentError);
+          await submitTranscript(attempt, finalText, true);
+        } else {
+          await attempt.updates;
         }
-
-        if (alignment) {
-          const accuracy =
-            Number.isFinite(alignment.matches) &&
-            Number.isFinite(alignment.refLength) &&
-            alignment.refLength > 0
-              ? (alignment.matches / alignment.refLength) * 100
-              : null;
-
-          setMetrics({
-            accuracy,
-            wordErrorRate: alignment.wordErrorRate ?? null
-          });
-        }
-
-        listeningRef.current = false;
-        setIsListening(false);
-        finishStopping();
-        setStatus('Reading attempt finished.');
-
+        await closeAttempt(attempt);
         appendEvent('Final recognition result received.');
-
-        // Audio is optional for this basic demo.
-        // The checkpoint trigger logic does not depend on audio playback.
       };
 
       setIsReady(true);
@@ -517,74 +498,49 @@ function App() {
     setTranscript('');
     setFurthestWord(-1);
 
-    if (engineRef.current) {
-      engineRef.current.reset();
-      updateCheckpointView(engineRef.current.getStates());
-    }
-
-    // Reset the aligner before starting the next attempt.
-    if (textAligner && typeof textAligner.reset === 'function') {
-      textAligner.reset();
-    }
-
     listeningRef.current = true;
     setIsListening(true);
-    setStatus('Listening. Read the passage aloud.');
+    setIsStarting(true);
+    setStatus('Starting the reading attempt...');
 
     try {
-      KeenASR.setVADParameters({
-        timeoutForNoSpeech: 10,
-        timeoutEndSilenceForGoodMatch: 5,
-        timeoutEndSilenceForAnyMatch: 5,
-        timeoutMaxDuration: 30
-      });
-
+      const initial = await readingRequest('start', {book: BOOK_NAME});
+      const attempt = {id: initial.attempt, started: performance.now(), updates: Promise.resolve()};
+      attemptRef.current = attempt;
+      showMatcherState(initial);
+      textAligner.reset();
+      KeenASR.setVADParameters(LISTENING_VAD);
       await KeenASR.startListening();
-    } catch (startError) {
-      listeningRef.current = false;
-      setIsListening(false);
+      await startRecordingPlayback();
+      setStatus('Listening. Read the passage aloud.');
+    } catch (error) {
+      stopRecordingPlayback();
+      try { await KeenASR.stopListening(); } catch (stopError) { console.error(stopError); }
+      await closeAttempt(attemptRef.current);
       setStatus('Could not start listening.');
-      setError(startError?.message || String(startError));
+      setError(error.message || String(error));
+    } finally {
+      setIsStarting(false);
     }
   }
 
   async function stopReading() {
-    if (!listeningRef.current || stoppingRef.current) return;
+    const attempt = attemptRef.current;
+    if (!attempt || stoppingRef.current || !listeningRef.current) return;
 
     stoppingRef.current = true;
+    attempt.cancelled = true;
     setIsStopping(true);
-    setStatus('Stopping and waiting for final recognition...');
-
-    // Safety net: if no final result ever arrives, unlock the buttons.
-    stopTimerRef.current = setTimeout(() => {
-      listeningRef.current = false;
-      setIsListening(false);
-      finishStopping();
-      setStatus('Reading attempt finished.');
-    }, 4000);
-
+    setStatus('Stopping...');
+    stopRecordingPlayback();
     try {
-      console.log(
-        'Recognizer state before stop:',
-        KeenASR.getRecognizerState?.()
-      );
-
-      KeenASR.setVADParameters({
-        timeoutForNoSpeech: 0.2,
-        timeoutEndSilenceForGoodMatch: 0.2,
-        timeoutEndSilenceForAnyMatch: 0.2,
-        timeoutMaxDuration: 30
-      });
-
+      // Manual stop does not deliver a final recognition callback in the Web SDK.
       await KeenASR.stopListening();
-    } catch (stopError) {
-      // The recognizer may already have finished on its own.
-      console.warn('stopListening failed:', stopError);
-      listeningRef.current = false;
-      setIsListening(false);
-      finishStopping();
-      setStatus('Reading attempt finished.');
+    } catch (error) {
+      setError(error.message || String(error));
     }
+    // Queued results from this attempt cannot update the display after Stop.
+    await closeAttempt(attempt);
   }
 
   const checkpointElements = checkpoints.map(checkpoint => {
@@ -647,7 +603,7 @@ function App() {
           }),
           jsx('button', {
             onClick: stopReading,
-            disabled: !isListening || isStopping,
+            disabled: !isListening || isStarting || isStopping,
             children: 'Stop Reading'
           })
         ]
