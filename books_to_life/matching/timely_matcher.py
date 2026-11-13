@@ -16,7 +16,9 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     _negation_words = NEGATION_WORDS
     _prompt_words = {'not', 'never', 'dont', "don't", 'say', 'repeat'}
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, hold_cumulative_endpoint=False, **kwargs):
+        self._hold_cumulative_endpoint = hold_cumulative_endpoint
+        self._aside_prefix = None
         self._pending_effect = None
         self._verified_cue = None
         self._cue_prefix = None
@@ -93,6 +95,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
             self._verified_cue = None
         if self.current_index != previous_index:
             self._cue_prefix = None
+            self._aside_prefix = None
         extra_suppressed = ()
         if self._pending_effect is not None:
             if update.triggered:
@@ -248,19 +251,83 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                  and tuple(buffer) != pending['text']
                  and (not self._segments or self._audio_time > pending['time'] or completed))
         waiting, resumed = self._pending_interruption(update, permission, previous_segment)
-        if not negated and fresh and (resumed or (not expired and permission.permits(
-                buffer, allow_phonetic_endpoint=True, allow_word_boundaries=True)[0])):
+        holding, confirmed = self._cumulative_pending_endpoint(update, permission, previous_segment)
+        if holding:
+            return replace(update, completed=False, effect_pending_checkpoint_id=saved.checkpoint_id)
+        aside_seen = pending.get('cumulative_aside', False)
+        if confirmed or (not aside_seen and not negated and fresh and (resumed or (not expired and permission.permits(
+                buffer, allow_phonetic_endpoint=True, allow_word_boundaries=True)[0]))):
             self._pending_effect = None
             self.triggered_checkpoint_ids.add(saved.checkpoint_id)
             return replace(saved, triggered=True, effect_policy=permission.policy,
                            tracked_word_position=self.tracked_word_position, completed=self.completed)
-        if negated or ((expired or completed or changed_segment) and not waiting):
+        if aside_seen or negated or ((expired or completed or changed_segment) and not waiting):
             self._close_pending()
             return replace(saved, triggered=False, effect=None, effect_suppressed=True,
                            effect_policy=permission.policy, tracked_word_position=self.tracked_word_position,
                            effect_suppression_reason='one-shot endpoint remained unsupported before its pending window closed',
                            completed=self.completed)
         return replace(update, completed=False, effect_pending_checkpoint_id=saved.checkpoint_id)
+
+    def _cumulative_pending_endpoint(self, update, permission, previous_segment):
+        """Keep the exact prefix through a revised cumulative aside."""
+        if not self._hold_cumulative_endpoint or not self._segments:
+            return False, False
+        pending = self._pending_effect
+        prefix = pending['resume_prefix']
+        segment = self._segments[-1]
+        if (prefix is None or segment['start'] != prefix['segment_start']
+                or self.tracked_word_position > pending['end'] + 3 or update.ambiguous):
+            return False, False
+        head = permission.anchor[:-1]
+        words = segment['text'].split()
+        offset = prefix['offset']
+        if words[offset:offset + len(head)] != head:
+            return False, False
+        tail = words[offset + len(head):]
+        endpoint = permission.anchor[-1]
+        if self._negation_words.intersection(tail):
+            return False, False
+        # Keep the ordinary short grace for a simple spelling revision.
+        # Once there is an aside, a single provisional endpoint is insufficient.
+        if not pending.get('cumulative_aside') and len(tail) < 2:
+            return False, False
+        exact_ending = tail in ([endpoint], [head[-1], endpoint])
+        if exact_ending:
+            # Ignore one repeated prefix word, preserving the observed endpoint.
+            exact_ending = permission.permits(head + [tail[-1]])[0]
+        if not segment['completed']:
+            next_start = (self.checkpoint_ranges[self.current_index][0]
+                          if self.current_index < len(self.checkpoints) else len(self.words))
+            continuations = [self.words[i:i+2] for i in (pending['end'], next_start)
+                             if i + 2 <= len(self.words)]
+            ending = tail[1:] if tail[:1] == [head[-1]] else tail
+            starts_next_line = (len(ending) == 2 and ending[0] == endpoint
+                                and any(ending[1:] == words[:1] for words in continuations))
+            prior_endpoint = pending.get('cumulative_endpoint')
+            if prior_endpoint is not None and 0 < self._audio_time - prior_endpoint <= 12:
+                # A newer callback confirms the ending with two exact words
+                # from the next line or next cue.
+                if ending[:1] == [endpoint]:
+                    if ending[1:3] in continuations and permission.permits(head + ending[:1])[0]:
+                        return False, True
+                    if starts_next_line:
+                        return True, False
+            if self._audio_time - prefix['audio_end'] > 25:
+                return False, False
+            pending['cumulative_aside'] = True
+            if exact_ending or (starts_next_line and permission.permits(head + ending[:1])[0]):
+                pending['cumulative_endpoint'] = self._audio_time
+            else:
+                pending.pop('cumulative_endpoint', None)
+            return True, False
+        confirmed = (exact_ending and 'cumulative_endpoint' in pending
+                        and self._audio_time - pending['cumulative_endpoint'] <= 30
+                        and previous_segment is not None
+                        and previous_segment['start'] == segment['start']
+                        and not previous_segment['completed']
+                        and previous_segment['text'] == segment['text'])
+        return False, bool(confirmed)
 
     def _pending_interruption(self, update, permission, previous_segment):
         """Check for a separate aside after a verified near-complete cue."""
@@ -318,7 +385,11 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
 
     def _ingest(self, transcript, segments):
         previous_source = self._prefix_source()
+        prior_vote = (self._pending_scene, self.confirmations, self._evidence_end,
+                      self._evidence_time, self._evidence_completed)
         fresh = super()._ingest(transcript, segments)
+        if fresh and self._hold_cumulative_endpoint:
+            self._retain_vote_until_cumulative_final(prior_vote)
         if fresh:
             self._acquire_confirmation_prefix(previous_source)
             self._acquire_interrupted_prefix()
@@ -332,6 +403,8 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                     if segment['text'].split()[offset:offset+length] != self.words[start:prefix['end']]:
                         self._cue_prefix = None
                     break
+        if fresh and self._hold_cumulative_endpoint:
+            self._observe_cumulative_aside()
         if not fresh or self._ending_supported():
             return fresh
         start,end = self.checkpoint_ranges[self.current_index]
@@ -353,6 +426,97 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                                              update=self._fresh_updates,text=tuple(self._buffer))
                 break
         return fresh
+
+    def _observe_cumulative_aside(self):
+        if not self._segments or self.current_index >= len(self.checkpoints):
+            return
+        start, end = self.checkpoint_ranges[self.current_index]
+        segment = self._segments[-1]
+        words = segment['text'].split()
+        prefix = self._cue_prefix
+        if (self._aside_prefix is None and prefix is not None and prefix['end'] == end-1
+                and start <= self.tracked_word_position < end
+                and segment['start'] == prefix['segment_start']
+                and 0 < self._audio_time - prefix['audio_end'] <= 25):
+            head = self.words[start:end-1]
+            offset = prefix['offset']
+            tail = words[offset + len(head):]
+            if words[offset:offset + len(head)] == head and len(tail) >= 2 and self.words[end-1] not in tail:
+                self._aside_prefix = dict(prefix, scene=self.current_index, endpoint_at=None)
+
+    def _has_confirmed_aside_ending(self, start, end):
+        prefix = self._aside_prefix
+        segment = self._segments[-1]
+        head = self.words[start:end-1]
+        words = segment['text'].split()
+        offset = prefix['offset']
+        tail = words[offset + len(head):]
+        if (segment['start'] != prefix['segment_start']
+                or words[offset:offset + len(head)] != head
+                or self._negation_words.intersection(tail)):
+            prefix['endpoint_at'] = None
+            return False
+        if tail[:1] == head[-1:]:
+            tail = tail[1:]
+        endpoint = self.words[end-1:end]
+        if tail[:1] != endpoint:
+            prefix['endpoint_at'] = None
+            return False
+        prior = prefix['endpoint_at']
+        next_start = self.checkpoint_ranges[self.current_index+1][0] if self.current_index+1 < len(self.checkpoints) else end
+        book_context = [self.words[i:i+2] for i in (end, next_start) if i+2 <= len(self.words)]
+        starts_next_line = len(tail) == 2 and any(tail[1:] == words[:1] for words in book_context)
+        if ((tail == endpoint or starts_next_line) and not segment['completed']
+                and (starts_next_line or 0 < self._audio_time-prefix['audio_end'] <= 25)):
+            if prior is None:
+                prefix['endpoint_at'] = self._audio_time
+            return False
+        return (prior is not None and 0 < self._audio_time-prior <= (30 if segment['completed'] else 12)
+                and (tail[1:3] in book_context or (segment['completed'] and tail == endpoint)))
+
+    def _retain_vote_until_cumulative_final(self, prior_vote):
+        """Allow a final callback to confirm the same exact pre-final cue."""
+        scene, votes, end, time, completed = prior_vote
+        prefix = self._cue_prefix
+        previous = self._previous_segment
+        if (scene != self.current_index or votes != 1 or completed
+                or prefix is None or previous is None or not self._segments):
+            return
+        segment = self._segments[-1]
+        start, cue_end = self.checkpoint_ranges[scene]
+        heard = segment['text'].split()
+        if (segment['completed'] and not previous['completed']
+                and segment['start'] == previous['start'] == prefix['segment_start']
+                and segment['text'] == previous['text'] and previous['end'] == time
+                and 0 <= self._audio_time-time <= 30
+                and end == cue_end and prefix['end'] == cue_end-1
+                and 0 < time-prefix['audio_end'] <= 25
+                and heard[prefix['offset']:] == self.words[start:cue_end]):
+            self._pending_scene = scene
+            self.confirmations = votes
+            self._evidence_end = end
+            self._evidence_time = time
+            self._evidence_completed = completed
+
+    @property
+    def awaiting_handoff_final(self):
+        """Expose a verified provisional ending to the recognizer's VAD."""
+        if not self._hold_cumulative_endpoint or not self._segments:
+            return False
+        if self._pending_effect is not None:
+            return 'cumulative_endpoint' in self._pending_effect
+        prefix = self._cue_prefix
+        scene = self.current_index
+        if (prefix is None or scene != self._pending_scene or self.confirmations != 1
+                or scene >= len(self.checkpoints)):
+            return False
+        start, end = self.checkpoint_ranges[scene]
+        segment = self._segments[-1]
+        return (not segment['completed'] and segment['start'] == prefix['segment_start']
+                and self._evidence_end == end and self._evidence_time == self._audio_time
+                and prefix['end'] == end-1
+                and 4 <= self._audio_time-prefix['audio_end'] <= 25
+                and segment['text'].split()[prefix['offset']:] == self.words[start:end])
 
     def _acquire_interrupted_prefix(self):
         """Retain observed words of the acquired next anchor across an aside."""
@@ -859,4 +1023,10 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                     and sum(self.words[i:i+5] == context for i in range(len(self.words)-4)) == 1):
                 self._boundary_prefix = dict(scene=target,end=best.end,time=self._audio_time,
                                              update=self._fresh_updates,text=tuple(self._buffer))
+        if (scene == target and self._aside_prefix is not None and self._segments
+                and self._effect_permissions[str(self.current_checkpoint['id'])].permits(self._buffer)[0]
+                and not self._has_confirmed_aside_ending(start, end)):
+            # Preserve ordinary alignment votes, while withholding a cue
+            # whose first exact endpoint might still expand into conversation.
+            return 1
         return count

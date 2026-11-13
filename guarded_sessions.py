@@ -1,4 +1,5 @@
 """Local reading attempts using the split matcher from main (90a8710)."""
+import json
 import math
 import threading
 import time
@@ -28,6 +29,7 @@ class Attempt:
             segment = dict(start=0, end=seconds, text=text, completed=completed)
             update = self.matcher.process(text, [segment])
             return dict(trigger=update.checkpoint_id if update.triggered else None,
+                        awaiting_handoff_final=self.matcher.awaiting_handoff_final,
                         **self.snapshot())
 
     def snapshot(self):
@@ -56,7 +58,9 @@ class GuardedSessions:
     def start(self, book):
         if not isinstance(book, str) or book not in ("little-mermaid", "tea"):
             raise ValueError("Unknown book.")
-        matcher = TimelyEvidenceMatcher.from_file(self.books / book / "checkpoints.json", stability=2)
+        manifest = self.books / book / "checkpoints.json"
+        matcher = TimelyEvidenceMatcher(json.loads(manifest.read_text(encoding="utf-8")),
+                                       stability=2, hold_cumulative_endpoint=book == "tea")
         attempt = Attempt(matcher)
         ident = uuid4().hex
         with self.lock:

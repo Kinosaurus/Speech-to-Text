@@ -241,9 +241,13 @@ function App() {
 
   function submitTranscript(attempt, text, completed) {
     const seconds = (performance.now() - attempt.started) / 1000;
+    // Match the book's spelling when Keen splits the compound in the stove line.
+    const matcherText = BOOK_NAME === 'tea'
+      ? text.replace(/(\bput the )tea pot(?= on\b)/giu, '$1teapot')
+      : text;
     attempt.updates = attempt.updates.then(async () => {
       if (attemptRef.current !== attempt || attempt.failed || attempt.cancelled) return;
-      const result = await readingRequest('update', {attempt: attempt.id, text, seconds, completed});
+      const result = await readingRequest('update', {attempt: attempt.id, text: matcherText, seconds, completed});
       if (attemptRef.current === attempt && !attempt.cancelled) showMatcherState(result);
     }).catch(error => {
       attempt.failed = true;
@@ -409,8 +413,11 @@ function App() {
         }
       });
 
-      // Change this suffix if you modify the passage but keep the same
-      // book_id and your SDK caches decoding graphs.
+      // Keen decodes the stove line more reliably with the compound split.
+      // Keep the original passage for alignment and the cue matcher.
+      const decodingText = BOOK_NAME === 'tea'
+        ? readingText.replace(/\bteapot\b/giu, 'tea pot')
+        : readingText;
       const graphHash = readingText
         .split('')
         .reduce((hash, char) =>
@@ -419,13 +426,15 @@ function App() {
       const safeBookId = String(bookConfig.book_id || 'reading_book')
         .replace(/[^A-Za-z0-9_]/g, '_');
 
-      decodingGraphName = `${safeBookId}_${Math.abs(graphHash)}`;
+      // Version Tea's graph separately so cached graphs use the new vocabulary.
+      const graphVersion = BOOK_NAME === 'tea' ? '_compound_book_raw' : '';
+      decodingGraphName = `${safeBookId}_${Math.abs(graphHash)}${graphVersion}`;
 
       setStatus('Preparing oral-reading decoder...');
 
       await KeenASR.createDecodingGraphFromPhrases(
         decodingGraphName,
-        [readingText],
+        [decodingText],
         {
           speakingTaskType: KeenASR.SpeakingTask.ORAL_READING
         }
