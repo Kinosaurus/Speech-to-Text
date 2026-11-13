@@ -19,6 +19,7 @@
       "checkpoint_text": "She had the prettiest legs on earth",
       "word_start": 10,
       "word_end": 17,
+      "effect_policy": "ambience",
       "effect": {
         "effect_id": "warm_daylight",
         "lighting_colour": "#F5DEB3",
@@ -40,6 +41,7 @@
       "required_words": ["speak"],
       "word_start": 37,
       "word_end": 44,
+      "effect_policy": "ambience",
       "effect": {
         "effect_id": "quiet_blue_ambience",
         "lighting_colour": "#BFD8ED",
