@@ -454,6 +454,64 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                     and self._effect_permissions[ident].permits(context['words'],
                         allow_phonetic_endpoint=True,allow_word_boundaries=True)[0])
 
+    def _cumulative_interruption_candidates(self, low, high):
+        """Rejoin a verified cue across an aside in one cumulative segment."""
+        prefix = self._cue_prefix
+        if prefix is None or not self._segments or self._interruption_context is not None:
+            return []
+        start, end = self.checkpoint_ranges[self.current_index]
+        segment = self._segments[-1]
+        if (segment['start'] != prefix['segment_start']
+                or not 0 < self._audio_time - prefix['audio_end'] <= 12
+                or not low <= start < prefix['end'] <= self.tracked_word_position < end <= high):
+            return []
+        ident = str(self.current_checkpoint['id'])
+        permission = self._effect_permissions[ident]
+        endpoint = self.words[end-1]
+        if not (permission.policy == 'one_shot' and permission.has_explicit_cue
+                and endpoint in permission.required):
+            return []
+        head = self.words[start:prefix['end']]
+        heard = segment['text'].split()
+        context = prefix['context']
+        context_start = prefix['offset'] - len(context)
+        if heard[context_start:prefix['offset']] != context:
+            return []
+        appended = heard[prefix['offset'] + len(head):]
+        suffix = self.words[prefix['end']:end]
+        endings = [suffix]
+        if len(suffix) >= 3 and suffix[0] not in permission.required:
+            endings.append(suffix[1:])
+        # An isolated endpoint after a break could be conversation. Require
+        # the contiguous book continuation, including words after the cue.
+        stop = min(end+4, high)
+        if self.current_index+1 < len(self.checkpoint_ranges):
+            stop = min(stop, self.checkpoint_ranges[self.current_index+1][0])
+        for after in range(2, stop-end+1):
+            following = self.words[end:end+after]
+            for ending in endings:
+                resume = ending + following
+                aside = appended[:-len(resume)]
+                if (appended[-len(resume):] != resume or len(aside) < self.minimum_words
+                        or self._negation_words.intersection(aside)
+                        or not permission.permits(head + ending)[0]):
+                    continue
+                run = context + head
+                if sum(self.words[i:i+len(run)] == run for i in range(len(self.words)-len(run)+1)) != 1:
+                    return []
+                # Align observed words only. If the first resumed word was
+                # dropped, the usual alignment score and cue coverage apply.
+                finish = end+after
+                candidates = [span for span in align_words(head+resume, self.words[start:finish], start,
+                                                          self.minimum_words, self._minimum_coverage)
+                              if span.start == start and span.end == finish
+                              and span.score >= self._threshold(self.current_index, False)]
+                if candidates:
+                    self._interruption_context = dict(id=ident, words=head+ending, cumulative=True)
+                    self._interruption_scenes.add(self.current_index)
+                    return candidates
+        return []
+
     def _prefix_source(self):
         if self._segments:
             segment = self._segments[-1]
@@ -573,6 +631,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         self._bounded_candidates = {(s.start, s.end, s.score) for s in bounded}
         candidates.extend(bounded)
         candidates.extend(self._interrupted_candidates(low,high))
+        candidates.extend(self._cumulative_interruption_candidates(low, high))
         start, end = self.checkpoint_ranges[self.current_index]
         anchor = self.words[start:end]
         if self._continues_cue() and low <= self._cue_prefix['end'] < end <= high:
@@ -746,7 +805,9 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
             self.confirmations = 1
             self._evidence_end = self._cue_prefix['end']
             self._evidence_time = self._cue_prefix['audio_end']
-        if best.end <= start or best.end > end:
+        continuing = (self._interruption_context and self._interruption_context.get('cumulative')
+                      and scene == target)
+        if best.end <= start or (best.end > end and not continuing):
             self._cue_prefix = None
         elif self._segments and best.start <= start and start+3 <= best.end < end:
             segment = self._segments[-1]
@@ -755,8 +816,14 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
             offset = len(heard) - len(partial)
             if (heard[offset:] == partial and len(set(partial)) >= 3
                     and not self._prompt_words.intersection(heard[max(0, offset-3):offset])):
+                context = []
+                for word in self.words[max(best.start, start-4):start][::-1]:
+                    i = offset - len(context) - 1
+                    if i < 0 or heard[i] != word:
+                        break
+                    context.insert(0, word)
                 self._cue_prefix = dict(end=best.end, segment_start=segment['start'],
-                                        audio_end=segment['end'], offset=offset)
+                                        audio_end=segment['end'], offset=offset, context=context)
         live = self._live_prefix(scene)
         prefix = self._boundary_prefix
         if (live and scene == target and best.end == end and self._ending_supported()

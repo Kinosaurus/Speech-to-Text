@@ -176,4 +176,46 @@ class VerifiedCueConfirmationTests(unittest.TestCase):
                 self.assertFalse(feed(matcher, later + " deep blue eyes", end_time + 2).triggered)
 
 
+class CumulativeInterruptionTests(unittest.TestCase):
+    def test_authored_cue_requires_book_continuation_after_an_aside(self):
+        manifest_path = (Path(__file__).resolve().parents[1] / "recordings/library/stories/little_mermaid"
+                         / "readers/little_mermaid/checkpoints.json")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        for checkpoint in manifest["checkpoints"]:
+            checkpoint["effect_policy"] = "one_shot"
+        opening = ("the next thing she knew the little mermaid woke up she had the prettiest legs on earth "
+                   "and in front of her stood the handsome prince who are you asked the prince where do you come from")
+        prefix = opening + " and the little mermaid"
+        aside = " spoken_noise you spoken_noise where you are spoken_noise "
+        for first, second, revised, expected in [
+                ("could not speak she could", "only", False, True),
+                ("not speak she could", "only", False, True),
+                ("speak louder so i can hear you", "from the hall", False, False),
+                ("not sneak she could", "only look", False, False),
+                ("not speak she could", "only", True, False),
+        ]:
+            with self.subTest(resume=first, revised=revised):
+                matcher = TimelyEvidenceMatcher(manifest, stability=2)
+                feed(matcher, opening.split(" earth")[0], 9)
+                self.assertTrue(feed(matcher, opening.split(" and in front")[0], 10).triggered)
+                feed(matcher, opening.rsplit(" from", 1)[0], 23)
+                feed(matcher, opening, 24)
+                feed(matcher, prefix, 25)
+                heard = prefix + aside + first
+                self.assertFalse(feed(matcher, prefix + aside.rstrip(), 31).triggered)
+                if first != "could not speak she could":
+                    self.assertFalse(feed(matcher, prefix + aside + first.split()[0], 33).triggered)
+                self.assertFalse(feed(matcher, heard, 34).triggered)
+                self.assertFalse(feed(matcher, heard, 34.1).triggered)
+                if revised:
+                    heard = heard.replace("the little mermaid spoken", "the little maiden spoken")
+                later = heard + " " + second
+                update = feed(matcher, later, 35)
+                self.assertEqual(update.triggered, expected)
+                if expected:
+                    self.assertEqual(update.checkpoint_id, "mermaid_cannot_speak")
+                    self.assertEqual(update.confirmations, 2)
+                self.assertFalse(feed(matcher, later + " at the prince", 36).triggered)
+
+
 if __name__=='__main__':unittest.main()
