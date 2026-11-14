@@ -1,5 +1,43 @@
 # Pi 4: recognition and checkpoint tracking on the device
 
+## Parakeet CPU replay on 64-bit Linux
+
+Use this workflow for an offline pod test on a 64-bit Raspberry Pi or an x86-64
+Linux CPU host. The packaged Docker workflow below uses Whisper.
+
+From this checkout, create a Python 3.10+ virtual environment and install the
+native server and replay dependencies. Raspberry Pi OS may need the
+`python3-venv` system package. The asset preparation command selects the host's
+Linux runtime and checks the downloaded runtime, Python bindings, and quantized
+Parakeet Unified English 0.6B model.
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements/requirements-native.txt 'numpy>=1.26.4,<2.5' 'rapidfuzz>=3.14,<4' 'cmudict==1.1.3'
+python -m benchmarks.prepare --pi-parakeet --cache model-cache/pi-parakeet
+python -m books_to_life.cli.run_native_server --model parakeet --device cpu --threads 4 --chunk-ms 560 --cache model-cache/pi-parakeet
+```
+
+Copy the private `pod-pc-transfer.zip` to the checkout. In a second terminal,
+activate the same environment and run the eight Tea and Mermaid clips at
+their original playback rate. Use `--clip mermaid-original` for a single
+smoke test. The replays use the same guarded matcher at stability 2.
+
+```sh
+. .venv/bin/activate
+python -m benchmarks.replay_native pod-pc-transfer.zip
+```
+
+The private JSON report includes the transcript, cue decisions, cue times,
+first- and second-half callback lag, and time to drain the last packet. Rising
+callback lag or a long final drain can indicate that decoding fell behind at
+1×. Callback lag is measured against the audio packet boundary reported by
+the server. Cue times measure software decisions against the start of playback.
+Measure speaker and projector onset separately on the pod.
+
+## Whisper CPU deployment on Pi 4
+
 Both programs run on the **same Pi 4**. There is no external recognition server.
 
 ```text

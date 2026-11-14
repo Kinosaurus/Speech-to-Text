@@ -13,6 +13,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     _permission_grace_seconds = 2.0
     _permission_grace_updates = 4
     _verified_cue_grace_seconds = 6.0
+    _interrupted_ending_grace_seconds = 30.0
     _negation_words = NEGATION_WORDS
     _prompt_words = {'not', 'never', 'dont', "don't", 'say', 'repeat'}
 
@@ -41,6 +42,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         self.suppressed_checkpoint_ids = set()
         self._confirmation_prefix = None
         self._interrupted_prefix = None
+        self._interrupted_ending = None
         self._interruption_context = None
         self._interruption_scenes = set()
         self._exact_prefixes = {}
@@ -123,7 +125,8 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                                                  and self._accepted_context_words >= self.minimum_words))
         if not allowed and verified_cue:
             allowed = True
-        if not allowed and locally_acquired:
+        if not allowed and (locally_acquired or (self._interruption_context
+                            and self._interruption_context.get('final_word'))):
             allowed = self._interrupted_permission(update.checkpoint_id)
         if not allowed and self._resumed_cue:
             # Both pieces were verified against this exact anchor in order.
@@ -322,6 +325,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         if fresh:
             self._acquire_confirmation_prefix(previous_source)
             self._acquire_interrupted_prefix()
+            self._remember_interrupted_ending()
         if fresh and self._cue_prefix is not None:
             prefix = self._cue_prefix
             start, _ = self.checkpoint_ranges[self.current_index]
@@ -453,6 +457,104 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         return bool(context and context['id'] == ident
                     and self._effect_permissions[ident].permits(context['words'],
                         allow_phonetic_endpoint=True,allow_word_boundaries=True)[0])
+
+    def _remember_interrupted_ending(self):
+        """Save a near-complete cue before an aside, including recognizer revisions."""
+        saved = self._interrupted_ending
+        if saved and (saved['scene'] < self.current_index
+                      or self._audio_time - saved['time'] > self._interrupted_ending_grace_seconds):
+            self._interrupted_ending = None
+        if not self._segments or not self._buffer:
+            return
+        # Capture the first hypothesis of this prefix. Identical later callbacks
+        # cannot extend its lifetime or count as fresh cue evidence.
+        tail = self._buffer
+        for scene in range(self.current_index, min(self.current_index + 2, len(self.checkpoints))):
+            start, end = self.checkpoint_ranges[scene]
+            permission = self._effect_permissions[str(self.checkpoints[scene]['id'])]
+            reference = self.words[start:end-1]
+            if (not permission.has_explicit_cue or permission.policy != 'one_shot'
+                    or self.words[end-1] not in permission.required or len(reference) < self.minimum_words
+                    or self._exact_prefixes.get(len(reference), {}).get(tuple(reference)) != (scene, end-1)):
+                continue
+            # Permit one adjacent false start and one nonessential substitution.
+            # Keep the actual words and let ordinary cue permission check coverage.
+            for extra in (0, 1):
+                size = len(reference) + extra
+                if len(tail) < size:
+                    continue
+                raw = tuple(tail[-size:])
+                if extra:
+                    alternatives = (list(raw[:i] + raw[i+1:]) for i in range(1, size) if raw[i] == raw[i-1])
+                else:
+                    alternatives = (list(raw),)
+                if self._prompt_words.intersection(tail[max(0, len(tail)-size-3):-size]):
+                    continue
+                for heard in alternatives:
+                    differences = [i for i, word in enumerate(reference) if word != heard[i]]
+                    if len(differences) > 1 or any(
+                            reference[i] in permission.required or reference[i] in self._negation_words
+                            or heard[i] in self._negation_words for i in differences):
+                        continue
+                    if not self._interrupted_ending or self._interrupted_ending['raw'] != raw:
+                        remaining = size
+                        for segment in reversed(self._segments):
+                            length = len(segment['text'].split())
+                            if length >= remaining:
+                                self._interrupted_ending = dict(
+                                    scene=scene, raw=raw, heard=heard, time=self._audio_time,
+                                    segment_start=segment['start'], offset=length-remaining)
+                                break
+                            remaining -= length
+                    return
+
+    def _interrupted_ending_candidates(self, low, high):
+        """Confirm an interrupted final word against an exact continuation."""
+        saved = self._interrupted_ending
+        if not saved or not 0 < self._audio_time - saved['time'] <= self._interrupted_ending_grace_seconds:
+            return []
+        scene = saved['scene']
+        start, end = self.checkpoint_ranges[scene]
+        if not low <= start < end < high:
+            return []
+        # Parakeet sends revised segment snapshots. Revalidate the saved words
+        # against the normalized snapshot before applying the rolling word limit.
+        # This also keeps intervening negation visible if the aside is long.
+        snapshot = {segment['start']: segment for segment in self._segments}
+        snapshot.update(self._previous_response)
+        if saved['segment_start'] not in snapshot:
+            return []
+        tail = ' '.join(snapshot[stamp]['text'] for stamp in sorted(snapshot)
+                        if stamp >= saved['segment_start']).split()
+        raw = saved['raw']
+        owners = [i for i in range(len(tail)-len(raw)+1) if tuple(tail[i:i+len(raw)]) == raw]
+        if owners != [saved['offset']]:
+            return []
+        appended = tail[owners[0]+len(raw):]
+        endpoint = self.words[end-1]
+        stop = min(end+4, high)
+        if scene+1 < len(self.checkpoint_ranges):
+            stop = min(stop, self.checkpoint_ranges[scene+1][0])
+        ident = str(self.checkpoints[scene]['id'])
+        permission = self._effect_permissions[ident]
+        for finish in range(end+2, stop+1):
+            resume = [endpoint] + self.words[end:finish]
+            aside = appended[:-len(resume)]
+            if (appended[-len(resume):] != resume or len(aside) < 3
+                    or self._negation_words.intersection(aside)):
+                continue
+            spoken = saved['heard'] + [endpoint]
+            if not permission.permits(spoken)[0]:
+                continue
+            candidates = [span for span in align_words(saved['heard']+resume, self.words[start:finish], start,
+                                                       self.minimum_words, self._minimum_coverage)
+                          if span.start == start and span.end == finish
+                          and span.score >= self._threshold(scene, False)]
+            if candidates:
+                self._interruption_context = dict(id=ident, words=spoken, cumulative=True, final_word=True)
+                self._interruption_scenes.add(scene)
+                return candidates
+        return []
 
     def _cumulative_interruption_candidates(self, low, high):
         """Rejoin a verified cue across an aside in one cumulative segment."""
@@ -649,6 +751,8 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         candidates.extend(bounded)
         candidates.extend(self._interrupted_candidates(low,high))
         candidates.extend(self._cumulative_interruption_candidates(low, high))
+        if self._interruption_context is None:
+            candidates.extend(self._interrupted_ending_candidates(low, high))
         start, end = self.checkpoint_ranges[self.current_index]
         anchor = self.words[start:end]
         if self._continues_cue() and low <= self._cue_prefix['end'] < end <= high:

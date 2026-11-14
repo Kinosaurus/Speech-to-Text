@@ -121,6 +121,55 @@ class SkyGardenInterruptionTests(unittest.TestCase):
 
 
 class ContextualEndingConfirmationTests(unittest.TestCase):
+    def test_mermaid_resume_revalidates_prefix_outside_rolling_buffer(self):
+        manifest = (Path(__file__).resolve().parents[1] / "recordings/library/stories/little_mermaid"
+                    / "readers/little_mermaid/checkpoints.json")
+        prefix_text = "and the little mummy could could not"
+        for label, revised_prefix, aside_start, resume, time, expected in (
+                ("resume", prefix_text, "", "speak she could", 25, True),
+                ("stray endpoint", prefix_text, "", "speak we can try again", 25, False),
+                ("early negation", prefix_text, "never repeat ", "speak she could", 25, False),
+                ("prefix revised", "and the robin could could not", "", "speak she could", 25, False),
+                ("expired", prefix_text, "", "speak she could", 35, False)):
+            with self.subTest(label=label):
+                matcher = TimelyEvidenceMatcher.from_file(manifest, stability=2)
+                prefix = dict(start=0, end=3, text=prefix_text, completed=True)
+                self.assertFalse(matcher.process(prefix_text, [prefix]).triggered)
+                prefix = dict(prefix, text=revised_prefix)
+                aside = aside_start + "wait this one how to say ah " * 7
+                triggers = []
+                for index, tail in enumerate((aside, aside + "speak", aside + resume,
+                                              aside + resume + " only", aside + resume + " only look")):
+                    segment = dict(start=3.6, end=time-2+index, text=tail, completed=False)
+                    result = matcher.process(revised_prefix + " " + tail, [prefix, segment])
+                    if result.triggered:
+                        triggers.append(result.checkpoint_id)
+                    if index < 2:
+                        self.assertFalse(result.triggered)
+                self.assertEqual(triggers, ["mermaid_cannot_speak"] if expected else [])
+
+    def test_stumbled_mermaid_cue_resumes_across_segments(self):
+        manifest = (Path(__file__).resolve().parents[1] / "recordings/library/stories/little_mermaid"
+                    / "readers/little_mermaid/checkpoints.json")
+        for resume, expected in [("speak she could", True), ("she could", False),
+                                 ("do not speak she could", False)]:
+            with self.subTest(resume=resume):
+                matcher = TimelyEvidenceMatcher.from_file(manifest, stability=2)
+                prefix = dict(start=0, end=3, text="and the little mummy could could not", completed=True)
+                self.assertFalse(matcher.process(prefix["text"], [prefix]).triggered)
+                aside = "wait this one how to say all"
+                triggers = []
+                for time, tail in enumerate((aside, aside + " speak" if expected else aside,
+                                             aside + " " + resume, aside + " " + resume + " only",
+                                             aside + " " + resume + " only look"), 5):
+                    segment = dict(start=3.6, end=time, text=tail, completed=False)
+                    result = matcher.process(prefix["text"] + " " + tail, [prefix, segment])
+                    if result.triggered:
+                        triggers.append(result.checkpoint_id)
+                    if time <= 7:
+                        self.assertFalse(result.triggered)
+                self.assertEqual(triggers, ["mermaid_cannot_speak"] if expected else [])
+
     def test_authored_cue_reuses_context_only_with_new_audio_and_exact_final_word(self):
         manifest = (Path(__file__).resolve().parents[1] / "recordings/library/stories/little_mermaid"
                     / "readers/little_mermaid/checkpoints.json")

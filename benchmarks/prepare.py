@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import platform
 import shutil
 import sys
 import tarfile
@@ -20,6 +21,18 @@ ASSETS = [
      'https://huggingface.co/handy-computer/moonshine-streaming-medium-gguf/resolve/0f99e956a9e63d591ddd7f2a20dfead255e96c68/moonshine-streaming-medium-F16.gguf'),
 ]
 
+NATIVE_RELEASE = 'https://github.com/handy-computer/transcribe.cpp/releases/download/v0.4.2'
+LINUX_RUNTIMES = {
+    'aarch64': (18137774, '5e9cc7b244949fc686d1272e796e965411e80cc768533f1704c3c53e4c7d695e'),
+    'x86_64': (22562331, '4fe87db8919ea34e461db7987713b580f54e6f3ed610457c5d8fb8eac1a15046'),
+}
+PI_PARAKEET_MODEL = (
+    'parakeet-unified-en-0.6b-Q8_0.gguf', 731357568,
+    '4b50b6dd862bf6e346929aaf4f5eaacec003bfa3f56462d6c874b41ef2f38795',
+    'https://huggingface.co/handy-computer/parakeet-unified-en-0.6b-gguf/resolve/779af05/'
+    'parakeet-unified-en-0.6b-Q8_0.gguf',
+)
+
 
 def sha256(path):
     digest = hashlib.sha256()
@@ -29,11 +42,11 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def prepare(cache):
+def prepare(cache, assets=ASSETS, minimum_free_bytes=8 * 1024**3):
     cache.mkdir(parents=True, exist_ok=True)
-    if shutil.disk_usage(cache).free < 8 * 1024**3:
-        raise RuntimeError('Need at least 8 GiB free before preparing this bounded benchmark.')
-    for name, size, digest, url in ASSETS:
+    if shutil.disk_usage(cache).free < minimum_free_bytes:
+        raise RuntimeError(f'Need at least {minimum_free_bytes / 1024**3:g} GiB free in {cache}.')
+    for name, size, digest, url in assets:
         target = cache / name
         if target.exists() and target.stat().st_size == size and (not digest or sha256(target) == digest):
             print('Cached:', name, flush=True)
@@ -68,9 +81,24 @@ def prepare(cache):
         archive.extractall(cache / 'api')
     (cache / 'sources.json').write_text(json.dumps([
         {'name': name, 'bytes': size, 'sha256': digest, 'url': url}
-        for name, size, digest, url in ASSETS
+        for name, size, digest, url in assets
     ], indent=2), encoding='utf-8')
-    print('Prepared. Whisper uses the existing container and model volume.', flush=True)
+    print(f'Prepared native assets in {cache}.', flush=True)
+
+
+def prepare_linux_parakeet(cache):
+    machine = platform.machine().lower()
+    if machine == 'arm64':
+        machine = 'aarch64'
+    if platform.system() != 'Linux' or machine not in LINUX_RUNTIMES:
+        raise RuntimeError('Use 64-bit Linux (aarch64 on Raspberry Pi) for this preparation mode.')
+    size, digest = LINUX_RUNTIMES[machine]
+    prepare(cache, [
+        ('runtime.tar.gz', size, digest, f'{NATIVE_RELEASE}/transcribe-native-0.4.2-linux-{machine}-cpu-vulkan.tar.gz'),
+        ('api.whl', 47640, '2e4a5d3e7ba78918969ccb1ee06f3d5c6c79664e0626d0da0ffe832f465e6d51',
+         f'{NATIVE_RELEASE}/transcribe_cpp-0.4.2-py3-none-any.whl'),
+        PI_PARAKEET_MODEL,
+    ], minimum_free_bytes=2 * 1024**3)
 
 
 def prepare_official_moonshine(cache):
@@ -91,8 +119,13 @@ def prepare_official_moonshine(cache):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--cache', type=Path, default=Path('model-cache/asr-benchmark'))
-    parser.add_argument('--official-moonshine', action='store_true', help='Also prepare the isolated official runtime assets.')
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument('--official-moonshine', action='store_true', help='Also prepare the isolated official runtime assets.')
+    modes.add_argument('--pi-parakeet', action='store_true', help='Prepare the Linux native runtime and Q8 Parakeet only.')
     args = parser.parse_args()
-    prepare(args.cache.resolve())
+    if args.pi_parakeet:
+        prepare_linux_parakeet(args.cache.resolve())
+    else:
+        prepare(args.cache.resolve())
     if args.official_moonshine:
         prepare_official_moonshine(args.cache.resolve())
