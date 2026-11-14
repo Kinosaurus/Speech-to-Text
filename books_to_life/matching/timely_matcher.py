@@ -626,6 +626,23 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         return super()._threshold(scene, recovering)
 
     def _alignment_candidates(self, low, high):
+        candidates = self._cue_alignment_candidates(low, high)
+        # A short match can establish nearby progress. For a large jump,
+        # require either more matching words or evidence inside the target cue.
+        return [span for span in candidates if self._supports_forward_jump(span)]
+
+    def _supports_forward_jump(self, span):
+        scene = self._scene(span.end)
+        if (span.matched_words >= 2 * self.minimum_words
+                or (scene <= self.current_index + 1
+                    and span.start <= self.tracked_word_position + self.window_words)):
+            return True
+        if scene < self.current_index:
+            return False
+        _, cue_end = self.checkpoint_ranges[scene]
+        return span.start <= cue_end - self.minimum_words
+
+    def _cue_alignment_candidates(self, low, high):
         candidates = super()._alignment_candidates(low, high)
         bounded = self._bounded_acquisition_candidates(low, high)
         self._bounded_candidates = {(s.start, s.end, s.score) for s in bounded}

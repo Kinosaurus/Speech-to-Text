@@ -8,6 +8,7 @@ from books_to_life.matching.word_boundaries import recent_boundary_spans
 # Positive coaching counts as shared reading. Explicit negation still needs
 # authored book context; it must not supply permission or extra prefix evidence.
 NEGATION_WORDS = frozenset({'not', 'never', 'dont', "don't"})
+PROMPT_WORDS = NEGATION_WORDS | {'say', 'repeat'}
 
 
 def similar(left, right, threshold=75):
@@ -94,7 +95,7 @@ class EffectPermission:
                     continue
                 prefix = query[max(0, begin-3):begin]
                 preceding = (self.preceding+self.anchor[:offset])[-len(prefix):]
-                if not (set(prefix) & NEGATION_WORDS) or prefix == preceding:
+                if not (set(prefix) & PROMPT_WORDS) or prefix == preceding:
                     return True
         return False
 
@@ -142,9 +143,9 @@ class EffectPermission:
             first = start + (pairs[0][1] if pairs else len(window)-1)
             prefix = query[max(0, first-3):first]
             # Either voice may supply the phrase, including positive coaching.
-            # A negated instruction still needs matching authored context.
-            negated = bool(set(prefix) & NEGATION_WORDS)
-            if negated and prefix != self.preceding[-len(prefix):]:
+            # Quoted prompts and negation need matching authored context.
+            prompted = bool(PROMPT_WORDS.intersection(prefix))
+            if prompted and prefix != self.preceding[-len(prefix):]:
                 continue
             return True, None
         if allow_word_boundaries and self.supports_split_anchor(buffer):
@@ -180,7 +181,7 @@ class EffectPermission:
         # Complete exact content supplies every required word, including a
         # split required word. No ordinary coverage/spelling rule is relaxed.
         for prefix in recent_boundary_spans(self.anchor, buffer):
-            negated = bool(set(prefix) & NEGATION_WORDS)
-            if not negated or prefix == self.preceding[-len(prefix):]:
+            prompted = bool(PROMPT_WORDS.intersection(prefix))
+            if not prompted or prefix == self.preceding[-len(prefix):]:
                 return True
         return False
