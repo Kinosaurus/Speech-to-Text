@@ -2,6 +2,7 @@
 
 import time
 import hashlib
+from contextlib import contextmanager
 from pathlib import Path
 import wave
 
@@ -86,6 +87,34 @@ def configure_microphone(client, selection=None, chunk=4096):
             frames_per_buffer=chunk,
         )
     return device
+
+
+@contextmanager
+def save_microphone_audio(client, destination):
+    """Write the same PCM frames the microphone client sends for recognition."""
+    if destination is None:
+        yield
+        return
+
+    path = Path(destination)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    stream = client.stream
+    read = stream.read
+    with wave.open(str(path), 'wb') as recording:
+        recording.setnchannels(client.channels)
+        recording.setsampwidth(2)
+        recording.setframerate(client.rate)
+
+        def read_and_save(*args, **kwargs):
+            frames = read(*args, **kwargs)
+            recording.writeframes(frames)
+            return frames
+
+        stream.read = read_and_save
+        try:
+            yield
+        finally:
+            stream.read = read
 
 
 def wait_for_server(client, timeout=180):

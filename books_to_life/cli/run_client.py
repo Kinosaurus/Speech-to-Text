@@ -10,7 +10,7 @@ from books_to_life.matching.evidence_matcher import EvidenceAlignmentMatcher
 from books_to_life.matching.split_matcher import SplitEvidenceMatcher
 from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
 from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
-from books_to_life.runtime.audio_runtime import configure_microphone, input_devices, wait_for_server
+from books_to_life.runtime.audio_runtime import configure_microphone, input_devices, save_microphone_audio, wait_for_server
 from books_to_life.data.recording_library import resolve_recording_path, session_outputs
 from books_to_life.context.book_context import BookContext
 
@@ -71,9 +71,11 @@ if __name__ == '__main__':
     parser.add_argument('--mute_audio_playback', '-a',
                           action='store_true',
                           help='Mute audio playback during transcription.') 
-    parser.add_argument('--save_output_recording', '-r',
-                          action='store_true',
-                          help='Save the output recording, only used for microphone input.')
+    recording = parser.add_mutually_exclusive_group()
+    recording.add_argument('--save_output_recording', '-r', action='store_true', default=True,
+                           help='Save microphone audio (enabled by default).')
+    recording.add_argument('--no-save-output-recording', dest='save_output_recording', action='store_false',
+                           help='Do not save microphone audio.')
     parser.add_argument('--enable_translation',
                           action='store_true',
                           help='Enable any-to-any translation via M2M100 model (separate from Whisper --translate).')
@@ -157,8 +159,6 @@ if __name__ == '__main__':
     if args.checkpoints:
         args.checkpoints = str(resolve_recording_path(args.checkpoints))
     Path(args.transcript_file).parent.mkdir(parents=True, exist_ok=True)
-    if args.save_output_recording:
-        Path(args.output_file).parent.mkdir(parents=True, exist_ok=True)
 
     native_model = args.model in ('parakeet', 'moonshine', 'parakeet-nemo')
     if native_model:
@@ -310,8 +310,6 @@ if __name__ == '__main__':
         initial_prompt=initial_prompt,
         hotwords=hotwords,
         transcription_callback=transcription_callback,
-        save_output_recording=args.save_output_recording,  # Only used for microphone input, False by Default
-        output_recording_filename=args.output_file,        # Only used for microphone input
         output_transcription_path=args.transcript_file,
         mute_audio_playback=args.mute_audio_playback,      # Only used for file input, False by Default
         enable_translation=args.enable_translation,        # Enable translation of the transcription output
@@ -333,7 +331,8 @@ if __name__ == '__main__':
                 client.stream.close()
             client.p.terminate()
             parser.exit(1, f'[STARTUP] {error}\n')
-        client()
+        with save_microphone_audio(client, args.output_file if args.save_output_recording else None):
+            client()
         sys.exit(0)
 
     # Validate audio files
