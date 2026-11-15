@@ -10,9 +10,12 @@ from books_to_life.matching.evidence_matcher import EvidenceAlignmentMatcher
 from books_to_life.matching.split_matcher import SplitEvidenceMatcher
 from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
 from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
-from books_to_life.runtime.audio_runtime import configure_microphone, input_devices, wait_for_server
+from books_to_life.matching.transcript_display import TranscriptEvidence
+from books_to_life.runtime.audio_runtime import configure_microphone, input_devices, save_microphone_audio, wait_for_server
+from books_to_life.runtime.audio_runtime import microphone_label
 from books_to_life.data.recording_library import resolve_recording_path, session_outputs
 from books_to_life.context.book_context import BookContext
+from books_to_life.runtime.sound_player import SoundPlayer
 
 
 def read_optional_text(parser, inline_value, file_value, label):
@@ -29,6 +32,8 @@ def read_optional_text(parser, inline_value, file_value, label):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('--stop-on-stdin-close', action='store_true', help=argparse.SUPPRESS)
+    parser.add_argument('--live-transcript', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--list_input_devices', action='store_true',
                         help='List microphone names and indexes without connecting to the server.')
     parser.add_argument('--input_device', default=None,
@@ -71,9 +76,11 @@ if __name__ == '__main__':
     parser.add_argument('--mute_audio_playback', '-a',
                           action='store_true',
                           help='Mute audio playback during transcription.') 
-    parser.add_argument('--save_output_recording', '-r',
-                          action='store_true',
-                          help='Save the output recording, only used for microphone input.')
+    recording = parser.add_mutually_exclusive_group()
+    recording.add_argument('--save_output_recording', '-r', action='store_true', default=True,
+                           help='Save microphone audio (enabled by default).')
+    recording.add_argument('--no-save-output-recording', dest='save_output_recording', action='store_false',
+                           help='Do not save microphone audio.')
     parser.add_argument('--enable_translation',
                           action='store_true',
                           help='Enable any-to-any translation via M2M100 model (separate from Whisper --translate).')
@@ -143,8 +150,17 @@ if __name__ == '__main__':
                           help='Override the number of consecutive matches required to trigger.')
     parser.add_argument('--matching_mode', choices=('alignment', 'evidence', 'split', 'fuzzy'), default='alignment',
                         help='Full-text alignment (default); experimental evidence/split alignment; or fuzzy checkpoint phrases.')
+    parser.add_argument('--sound_dir', type=Path,
+                        help='Folder containing effect WAVs; defaults to the checkpoint manifest folder.')
+    parser.add_argument('--mute_effects', action='store_true', help='Disable story effect sounds.')
+    parser.add_argument('--mute-checkpoint-sound', action='append', default=[], metavar='ID',
+                        help='Skip a checkpoint sound when another output plays it.')
+    parser.add_argument('--sound_volume', type=float, default=0.5, help='Effect volume from 0 to 1 (default: 0.5).')
+    parser.add_argument('--sound_output_device', type=int, default=None, help='PortAudio output device index; defaults to OS speakers.')
 
     args = parser.parse_args()
+    if not 0 <= args.sound_volume <= 1:
+        parser.error('--sound_volume must be between 0 and 1.')
 
     session = datetime.now().strftime('%Y%m%d-%H%M%S-%f')
     if args.files:
@@ -157,8 +173,6 @@ if __name__ == '__main__':
     if args.checkpoints:
         args.checkpoints = str(resolve_recording_path(args.checkpoints))
     Path(args.transcript_file).parent.mkdir(parents=True, exist_ok=True)
-    if args.save_output_recording:
-        Path(args.output_file).parent.mkdir(parents=True, exist_ok=True)
 
     native_model = args.model in ('parakeet', 'moonshine', 'parakeet-nemo')
     if native_model:
@@ -215,6 +229,7 @@ if __name__ == '__main__':
     )
 
     transcription_callback = None
+    sound_player = None
     book_context = None
     print(f"[ASR] Requested model={args.model}, language={args.lang}, VAD={not args.no_vad}")
     if args.checkpoints:
@@ -232,6 +247,10 @@ if __name__ == '__main__':
             f"[CHECKPOINTS] Loaded {len(checkpoint_matcher.checkpoints)} checkpoints "
             f"for '{checkpoint_matcher.title}' using {checkpoint_matcher.mode} ({MATCHING_ENGINE})."
         )
+        if not args.mute_effects:
+            sound_player = SoundPlayer(checkpoint_matcher.checkpoints, args.checkpoints,
+                sound_dir=args.sound_dir, volume=args.sound_volume, output_device=args.sound_output_device)
+            print(f'[SOUND] Loaded sounds for {len(sound_player.sounds)} checkpoints.')
 
         if not args.no_book_context:
             book_context = BookContext(
@@ -243,12 +262,32 @@ if __name__ == '__main__':
             print(f"[BOOK_CONTEXT] Hotwords: {hotwords or '(none)'}")
             print(f"[BOOK_CONTEXT] Passage prompt: {initial_prompt or '(none)'}")
 
+        transcript_evidence = TranscriptEvidence() if args.live_transcript else None
+
         def handle_transcription(text, segments):
-            print(f"[TRANSCRIPT] {text}")
+            if args.live_transcript:
+                if args.model == 'parakeet-nemo' and segments and len(segments) == 1:
+                    live_text = segments[0]['text']
+                elif native_model:
+                    # Native backends revise the full transcript on every update.
+                    live_text = text
+                else:
+                    # Whisper sends a rolling window. Keep its committed history
+                    # and use the current packet for the unfinished segment.
+                    committed = client.client.transcript
+                    parts = [segment['text'] for segment in committed]
+                    if not segments[-1].get('completed', False):
+                        parts.append(segments[-1]['text'])
+                    live_text = ' '.join(parts) if parts else text
+            else:
+                print(f"[TRANSCRIPT] {text}")
             if args.matching_mode in ('alignment', 'evidence', 'split'):
                 update = checkpoint_matcher.process(text, segments=segments)
             else:
                 update = checkpoint_matcher.process(text)
+            if transcript_evidence is not None:
+                panel_update = transcript_evidence.update(live_text, getattr(checkpoint_matcher, '_buffer', ()), update)
+                print('[PANEL_TRANSCRIPT] ' + json.dumps(panel_update), flush=True)
             if book_context:
                 hints = book_context.refresh()
                 if hints is not None:
@@ -276,6 +315,8 @@ if __name__ == '__main__':
             if update.triggered:
                 effect = json.dumps(update.effect, ensure_ascii=False)
                 print(f"[TRIGGER] {update.checkpoint_id}: {effect}")
+                if sound_player and update.checkpoint_id not in args.mute_checkpoint_sound:
+                    sound_player.handle_update(update)
             if update.completed:
                 print("[CHECKPOINTS] All story checkpoints completed.")
 
@@ -310,8 +351,6 @@ if __name__ == '__main__':
         initial_prompt=initial_prompt,
         hotwords=hotwords,
         transcription_callback=transcription_callback,
-        save_output_recording=args.save_output_recording,  # Only used for microphone input, False by Default
-        output_recording_filename=args.output_file,        # Only used for microphone input
         output_transcription_path=args.transcript_file,
         mute_audio_playback=args.mute_audio_playback,      # Only used for file input, False by Default
         enable_translation=args.enable_translation,        # Enable translation of the transcription output
@@ -321,19 +360,62 @@ if __name__ == '__main__':
     )
 
     if args.files is None:
+        if args.stop_on_stdin_close:
+            import _thread
+            from threading import Event, Thread
+
+            stopping = Event()
+            capturing = Event()
+            def stop_when_parent_closes():
+                sys.stdin.buffer.read(1)
+                stopping.set()
+                if capturing.is_set():
+                    _thread.interrupt_main()
+
+            Thread(target=stop_when_parent_closes, daemon=True).start()
+        else:
+            stopping = None
+
         try:
             microphone = configure_microphone(client, args.input_device, args.audio_chunk)
-            print(f"[MICROPHONE] {microphone['name']} (device {microphone['index']})")
+            print(f'[MICROPHONE] {microphone_label(client.p, microphone)}', flush=True)
             print(f"[AUDIO] Capture rate={client.rate} Hz, channels={client.channels}")
             print(f'[AUDIO] Packet duration={1000 * client.chunk / client.rate:g} ms')
-            wait_for_server(client, args.connection_timeout)
+            wait_for_server(client, args.connection_timeout, stopping)
+            if stopping is not None and stopping.is_set():
+                if sound_player:
+                    sound_player.close()
+                client.close_all_clients()
+                if client.stream is not None:
+                    client.stream.close()
+                client.p.terminate()
+                sys.exit(0)
         except (OSError, ValueError, ConnectionError, TimeoutError) as error:
+            if sound_player:
+                sound_player.close()
             client.close_all_clients()
             if client.stream is not None:
                 client.stream.close()
             client.p.terminate()
             parser.exit(1, f'[STARTUP] {error}\n')
-        client()
+        try:
+            with save_microphone_audio(client, args.output_file if args.save_output_recording else None):
+                if args.stop_on_stdin_close:
+                    capturing.set()
+                    if stopping.is_set():
+                        raise KeyboardInterrupt
+                    print('[SESSION] Listening', flush=True)
+                client()
+        except KeyboardInterrupt:
+            if not args.stop_on_stdin_close or not stopping.is_set():
+                raise
+        except BaseException:
+            if sound_player:
+                sound_player.close()
+            raise
+        if sound_player:
+            # WhisperLive consumes Ctrl+C internally when microphone capture ends.
+            sound_player.close()
         sys.exit(0)
 
     # Validate audio files
@@ -347,6 +429,8 @@ if __name__ == '__main__':
 
     if not valid_files:
         print("Error: No valid audio files found!")
+        if sound_player:
+            sound_player.close()
         sys.exit(1)
 
     print(f"Found {len(valid_files)} audio file(s) to stream:")
@@ -356,10 +440,19 @@ if __name__ == '__main__':
     try:
         wait_for_server(client, args.connection_timeout)
     except (ConnectionError, TimeoutError) as error:
+        if sound_player:
+            sound_player.close()
         client.close_all_clients()
         if client.stream is not None:
             client.stream.close()
         client.p.terminate()
         parser.exit(1, f'[STARTUP] {error}\n')
-    for f in valid_files:
-        client(f)
+    try:
+        for f in valid_files:
+            client(f)
+    except BaseException:
+        if sound_player:
+            sound_player.close()
+        raise
+    if sound_player:
+        sound_player.close(drain=True)

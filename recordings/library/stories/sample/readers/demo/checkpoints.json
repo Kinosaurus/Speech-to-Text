@@ -18,7 +18,7 @@
         "fade_ms": 1200,
         "visual": "silver_sparkles.gif",
         "visual_delay": 500,
-        "sound": "soft_chime.wav",
+        "sound": "../../../../../../assets/sounds/soft_chime.wav",
         "sound_delay": 1000
       },
       "word_start": 0,
@@ -37,7 +37,7 @@
         "fade_ms": 1600,
         "visual": "slow_grass_loop.gif",
         "visual_delay": 0,
-        "sound": "gentle_leaves.wav",
+        "sound": "../../../../../../assets/sounds/gentle_leaves.wav",
         "sound_delay": 0
       },
       "word_start": 25,
@@ -56,7 +56,7 @@
         "fade_ms": 1800,
         "visual": "slow_clouds_loop.gif",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
+        "sound": "../../../../../../assets/sounds/light_breeze.wav",
         "sound_delay": 0
       },
       "word_start": 49,
@@ -75,7 +75,7 @@
         "fade_ms": 2000,
         "visual": "blue_flower_opening.gif",
         "visual_delay": 0,
-        "sound": "quiet_bell.wav",
+        "sound": "../../../../../../assets/sounds/quiet_bell.wav",
         "sound_delay": 0
       },
       "word_start": 73,

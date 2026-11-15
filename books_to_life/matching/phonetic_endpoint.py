@@ -2,7 +2,7 @@
 from functools import lru_cache
 
 import cmudict
-from books_to_life.matching.phone_features import close_pronunciation_features
+from books_to_life.matching.phone_features import close_phone_features, close_pronunciation_features
 
 
 VOWELS = frozenset('AA AE AH AO AW AY EH ER EY IH IY OW OY UH UW'.split())
@@ -59,3 +59,23 @@ def phonetic_endpoint_match(reference, heard):
             if distance <= 1.25 and distance <= .25 * max(len(expected), len(actual)):
                 return True
     return False
+
+
+@lru_cache(maxsize=8192)
+def phonetic_word_credit(reference, heard):
+    """Score sound-alikes for a phrase whose other words corroborate the cue."""
+    if reference == heard:
+        return 0.0
+    expected_phones, heard_phones = pronunciations(reference), pronunciations(heard)
+    if set(expected_phones).intersection(heard_phones) or phonetic_endpoint_match(reference, heard):
+        return .75
+    for expected in expected_phones:
+        for actual in heard_phones:
+            if (min(len(expected), len(actual)) >= 3
+                    and expected[0] == actual[0] and expected[0] not in VOWELS
+                    and (expected[-1] == actual[-1] or (
+                        expected[-1] not in VOWELS and actual[-1] not in VOWELS
+                        and close_phone_features(expected[-1], actual[-1])))
+                    and _distance(expected, actual, vowel_cost=.25) <= 2.25):
+                return .5
+    return 0.0

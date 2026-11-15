@@ -55,7 +55,10 @@ class SplitEvidenceMatcher(EvidenceAlignmentMatcher):
                     credit = split_similarity(spoken[i], spoken[i+1], ref[i])
                     if not credit or len(set(ref[:i]+ref[i+1:])) < 3:
                         continue
-                    span = AlignmentSpan(begin, stop, 100*(len(ref)-1+credit)/len(ref),len(ref),len(ref))
+                    index = len(self._buffer) - len(spoken) + i
+                    partial = ((index, ref[i], credit), (index + 1, ref[i], credit))
+                    span = AlignmentSpan(begin, stop, 100*(len(ref)-1+credit)/len(ref),len(ref),len(ref),
+                                         partial_words=partial)
                     candidates.append(span)
                     self._split_candidates.add(span)
         return candidates

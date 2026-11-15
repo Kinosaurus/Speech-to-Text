@@ -26,7 +26,7 @@
         "fade_ms": 2000,
         "visual": "warm_light_loop.gif",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
+        "sound": "../../../../../../assets/sounds/horse_hooves.wav",
         "sound_delay": 0
       }
     }

@@ -7,7 +7,7 @@ extra and substituted words; checkpoint ranges select persistent ambience scenes
 from __future__ import annotations
 
 from bisect import bisect_right
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import lru_cache
 import math
 from typing import Any
@@ -27,6 +27,8 @@ class AlignmentSpan:
     score: float
     matched_words: int
     query_words: int
+    required_confirmations: int | None = None
+    partial_words: tuple[tuple[int, str, float | None], ...] = field(default=(), compare=False)
 
 
 @dataclass(frozen=True)
@@ -44,11 +46,12 @@ class AlignmentUpdate(MatchUpdate):
     effect_policy: str | None = None
     effect_pending_checkpoint_id: str | None = None
     additional_suppressed_checkpoint_ids: tuple[str, ...] = ()
+    partial_words: tuple[tuple[int, str, float | None], ...] = ()
 
 
 def align_words(
     spoken: list[str], reference: list[str], offset: int,
-    minimum_words: int, min_coverage: float,
+    minimum_words: int, min_coverage: float, spoken_indices=None,
 ) -> list[AlignmentSpan]:
     """Smith-Waterman word alignment, anchored to the latest spoken word.
 
@@ -82,6 +85,7 @@ def align_words(
         i, j, matches, credit = n, end, 0, 0.0
         last_match = -1
         distinct = set()
+        partial_words = []
         while i and j and scores[i][j] > 0:
             direction = parents[i][j]
             if direction == 1:
@@ -92,6 +96,8 @@ def align_words(
                     credit += similarity
                     distinct.add(spoken[i - 1])
                     last_match = max(last_match, i - 1)
+                    if similarity < 1 and spoken_indices is not None:
+                        partial_words.append((spoken_indices[i - 1], reference[j - 1], similarity))
                 i -= 1
                 j -= 1
             elif direction == 2:
@@ -103,7 +109,8 @@ def align_words(
                 or len(distinct) < 3 or last_match < n - 2):
             continue
         score = 100.0 * credit / max(query_length, target_length)
-        spans.append(AlignmentSpan(offset + j, offset + end, score, matches, query_length))
+        spans.append(AlignmentSpan(offset + j, offset + end, score, matches, query_length,
+                                   partial_words=tuple(reversed(partial_words))))
     return spans
 
 
@@ -295,7 +302,8 @@ class AlignmentMatcher(CheckpointMatcher):
                    self.minimum_words, min(len(self._buffer), self.minimum_words + 3)}
         for length in sorted(lengths, reverse=True):
             candidates.extend(align_words(self._buffer[-length:], self.words[low:high], low,
-                                          self.minimum_words, self._minimum_coverage))
+                                          self.minimum_words, self._minimum_coverage,
+                                          range(max(0, len(self._buffer) - length), len(self._buffer))))
         return candidates
 
     def process(self, transcript: str, segments=None) -> AlignmentUpdate:
@@ -342,7 +350,7 @@ class AlignmentMatcher(CheckpointMatcher):
 
         scene = self._scene(best.end)
         selected = self.checkpoints[scene] if scene >= 0 else checkpoint
-        required = selected.get("stability", self.default_stability)
+        required = best.required_confirmations or selected.get("stability", self.default_stability)
         confirmations = self._confirm_candidate(scene, best)
         skipped = ()
         effect = None
@@ -368,6 +376,7 @@ class AlignmentMatcher(CheckpointMatcher):
             tracked_word_position=self.tracked_word_position, page=page,
             alignment_start=best.start, alignment_end=best.end,
             skipped_checkpoint_ids=skipped, recovering=recovering,
+            partial_words=best.partial_words,
         )
 
     def _select_candidate(self, candidates):

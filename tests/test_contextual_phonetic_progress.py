@@ -17,6 +17,34 @@ def callback(matcher, text, time, completed=False):
 
 
 class ContextualPhoneticProgressTests(unittest.TestCase):
+    def test_sound_alikes_get_partial_credit_at_any_position(self):
+        for anchor, heard in (
+            ('curled leaves drifted across the empty garden', 'coat leaves drifted across the empty garden'),
+            ('the little fern curled beside the garden gate', 'the little fern coat beside the garden gate'),
+            ('beside the garden gate the little fern curled', 'beside the garden gate the little fern coat'),
+        ):
+            with self.subTest(anchor=anchor):
+                matcher = TimelyEvidenceMatcher(manifest(anchor, stability=1, threshold=92))
+                callback(matcher, 'we walked along a quiet path', 1)
+                update = callback(matcher, 'we walked along a quiet path then ' + heard, 2)
+                self.assertTrue(update.triggered)
+                permission = EffectPermission(dict(checkpoint_text=anchor), .8, [])
+                score, _, _ = permission.phonetic_phrase_support(heard.split(), 92)
+                self.assertGreater(score, 92)
+                self.assertLess(score, 100)
+                self.assertIn('coat', matcher._buffer)
+
+    def test_sound_alike_phrase_needs_ordered_context_and_authored_required_words(self):
+        anchor = 'the little fern curled beside the garden gate'
+        permission = EffectPermission(dict(checkpoint_text=anchor), .8, [])
+        required = EffectPermission(dict(checkpoint_text=anchor, required_words=['curled']), .8, [])
+        heard = 'the little fern coat beside the garden gate'.split()
+        self.assertIsNotNone(permission.phonetic_phrase_support(heard, 82))
+        self.assertIsNone(required.phonetic_phrase_support(heard, 82))
+        for text in ('repeat the little fern coat beside the garden gate',
+                     'the little coat garden fern beside the gate', 'coat beside gate'):
+            self.assertIsNone(permission.phonetic_phrase_support(text.split(), 82))
+
     def test_prior_progress_and_fresh_endpoint_reach_final_anchor_without_following_words(self):
         for anchor, heard in [('we found the little sheep', 'chip'),
                               ('she carried the winter coat', 'goat'),

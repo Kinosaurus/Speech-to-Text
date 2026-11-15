@@ -22,7 +22,9 @@
       "effect_policy": "ambience",
       "required_words": [],
       "effect": {
-        "effect_id": "rain_ambience"
+        "effect_id": "rain_ambience",
+        "sound": "../../../assets/sounds/rain_soft.wav",
+        "sound_delay": 0
       }
     },
     {
@@ -38,7 +40,9 @@
         "opened"
       ],
       "effect": {
-        "effect_id": "umbrella_open"
+        "effect_id": "umbrella_open",
+        "sound": "../../../assets/sounds/umbrella_open.wav",
+        "sound_delay": 0
       }
     },
     {
@@ -54,7 +58,9 @@
         "jumped"
       ],
       "effect": {
-        "effect_id": "frog_jump"
+        "effect_id": "frog_jump",
+        "sound": "../../../assets/sounds/pond_splash.wav",
+        "sound_delay": 0
       }
     },
     {
@@ -70,7 +76,9 @@
         "hung"
       ],
       "effect": {
-        "effect_id": "umbrella_hung"
+        "effect_id": "umbrella_hung",
+        "sound": "../../../assets/sounds/umbrella_hook.wav",
+        "sound_delay": 0
       }
     }
   ],

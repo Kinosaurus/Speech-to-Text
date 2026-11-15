@@ -2,6 +2,8 @@
 
 import time
 import hashlib
+import sys
+from contextlib import contextmanager
 from pathlib import Path
 import wave
 
@@ -54,6 +56,11 @@ def input_devices(audio):
             if audio.get_device_info_by_index(index).get('maxInputChannels', 0) > 0]
 
 
+def microphone_label(audio, device):
+    driver = audio.get_host_api_info_by_index(device['hostApi'])['name']
+    return f"{device['name']} ({driver}, input {device['index']})"
+
+
 def select_input_device(audio, selection=None):
     if selection is None or str(selection).casefold() == 'default':
         return audio.get_default_input_device_info()
@@ -80,18 +87,67 @@ def configure_microphone(client, selection=None, chunk=4096):
             client.stream.close()
             client.stream = None
         client.chunk = chunk
-        client.stream = client.p.open(
-            format=client.format, channels=client.channels, rate=client.rate,
-            input=True, input_device_index=int(device['index']),
-            frames_per_buffer=chunk,
-        )
+        def open_device(candidate):
+            return client.p.open(
+                format=client.format, channels=client.channels, rate=client.rate,
+                input=True, input_device_index=int(candidate['index']),
+                frames_per_buffer=chunk,
+            )
+
+        try:
+            client.stream = open_device(device)
+        except OSError as error:
+            if sys.platform == 'win32' and (selection is None or str(selection).casefold() == 'default'):
+                # Windows can expose one microphone through several PortAudio drivers.
+                for candidate in input_devices(client.p):
+                    if candidate['hostApi'] == device['hostApi'] or candidate['name'] != device['name']:
+                        continue
+                    try:
+                        client.stream = open_device(candidate)
+                        return candidate
+                    except OSError:
+                        continue
+            raise OSError(
+                f"Could not open microphone {device['name']} at {client.rate:g} Hz. "
+                f"Check the system input device and close other apps using it. {error}"
+            ) from error
     return device
 
 
-def wait_for_server(client, timeout=180):
+@contextmanager
+def save_microphone_audio(client, destination):
+    """Write the same PCM frames the microphone client sends for recognition."""
+    if destination is None:
+        yield
+        return
+
+    path = Path(destination)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    stream = client.stream
+    read = stream.read
+    with wave.open(str(path), 'wb') as recording:
+        recording.setnchannels(client.channels)
+        recording.setsampwidth(2)
+        recording.setframerate(client.rate)
+
+        def read_and_save(*args, **kwargs):
+            frames = read(*args, **kwargs)
+            recording.writeframes(frames)
+            return frames
+
+        stream.read = read_and_save
+        try:
+            yield
+        finally:
+            stream.read = read
+
+
+def wait_for_server(client, timeout=180, stopping=None):
     """Wait without WhisperLive's busy spin, including model loading time."""
     deadline = time.monotonic() + timeout
     while not all(connection.recording for connection in client.clients):
+        if stopping is not None and stopping.is_set():
+            return
         for connection in client.clients:
             if connection.server_error or connection.waiting:
                 raise ConnectionError('Recognition server rejected the session. Check the server logs.')

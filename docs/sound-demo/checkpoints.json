@@ -1,0 +1,19 @@
+{
+  "book_id": "sound-demo",
+  "title": "The little frog (sound wiring demo)",
+  "threshold": 82,
+  "stability": 1,
+  "pages": [
+    {"page": 1, "text": "The small frog jumped into the pond."}
+  ],
+  "checkpoints": [
+    {
+      "id": "frog_jump",
+      "book_id": "sound-demo",
+      "checkpoint_position": 1,
+      "checkpoint_text": "The small frog jumped into the pond",
+      "effect": {"effect_id": "frog_jump_demo", "sound": "../../assets/sounds/demo_chime.wav", "sound_delay": 0}
+    }
+  ],
+  "demo_transcripts": ["the small frog jumped into the pond"]
+}

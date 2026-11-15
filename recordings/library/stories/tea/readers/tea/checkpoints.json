@@ -26,7 +26,7 @@
         "fade_ms": 2000,
         "visual": "warm_light_loop.gif",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
+        "sound": "../../../../../../assets/sounds/tea_pour.wav",
         "sound_delay": 0
       }
     },
@@ -45,7 +45,7 @@
         "fade_ms": 2000,
         "visual": "soft_amber_loop.gif",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
+        "sound": "../../../../../../assets/sounds/kettle_simmer.wav",
         "sound_delay": 0
       }
     },
@@ -64,7 +64,7 @@
         "fade_ms": 2000,
         "visual": "warm_light_loop.gif",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
+        "sound": "../../../../../../assets/sounds/broom_sweep.wav",
         "sound_delay": 0
       }
     }
