@@ -27,11 +27,32 @@ class TimelyTests(unittest.TestCase):
         manifest['pages'][0]['text'] = context + ' ' + anchor
         manifest['checkpoints'][0]['checkpoint_text'] = anchor
         matcher = TimelyEvidenceMatcher(manifest)
+        matcher.explain_matches = True
         feed(matcher, 'we followed a narrow path', 1)
         feed(matcher, context, 2)
         self.assertGreater(matcher.tracked_word_position, 0)
         update = feed(matcher, context + ' nimble rabbit brushed leaves beside wooden gates', 3)
         self.assertTrue(update.triggered)
+        self.assertEqual(
+            [word.expected for word in update.cue_word_evidence if word.kind == 'article_waived'],
+            ['a', 'the'],
+        )
+
+    def test_missing_content_word_gets_no_credit_even_when_cue_fires(self):
+        path = Path(__file__).resolve().parents[1] / (
+            'recordings/library/stories/sample/readers/demo/checkpoints.json'
+        )
+        matcher = TimelyEvidenceMatcher.from_file(path)
+        matcher.explain_matches = True
+        feed(matcher, 'Mila found a silver seed', 1)
+        anchor = 'Mila found a silver seed beside the old gate'
+        feed(matcher, anchor, 2)
+        text = anchor + ' She carried'
+        update = feed(matcher, text, 3)
+        self.assertTrue(update.triggered)
+        evidence = TranscriptEvidence().update(text, matcher._buffer, update)['evidence']
+        self.assertIn({'expected': 'tiny', 'heard': None, 'kind': 'omitted', 'credit': None},
+                      evidence['cue_words'])
 
     def test_sky_garden_flower_accepts_missing_article_and_two_near_words(self):
         path = Path(__file__).resolve().parents[1] / (
@@ -65,6 +86,7 @@ class TimelyTests(unittest.TestCase):
         for phrase, should_fire in variants:
             with self.subTest(phrase=phrase):
                 matcher = TimelyEvidenceMatcher.from_file(path)
+                matcher.explain_matches = True
                 feed(matcher, seed, 1)
                 self.assertTrue(feed(matcher, seed + ' She carried', 2).triggered)
                 feed(matcher, prior, 3)
@@ -79,6 +101,12 @@ class TimelyTests(unittest.TestCase):
                     panel = display.update(transcript, matcher._buffer, update)
                     self.assertEqual(panel['text'], transcript)
                     self.assertEqual(panel['score'], round(update.score, 1))
+                    self.assertIn({'expected': 'curled', 'heard': 'coat', 'kind': 'sound', 'credit': .5},
+                                  panel['evidence']['words'])
+                    self.assertEqual(
+                        [word['expected'] for word in panel['evidence']['cue_words'] if word['kind'] == 'article_waived'],
+                        ['the', 'a'],
+                    )
                     self.assertEqual(
                         [(transcript[word['start']:word['end']], word['expected']) for word in panel['partial']],
                         [('glass', 'grass'), ('coat', 'curled')],

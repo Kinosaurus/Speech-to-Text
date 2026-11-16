@@ -28,4 +28,10 @@ Open **Start MapMap.cmd** from the handoff yourself. When the Sky Garden spoken-
 .\.venv\Scripts\python.exe -m books_to_life.cli.operator_panel --mapmap-bridge '.\output\mapmap-other-pc\MapMap-Reading-Pod-Handoff\Reading Pod MapMap\Sky Garden\play_cue.py'
 ```
 
-Start **Mila and the Sky Garden** and read the first checkpoint. When `seed_found` fires, MapMap receives the Silver Seed video and soundtrack cue. The beginning and end of each session send the calibration reset. The other passages use checkpoint tracking and any local sound effects configured in their manifests. Set `--osc-port` if you started MapMap on a port other than 12345.
+Start **Mila and the Sky Garden** and read the first checkpoint. When `seed_found` fires, MapMap receives the Silver Seed video and soundtrack cue by default. The beginning and end of each session send the calibration reset. Other passages start with checkpoint tracking and any local sound effects configured in their manifests. Set `--osc-port` if you started MapMap on a port other than 12345.
+
+While the panel is idle, choose a passage and open **Edit MapMap cues** above its checkpoints. Choose a cue to assign it, or select **No MapMap cue** to restore the checkpoint’s ordinary local playback. Assignments save under `output/operator-mapmap` for the current project. A video with a soundtrack replaces the checkpoint’s local sound. Stills and silent videos keep it.
+
+Set **Scene transition** under **Preflight** to change the default 450 ms crossfade or select **Cut**. This setting saves with the project’s assignments. The panel holds the outgoing scene while preparing the next source and overlaps the two cues. The bundled OSC receiver provides no frame-ready message, so video cues get a short lead-in for the player to seek and decode. Replaying the same source keeps it visible while it restarts. Start, end, and manual reset still restore the calibration grid.
+
+To offer more cues, add local image or video sources with visible mapping layers to the same MapMap project. Set each cue source’s opacity to zero so it stays hidden until triggered. Set video cue volume to zero before saving. Restart the panel after saving the project to refresh the cue list. To use a different saved project, open it in MapMap and start the panel with `--mapmap-project` set to that file as well as `--mapmap-bridge`.

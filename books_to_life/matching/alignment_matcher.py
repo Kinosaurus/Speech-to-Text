@@ -12,7 +12,7 @@ from functools import lru_cache
 import math
 from typing import Any
 
-from books_to_life.matching.checkpoint_matcher import CheckpointMatcher, MatchUpdate, fuzz, normalize_text
+from books_to_life.matching.checkpoint_matcher import CheckpointMatcher, MatchUpdate, WordEvidence, fuzz, normalize_text
 
 
 @lru_cache(maxsize=8192)
@@ -29,6 +29,7 @@ class AlignmentSpan:
     query_words: int
     required_confirmations: int | None = None
     partial_words: tuple[tuple[int, str, float | None], ...] = field(default=(), compare=False)
+    word_evidence: tuple[tuple[int, WordEvidence], ...] = field(default=(), compare=False)
 
 
 @dataclass(frozen=True)
@@ -47,11 +48,13 @@ class AlignmentUpdate(MatchUpdate):
     effect_pending_checkpoint_id: str | None = None
     additional_suppressed_checkpoint_ids: tuple[str, ...] = ()
     partial_words: tuple[tuple[int, str, float | None], ...] = ()
+    word_evidence: tuple[WordEvidence, ...] = field(default=(), compare=False)
+    cue_word_evidence: tuple[WordEvidence, ...] = field(default=(), compare=False)
 
 
 def align_words(
     spoken: list[str], reference: list[str], offset: int,
-    minimum_words: int, min_coverage: float, spoken_indices=None,
+    minimum_words: int, min_coverage: float, spoken_indices=None, *, explain=False,
 ) -> list[AlignmentSpan]:
     """Smith-Waterman word alignment, anchored to the latest spoken word.
 
@@ -86,6 +89,7 @@ def align_words(
         last_match = -1
         distinct = set()
         partial_words = []
+        word_evidence = []
         while i and j and scores[i][j] > 0:
             direction = parents[i][j]
             if direction == 1:
@@ -98,11 +102,20 @@ def align_words(
                     last_match = max(last_match, i - 1)
                     if similarity < 1 and spoken_indices is not None:
                         partial_words.append((spoken_indices[i - 1], reference[j - 1], similarity))
+                if explain:
+                    kind, word_credit = 'unmatched', None
+                    if similarity >= .75:
+                        kind = 'exact' if similarity == 1 else 'spelling'
+                        word_credit = similarity
+                    word_evidence.append((offset + j - 1, WordEvidence(reference[j - 1], spoken[i - 1], kind,
+                                                                      word_credit)))
                 i -= 1
                 j -= 1
             elif direction == 2:
                 i -= 1
             else:
+                if explain:
+                    word_evidence.append((offset + j - 1, WordEvidence(reference[j - 1], None, 'omitted')))
                 j -= 1
         query_length, target_length = n - i, end - j
         if (matches < minimum_words or matches < math.ceil(query_length * min_coverage)
@@ -110,7 +123,8 @@ def align_words(
             continue
         score = 100.0 * credit / max(query_length, target_length)
         spans.append(AlignmentSpan(offset + j, offset + end, score, matches, query_length,
-                                   partial_words=tuple(reversed(partial_words))))
+                                   partial_words=tuple(reversed(partial_words)),
+                                   word_evidence=tuple(reversed(word_evidence))))
     return spans
 
 
@@ -118,6 +132,8 @@ class AlignmentMatcher(CheckpointMatcher):
     """Forward scene progress using full passages, with bounded recovery searches."""
 
     mode = "word-sequence alignment"
+
+    explain_matches = False
 
     def __init__(self, manifest: dict[str, Any], threshold=None, stability=None):
         super().__init__(manifest, threshold=threshold, stability=stability)
@@ -303,7 +319,8 @@ class AlignmentMatcher(CheckpointMatcher):
         for length in sorted(lengths, reverse=True):
             candidates.extend(align_words(self._buffer[-length:], self.words[low:high], low,
                                           self.minimum_words, self._minimum_coverage,
-                                          range(max(0, len(self._buffer) - length), len(self._buffer))))
+                                          range(max(0, len(self._buffer) - length), len(self._buffer)),
+                                          explain=self.explain_matches))
         return candidates
 
     def process(self, transcript: str, segments=None) -> AlignmentUpdate:
@@ -369,6 +386,7 @@ class AlignmentMatcher(CheckpointMatcher):
                 self._pending_scene = None
         page = next(number for number, (start, end) in self.page_ranges.items()
                     if start < best.end <= end)
+        cue_start, cue_end = self.checkpoint_ranges[scene if scene >= 0 else self.current_index]
         return AlignmentUpdate(
             checkpoint_id=str(selected["id"]), checkpoint_position=selected["checkpoint_position"],
             score=best.score, confirmations=confirmations, confirmations_required=required,
@@ -377,6 +395,7 @@ class AlignmentMatcher(CheckpointMatcher):
             alignment_start=best.start, alignment_end=best.end,
             skipped_checkpoint_ids=skipped, recovering=recovering,
             partial_words=best.partial_words,
+            word_evidence=tuple(word for index, word in best.word_evidence if cue_start <= index < cue_end),
         )
 
     def _select_candidate(self, candidates):

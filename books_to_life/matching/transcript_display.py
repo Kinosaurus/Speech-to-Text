@@ -1,5 +1,6 @@
 """Map matcher evidence onto the original text shown to the operator."""
 
+from dataclasses import asdict
 import re
 
 from books_to_life.matching.checkpoint_matcher import normalize_text
@@ -38,11 +39,24 @@ class TranscriptEvidence:
         if match.triggered:
             self.confirmed.update(current)
         self.text = text
+        words = getattr(match, 'word_evidence', ())
+        cue_words = getattr(match, 'cue_word_evidence', ())
+        reason = getattr(match, 'effect_suppression_reason', None)
+        evidence = None
+        if (words or cue_words or reason) and (not getattr(match, 'duplicate', False) or reason or match.triggered):
+            evidence = {
+                'words': [asdict(word) for word in words],
+                'cue_words': [asdict(word) for word in cue_words],
+                'confirmations': match.confirmations,
+                'required': match.confirmations_required,
+                'reason': reason,
+            }
         return {
             'text': text,
             'partial': list({**self.confirmed, **current}.values()),
             'checkpoint': match.checkpoint_id,
             'score': round(match.score, 1) if match.score > 0 else None,
+            'evidence': evidence,
             'skipped': getattr(match, 'skipped_checkpoint_ids', ()),
             'suppressed': (
                 *((match.checkpoint_id,) if getattr(match, 'effect_suppressed', False) else ()),

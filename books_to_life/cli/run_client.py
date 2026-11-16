@@ -263,6 +263,8 @@ if __name__ == '__main__':
             print(f"[BOOK_CONTEXT] Passage prompt: {initial_prompt or '(none)'}")
 
         transcript_evidence = TranscriptEvidence() if args.live_transcript else None
+        if isinstance(checkpoint_matcher, AlignmentMatcher):
+            checkpoint_matcher.explain_matches = args.live_transcript
 
         def handle_transcription(text, segments):
             if args.live_transcript:
@@ -287,6 +289,8 @@ if __name__ == '__main__':
                 update = checkpoint_matcher.process(text)
             if transcript_evidence is not None:
                 panel_update = transcript_evidence.update(live_text, getattr(checkpoint_matcher, '_buffer', ()), update)
+                checkpoint = checkpoint_matcher.current_checkpoint
+                panel_update['reading_checkpoint'] = str(checkpoint['id']) if checkpoint is not None else None
                 print('[PANEL_TRANSCRIPT] ' + json.dumps(panel_update), flush=True)
             if book_context:
                 hints = book_context.refresh()

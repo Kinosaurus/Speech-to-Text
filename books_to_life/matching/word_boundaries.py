@@ -23,7 +23,7 @@ def exact_boundary_match(reference, heard):
     return (n, m) in reached
 
 
-def recent_boundary_spans(reference, buffer):
+def recent_boundary_spans(reference, buffer, *, include_heard=False):
     """Yield complete contiguous anchors ending within the last four tokens."""
     expected = ''.join(reference)
     query = buffer[-(2*len(reference)+3):]
@@ -35,5 +35,6 @@ def recent_boundary_spans(reference, buffer):
                 break
             if length == len(expected):
                 if heard != reference and exact_boundary_match(reference, heard):
-                    yield query[max(0, start-3):start]
+                    prefix = query[max(0, start-3):start]
+                    yield (prefix, heard) if include_heard else prefix
                 break

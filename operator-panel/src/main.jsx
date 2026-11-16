@@ -11,6 +11,26 @@ const phases = {
   ended: 'Session ended',
   error: 'Session interrupted',
 };
+const checkLabels = {
+  ready: 'Ready',
+  error: 'Check failed',
+  unknown: 'Unverified',
+  unconfigured: 'Not configured',
+};
+const wordLabels = {
+  exact: 'Exact match',
+  spelling: 'Similar spelling or word form',
+  sound: 'Similar sound',
+  split: 'Split word',
+  article_waived: 'Forgiven article',
+  omitted: 'Missing word · no credit',
+  unmatched: 'No word credit',
+};
+const playbackLabels = {
+  mapmap: 'MapMap projection',
+  local_sound: 'Local sound',
+  tracking: 'Tracking only',
+};
 
 async function request(path, body, signal) {
   const response = await fetch(path, {
@@ -38,6 +58,49 @@ function Toggle({ label, description, checked, onChange, disabled }) {
       </span>
       <input type="checkbox" role="switch" checked={checked} onChange={onChange} disabled={disabled} />
     </label>
+  );
+}
+
+function Preflight({ checks, projection, silverSeedTest, transition, disabled, checking, message, onCheck, onTest, onReset, onTransition }) {
+  const mapmapState = checks?.mapmap.state ?? (projection ? '' : 'unconfigured');
+  return (
+    <section className="preflight" aria-labelledby="preflight-title">
+      <div className="preflight-heading">
+        <h3 id="preflight-title">Preflight</h3>
+        <button type="button" disabled={disabled} onClick={onCheck}>{checking ? 'Checking…' : 'Check setup'}</button>
+      </div>
+      <dl className="preflight-checks" aria-live="polite">
+        <div>
+          <dt>Parakeet NeMo</dt>
+          <dd>
+            <strong className={checks?.nemo.state}>{checkLabels[checks?.nemo.state] ?? 'Unchecked'}</strong>
+            {checks && <small>{checks.nemo.detail}</small>}
+          </dd>
+        </div>
+        <div>
+          <dt>MapMap OSC</dt>
+          <dd>
+            <strong className={mapmapState}>
+              {mapmapState === 'ready' ? 'Listener found' : checkLabels[mapmapState] ?? 'Unchecked'}
+            </strong>
+            {checks && <small>{checks.mapmap.detail}</small>}
+          </dd>
+        </div>
+      </dl>
+      <div className="preflight-controls">
+        <button type="button" disabled={disabled || !silverSeedTest} onClick={onTest}>Test Silver Seed</button>
+        <button type="button" disabled={disabled || !projection} onClick={onReset}>Reset to grid</button>
+      </div>
+      {transition && (
+        <label className="field mapmap-transition">
+          <span>Scene transition</span>
+          <select disabled={disabled} value={transition.fade_ms} onChange={(event) => onTransition(Number(event.target.value))}>
+            {transition.options_ms.map((ms) => <option key={ms} value={ms}>{ms ? `Crossfade · ${ms} ms` : 'Cut'}</option>)}
+          </select>
+        </label>
+      )}
+      {message && <p className="preflight-message" role="status">{message}</p>}
+    </section>
   );
 }
 
@@ -77,12 +140,86 @@ function LiveTranscript({ text, partial, listening }) {
   );
 }
 
-function PassagePreview({ passage, fired, mapmap, transcript, partial, scores, cueStatus, listening }) {
+function MatchWords({ title, words }) {
+  return (
+    <table className="match-words">
+      <caption>{title}</caption>
+      <thead><tr><th scope="col">Book</th><th scope="col">Recognized</th><th scope="col">How it counted</th></tr></thead>
+      <tbody>
+        {words.map(({ expected, heard, kind, credit }, index) => (
+          <tr key={index}>
+            <td>{expected}</td>
+            <td>{heard ?? '—'}</td>
+            <td>
+              <span className={`word-badge word-${kind}`}>{wordLabels[kind]}</span>
+              {credit != null && credit < 1 && <span className="word-credit">{Math.round(credit * 100)}% word credit</span>}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+function CheckpointEvidence({ evidence, autoOpen }) {
+  const { words, cue_words: cueWords, confirmations, required, reason } = evidence;
+  const primary = cueWords.length ? cueWords : words;
+  const counts = new Map();
+  for (const { kind } of primary) counts.set(kind, (counts.get(kind) ?? 0) + 1);
+  const alignmentDiffers = cueWords.length && words.length && (
+    words.length !== cueWords.length || words.some((word, index) => (
+      word.expected !== cueWords[index].expected || word.heard !== cueWords[index].heard || word.kind !== cueWords[index].kind
+    ))
+  );
+
+  return (
+    <details className="checkpoint-evidence" open={autoOpen}>
+      <summary>
+        Match evidence
+        {counts.size > 0 && (
+          <span className="evidence-counts">
+            {[...counts].map(([kind, count]) => (
+              <span key={kind} className={`word-badge word-${kind}`}>{wordLabels[kind]} ({count})</span>
+            ))}
+          </span>
+        )}
+      </summary>
+      <p>{confirmations} of {required} required alignment confirmations</p>
+      {reason && <p className="evidence-reason">{reason}</p>}
+      {primary.length > 0 && <MatchWords title={cueWords.length ? 'Cue evidence' : 'Latest reading alignment'} words={primary} />}
+      {Boolean(alignmentDiffers) && (
+        <>
+          <p>The reading alignment gives the match score. The cue evidence shows what cleared the effect check.</p>
+          <MatchWords title="Reading alignment" words={words} />
+        </>
+      )}
+    </details>
+  );
+}
+
+function passagePlaybackLabel({ checkpoints }) {
+  const kinds = new Set(checkpoints.map(({ playback }) => playback?.kind));
+  if (kinds.has(undefined)) return '';
+  const localSound = kinds.has('local_sound') || checkpoints.some(({ playback }) => playback.local_sound);
+  if (kinds.has('mapmap')) return localSound ? 'MapMap + local sounds' : 'MapMap projection';
+  return localSound ? 'Local sounds only' : 'Tracking only';
+}
+
+function PassagePreview({ passage, fired, transcript, partial, scores, cueStatus, matchEvidence, readingCheckpoint, listening,
+  cueOptions, mapmapProject, canEditCues, cueEditingDisabled, assignmentMessage, onAssignCue }) {
+  const [editingCues, setEditingCues] = useState(false);
+  const showCueEditors = canEditCues && editingCues;
+  const playbackLabel = passagePlaybackLabel(passage);
+  const evidenceCheckpoint = matchEvidence[readingCheckpoint] ? readingCheckpoint
+    : passage.checkpoints.findLast(({ id }) => matchEvidence[id] && (
+      fired.includes(id) || ['Checking ending', 'Cue withheld'].includes(cueStatus[id])
+    ))?.id;
   return (
     <section className="card preview" aria-labelledby="preview-title">
       <header className="section-header">
         <div>
           <h2 id="preview-title">{passage.title}</h2>
+          {playbackLabel && <small className="passage-playback">{playbackLabel}</small>}
         </div>
         <span className="count">{fired.length} / {passage.checkpoints.length} fired</span>
       </header>
@@ -99,25 +236,53 @@ function PassagePreview({ passage, fired, mapmap, transcript, partial, scores, c
         </section>
         <LiveTranscript text={transcript} partial={partial} listening={listening} />
       </div>
-      <h3>Checkpoints</h3>
+      <div className="checkpoint-heading">
+        <h3>Checkpoints</h3>
+        {canEditCues && (
+          <button type="button" disabled={cueEditingDisabled} aria-expanded={showCueEditors}
+            onClick={() => setEditingCues(!editingCues)}>{showCueEditors ? 'Done editing cues' : 'Edit MapMap cues'}</button>
+        )}
+      </div>
+      {showCueEditors && <small className="cue-editor-note">Cues from {mapmapProject}. Changes save locally as you make them.</small>}
+      {assignmentMessage && <p className="cue-editor-note" role="status">{assignmentMessage}</p>}
       <ol className="checkpoints">
-        {passage.checkpoints.map(({ id, checkpoint_text, page, effect }) => {
+        {passage.checkpoints.map(({ id, checkpoint_text, page, playback, mapmap_cue: assignedCue }) => {
           const didFire = fired.includes(id);
-          const projects = mapmap && id === 'seed_found';
+          const isCurrent = listening && id === readingCheckpoint;
+          const cueAvailable = cueOptions.some(({ id: cueId }) => cueId === assignedCue);
           return (
-            <li key={id} className={didFire ? 'fired' : ''}>
+            <li key={id} className={isCurrent ? 'current' : didFire ? 'fired' : ''} aria-current={isCurrent ? 'step' : undefined}>
               <span className="checkpoint-marker" aria-hidden="true">{didFire ? '✓' : ''}</span>
               <div>
                 <div className="checkpoint-meta">Page {page} · {id}</div>
                 <p>{checkpoint_text}</p>
-                <small>{projects ? 'MapMap · Silver Seed video and soundtrack' : effect?.effect_id || 'Checkpoint match'}</small>
+                {playback && (
+                  <div className="checkpoint-playback">
+                    <span className={`playback-badge playback-${playback.kind}`}>{playbackLabels[playback.kind]}</span>
+                    {playback.local_sound && <span className="playback-badge playback-local_sound">Local sound</span>}
+                    {playback.detail && <small>{playback.detail}</small>}
+                  </div>
+                )}
+                {assignedCue && !cueAvailable && <small className="cue-unavailable">The saved MapMap cue is unavailable in this project.</small>}
+                {showCueEditors && (
+                  <label className="cue-editor">
+                    <span>MapMap cue</span>
+                    <select aria-label={`MapMap cue for ${id}`} value={assignedCue ?? ''}
+                      disabled={cueEditingDisabled} onChange={(event) => onAssignCue(String(id), event.target.value || null)}>
+                      <option value="">No MapMap cue</option>
+                      {assignedCue && !cueAvailable && <option value={assignedCue} disabled>Unavailable cue</option>}
+                      {cueOptions.map(({ id: cueId, title }) => <option key={cueId} value={cueId}>{title}</option>)}
+                    </select>
+                  </label>
+                )}
               </div>
               <div className="checkpoint-status">
-                <span>{didFire ? 'Fired' : cueStatus[id] ?? 'Waiting'}</span>
+                <span>{didFire ? 'Fired' : cueStatus[id] ?? (isCurrent ? 'Reading now' : 'Waiting')}</span>
                 <span className="checkpoint-score" title="Alignment score. Firing also requires evidence for the checkpoint phrase.">
                   Match {scores[id] == null ? '—' : `${scores[id]}%`}
                 </span>
               </div>
+              {matchEvidence[id] && <CheckpointEvidence evidence={matchEvidence[id]} autoOpen={id === evidenceCheckpoint} />}
             </li>
           );
         })}
@@ -130,15 +295,18 @@ function App() {
   const [catalog, setCatalog] = useState(null);
   const [session, setSession] = useState({ phase: 'idle', fired: [] });
   const [settings, setSettings] = useState(defaults);
-  const [pending, setPending] = useState(false);
+  const [pending, setPending] = useState('');
+  const [checks, setChecks] = useState(null);
+  const [projectionMessage, setProjectionMessage] = useState('');
+  const [assignmentMessage, setAssignmentMessage] = useState('');
   const [connectionError, setConnectionError] = useState('');
   const [actionError, setActionError] = useState('');
   const [connected, setConnected] = useState(false);
   const active = ['starting', 'listening', 'ending'].includes(session.phase);
+  const busy = Boolean(pending);
   const selection = active ? session.settings || settings : settings;
   const model = catalog?.models.find((item) => item.id === selection.model);
   const passage = catalog?.passages.find((item) => item.id === selection.passage);
-  const mapmap = catalog?.projection && selection.passage === 'sample';
   const samePassage = session.settings?.passage === selection.passage;
   const fired = samePassage ? session.fired : [];
 
@@ -175,18 +343,44 @@ function App() {
   function change(key, value) {
     setSettings((current) => ({ ...current, [key]: value }));
     setActionError('');
+    if (key === 'passage') setAssignmentMessage('');
   }
 
-  async function act(action) {
-    setPending(true);
+  async function act(path, body, onSuccess) {
+    setPending(path);
     setActionError('');
+    setProjectionMessage('');
+    setAssignmentMessage('');
     try {
-      setSession(await request(`/api/session/${action}`, action === 'start' ? settings : {}));
+      onSuccess(await request(path, body));
     } catch (error) {
       setActionError(error.message);
     } finally {
-      setPending(false);
+      setPending('');
     }
+  }
+
+  function checkSetup() {
+    setChecks(null);
+    act('/api/preflight', {}, setChecks);
+  }
+
+  function manualCue(action) {
+    act(`/api/mapmap/${action}`, {}, ({ message }) => setProjectionMessage(message));
+  }
+
+  function assignCue(checkpoint, cue) {
+    act('/api/mapmap/assignment', { passage: selection.passage, checkpoint, cue }, (updatedCatalog) => {
+      setCatalog(updatedCatalog);
+      setAssignmentMessage(cue ? 'MapMap cue assigned.' : 'MapMap cue removed.');
+    });
+  }
+
+  function changeTransition(fadeMs) {
+    act('/api/mapmap/transition', { fade_ms: fadeMs }, (updatedCatalog) => {
+      setCatalog(updatedCatalog);
+      setProjectionMessage('Scene transition saved.');
+    });
   }
 
   return (
@@ -202,8 +396,8 @@ function App() {
               <span aria-hidden="true" />
               {connected ? phases[session.phase] : connectionError ? 'Disconnected' : 'Connecting to panel'}
             </span>
-            <button type="button" className="end" disabled={!connected || !active || pending || session.phase === 'ending'} onClick={() => act('end')}>End experience</button>
-            <button type="button" className="start" disabled={!connected || !model || !passage || pending || active} onClick={() => act('start')}>Start experience</button>
+            <button type="button" className="end" disabled={!connected || !active || busy || session.phase === 'ending'} onClick={() => act('/api/session/end', {}, setSession)}>End experience</button>
+            <button type="button" className="start" disabled={!connected || !model || !passage || busy || active} onClick={() => act('/api/session/start', settings, setSession)}>Start experience</button>
           </div>
         </div>
       </header>
@@ -214,11 +408,14 @@ function App() {
         <div className="workspace">
           <section className="card settings" aria-labelledby="settings-title">
             <h2 id="settings-title">Session setup</h2>
-            <fieldset disabled={!catalog || pending || active}>
+            <fieldset disabled={!catalog || busy || active}>
               <label className="field">
                 <span>Passage</span>
                 <select value={selection.passage} onChange={(event) => change('passage', event.target.value)}>
-                  {catalog?.passages.map(({ id, title }) => <option key={id} value={id}>{title}</option>)}
+                  {catalog?.passages.map((item) => {
+                    const playback = passagePlaybackLabel(item);
+                    return <option key={item.id} value={item.id}>{item.title}{playback && ` · ${playback}`}</option>;
+                  })}
                 </select>
               </label>
               <label className="field">
@@ -267,15 +464,24 @@ function App() {
                   checked={selection.save} onChange={(event) => change('save', event.target.checked)} />
               </div>
             </fieldset>
-            {passage && <p className="projection-note">{mapmap ? 'Projection configured for Sky Garden' : 'Checkpoint tracking and local sound effects'}</p>}
+            <Preflight checks={checks} projection={catalog?.projection} silverSeedTest={catalog?.silver_seed_test ?? catalog?.projection}
+              transition={catalog?.mapmap_transition} onTransition={changeTransition}
+              disabled={!connected || busy || active} checking={pending === '/api/preflight'}
+              message={projectionMessage} onCheck={checkSetup}
+              onTest={() => manualCue('test')} onReset={() => manualCue('reset')} />
           </section>
           {passage && (
-            <PassagePreview passage={passage} fired={fired} mapmap={mapmap}
+            <PassagePreview passage={passage} fired={fired}
               transcript={samePassage ? session.transcript : ''}
               partial={samePassage ? session.partial ?? [] : []}
               scores={samePassage ? session.scores ?? {} : {}}
               cueStatus={samePassage ? session.cue_status ?? {} : {}}
-              listening={session.phase === 'listening'} />
+              matchEvidence={samePassage ? session.match_evidence ?? {} : {}}
+              readingCheckpoint={samePassage ? session.reading_checkpoint : null}
+              listening={session.phase === 'listening'}
+              cueOptions={catalog?.mapmap_cues ?? []} mapmapProject={catalog?.mapmap_project}
+              canEditCues={!active && Boolean(catalog?.mapmap_project)} cueEditingDisabled={!connected || busy}
+              assignmentMessage={assignmentMessage} onAssignCue={assignCue} />
           )}
         </div>
       </main>

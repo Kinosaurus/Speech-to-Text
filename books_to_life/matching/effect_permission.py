@@ -1,7 +1,7 @@
 """Checkpoint-local permission for one-shot effects, independent of progress."""
 import math
 
-from books_to_life.matching.checkpoint_matcher import fuzz, normalize_text
+from books_to_life.matching.checkpoint_matcher import WordEvidence, fuzz, normalize_text
 from books_to_life.matching.phonetic_endpoint import phonetic_endpoint_match, phonetic_word_credit, pronunciations
 from books_to_life.matching.word_boundaries import recent_boundary_spans
 
@@ -44,6 +44,25 @@ def phrase_word_credit(expected, heard):
     return phonetic_word_credit(expected, heard)
 
 
+def anchor_word_evidence(reference, window, pairs, *, waive_articles=False,
+                         phonetic_phrase=False, phonetic_endpoint=False):
+    matched = dict(pairs)
+    for index, expected in enumerate(reference):
+        if index not in matched:
+            kind = 'article_waived' if waive_articles and expected in ARTICLES else 'omitted'
+            yield WordEvidence(expected, None, kind)
+            continue
+        heard = window[matched[index]]
+        if heard == expected:
+            yield WordEvidence(expected, heard, 'exact', 1.0)
+        elif phonetic_phrase:
+            kind = 'spelling' if similar(expected, heard) else 'sound'
+            yield WordEvidence(expected, heard, kind, phrase_word_credit(expected, heard))
+        else:
+            kind = 'sound' if phonetic_endpoint and index == len(reference) - 1 else 'spelling'
+            yield WordEvidence(expected, heard, kind)
+
+
 class EffectPermission:
     def __init__(self, checkpoint, default_coverage, preceding_words):
         self.policy = checkpoint.get('effect_policy', 'one_shot')
@@ -63,30 +82,34 @@ class EffectPermission:
         self.preceding = preceding_words
 
     def permits(self, buffer, *, allow_phonetic_endpoint=False, allow_word_boundaries=False,
-                allow_article_omissions=False):
+                allow_article_omissions=False, word_evidence=None):
         if self.policy == 'ambience':
             return True, None
         supported, reason = self.supports_anchor(buffer, allow_phonetic_endpoint=allow_phonetic_endpoint,
-                                                 allow_word_boundaries=allow_word_boundaries)
-        if not supported and allow_article_omissions and self.article_omission_support(buffer):
+                                                  allow_word_boundaries=allow_word_boundaries,
+                                                  word_evidence=word_evidence)
+        if not supported and allow_article_omissions and self.article_omission_support(
+                buffer, word_evidence=word_evidence):
             return True, None
         return supported, reason
 
-    def supports_anchor(self, buffer, *, allow_phonetic_endpoint=False, allow_word_boundaries=False):
+    def supports_anchor(self, buffer, *, allow_phonetic_endpoint=False, allow_word_boundaries=False,
+                        word_evidence=None):
         return self._supports_anchor(buffer, allow_phonetic_endpoint=allow_phonetic_endpoint,
-                                     allow_word_boundaries=allow_word_boundaries)
+                                     allow_word_boundaries=allow_word_boundaries, word_evidence=word_evidence)
 
-    def supports_phonetic_anchor(self, buffer, *, include_partial=False):
+    def supports_phonetic_anchor(self, buffer, *, include_partial=False, word_evidence=None):
         # Candidate generation must use the same required-word/prompt checks as
         # effect permission, and must actually supply the complete exact prefix.
         return self._supports_anchor(buffer, allow_phonetic_endpoint=True, phonetic_only=True,
-                                     include_partial=include_partial)[0]
+                                     include_partial=include_partial, word_evidence=word_evidence)[0]
 
-    def article_omission_support(self, buffer, *, include_partial=False):
+    def article_omission_support(self, buffer, *, include_partial=False, word_evidence=None):
         """Return ordered content-word evidence when the cue's articles are missing."""
-        return self._supports_anchor(buffer, omitted_articles_only=True, include_partial=include_partial)[0]
+        return self._supports_anchor(buffer, omitted_articles_only=True, include_partial=include_partial,
+                                     word_evidence=word_evidence)[0]
 
-    def phonetic_phrase_support(self, buffer, threshold, *, include_partial=False):
+    def phonetic_phrase_support(self, buffer, threshold, *, include_partial=False, word_evidence=None):
         """Find recent ordered phrase evidence, including a supported endpoint."""
         reference = self.anchor
         if len(reference) < 3:
@@ -128,6 +151,10 @@ class EffectPermission:
             evidence = (score, len(matches), comparable_words)
             if best is None or evidence > best:
                 best = evidence
+                if word_evidence is not None:
+                    word_evidence[:] = anchor_word_evidence(reference, window, pairs,
+                                                           waive_articles=self.has_omittable_articles,
+                                                           phonetic_phrase=True)
                 if include_partial:
                     offset = len(buffer) - len(query) + start
                     partial = tuple((offset + j, word, phrase_word_credit(word, heard))
@@ -138,7 +165,7 @@ class EffectPermission:
 
     def _supports_anchor(self, buffer, *, allow_phonetic_endpoint=False,
                          allow_word_boundaries=False, phonetic_only=False, omitted_articles_only=False,
-                         include_partial=False):
+                         include_partial=False, word_evidence=None):
         # Only the recent anchor neighbourhood can grant effect permission.
         # A later passage position or an old occurrence elsewhere is insufficient.
         if omitted_articles_only and not self.has_omittable_articles:
@@ -147,7 +174,8 @@ class EffectPermission:
         for end in range(len(query), max(0, len(query)-4), -1):
             if omitted_articles_only and query[end-1] != self.anchor[-1]:
                 continue
-            if phonetic_only or not similar(self.anchor[-1], query[end-1]):
+            phonetic_endpoint = phonetic_only or not similar(self.anchor[-1], query[end-1])
+            if phonetic_endpoint:
                 # Phonetic support applies only after local acquisition and
                 # the ENTIRE exact contiguous prefix, without rewriting ASR.
                 # Required words remain independently checked below.
@@ -182,6 +210,11 @@ class EffectPermission:
             prompt = bool(PROMPT_WORDS.intersection(prefix))
             if prompt and prefix != self.preceding[-len(prefix):]:
                 continue
+            if word_evidence is not None:
+                word_evidence[:] = anchor_word_evidence(
+                    self.anchor, window, [*pairs, (len(self.anchor)-1, len(window)-1)],
+                    waive_articles=omitted_articles_only, phonetic_endpoint=phonetic_endpoint,
+                )
             if include_partial and omitted_articles_only:
                 offset = len(buffer) - len(query) + start
                 partial = tuple((offset + j, self.anchor[i], None) for i, j in content
@@ -190,15 +223,22 @@ class EffectPermission:
             if include_partial and phonetic_only:
                 return ((len(buffer) - len(query) + end - 1, self.anchor[-1], .75),), None
             return (article_support if omitted_articles_only else True), None
-        if allow_word_boundaries and self.supports_split_anchor(buffer):
+        if allow_word_boundaries and self.supports_split_anchor(buffer, word_evidence=word_evidence):
             return True, None
         return (None if omitted_articles_only else False), 'one-shot requires recent ordered anchor, endpoint, and authored required words'
 
-    def supports_split_anchor(self, buffer):
+    def supports_split_anchor(self, buffer, *, word_evidence=None):
         # Complete exact content supplies every required word, including a
         # split required word. No ordinary coverage/spelling rule is relaxed.
-        for prefix in recent_boundary_spans(self.anchor, buffer):
+        for prefix, heard in recent_boundary_spans(self.anchor, buffer, include_heard=True):
             prompt = bool(PROMPT_WORDS.intersection(prefix))
             if not prompt or prefix == self.preceding[-len(prefix):]:
+                if word_evidence is not None:
+                    offset = 0
+                    for expected in self.anchor:
+                        width = 1 if heard[offset] == expected else 2
+                        kind = 'exact' if width == 1 else 'split'
+                        word_evidence.append(WordEvidence(expected, ' '.join(heard[offset:offset+width]), kind, 1.0))
+                        offset += width
                 return True
         return False

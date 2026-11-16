@@ -67,9 +67,23 @@ small { display: block; font-size: .78rem; color: var(--muted); line-height: 1.4
 .segments span { display: block; text-align: center; border-radius: 5px; padding: 7px 4px; font-size: .8rem; text-transform: capitalize; }
 .segments input:checked + span { color: #17462e; background: #fff; font-weight: 700; box-shadow: 0 1px 4px #20312a26; }
 .segments input:focus-visible + span { outline: 3px solid #3ba178; }
-.projection-note { border-top: 1px solid var(--line); padding-top: 13px; font-size: .78rem; color: var(--muted); }
+.preflight { border-top: 1px solid var(--line); padding-top: 16px; }
+.preflight-heading, .preflight-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.preflight-heading { justify-content: space-between; }
+.preflight-heading h3 { margin: 0; }
+.preflight button { padding: 7px 10px; background: #f7f8f2; border-color: var(--line); color: inherit; font-size: .78rem; }
+.preflight button:not(:disabled):hover { background: #edf4ec; }
+.preflight-checks { display: grid; gap: 8px; margin-block: 12px; font-size: .78rem; }
+.preflight-checks div { display: grid; grid-template-columns: minmax(84px, .8fr) minmax(0, 1.2fr); gap: 8px; }
+.preflight-checks dd { margin: 0; }
+.preflight-checks strong { color: var(--muted); }
+.preflight-checks .ready { color: var(--green); }
+.preflight-checks .error { color: #742d23; }
+.preflight-message { margin-top: 8px; font-size: .78rem; line-height: 1.45; }
+.mapmap-transition { margin: 12px 0 0; }
 
 .section-header { display: flex; gap: 12px; align-items: start; justify-content: space-between; }
+.passage-playback { margin-top: 4px; }
 .count { white-space: nowrap; color: #244e37; background: #e7f2e7; border-radius: 18px; padding: 5px 10px; font-size: .78rem; font-weight: 700; }
 .reading-columns { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; margin-block: 20px 24px; }
 .passage, .transcript-text { height: clamp(200px, 36vh, 340px); overflow: auto; background: #f7f8f2; border: 1px solid #e2e8dd; border-radius: 10px; padding: 14px; overflow-wrap: anywhere; }
@@ -83,11 +97,39 @@ small { display: block; font-size: .78rem; color: var(--muted); line-height: 1.4
 .checkpoints { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .checkpoints li { display: grid; align-items: start; grid-template-columns: 14px 1fr auto; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; }
 .checkpoints li.fired { background: #edf7ec; border-color: #b7d5b8; }
+.checkpoints li.current { background: #f3f8f4; border-color: #75a389; }
 .checkpoint-marker { border: 1px solid #9ba99c; border-radius: 50%; width: 13px; height: 13px; margin-top: 2px; text-align: center; line-height: 11px; font-size: .65rem; }
 .fired .checkpoint-marker { background: var(--green); color: #fff; border-color: var(--green); }
+.current .checkpoint-marker { border: 3px solid var(--green); background: #fff; }
 .checkpoint-status { color: var(--muted); font-size: .73rem; display: grid; gap: 4px; text-align: right; }
 .checkpoint-score { font-weight: 700; font-variant-numeric: tabular-nums; }
+.checkpoint-playback { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; margin-top: 5px; }
+.playback-badge { border-radius: 4px; padding: 3px 6px; background: #edf0ed; color: #3f5346; font-size: .73rem; font-weight: 700; }
+.playback-mapmap { background: #eee8fa; color: #452579; }
+.playback-local_sound { background: #e5f0ed; color: #244b49; }
+.checkpoint-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.checkpoint-heading h3 { margin: 0; }
+.checkpoint-heading button { padding: 6px 9px; border-color: var(--line); background: #f7f8f2; color: inherit; font-size: .78rem; }
+.checkpoint-heading button:not(:disabled):hover { background: #edf4ec; }
+.cue-editor-note, .cue-unavailable { margin-block: 4px 8px; font-size: .78rem; color: var(--muted); }
+.cue-unavailable { color: #742d23; }
+.cue-editor { display: grid; gap: 4px; margin-top: 8px; font-size: .78rem; font-weight: 700; }
+.cue-editor select { padding: 6px 8px; font-size: .82rem; font-weight: 400; }
 .checkpoints p { font-size: .9rem; margin-block: 2px 4px; }
+.checkpoint-evidence { grid-column: 2 / -1; min-width: 0; border-top: 1px solid var(--line); padding-top: 8px; }
+.checkpoint-evidence summary { cursor: pointer; font-size: .8rem; font-weight: 700; }
+.evidence-counts { display: flex; flex-wrap: wrap; gap: 4px; margin: 5px 0 0 14px; }
+.checkpoint-evidence p { margin-top: 8px; color: var(--muted); font-size: .76rem; }
+.checkpoint-evidence .evidence-reason { color: #742d23; }
+.match-words { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: .76rem; text-align: left; overflow-wrap: anywhere; }
+.match-words caption { margin-bottom: 4px; font-weight: 700; text-align: left; }
+.match-words th, .match-words td { border-top: 1px solid var(--line); padding: 5px 8px 5px 0; vertical-align: top; }
+.word-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; background: #edf0eb; color: #354b3c; font-size: .74rem; font-weight: 600; }
+.word-spelling, .word-split { background: #fff3d7; color: #705002; }
+.word-sound { background: #e8f1ff; color: #174c93; }
+.word-article_waived { background: #dff2e4; color: #165b3b; }
+.word-omitted, .word-unmatched { background: #fce8e9; color: #922f3b; }
+.word-credit { display: inline-block; margin: 2px 0 0 6px; color: var(--muted); }
 .error-message { border: 1px solid #e1b9af; background: #fff1ec; color: #742d23; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
 
 @media (max-width: 780px) {
