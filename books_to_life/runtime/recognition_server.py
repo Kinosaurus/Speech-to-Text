@@ -16,13 +16,13 @@ def wsl_path(path):
 
 class RecognitionServer:
     def __init__(self, root, port, probe, *, distro='Ubuntu',
-                 python='/home/heart/.venvs/books-to-life-nemo/bin/python', model=None):
+                 python=None, model=None):
         if not 1 <= port <= 65535:
             raise ValueError('The NeMo port must be between 1 and 65535.')
         self.root, self.port, self.probe = root, port, probe
         self.distro, self.python = distro, python
-        candidates = [root / 'model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo',
-                      root.parents[1] / 'model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo']
+        model_path = Path('model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo')
+        candidates = [root / model_path, *(parent / model_path for parent in root.parents)]
         self.model = model or next((path for path in candidates if path.is_file()), candidates[0])
         self.log = root / 'output/operator-server/nemo.log'
         self.lock = Lock()
@@ -66,8 +66,9 @@ class RecognitionServer:
             else:
                 if before_restart:
                     before_restart()
+                python = [self.python] if self.python else ['bash', 'scripts/reading-pod/nemo-python.sh']
                 command = ['wsl.exe', '-d', self.distro, '--cd', wsl_path(self.root), '--exec',
-                           self.python, '-m', 'books_to_life.cli.manage_nemo_server', action,
+                           *python, '-m', 'books_to_life.cli.manage_nemo_server', action,
                            '--port', str(self.port), '--model-path', wsl_path(self.model),
                            '--log-file', wsl_path(self.log)]
                 completed = subprocess.run(command, capture_output=True, text=True, encoding='utf-8',

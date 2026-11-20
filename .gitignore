@@ -223,6 +223,30 @@ __marimo__/
 # Local ASR tests, transcripts and scratch work
 /scenes/*
 !/scenes/README.md
+!/scenes/Sky Garden/
+/scenes/Sky Garden/*
+!/scenes/Sky Garden/sky-garden.png
+!/scenes/Sky Garden/Sky Garden - Silver Seed.mp4
+!/scenes/Night Tiger/
+/scenes/Night Tiger/*
+!/scenes/Night Tiger/sunset.mp4
+!/scenes/Night Tiger/moonrise.mp4
+!/scenes/Night Tiger/into_garden.mp4
+!/scenes/Night Tiger/cat_greeting.mp4
+!/scenes/Night Tiger/tiger_pounce.mp4
+!/scenes/Night Tiger/owl.mp4
+!/scenes/Night Tiger/cold_wind.mp4
+!/scenes/Night Tiger/cat_purr.mp4
+!/scenes/Night Tiger/cat_on_quilt.mp4
+!/scenes/Night Tiger/cricket.mp4
+!/scenes/Night Tiger/moth_pounce.mp4
+!/scenes/Night Tiger/moving_shadows.mp4
+!/scenes/Night Tiger/night_tiger_reveal.mp4
+!/scenes/Night Tiger/silver_garden.mp4
+!/scenes/Night Tiger/skyward.mp4
+!/scenes/Night Tiger/spell_fades.mp4
+!/scenes/Night Tiger/tiger_dream.mp4
+!/scenes/Night Tiger/twig_at_window.mp4
 /tmp/
 /output/
 /recordings/*
@@ -240,13 +264,13 @@ __marimo__/
 !/recordings/library/stories/little_mermaid/
 !/recordings/library/stories/nickel/
 !/recordings/library/stories/night_tiger/
+/recordings/library/stories/night_tiger/readers/
 !/recordings/library/stories/recording_2/
 !/recordings/library/stories/tea/
 !/recordings/library/stories/sample/
 /recordings/library/**/asr/
-# Keep copied commercial story text and OCR-derived reading manifests local.
+# Keep copied commercial comparison text local; OCR manifests are excluded above.
 /benchmarks/product_comparison/readmio_lion_excerpt.txt
-/recordings/library/stories/night_tiger/readers/
 /*.wav
 /*.m4a
 /*.mp3

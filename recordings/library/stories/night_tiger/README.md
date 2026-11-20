@@ -25,7 +25,7 @@ Each five-second clip uses simple cut-paper shapes and clear silhouettes. Slow c
 
 For a browser preview, select **The Night Tiger** in the operator panel and click **Test cue** beside a checkpoint. The preview plays the scene and sound together. **Close preview** stops it.
 
-On this PC, open the existing **Sky Garden - Two Scenes.mmp** in MapMap and select **The Night Tiger** in the operator panel. After opening MapMap, use **Reset to grid** once to pause the hidden video sources. The saved panel cue assignments use the existing crossfade. The last scene holds until another cue fires or you end the experience.
+Use the [Reading Pod setup guide](../../../../docs/READING_POD_SETUP.md) to supply your authorized local checkpoint manifest. The OCR-derived manifest stays local. Select **The Night Tiger** and open MapMap from **Preflight**. Import the latest media from the scenes folder with MapMap closed, then use **Edit MapMap cues** to assign the 14 effects; the bundled defaults retain the earlier eight assignments. The last scene holds until another cue fires or you end the experience.
 
 <details>
 <summary>Image generation direction</summary>

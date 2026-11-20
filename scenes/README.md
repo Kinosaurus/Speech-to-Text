@@ -4,7 +4,7 @@ This is the projection media library for the active Reading Pod project. Its cur
 
 Drop new MP4, MOV, WebM, PNG, and JPEG files here. Subfolders are supported. Local sounds and browser previews are kept with the books.
 
-Use **Start Reading Pod MapMap.cmd** for automatic story switching on this PC. The panel prepares the selected story's scenes in the same MapMap window. The full library and saved wall layout remain in the master project.
+Use **Preflight → Open MapMap** after following the [Windows setup guide](../docs/READING_POD_SETUP.md). The panel prepares the selected story's scenes in the same MapMap window. The full library and saved wall layout remain in the master project.
 
 Save and close MapMap, then use **Preflight → Import scenes** in the panel. The panel reuses the project's **Wall calibration** meshes, centers and crops media to fill the three walls, and adds each file as a hidden cue. A 2.4:1 asset fills the current wall layout without a crop. Keep imported files here so MapMap can find them.
 

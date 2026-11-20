@@ -1,8 +1,7 @@
 # Reading Pod operator panel
 
-For this PC's complete launch sequence, including the selected-story MapMap
-launcher on OSC port `12346`, use the [Reading Pod startup guide](../docs/READING_POD_STARTUP.md).
-The commands below also cover standalone and legacy handoff configurations.
+For the complete Windows pod, follow the [setup guide](../docs/READING_POD_SETUP.md).
+The commands below also support standalone and legacy projector installations.
 
 From the Speech-to-Text repository root in PowerShell, build the React app and start the local panel server.
 
@@ -12,9 +11,10 @@ npm.cmd --prefix operator-panel run build
 .\.venv\Scripts\python.exe -m books_to_life.cli.operator_panel
 ```
 
-Open [the operator panel](http://127.0.0.1:8765) manually. Under **Preflight**, **Start recognition server** starts the installed WSL Parakeet NeMo environment, and **Restart recognition server** ends an active reading session before reloading NeMo. Status changes from **Starting…** or **Restarting…** to **Ready** only after a Windows WebSocket client receives `SERVER_READY`. Existing ready servers are reused. Checks refresh automatically while the panel is open, and startup diagnostics stay local in `output/operator-server/nemo.log`. NeMo keeps running when the panel closes.
-
-The default server controls use WSL distro `Ubuntu`, Python `/home/heart/.venvs/books-to-life-nemo/bin/python`, and the existing model cache. Use `--nemo-distro`, `--nemo-python`, and `--nemo-model` to configure another installed environment. These controls manage NeMo on Windows. For the other listed engines, follow the [runtime instructions](../docs/RUNNING.md). Under **Preflight**, **Open MapMap** runs the Reading Pod launcher with the selected-story project and configured OSC port. The panel shows **Opening…** until MapMap acknowledges the project and owns its UDP listener. Existing connected instances are reused. The launcher also installs any staged renderer update after MapMap has closed. Use `--mapmap-launcher` for a different copy of `Start-Reading-Pod-MapMap.ps1`.
+Open [the operator panel](http://127.0.0.1:8765) manually. The Windows pod launcher
+opens this address for you. Under **Preflight**, use **Start recognition server**
+for the installed WSL NeMo environment and **Open MapMap** for the configured
+renderer. For other models, follow the [runtime instructions](../docs/RUNNING.md).
 
 | Model | Default port | Reading hints |
 | --- | --- | --- |
@@ -26,13 +26,22 @@ Use `--nemo-port`, `--whisper-port`, or `--native-port` when your recognition se
 
 Reading hints start enabled at Medium for the default Parakeet NeMo selection. NeMo receives checkpoint phrases, with the current cue and up to two ahead, subject to the phrase budget. The tracker retains the full story text for alignment and interruption recovery. A cue awaiting its ending stays in the hint window until its permission decision resolves. Hints can be switched off for comparison. Whisper also uses its bounded passage prompt.
 
+For a custom NeMo environment, use `--nemo-distro`, `--nemo-python` and
+`--nemo-model`. The default Python lives in the selected WSL user's home directory.
+
 Choose the passage and model, configure hints and recording, then select **Start experience**. Wait for **Listening** before reading. The panel marks each checkpoint the matcher fires. **End experience** stops capture and waits for the client to finish. Transcripts are written locally under `output/operator-sessions`. Each session writes a WAV there only when **Save recording** is on.
 
-In the Windows Reading Pod setup, start MapMap with **Start Reading Pod MapMap.cmd**. Selecting a passage loads its assigned projection scenes into the existing MapMap window. The shared media, checkpoint assignments, and saved wall geometry come from the master project. Use **Edit MapMap cues** to assign scenes from the entire library.
+## Projection and calibration
 
-For a custom launch, point `--mapmap-story-dir` at a local runtime directory and keep `--mapmap-project` set to the master project. The panel prepares `Reading Pod - Selected Story.mmp` in that directory. Start the compatible MapMap build with that file and set the process environment variable `READING_POD_MAPMAP_PROJECT` to the same absolute file path.
+The Windows launcher prepares a selected-story project and opens it in MapMap
+from **Preflight → Open MapMap**. It loads only the selected book's scenes, and
+MapMap confirms the first video frame before the panel crossfades to the scene.
+**Edit MapMap cues** assigns scenes to checkpoints. **Preflight → Import scenes**
+adds new media from the [scenes folder](../scenes/README.md) to the master project
+when MapMap is closed. Use the **Output layout** controls to fit the fullscreen
+canvas, preview the three-wall geometry, and save it across all scenes.
 
-## Sky Garden projector cue
+## Legacy Sky Garden handoff
 
 Open **Start MapMap.cmd** from the handoff yourself. When the Sky Garden spoken-cue project is open, launch the panel with the path to the bundled bridge. For the handoff extracted under this checkout, use:
 

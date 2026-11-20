@@ -18,6 +18,8 @@ whole-passage phrase hints caused an early activation and missed checkpoint in t
 
 ## Parakeet with moving phrase hints (NeMo, Linux/WSL CUDA)
 
+For the Windows operator panel and MapMap, use the [Reading Pod setup guide](READING_POD_SETUP.md).
+
 `parakeet-nemo` is a separate adapter for the original NVIDIA Parakeet Unified
 checkpoint. It uses the same Windows file/microphone client and checkpoint
 matcher. Upcoming checkpoint phrases bias NeMo's GPU decoder; passage prompts

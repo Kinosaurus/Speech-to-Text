@@ -6,6 +6,8 @@ All terminal commands in these guides assume the project root is your current fo
 
 - [Start the Windows Reading Pod](READING_POD_STARTUP.md) covers the configured PC's launch commands, panel workflow, projector, scenes, calibration and troubleshooting.
 - [Iteration report](READING_POD_ITERATION_REPORT.md) traces the recognizers, matcher experiments, projection changes and pending verification.
+
+- [Windows Reading Pod setup](READING_POD_SETUP.md) covers a fresh checkout, the MapMap renderer, projection and live recognition.
 - [Effect policies](EFFECT_POLICIES.md): separate reading progress from one-shot permission and ambience catch-up.
 - [Singapore microphone pilot kit](pilot/singapore/README.md): original passage, checkpoints and capture/review instructions; actual child testing is pending.
 - [Child-reading data](CHILD_READING_DATA.md): Southeast Asian sources checked and the additional-reader test protocol.

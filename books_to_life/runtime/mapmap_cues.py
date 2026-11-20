@@ -44,9 +44,11 @@ def output_vertices(data):
 
 class MapMapCue:
     def __init__(self, path, port, project=None):
-        spec = importlib.util.spec_from_file_location('reading_pod_mapmap_bridge', path)
-        bridge = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(bridge)
+        bridge = None
+        if path is not None:
+            spec = importlib.util.spec_from_file_location('reading_pod_mapmap_bridge', path)
+            bridge = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(bridge)
         self.bridge = bridge
         self.port = port
         self.project = Path(project or getattr(bridge, 'VIDEO_PROJECT', path)).resolve()
@@ -119,6 +121,9 @@ class MapMapCue:
                     continue
                 cue = ProjectionCue(ident, title, has_audio, max(.01, duration - .15), layers)
             cues[str(ident)] = cue
+        bundled_seed = str(data.get('readingPodSilverSeed'))
+        if silver_seed is None and bundled_seed in cues:
+            silver_seed = bundled_seed
         return cues, silver_seed, output_vertices(data)
 
     def update_project(self, edit, *, revision=None):

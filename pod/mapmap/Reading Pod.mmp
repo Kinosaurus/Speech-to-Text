@@ -1,0 +1,2085 @@
+{
+  "readingPodSilverSeed": 2,
+  "layers": [
+    {
+      "className": "TextureLayer",
+      "depth": "1",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 10,
+      "locked": "false",
+      "name": "Night Tiger - Red Dusk | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            180,
+            0
+          ],
+          [
+            0,
+            300
+          ],
+          [
+            180,
+            300
+          ]
+        ]
+      },
+      "sourceId": 4,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "2",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 11,
+      "locked": "false",
+      "name": "Night Tiger - Red Dusk | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            180,
+            0
+          ],
+          [
+            540,
+            0
+          ],
+          [
+            180,
+            300
+          ],
+          [
+            540,
+            300
+          ]
+        ]
+      },
+      "sourceId": 4,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "3",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 12,
+      "locked": "false",
+      "name": "Night Tiger - Red Dusk | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            540,
+            0
+          ],
+          [
+            720,
+            0
+          ],
+          [
+            540,
+            300
+          ],
+          [
+            720,
+            300
+          ]
+        ]
+      },
+      "sourceId": 4,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "4",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 13,
+      "locked": "false",
+      "name": "Night Tiger - Moonrise | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            180,
+            0
+          ],
+          [
+            0,
+            300
+          ],
+          [
+            180,
+            300
+          ]
+        ]
+      },
+      "sourceId": 5,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "5",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 14,
+      "locked": "false",
+      "name": "Night Tiger - Moonrise | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            180,
+            0
+          ],
+          [
+            540,
+            0
+          ],
+          [
+            180,
+            300
+          ],
+          [
+            540,
+            300
+          ]
+        ]
+      },
+      "sourceId": 5,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "6",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 15,
+      "locked": "false",
+      "name": "Night Tiger - Moonrise | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            540,
+            0
+          ],
+          [
+            720,
+            0
+          ],
+          [
+            540,
+            300
+          ],
+          [
+            720,
+            300
+          ]
+        ]
+      },
+      "sourceId": 5,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "7",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 16,
+      "locked": "false",
+      "name": "Night Tiger - Moonlit Grass | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            180,
+            0
+          ],
+          [
+            0,
+            300
+          ],
+          [
+            180,
+            300
+          ]
+        ]
+      },
+      "sourceId": 6,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "8",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 17,
+      "locked": "false",
+      "name": "Night Tiger - Moonlit Grass | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            180,
+            0
+          ],
+          [
+            540,
+            0
+          ],
+          [
+            180,
+            300
+          ],
+          [
+            540,
+            300
+          ]
+        ]
+      },
+      "sourceId": 6,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "9",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 18,
+      "locked": "false",
+      "name": "Night Tiger - Moonlit Grass | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            540,
+            0
+          ],
+          [
+            720,
+            0
+          ],
+          [
+            540,
+            300
+          ],
+          [
+            720,
+            300
+          ]
+        ]
+      },
+      "sourceId": 6,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "10",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 19,
+      "locked": "false",
+      "name": "Night Tiger - Cat Greeting | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            180,
+            0
+          ],
+          [
+            0,
+            300
+          ],
+          [
+            180,
+            300
+          ]
+        ]
+      },
+      "sourceId": 7,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "11",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 20,
+      "locked": "false",
+      "name": "Night Tiger - Cat Greeting | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            180,
+            0
+          ],
+          [
+            540,
+            0
+          ],
+          [
+            180,
+            300
+          ],
+          [
+            540,
+            300
+          ]
+        ]
+      },
+      "sourceId": 7,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "12",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 21,
+      "locked": "false",
+      "name": "Night Tiger - Cat Greeting | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            540,
+            0
+          ],
+          [
+            720,
+            0
+          ],
+          [
+            540,
+            300
+          ],
+          [
+            720,
+            300
+          ]
+        ]
+      },
+      "sourceId": 7,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "13",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 22,
+      "locked": "false",
+      "name": "Night Tiger - Tiger Pounce | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            180,
+            0
+          ],
+          [
+            0,
+            300
+          ],
+          [
+            180,
+            300
+          ]
+        ]
+      },
+      "sourceId": 8,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "14",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 23,
+      "locked": "false",
+      "name": "Night Tiger - Tiger Pounce | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            180,
+            0
+          ],
+          [
+            540,
+            0
+          ],
+          [
+            180,
+            300
+          ],
+          [
+            540,
+            300
+          ]
+        ]
+      },
+      "sourceId": 8,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "15",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 24,
+      "locked": "false",
+      "name": "Night Tiger - Tiger Pounce | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            540,
+            0
+          ],
+          [
+            720,
+            0
+          ],
+          [
+            540,
+            300
+          ],
+          [
+            720,
+            300
+          ]
+        ]
+      },
+      "sourceId": 8,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "16",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 25,
+      "locked": "false",
+      "name": "Night Tiger - Owl Watch | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            180,
+            0
+          ],
+          [
+            0,
+            300
+          ],
+          [
+            180,
+            300
+          ]
+        ]
+      },
+      "sourceId": 9,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "17",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 26,
+      "locked": "false",
+      "name": "Night Tiger - Owl Watch | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            180,
+            0
+          ],
+          [
+            540,
+            0
+          ],
+          [
+            180,
+            300
+          ],
+          [
+            540,
+            300
+          ]
+        ]
+      },
+      "sourceId": 9,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "18",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 27,
+      "locked": "false",
+      "name": "Night Tiger - Owl Watch | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            540,
+            0
+          ],
+          [
+            720,
+            0
+          ],
+          [
+            540,
+            300
+          ],
+          [
+            720,
+            300
+          ]
+        ]
+      },
+      "sourceId": 9,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "19",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 28,
+      "locked": "false",
+      "name": "Night Tiger - Cold Wind | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            180,
+            0
+          ],
+          [
+            0,
+            300
+          ],
+          [
+            180,
+            300
+          ]
+        ]
+      },
+      "sourceId": 10,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "20",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 29,
+      "locked": "false",
+      "name": "Night Tiger - Cold Wind | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            180,
+            0
+          ],
+          [
+            540,
+            0
+          ],
+          [
+            180,
+            300
+          ],
+          [
+            540,
+            300
+          ]
+        ]
+      },
+      "sourceId": 10,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "21",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 30,
+      "locked": "false",
+      "name": "Night Tiger - Cold Wind | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            540,
+            0
+          ],
+          [
+            720,
+            0
+          ],
+          [
+            540,
+            300
+          ],
+          [
+            720,
+            300
+          ]
+        ]
+      },
+      "sourceId": 10,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "22",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 31,
+      "locked": "false",
+      "name": "Night Tiger - Bedtime Purr | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            180,
+            0
+          ],
+          [
+            0,
+            300
+          ],
+          [
+            180,
+            300
+          ]
+        ]
+      },
+      "sourceId": 11,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "23",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 32,
+      "locked": "false",
+      "name": "Night Tiger - Bedtime Purr | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            180,
+            0
+          ],
+          [
+            540,
+            0
+          ],
+          [
+            180,
+            300
+          ],
+          [
+            540,
+            300
+          ]
+        ]
+      },
+      "sourceId": 11,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "24",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 33,
+      "locked": "false",
+      "name": "Night Tiger - Bedtime Purr | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            540,
+            0
+          ],
+          [
+            720,
+            0
+          ],
+          [
+            540,
+            300
+          ],
+          [
+            720,
+            300
+          ]
+        ]
+      },
+      "sourceId": 11,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "25",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 7,
+      "locked": "false",
+      "name": "Sky Garden still | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            360,
+            0
+          ],
+          [
+            0,
+            600
+          ],
+          [
+            360,
+            600
+          ]
+        ]
+      },
+      "sourceId": 3,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "26",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 8,
+      "locked": "false",
+      "name": "Sky Garden still | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            360,
+            0
+          ],
+          [
+            1080,
+            0
+          ],
+          [
+            360,
+            600
+          ],
+          [
+            1080,
+            600
+          ]
+        ]
+      },
+      "sourceId": 3,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "27",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 9,
+      "locked": "false",
+      "name": "Sky Garden still | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            1080,
+            0
+          ],
+          [
+            1440,
+            0
+          ],
+          [
+            1080,
+            600
+          ],
+          [
+            1440,
+            600
+          ]
+        ]
+      },
+      "sourceId": 3,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "28",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 4,
+      "locked": "false",
+      "name": "Garden | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            360,
+            0
+          ],
+          [
+            0,
+            600
+          ],
+          [
+            360,
+            600
+          ]
+        ]
+      },
+      "sourceId": 2,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "29",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 5,
+      "locked": "false",
+      "name": "Garden | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            360,
+            0
+          ],
+          [
+            1080,
+            0
+          ],
+          [
+            360,
+            600
+          ],
+          [
+            1080,
+            600
+          ]
+        ]
+      },
+      "sourceId": 2,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "30",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 6,
+      "locked": "false",
+      "name": "Garden | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            1080,
+            0
+          ],
+          [
+            1440,
+            0
+          ],
+          [
+            1080,
+            600
+          ],
+          [
+            1440,
+            600
+          ]
+        ]
+      },
+      "sourceId": 2,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "31",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 1,
+      "locked": "false",
+      "name": "Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            360,
+            0
+          ],
+          [
+            0,
+            600
+          ],
+          [
+            360,
+            600
+          ]
+        ]
+      },
+      "sourceId": 1,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "32",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 2,
+      "locked": "false",
+      "name": "Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            360,
+            0
+          ],
+          [
+            1080,
+            0
+          ],
+          [
+            360,
+            600
+          ],
+          [
+            1080,
+            600
+          ]
+        ]
+      },
+      "sourceId": 1,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "33",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 3,
+      "locked": "false",
+      "name": "Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            1080,
+            0
+          ],
+          [
+            1440,
+            0
+          ],
+          [
+            1080,
+            600
+          ],
+          [
+            1440,
+            600
+          ]
+        ]
+      },
+      "sourceId": 1,
+      "visible": "true"
+    }
+  ],
+  "sources": [
+    {
+      "className": "Image",
+      "id": 1,
+      "locked": "false",
+      "name": "Wall calibration",
+      "opacity": "1",
+      "rate": "1",
+      "uri": "wall-calibration.png",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 2,
+      "locked": "false",
+      "name": "Silver Seed video",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Sky Garden/Sky Garden - Silver Seed.mp4",
+      "volume": "0",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Image",
+      "id": 3,
+      "locked": "false",
+      "name": "Sky Garden still",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Sky Garden/sky-garden.png",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 4,
+      "locked": "false",
+      "name": "Night Tiger - Red Dusk",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Night Tiger/sunset.mp4",
+      "volume": "0",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 5,
+      "locked": "false",
+      "name": "Night Tiger - Moonrise",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Night Tiger/moonrise.mp4",
+      "volume": "0",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 6,
+      "locked": "false",
+      "name": "Night Tiger - Moonlit Grass",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Night Tiger/into_garden.mp4",
+      "volume": "0",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 7,
+      "locked": "false",
+      "name": "Night Tiger - Cat Greeting",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Night Tiger/cat_greeting.mp4",
+      "volume": "0",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 8,
+      "locked": "false",
+      "name": "Night Tiger - Tiger Pounce",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Night Tiger/tiger_pounce.mp4",
+      "volume": "0",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 9,
+      "locked": "false",
+      "name": "Night Tiger - Owl Watch",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Night Tiger/owl.mp4",
+      "volume": "0",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 10,
+      "locked": "false",
+      "name": "Night Tiger - Cold Wind",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Night Tiger/cold_wind.mp4",
+      "volume": "0",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 11,
+      "locked": "false",
+      "name": "Night Tiger - Bedtime Purr",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "../../scenes/Night Tiger/cat_purr.mp4",
+      "volume": "0",
+      "x": 0,
+      "y": 0
+    }
+  ],
+  "version": "1.0.0-alpha.1"
+}

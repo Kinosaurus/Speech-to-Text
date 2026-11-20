@@ -3,17 +3,15 @@
 This app listens to a child reading aloud, follows their place in a story, and
 triggers checkpoints for visuals and sound.
 
-## Start the Windows Reading Pod
+## Windows Reading Pod
 
-Use the [Reading Pod startup guide](docs/READING_POD_STARTUP.md) for the current
-PC's exact commands, projector setup, scene imports, calibration and troubleshooting.
-Start the panel and **Start Reading Pod MapMap.cmd**, then use
-**Preflight → Start recognition server** and wait for **Ready**. Open the
-[operator panel](http://127.0.0.1:8765), select the story, microphone and model,
-and wait for **Listening** before reading.
+The `first-pipeline` branch includes the operator panel, the three-wall MapMap
+project and the Sky Garden demo. Follow the [Windows setup guide](docs/READING_POD_SETUP.md)
+to build the matching MapMap renderer, set up Parakeet and start the panel.
 
-The [latency investigation](benchmarks/LATENCY_INVESTIGATION.md) documents the
-current NeMo buffering defaults, measured cue delays and remaining checks.
+For the existing development PC, see the [configured startup guide](docs/READING_POD_STARTUP.md).
+The [latency investigation](benchmarks/LATENCY_INVESTIGATION.md) and
+[four-model pilot](benchmarks/FOUR_MODEL_READINGS.md) document the measured results and limits.
 
 ## Project documentation
 

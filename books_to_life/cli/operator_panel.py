@@ -7,7 +7,7 @@ from hashlib import sha256
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 from os import fstat
-from os.path import normcase
+from os.path import normcase, relpath
 from pathlib import Path
 import re
 import subprocess
@@ -145,7 +145,7 @@ foreach ($listener in $listeners) {{
 
 
 class Sessions:
-    def __init__(self, passages, ports, cue=None, *, assignment_file=None, scene_directory=SCENES,
+    def __init__(self, passages, ports, cue=None, *, assignment_file=None, assignment_defaults=None, scene_directory=SCENES,
                  story_directory=None, recognition_options=None, mapmap_launcher=None):
         self.passages = passages
         self.preview_files = {}
@@ -163,8 +163,9 @@ class Sessions:
         self.scene_directory = scene_directory if cue and cue.has_project_file else None
         self.assignments = {'sample': {'seed_found': cue.silver_seed}} if cue and cue.silver_seed else {}
         self.fade_ms = DEFAULT_FADE_MS
-        if assignment_file is not None and assignment_file.is_file():
-            stored = json.loads(assignment_file.read_text(encoding='utf-8'))
+        settings_file = assignment_file if assignment_file and assignment_file.is_file() else assignment_defaults
+        if settings_file is not None:
+            stored = json.loads(settings_file.read_text(encoding='utf-8-sig'))
             assignments = stored
             if isinstance(stored, dict) and stored.get('version') == 1:
                 assignments = stored.get('assignments')
@@ -190,7 +191,9 @@ class Sessions:
         self.mapmap_application = None
         if self.story_project:
             cue.story_project = self.story_project
-            launcher = mapmap_launcher or Path(cue.bridge.__file__).resolve().parents[2] / 'Start-Reading-Pod-MapMap.ps1'
+            launcher = mapmap_launcher
+            if launcher is None and cue.bridge is not None:
+                launcher = Path(cue.bridge.__file__).resolve().parents[2] / 'Start-Reading-Pod-MapMap.ps1'
             self.mapmap_application = MapMapApplication(launcher, self.story_project, cue.port, check_mapmap_listener)
         self.story_passage = None
         if self.story_project and passages:
@@ -729,47 +732,78 @@ class PanelHandler(SimpleHTTPRequestHandler):
         pass
 
 
+def initialize_mapmap_project(template, project):
+    if project.is_file():
+        return
+    data = json.loads(template.read_text(encoding='utf-8-sig'))
+    for source in data['sources']:
+        if source.get('uri'):
+            media = (template.parent / source['uri']).resolve(strict=True)
+            source['uri'] = Path(relpath(media, project.parent)).as_posix()
+    project.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with project.open('x', encoding='utf-8') as stream:
+            json.dump(data, stream, indent=2, ensure_ascii=False)
+            stream.write('\n')
+    except FileExistsError:
+        pass
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=8765)
+    parser.add_argument('--open-browser', action='store_true')
     parser.add_argument('--whisper-port', type=int, default=9090)
     parser.add_argument('--nemo-port', type=int, default=9097)
     parser.add_argument('--nemo-distro', default='Ubuntu', help='WSL distribution used by the NeMo server controls.')
-    parser.add_argument('--nemo-python', default='/home/heart/.venvs/books-to-life-nemo/bin/python',
+    parser.add_argument('--nemo-python',
                         help='Installed Python executable inside the NeMo WSL environment.')
     parser.add_argument('--nemo-model', type=Path, help='Windows path to the cached NeMo model.')
     parser.add_argument('--native-port', type=int, default=9091)
     parser.add_argument('--mapmap-bridge', type=Path, help='Path to the handoff play_cue.py.')
     parser.add_argument('--mapmap-project', type=Path, help='Saved MapMap project. Defaults to the bridge’s spoken-cue project.')
+    parser.add_argument('--mapmap-template', type=Path, help='Template for initializing a new local MapMap project.')
     parser.add_argument('--mapmap-story-dir', type=Path, help='Directory for the generated selected-story MapMap project.')
     parser.add_argument('--mapmap-launcher', type=Path, help='Path to Start-Reading-Pod-MapMap.ps1, inferred from the bridge by default.')
+    parser.add_argument('--mapmap-default-assignments', type=Path, help='Initial cue assignments for a new local project.')
     parser.add_argument('--osc-port', type=int, default=12345)
     args = parser.parse_args()
     if not (DIST / 'index.html').is_file():
         parser.error('Build the React panel first. See operator-panel/README.md.')
     if args.mapmap_bridge and not args.mapmap_bridge.is_file():
         parser.error('--mapmap-bridge must point to the handoff play_cue.py file.')
-    if args.mapmap_project and not args.mapmap_bridge:
-        parser.error('--mapmap-project requires --mapmap-bridge.')
+    if args.mapmap_template and not args.mapmap_project:
+        parser.error('--mapmap-template requires --mapmap-project.')
     if args.mapmap_story_dir and not args.mapmap_project:
         parser.error('--mapmap-story-dir requires --mapmap-project.')
+    if args.mapmap_story_dir and not (args.mapmap_bridge or args.mapmap_launcher):
+        parser.error('--mapmap-story-dir requires a MapMap launcher or handoff bridge.')
     ports = {model: {9090: args.whisper_port, 9091: args.native_port, 9097: args.nemo_port}[port]
              for model, (_, port, _) in MODELS.items()}
     try:
-        cue = MapMapCue(args.mapmap_bridge.resolve(), args.osc_port, args.mapmap_project) if args.mapmap_bridge else None
+        if args.mapmap_template:
+            initialize_mapmap_project(args.mapmap_template.resolve(), args.mapmap_project.resolve())
+        cue = (MapMapCue(args.mapmap_bridge, args.osc_port, args.mapmap_project)
+               if args.mapmap_bridge or args.mapmap_project else None)
         assignment_file = None
         if cue:
             project_key = sha256(normcase(str(cue.project)).encode()).hexdigest()[:24]
             assignment_file = ROOT / 'output/operator-mapmap' / f'{project_key}.json'
         story_directory = args.mapmap_story_dir.resolve() if args.mapmap_story_dir else None
         sessions = Sessions(load_passages(), ports, cue, assignment_file=assignment_file, story_directory=story_directory,
+                            assignment_defaults=args.mapmap_default_assignments,
                             mapmap_launcher=args.mapmap_launcher,
                             recognition_options={'distro': args.nemo_distro, 'python': args.nemo_python,
                                                  'model': args.nemo_model})
     except (OSError, ValueError, AttributeError, KeyError, TypeError) as error:
         parser.error(f'Could not load operator panel configuration. {error}')
     with ThreadingHTTPServer(('127.0.0.1', args.port), partial(PanelHandler, sessions=sessions)) as server:
-        print(f'Reading Pod panel available at http://127.0.0.1:{server.server_port}', flush=True)
+        url = f'http://127.0.0.1:{server.server_port}'
+        print(f'Reading Pod panel available at {url}', flush=True)
+        if args.open_browser:
+            import webbrowser
+
+            webbrowser.open(url)
         try:
             server.serve_forever()
         except KeyboardInterrupt:

@@ -6,7 +6,35 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
+from books_to_life.cli.operator_panel import ROOT, Sessions, initialize_mapmap_project, load_passages
 from books_to_life.runtime.mapmap_application import MapMapApplication
+from books_to_life.runtime.mapmap_cues import MapMapCue
+
+
+class BundledMapMapTests(unittest.TestCase):
+    def test_clean_project_uses_packaged_media_and_cue_assignments(self):
+        bundle = ROOT / 'pod/mapmap'
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            project = Path(directory) / 'local state' / 'Reading Pod.mmp'
+            initialize_mapmap_project(bundle / 'Reading Pod.mmp', project)
+            data = json.loads(project.read_text(encoding='utf-8'))
+            for source in data['sources']:
+                path = Path(source['uri'])
+                self.assertFalse(path.is_absolute())
+                self.assertTrue((project.parent / path).is_file())
+            cue = MapMapCue(None, 12346, project)
+            sessions = Sessions(load_passages(), {}, cue, assignment_defaults=bundle / 'assignments.json')
+            self.assertEqual(cue.silver_seed, '2')
+            self.assertTrue(cue.cues['2'].has_audio)
+            self.assertEqual({key: value.source for key, value in sessions.mapmap_cues('sample').items()},
+                             {'seed_found': 2, 'clouds_arrive': 3})
+            self.assertEqual(len(sessions.mapmap_cues('night_tiger')), 8)
+            self.assertEqual(sessions.fade_ms, 250)
+
+            data['local_edit'] = True
+            project.write_text(json.dumps(data), encoding='utf-8')
+            initialize_mapmap_project(bundle / 'Reading Pod.mmp', project)
+            self.assertTrue(json.loads(project.read_text(encoding='utf-8'))['local_edit'])
 
 
 class MapMapApplicationTests(unittest.TestCase):

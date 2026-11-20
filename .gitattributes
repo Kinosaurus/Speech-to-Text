@@ -1,0 +1,2 @@
+scripts/reading-pod/*.sh text eol=lf
+pod/mapmap/*.patch text eol=lf
