@@ -56,6 +56,7 @@ class SoundPlayer:
         self._closing = False
         self._stop = False
         self._thread = None
+        self._audio = None
         root = Path(sound_dir).resolve() if sound_dir else Path(manifest_path).resolve().parent
         cache = {}
         for checkpoint in checkpoints:
@@ -75,6 +76,17 @@ class SoundPlayer:
             except (OSError, ValueError, TypeError, wave.Error, EOFError) as error:
                 logging.warning('[SOUND] %s skipped (%s): %s', ident, name, error)
         if self.sounds:
+            # PortAudio initialization and termination must stay on the caller
+            # thread, alongside the microphone client's audio lifecycle.
+            try:
+                import pyaudio
+
+                self._audio = pyaudio.PyAudio()
+            except Exception as error:
+                self.error = error
+                self._closing = True
+                logging.exception('[SOUND] Audio initialization failed; speech tracking continues.')
+                return
             self._thread = threading.Thread(target=self._run, name='story-sounds', daemon=True)
             self._thread.start()
             atexit.register(self.close)
@@ -105,14 +117,18 @@ class SoundPlayer:
             except KeyboardInterrupt:
                 self.close()
                 raise
+        with self._condition:
+            if self._audio is not None:
+                audio, self._audio = self._audio, None
+                audio.terminate()
         atexit.unregister(self.close)
 
     def _run(self):
-        audio = stream = None
+        audio = self._audio
+        stream = None
         try:
             import pyaudio
 
-            audio = pyaudio.PyAudio()
             while True:
                 with self._condition:
                     while not self._stop and not self._pending and not self._closing:
@@ -151,12 +167,8 @@ class SoundPlayer:
             with self._condition:
                 self._closing = True
                 self._pending.clear()
-            try:
-                if stream is not None:
-                    try:
-                        stream.stop_stream()
-                    finally:
-                        stream.close()
-            finally:
-                if audio is not None:
-                    audio.terminate()
+            if stream is not None:
+                try:
+                    stream.stop_stream()
+                finally:
+                    stream.close()

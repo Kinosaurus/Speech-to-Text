@@ -1,0 +1,798 @@
+diff --git a/src/app/main.cpp b/src/app/main.cpp
+index 8321137..57248d5 100644
+--- a/src/app/main.cpp
++++ b/src/app/main.cpp
+@@ -6,6 +6,8 @@
+ #include <QCommandLineParser>
+ #include <QCommandLineOption>
+ #include <QOpenGLContext>
++#include <QSettings>
++#include <QTimer>
+ 
+ #include "MM.h"
+ #include "MainWindow.h"
+@@ -217,7 +219,10 @@ int main(int argc, char *argv[])
+   // finally, load the project file.
+   if (projectFileValue != "")
+   {
+-    win->loadFile(projectFileValue);
++    if (projectFileValue == qEnvironmentVariable("READING_POD_MAPMAP_PROJECT"))
++      win->loadReadingPodStory();
++    else
++      win->loadFile(projectFileValue);
+   }
+ 
+   QString oscPortValue = parser.value("osc-port");
+@@ -240,18 +245,14 @@ int main(int argc, char *argv[])
+   else
+     qFatal("Invalid option <frame-rate>.");
+ 
+-  // Terminate splash.
+-  splash.showMessage("  " + QObject::tr("Done."),
+-                     Qt::AlignLeft | Qt::AlignTop, MM::WHITE);
+-  splash.finish(win);
+-  splash.raise();
+-
+-  // Launch program.
++  splash.close();
+   win->show();
+ 
+-  if (parser.isSet(fullscreenOption))
++  const bool restoreFullscreen = QSettings().value("displayOutputWindow", MM::DISPLAY_OUTPUT_WINDOW).toBool();
++  if (parser.isSet(fullscreenOption) || restoreFullscreen)
+   {
+-    win->startFullScreen();
++    // Let the editor initialize its OpenGL widget before opening the shared output.
++    QTimer::singleShot(350, win, &MainWindow::startFullScreen);
+   }
+ 
+   // Start app.
+diff --git a/src/control/OscInterface.cpp b/src/control/OscInterface.cpp
+index d4415dc..c9a9b96 100644
+--- a/src/control/OscInterface.cpp
++++ b/src/control/OscInterface.cpp
+@@ -26,7 +26,10 @@
+ #include "MainWindow.h"
+ #include <QVariant>
+ #include <QColor>
++#include <QJsonDocument>
++#include <QJsonObject>
+ #include <QPointF>
++#include <QSaveFile>
+ 
+ namespace mmp {
+ 
+@@ -197,8 +200,60 @@ void OscInterface::applyOscCommand(MainWindow &main_window, QVariantList & comma
+   const QString path = command.at(0).toString();
+   const QVariantList args = command.mid(2);
+ 
++  if (path == "/mapmap/reading-pod/load")
++  {
++    if (args.size() == 1 && args.first().typeId() == QMetaType::QString
++        && !args.first().toString().isEmpty())
++      main_window.loadReadingPodStory(args.first().toString());
++    return;
++  }
++
++  if (path == "/mapmap/reading-pod/layout")
++  {
++    if (args.size() == 1 && args.first().typeId() == QMetaType::QString)
++      main_window.applyReadingPodLayout(args.first().toString());
++    return;
++  }
++
++  const bool prepareVideo = path == "/mapmap/reading-pod/prepare";
++  if (prepareVideo || path == "/mapmap/reading-pod/release")
++  {
++    if (!main_window.isReadingPodProject() || args.size() != (prepareVideo ? 2 : 1)
++        || args.first().typeId() != QMetaType::Int || args.first().toInt() <= 0)
++      return;
++    const int id = args.first().toInt();
++    auto video = qSharedPointerDynamicCast<Video>(findSourceById(main_window.getMappingManager(), id));
++    if (video.isNull() || !video->isReadingPodDeferred())
++      return;
++    if (!prepareVideo)
++    {
++      video->pause();
++      video->releaseResources();
++      return;
++    }
++    const QString ticket = args.at(1).toString();
++    if (args.at(1).typeId() != QMetaType::QString || ticket.size() != 32)
++      return;
++    const QString status = qEnvironmentVariable("READING_POD_MAPMAP_PROJECT") + ".video-" + QString::number(id);
++    video->prepareReadingPodFrame([status, ticket](bool ready) {
++      QSaveFile reply(status);
++      if (reply.open(QIODevice::WriteOnly))
++      {
++        reply.write(QJsonDocument(QJsonObject{{"ticket", ticket}, {"ready", ready}}).toJson(QJsonDocument::Compact));
++        reply.commit();
++      }
++    });
++    return;
++  }
++
+   OscAction action = parseOscAction(path, args);
++  const bool podPreview = main_window.isReadingPodProject() && !main_window.isWindowModified()
++      && (action.type == OscAction::LayerVertex
++          || (action.type == OscAction::SourceProperty
++              && (action.property == "opacity" || action.property == "volume")));
+   bool handled = applyAction(main_window, action);
++  if (handled && podPreview)
++    main_window.setWindowModified(false);
+ 
+   if (!handled && is_verbose())
+   {
+diff --git a/src/core/ProjectReader.cpp b/src/core/ProjectReader.cpp
+index 337467c..8cb00a5 100644
+--- a/src/core/ProjectReader.cpp
++++ b/src/core/ProjectReader.cpp
+@@ -93,7 +93,7 @@ void ProjectReader::parseProject(const QJsonObject& project)
+       if (source->getSourceType() == Source::SourceType::Video)
+       {
+         QSharedPointer<Video> media = qSharedPointerCast<Video>(source);
+-        if (!media.isNull() && !_window->fileExists(media->getUri()))
++        if (!media.isNull() && !media->isReadingPodDeferred() && !_window->fileExists(media->getUri()))
+           media->setUri(_window->locateMediaFile(media->getUri(), false));
+       }
+       if (source->getSourceType() == Source::SourceType::Image)
+@@ -150,6 +150,11 @@ Source::ptr ProjectReader::parseSource(const QJsonObject& obj)
+     }
+ 
+     qDebug() << "Created new instance with id: " << source->getId();
++    if (obj.value("readingPodDeferred").toBool() && qEnvironmentVariableIsSet("READING_POD_MAPMAP_PROJECT"))
++    {
++      if (auto *video = qobject_cast<Video*>(source.data()))
++        video->deferReadingPodVideo();
++    }
+     source->read(obj);
+     return source;
+   }
+diff --git a/src/core/ProjectWriter.cpp b/src/core/ProjectWriter.cpp
+index 7917fb7..0b76a68 100644
+--- a/src/core/ProjectWriter.cpp
++++ b/src/core/ProjectWriter.cpp
+@@ -52,10 +52,22 @@ bool ProjectWriter::writeFile(QIODevice *device)
+   }
+   project[ProjectLabels::LAYERS] = layers;
+ 
++  if (_window->isReadingPodProject())
++  {
++    QFile previous(qEnvironmentVariable("READING_POD_MAPMAP_PROJECT"));
++    if (previous.open(QIODevice::ReadOnly))
++    {
++      const QJsonObject metadata = QJsonDocument::fromJson(previous.readAll()).object();
++      for (const QString &key : {QString("readingPodStory"), QString("readingPodRevision"), QString("readingPodLayoutRevision")})
++        if (metadata.contains(key))
++          project.insert(key, metadata.value(key));
++    }
++  }
++
+   QJsonDocument doc(project);
+   device->write(doc.toJson(QJsonDocument::Indented));
+ 
+   return true;
+ }
+ 
+-}
+\ No newline at end of file
++}
+diff --git a/src/core/Source.cpp b/src/core/Source.cpp
+index 421196b..8e51ee4 100644
+--- a/src/core/Source.cpp
++++ b/src/core/Source.cpp
+@@ -126,11 +126,7 @@ void Image::build()
+   QImageReader reader(_uri);
+   _images.clear();
+   for (int i = 0; i < reader.imageCount(); i++) {
+-    QImage raw = reader.read().convertToFormat(QImage::Format_RGBA8888);
+-    QT_WARNING_PUSH
+-    QT_WARNING_DISABLE_DEPRECATED
+-    _images.push_back(raw.mirrored(true, false).transformed(QTransform().rotate(180)));
+-    QT_WARNING_POP
++    _images.push_back(reader.read().convertToFormat(QImage::Format_RGBA8888));
+   }
+ 
+   rewind();
+@@ -138,6 +134,8 @@ void Image::build()
+ 
+ void Image::update()
+ {
++  Texture::update();
++
+   if (isAnimation() && isPlaying())
+   {
+     // Compute the interval of time since last call to update().
+@@ -247,7 +245,8 @@ Video::~Video()
+ 
+ void Video::build()
+ {
+-  this->_impl->build();
++  if (!_readingPodDeferred)
++    _impl->build();
+ }
+ 
+ int Video::getWidth() const
+@@ -269,7 +268,8 @@ void Video::update() {
+ 
+ void Video::rewind()
+ {
+-  _impl->resetMovie();
++  if (!_readingPodDeferred || _impl->hasBits())
++    _impl->resetMovie();
+ }
+ 
+ void Video::releaseResources()
+@@ -279,13 +279,28 @@ void Video::releaseResources()
+   // camera be re-opened) without invalidating the source. See reacquireResources().
+   if (_impl)
+     _impl->unloadMovie();
++  if (_readingPodDeferred && textureId != 0)
++  {
++    orphanTexture(textureId);
++    textureId = 0;
++  }
+ }
+ 
+ void Video::reacquireResources()
+ {
+   // Re-open using the stored URI/device id (set by loadMovie()).
+-  if (_impl)
+-    _impl->build();
++  build();
++}
++
++void Video::prepareReadingPodFrame(std::function<void(bool)> ready)
++{
++  auto *player = dynamic_cast<VideoPlayerImpl*>(_impl);
++  if (!_readingPodDeferred || !player || !QFileInfo(_uri).isFile())
++  {
++    ready(false);
++    return;
++  }
++  player->prepareFirstFrame(_uri, std::move(ready));
+ }
+ 
+ void Video::lockMutex() {
+@@ -348,6 +363,15 @@ bool Video::setUri(const QString &uri)
+   // the same media source (uri)
+   if (sameMediaSourceOSC || uri != _uri)
+   {
++    if (_readingPodDeferred)
++    {
++      releaseResources();
++      _uri = uri;
++      _setFallbackIcon();
++      _emitPropertyChanged("uri");
++      return true;
++    }
++
+     // Try to load movie.
+     if (!_impl->loadMovie(uri))
+     {
+diff --git a/src/core/Source.h b/src/core/Source.h
+index e5e44c3..9a02c84 100644
+--- a/src/core/Source.h
++++ b/src/core/Source.h
+@@ -369,6 +369,10 @@ public:
+   /// Re-opens the capture device / player released by releaseResources().
+   virtual void reacquireResources();
+ 
++  void deferReadingPodVideo() { _readingPodDeferred = true; }
++  bool isReadingPodDeferred() const { return _readingPodDeferred; }
++  void prepareReadingPodFrame(std::function<void(bool)> ready);
++
+   /// Locks mutex (default = no effect).
+   virtual void lockMutex();
+ 
+@@ -424,6 +428,7 @@ protected:
+   // the caller has already confirmed a fresh frame is available (see
+   // _pollForBits()).
+   bool _generateThumbnail();
++  bool _readingPodDeferred = false;
+ 
+   // Polls (via the Qt event loop, never blocking) until _impl has a fresh
+   // frame, then calls onReady. Gives up silently after attemptsLeft tries.
+diff --git a/src/core/VideoPlayerImpl.cpp b/src/core/VideoPlayerImpl.cpp
+index b5ea120..2444dca 100644
+--- a/src/core/VideoPlayerImpl.cpp
++++ b/src/core/VideoPlayerImpl.cpp
+@@ -30,6 +30,8 @@ VideoPlayerImpl::~VideoPlayerImpl()
+ 
+ void VideoPlayerImpl::freeResources()
+ {
++  _firstFrame = {};
++  _podFrameReady = false;
+   if (_player) {
+     _player->stop();
+     delete _player;
+@@ -44,12 +46,28 @@ void VideoPlayerImpl::freeResources()
+ }
+ 
+ bool VideoPlayerImpl::loadMovie(const QString& path)
++{
++  return openMovie(path, {});
++}
++
++void VideoPlayerImpl::prepareFirstFrame(const QString& path, std::function<void(bool)> ready)
++{
++  if (_podFrameReady)
++    ready(true);
++  else if (_firstFrame)
++    _firstFrame = std::move(ready);
++  else
++    openMovie(path, std::move(ready));
++}
++
++bool VideoPlayerImpl::openMovie(const QString& path, std::function<void(bool)> firstFrame)
+ {
+   // Store URI in base class.
+   VideoImpl::loadMovie(path);
+ 
+   // Tear down any previous player and reset frame state.
+   freeResources();
++  _firstFrame = std::move(firstFrame);
+ 
+   _player      = new QMediaPlayer(this);
+   _audioOutput = new QAudioOutput(this);
+@@ -65,7 +83,7 @@ bool VideoPlayerImpl::loadMovie(const QString& path)
+ 
+   _player->setSource(QUrl::fromLocalFile(path));
+ 
+-  if (_playInLoop)
++  if (_playInLoop && !_firstFrame)
+     _player->setLoops(QMediaPlayer::Infinite);
+ 
+   // Seek is always enabled for file sources in Qt 6.
+@@ -74,7 +92,7 @@ bool VideoPlayerImpl::loadMovie(const QString& path)
+   _audioIsConnected = true;
+ 
+   _player->setPlaybackRate(_rate);
+-  _audioOutput->setVolume(_volume);
++  _audioOutput->setVolume(_firstFrame ? 0.0 : _volume);
+   _player->play();
+   _playState = true;
+ 
+@@ -99,6 +117,14 @@ void VideoPlayerImpl::onVideoFrameChanged(const QVideoFrame& frame)
+   }
+ 
+   unlockMutex();
++
++  if (_firstFrame && !img.isNull())
++  {
++    _podFrameReady = true;
++    auto ready = std::move(_firstFrame);
++    setPlayState(false);
++    ready(true);
++  }
+ }
+ 
+ void VideoPlayerImpl::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
+@@ -113,6 +139,11 @@ void VideoPlayerImpl::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
+     break;
+   case QMediaPlayer::InvalidMedia:
+     qWarning() << "Invalid media:" << _player->errorString();
++    if (_firstFrame)
++    {
++      auto ready = std::move(_firstFrame);
++      ready(false);
++    }
+     break;
+   default:
+     break;
+@@ -157,7 +188,7 @@ void VideoPlayerImpl::update()
+ {
+   if (_eos) {
+     _eos = false;
+-    if (_playInLoop)
++    if (_playInLoop && !_podFrameReady && !_firstFrame)
+       resetMovie();
+   }
+ }
+diff --git a/src/core/VideoPlayerImpl.h b/src/core/VideoPlayerImpl.h
+index 285c671..8ce5317 100644
+--- a/src/core/VideoPlayerImpl.h
++++ b/src/core/VideoPlayerImpl.h
+@@ -21,6 +21,7 @@
+ #include <QAudioOutput>
+ #include <QVideoSink>
+ #include <QVideoFrame>
++#include <functional>
+ 
+ namespace mmp {
+ 
+@@ -38,6 +39,7 @@ public:
+   ~VideoPlayerImpl() override;
+ 
+   bool loadMovie(const QString& path) override;
++  void prepareFirstFrame(const QString& path, std::function<void(bool)> ready);
+   bool isLive() override { return false; }
+ 
+   bool setPlayState(bool play) override;
+@@ -56,6 +58,9 @@ private slots:
+   void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
+ 
+ private:
++  bool openMovie(const QString& path, std::function<void(bool)> firstFrame);
++  std::function<void(bool)> _firstFrame;
++  bool _podFrameReady = false;
+   QMediaPlayer *_player;
+   QAudioOutput *_audioOutput;
+   QVideoSink   *_videoSink;
+diff --git a/src/gui/MainWindow.cpp b/src/gui/MainWindow.cpp
+index c8e7937..97dff2d 100644
+--- a/src/gui/MainWindow.cpp
++++ b/src/gui/MainWindow.cpp
+@@ -20,6 +20,11 @@
+  */
+ 
+ #include "MainWindow.h"
++#include <QJsonDocument>
++#include <QJsonObject>
++#include <QJsonArray>
++#include <QSaveFile>
++#include <cmath>
+ #include "PreferenceDialog.h"
+ #include "AboutDialog.h"
+ #include "WelcomeDialog.h"
+@@ -92,6 +97,9 @@ MainWindow::MainWindow()
+   readSettings();
+ 
+   // Start osc.
++  osc_timer = new QTimer(this);
++  connect(osc_timer, &QTimer::timeout, this, &MainWindow::pollOscInterface);
++  osc_timer->start(10);
+   startOscReceiver();
+ 
+ #ifdef HAVE_MCP
+@@ -126,6 +134,7 @@ MainWindow::MainWindow()
+ 
+ MainWindow::~MainWindow()
+ {
++  delete outputWindow;
+   delete mappingManager;
+   //  delete _facade;
+   delete osc_timer;
+@@ -1782,6 +1791,11 @@ void MainWindow::createLayout()
+   _preferenceDialog = new PreferenceDialog(this);
+ 
+   outputWindow = new OutputGLWindow(this, destinationCanvas);
++#ifdef Q_OS_WIN
++  // Windows hides owned windows when their owner is minimized. Keep projector
++  // output independent, with its lifetime managed by MainWindow's destructor.
++  outputWindow->setParent(nullptr, Qt::Window | Qt::FramelessWindowHint);
++#endif
+   outputWindow->installEventFilter(destinationCanvas);
+ 
+   // Source scene changed -> change destination.
+@@ -2779,7 +2793,6 @@ void MainWindow::readSettings()
+   outputWindow->restoreGeometry(settings.value("outputWindow").toByteArray());
+ 
+   // new in 0.1.2:
+-  outputFullScreenAction->setChecked(settings.value("displayOutputWindow", MM::DISPLAY_OUTPUT_WINDOW).toBool());
+   displayTestSignalAction->setChecked(settings.value("displayTestSignal", MM::DISPLAY_TEST_SIGNAL).toBool());
+   displayControlsAction->setChecked(settings.value("displayControls", MM::DISPLAY_CONTROLS).toBool());
+   outputWindow->setCanvasDisplayCrosshair(settings.value("displayControls", MM::DISPLAY_CONTROLS).toBool());
+@@ -2878,10 +2891,13 @@ bool MainWindow::loadFile(const QString &fileName)
+                          tr("Parse error in file %1:\n\n%2")
+                          .arg(fileName)
+                          .arg(reader.errorString()));
++    return false;
+   }
+   else
+   {
+-    settings.setValue("defaultProjectDir", currentDir.absoluteFilePath(fileName));
++    const QString storyPath = qEnvironmentVariable("READING_POD_MAPMAP_PROJECT");
++    if (storyPath.isEmpty() || QFileInfo(fileName).absoluteFilePath() != QFileInfo(storyPath).absoluteFilePath())
++      settings.setValue("defaultProjectDir", currentDir.absoluteFilePath(fileName));
+     statusBar()->showMessage(tr("File loaded"), 2000);
+     setCurrentFile(fileName);
+   }
+@@ -2889,6 +2905,165 @@ bool MainWindow::loadFile(const QString &fileName)
+   return true;
+ }
+ 
++bool MainWindow::isReadingPodProject() const
++{
++  const QString path = qEnvironmentVariable("READING_POD_MAPMAP_PROJECT");
++  return !path.isEmpty() && QFileInfo(curFile).absoluteFilePath() == QFileInfo(path).absoluteFilePath();
++}
++
++void MainWindow::loadReadingPodStory(const QString &revision)
++{
++  const QString path = qEnvironmentVariable("READING_POD_MAPMAP_PROJECT");
++  if (path.isEmpty())
++    return;
++
++  QFile input(path);
++  QJsonObject project;
++  if (input.open(QIODevice::ReadOnly))
++    project = QJsonDocument::fromJson(input.readAll()).object();
++  input.close();
++  const QString preparedRevision = project.value("readingPodRevision").toString();
++  if (preparedRevision.isEmpty() || (!revision.isEmpty() && preparedRevision != revision))
++    return;
++
++  QString error;
++  if ((!curFile.isEmpty() && !isReadingPodProject()) || isWindowModified())
++    error = tr("Save your edits and reopen MapMap with the Reading Pod launcher.");
++  else if (property("_readingPodRevision").toString() != preparedRevision)
++  {
++    if (loadFile(path))
++      setProperty("_readingPodRevision", preparedRevision);
++    else
++      error = tr("MapMap could not open the selected story.");
++  }
++
++  const QJsonObject status {{ "revision", preparedRevision },
++                            { "pid", QCoreApplication::applicationPid() },
++                            { "layoutUpdates", true },
++                            { "layoutPreview", true },
++                            { "error", error }};
++  QSaveFile reply(path + ".status");
++  if (reply.open(QIODevice::WriteOnly))
++  {
++    reply.write(QJsonDocument(status).toJson(QJsonDocument::Compact));
++    reply.commit();
++  }
++}
++
++void MainWindow::applyReadingPodLayout(const QString &ticket)
++{
++  const QString path = qEnvironmentVariable("READING_POD_MAPMAP_PROJECT");
++  if (path.isEmpty() || ticket.size() != 32)
++    return;
++
++  QJsonArray applied;
++  const auto apply = [&]() -> QString {
++    if (!isReadingPodProject() || isWindowModified())
++      return tr("Save your MapMap edits before applying the panel layout.");
++    QFile requestFile(path + ".layout-request");
++    if (!requestFile.open(QIODevice::ReadOnly) || requestFile.size() > 1024 * 1024)
++      return tr("MapMap could not read the layout request.");
++    const QJsonObject request = QJsonDocument::fromJson(requestFile.readAll()).object();
++    if (request.value("ticket").toString() != ticket)
++      return tr("The layout request changed. Try saving again.");
++    QFile projectFile(path);
++    if (!projectFile.open(QIODevice::ReadOnly))
++      return tr("MapMap could not read the selected-story project.");
++    const QByteArray original = projectFile.readAll();
++    QJsonObject project = QJsonDocument::fromJson(original).object();
++    projectFile.close();
++    const QString revision = property("_readingPodRevision").toString();
++    if (revision.isEmpty() || request.value("storyRevision").toString() != revision
++        || project.value("readingPodRevision").toString() != revision)
++      return tr("The selected story changed. Reselect the story and try saving again.");
++
++    QMap<uid, QVector<QPointF>> changes;
++    for (const QJsonValue &item : request.value("layers").toArray())
++    {
++      const QJsonObject update = item.toObject();
++      const int id = update.value("id").toInt(-1);
++      const Layer::ptr layer = mappingManager->getLayerById(id);
++      const QJsonArray points = update.value("vertices").toArray();
++      if (id <= 0 || changes.contains(id) || layer.isNull() || layer->getShape().isNull()
++          || points.size() != layer->getShape()->nVertices())
++        return tr("A wall mesh changed. Reselect the story and try saving again.");
++      QVector<QPointF> corners;
++      for (const QJsonValue &point : points)
++      {
++        const QJsonArray pair = point.toArray();
++        if (pair.size() != 2 || !pair[0].isDouble() || !pair[1].isDouble())
++          return tr("The layout contains an invalid corner.");
++        const double x = pair[0].toDouble(), y = pair[1].toDouble();
++        if (!std::isfinite(x) || !std::isfinite(y) || std::abs(x) > 32768 || std::abs(y) > 32768)
++          return tr("The layout contains an invalid corner.");
++        corners.append(QPointF(x, y));
++      }
++      changes.insert(id, corners);
++    }
++    if (changes.isEmpty())
++      return tr("The layout request contains no walls.");
++
++    QSet<uid> found;
++    QJsonArray layers = project.value("layers").toArray();
++    for (int i = 0; i < layers.size(); ++i)
++    {
++      QJsonObject layer = layers[i].toObject();
++      const int id = layer.value("id").toInt(-1);
++      if (!changes.contains(id))
++        continue;
++      QJsonArray points;
++      for (const QPointF &corner : changes[id])
++        points.append(QJsonArray{corner.x(), corner.y()});
++      QJsonObject destination = layer.value("destination").toObject();
++      destination.insert("vertices", points);
++      layer.insert("destination", destination);
++      layers[i] = layer;
++      found.insert(id);
++    }
++    if (found.size() != changes.size())
++      return tr("The selected-story file has different walls. Reselect the story.");
++    project.insert("layers", layers);
++    project.insert("readingPodLayoutRevision", request.value("masterRevision"));
++    QFile unchanged(path);
++    if (!unchanged.open(QIODevice::ReadOnly) || unchanged.readAll() != original)
++      return tr("The selected-story file changed while saving. Try again.");
++    unchanged.close();
++    const QByteArray payload = QJsonDocument(project).toJson(QJsonDocument::Indented);
++    if (request.value("persist").toBool(true))
++    {
++      QSaveFile saved(path);
++      if (!saved.open(QIODevice::WriteOnly)
++          || saved.write(payload) != payload.size() || !saved.commit())
++        return tr("MapMap could not save the selected-story layout.");
++    }
++
++    for (auto change = changes.cbegin(); change != changes.cend(); ++change)
++    {
++      const MShape::ptr shape = mappingManager->getLayerById(change.key())->getShape();
++      // Complete layouts are already validated. Per-corner constraints would
++      // compare new corners with old neighbours and can distort a large fit.
++      shape->setVertices(change.value());
++      QJsonArray actual;
++      for (int i = 0; i < shape->nVertices(); ++i)
++        actual.append(QJsonArray{shape->getVertex(i).x(), shape->getVertex(i).y()});
++      applied.append(QJsonObject{{"id", int(change.key())}, {"vertices", actual}});
++    }
++    setWindowModified(false);
++    destinationCanvas->scene()->update();
++    outputWindow->getCanvas()->update();
++    return QString();
++  };
++  const QString error = apply();
++  QSaveFile reply(path + ".layout-status");
++  if (reply.open(QIODevice::WriteOnly))
++  {
++    reply.write(QJsonDocument(QJsonObject{{"ticket", ticket},
++                {"pid", QCoreApplication::applicationPid()}, {"error", error},
++                {"layers", applied}}).toJson(QJsonDocument::Compact));
++    reply.commit();
++  }
++}
++
+ bool MainWindow::saveFile(const QString &fileName)
+ {
+   // Write to a temporary file first, then rename for atomic save.
+@@ -2935,8 +3110,9 @@ void MainWindow::setCurrentFile(const QString &fileName)
+ 
+   QString shownName = tr("Untitled");
+   if (!curFile.isEmpty())
+-  {
+     shownName = strippedName(curFile);
++  if (!curFile.isEmpty() && !isReadingPodProject())
++  {
+     recentFiles = settings.value("recentFiles").toStringList();
+     recentFiles.removeAll(curFile);
+     recentFiles.prepend(curFile);
+@@ -3971,14 +4147,13 @@ void MainWindow::startOscReceiver()
+ #else
+   QMessageLogger(__FILE__, __LINE__, 0).debug() << "OSC port: " << oscListeningPort;
+ #endif
++  // Release the old socket before binding, including when the port is unchanged.
++  osc_interface.reset();
+   osc_interface.reset(new OscInterface(oscListeningPort, oscAcceptNetwork));
+   if (oscListeningPort != 0)
+   {
+     osc_interface->start();
+   }
+-  osc_timer = new QTimer(this); // FIXME: memleak?
+-  connect(osc_timer, &QTimer::timeout, this, &MainWindow::pollOscInterface);
+-  osc_timer->start();
+ }
+ 
+ bool MainWindow::setOscPort(int port)
+diff --git a/src/gui/MainWindow.h b/src/gui/MainWindow.h
+index fb17d9c..a830d43 100644
+--- a/src/gui/MainWindow.h
++++ b/src/gui/MainWindow.h
+@@ -337,6 +337,9 @@ private:
+ 
+ public:
+   bool loadFile(const QString &fileName);
++  bool isReadingPodProject() const;
++  void loadReadingPodStory(const QString &revision = QString());
++  void applyReadingPodLayout(const QString &ticket);
+   bool saveFile(const QString &fileName);
+   void setCurrentFile(const QString &fileName);
+   void setCurrentVideo(const QString &filename);
+diff --git a/src/gui/OutputGLCanvas.cpp b/src/gui/OutputGLCanvas.cpp
+index 126bb6d..2ccc726 100644
+--- a/src/gui/OutputGLCanvas.cpp
++++ b/src/gui/OutputGLCanvas.cpp
+@@ -37,13 +37,14 @@ OutputGLCanvas::OutputGLCanvas(MainWindow* mainWindow, QWidget* parent, QOpenGLW
+   // Disable scrollbars.
+   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
++  setAlignment(Qt::AlignLeft | Qt::AlignTop);
+ 
+   setSceneRectToViewportGeometry();
+ }
+ 
+ void OutputGLCanvas::setSceneRectToViewportGeometry()
+ {
+-  setSceneRect(viewport()->geometry());
++  setSceneRect(viewport()->rect());
+ }
+ 
+ void OutputGLCanvas::setSyphonOutputEnabled(bool on)
+@@ -291,10 +292,9 @@ void OutputGLCanvas::_drawResolutionText(QPainter *painter, const QRect &rect, i
+   }
+ }
+ 
+-void OutputGLCanvas::resizeGL(int width, int height)
++void OutputGLCanvas::resizeEvent(QResizeEvent* event)
+ {
+-  Q_UNUSED(width);
+-  Q_UNUSED(height);
++  MapperGLCanvas::resizeEvent(event);
+   setSceneRectToViewportGeometry();
+ }
+ 
+diff --git a/src/gui/OutputGLCanvas.h b/src/gui/OutputGLCanvas.h
+index 8a53b47..af420a7 100644
+--- a/src/gui/OutputGLCanvas.h
++++ b/src/gui/OutputGLCanvas.h
+@@ -79,8 +79,7 @@ private:
+ #endif
+ 
+ protected:
+-  // overriden from QGlWidget:
+-  virtual void resizeGL(int width, int height);
++  void resizeEvent(QResizeEvent* event) override;
+ 
+   void wheelEvent(QWheelEvent *event);
+   void mouseMoveEvent(QMouseEvent *event);
+diff --git a/src/gui/ShapeGraphicsItem.cpp b/src/gui/ShapeGraphicsItem.cpp
+index d75f957..e5389e7 100644
+--- a/src/gui/ShapeGraphicsItem.cpp
++++ b/src/gui/ShapeGraphicsItem.cpp
+@@ -262,8 +262,28 @@ void TextureGraphicsItem::_prePaint(QPainter* painter,
+ 	Q_CHECK_PTR(texture);
+ 
+   Q_UNUSED(option);
++  const QTransform transform = painter->deviceTransform();
+   painter->beginNativePainting();
+ 
++  // Qt's painter uses shaders and does not set the fixed-function matrices.
++  // Match its item-to-device transform so the texture follows the editor controls.
++  GLint viewport[4];
++  glGetIntegerv(GL_VIEWPORT, viewport);
++  const GLdouble modelView[16] = {
++    transform.m11(), transform.m12(), 0, 0,
++    transform.m21(), transform.m22(), 0, 0,
++    0, 0, 1, 0,
++    transform.dx(), transform.dy(), 0, 1
++  };
++  glPushAttrib(GL_TRANSFORM_BIT);
++  glMatrixMode(GL_PROJECTION);
++  glPushMatrix();
++  glLoadIdentity();
++  glOrtho(0, viewport[2], viewport[3], 0, -1, 1);
++  glMatrixMode(GL_MODELVIEW);
++  glPushMatrix();
++  glLoadMatrixd(modelView);
++
+   // Free any textures orphaned by destroyed sources now that a GL context is
+   // current (see issue #229).
+   Texture::deleteOrphanedTextures();
+@@ -304,6 +324,7 @@ void TextureGraphicsItem::_prePaint(QPainter* painter,
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+ 
++
+   // Set texture color (apply opacity).
+   glColor4f(1.0f, 1.0f, 1.0f,
+             isOutput() ? getLayer()->getComputedOpacity() : getLayer()->getSource()->getOpacity());
+@@ -317,6 +338,11 @@ void TextureGraphicsItem::_postPaint(QPainter* painter,
+ 
+   glDisable(GL_TEXTURE_2D);
+ 
++  glMatrixMode(GL_MODELVIEW);
++  glPopMatrix();
++  glMatrixMode(GL_PROJECTION);
++  glPopMatrix();
++  glPopAttrib();
+   painter->endNativePainting();
+ }
+ 

@@ -3,6 +3,12 @@
 This app listens to a child reading aloud, follows their place in a story, and
 triggers checkpoints for visuals and sound.
 
+## Windows Reading Pod
+
+The `first-pipeline` branch includes the operator panel, the three-wall MapMap
+project and the Sky Garden demo. Follow the [Windows setup guide](docs/READING_POD_SETUP.md)
+to build the matching MapMap renderer, set up Parakeet and start the panel.
+
 Start with [current progress and tested commands](docs/PROJECT_STATUS.md).
 For model choices, deployment options, and why the pilot setup was selected,
 see [setups and tradeoffs](docs/SETUPS.md).

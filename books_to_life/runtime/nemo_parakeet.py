@@ -60,6 +60,10 @@ def load_model(path, chunk_ms=560, right_ms=560):
 
 
 class NemoParakeetSession:
+    @property
+    def configuration(self):
+        return dict(chunk_ms=self.context.chunk//16,right_ms=self.context.right//16,boost=self.boost)
+
     def __init__(self, model, chunk_ms=560, right_ms=560, boost=1.0):
         import torch
         from nemo.collections.asr.parts.utils.streaming_utils import ContextSize, StreamingBatchedAudioBuffer

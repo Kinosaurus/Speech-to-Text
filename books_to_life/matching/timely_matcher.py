@@ -3,6 +3,7 @@ from books_to_life.matching.alignment_matcher import AlignmentSpan, align_words
 from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
 from books_to_life.matching.checkpoint_matcher import fuzz
 from books_to_life.matching.effect_permission import EffectPermission, similar
+from books_to_life.matching.phonetic_endpoint import pronunciations
 from dataclasses import replace
 
 
@@ -16,6 +17,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     def __init__(self, *args, **kwargs):
         self._pending_effect = None
         self._cue_prefix = None
+        self._aside_prefix = None
         super().__init__(*args, **kwargs)
         self._effect_permissions = {
             str(cp['id']): EffectPermission(cp, self.default_min_coverage, self.words[max(0, start-3):start])
@@ -33,6 +35,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
 
     def process(self, transcript, segments=None):
         self._resumed_cue = False
+        self._aside_completed = False
         previous_index = self.current_index
         previous_position = self.tracked_word_position
         if previous_index >= len(self.checkpoints) and self._pending_effect is not None:
@@ -45,6 +48,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
             update = super().process(transcript, segments)
         if self.current_index != previous_index:
             self._cue_prefix = None
+            self._aside_prefix = None
         extra_suppressed = ()
         if self._pending_effect is not None:
             pending = self._pending_effect
@@ -178,6 +182,8 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
 
     def _ingest(self, transcript, segments):
         fresh = super()._ingest(transcript, segments)
+        if fresh:
+            self._remember_aside_prefix()
         if fresh and self._cue_prefix is not None:
             prefix = self._cue_prefix
             start, _ = self.checkpoint_ranges[self.current_index]
@@ -209,6 +215,67 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                                              update=self._fresh_updates,text=tuple(self._buffer))
                 break
         return fresh
+
+    def _remember_aside_prefix(self):
+        """Keep exact, locally acquired cue words while ASR adds an aside."""
+        start, end = self.checkpoint_ranges[self.current_index]
+        permission = self._effect_permissions[str(self.current_checkpoint['id'])]
+        if (not self._segments or permission.policy != 'one_shot'
+                or not 0 < start <= self.tracked_word_position < end):
+            self._aside_prefix = None
+            return
+        segment = self._segments[-1]
+        words = segment['text'].split()
+        for stop in range(end - 1, max(start + 2, end - 4), -1):
+            head = self.words[start:stop]
+            if words[-len(head):] != head or len(set(head)) < 3:
+                continue
+            if (self._prompt_words.intersection(words[-len(head)-3:])
+                    or sum(self.words[i:i+len(head)] == head for i in range(len(self.words)-len(head)+1)) != 1):
+                return
+            prior = self._aside_prefix
+            offset = len(words) - len(head)
+            if prior is None or (segment['start'], offset, stop) != prior[:3]:
+                self._aside_prefix = (segment['start'], offset, stop, segment['end'])
+            return
+
+    def _aside_continuation(self, start, end):
+        """Return whether an aside is underway and whether its cue has resumed."""
+        if self._aside_prefix is None:
+            return False, False
+        segment_start, offset, stop, observed_at = self._aside_prefix
+        if not 0 < self._audio_time - observed_at <= 12:
+            return False, False
+        owner = next((i for i, segment in enumerate(self._segments)
+                      if segment['start'] == segment_start), None)
+        if owner is None:
+            return False, False
+        first = self._segments[owner]['text'].split()
+        tail_start = offset + stop - start
+        if first[offset:tail_start] != self.words[start:stop]:
+            return False, False
+        tail = first[tail_start:] + [word for segment in self._segments[owner+1:]
+                                     for word in segment['text'].split()]
+        suffix = self.words[stop:end]
+        if (len(tail) < 2 or similar(suffix[0], tail[0])
+                or len(tail) > self.transcript_words):
+            return False, False
+        if self._prompt_words.intersection(tail):
+            return False, False
+        # Require the entire missing suffix, including its exact last word.
+        # Two exact following book words corroborate the resumed reading.
+        # A homophone in the surrounding text can supply the third word.
+        context = self.words[end:end+3]
+        for i in range(self.minimum_words, len(tail) - len(suffix) - 2):
+            after = i + len(suffix)
+            heard = tail[after:after+3]
+            if tail[i:after] != suffix or len(context) != 3:
+                continue
+            exact = sum(a == b for a, b in zip(context, heard))
+            if exact >= 2 and all(a == b or set(pronunciations(a)).intersection(pronunciations(b))
+                                  for a, b in zip(context, heard)):
+                return True, True
+        return True, False
 
     def _live_prefix(self, scene):
         prefix = self._boundary_prefix
@@ -263,6 +330,12 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
 
     def _alignment_candidates(self, low, high):
         candidates = self._cue_alignment_candidates(low, high)
+        start, end = self.checkpoint_ranges[self.current_index]
+        waiting, self._aside_completed = self._aside_continuation(start, end)
+        if self._aside_completed and low <= start < end <= high:
+            candidates.append(AlignmentSpan(start, end, 100.0, end-start, end-start))
+        elif waiting and not self._effect_permissions[str(self.current_checkpoint['id'])].supports_anchor(self._buffer)[0]:
+            candidates = [span for span in candidates if self._scene(span.end) != self.current_index]
         # A short match can establish nearby progress. For a large jump,
         # require either more matching words or evidence inside the target cue.
         return [span for span in candidates if self._supports_forward_jump(span)]
@@ -376,12 +449,15 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     def _confirm_candidate(self, scene, best):
         target = self.current_index
         start,end = self.checkpoint_ranges[target]
-        self._resumed_cue = scene == target and best.end == end and self._continues_cue()
+        self._resumed_cue = scene == target and (
+            (best.end == end and self._continues_cue()) or self._aside_completed)
         if self._resumed_cue and self._pending_scene != scene:
+            prefix_end, evidence_time = (self._aside_prefix[2:] if self._aside_completed
+                                         else (self._cue_prefix['end'], self._cue_prefix['audio_end']))
             self._pending_scene = scene
             self.confirmations = 1
-            self._evidence_end = self._cue_prefix['end']
-            self._evidence_time = self._cue_prefix['audio_end']
+            self._evidence_end = prefix_end
+            self._evidence_time = evidence_time
         if best.end <= start or best.end > end:
             self._cue_prefix = None
         elif self._segments and best.start <= start and start+3 <= best.end < end:

@@ -1,5 +1,8 @@
 # Reading Pod operator panel
 
+For the complete Windows pod, follow the [setup guide](../docs/READING_POD_SETUP.md).
+The commands below also support standalone and legacy projector installations.
+
 From the Speech-to-Text repository root in PowerShell, build the React app and start the local panel server.
 
 ```powershell
@@ -8,7 +11,10 @@ npm.cmd --prefix operator-panel run build
 .\.venv\Scripts\python.exe -m books_to_life.cli.operator_panel
 ```
 
-Open [the operator panel](http://127.0.0.1:8765) manually. The panel does not open a browser or start MapMap or a recognition server. Start the recognition server for your selected model using the existing [runtime instructions](../docs/RUNNING.md).
+Open [the operator panel](http://127.0.0.1:8765) manually. The Windows pod launcher
+opens this address for you. Under **Preflight**, use **Start recognition server**
+for the installed WSL NeMo environment and **Open MapMap** for the configured
+renderer. For other models, follow the [runtime instructions](../docs/RUNNING.md).
 
 | Model | Default port | Reading hints |
 | --- | --- | --- |
@@ -18,9 +24,22 @@ Open [the operator panel](http://127.0.0.1:8765) manually. The panel does not op
 
 Use `--nemo-port`, `--whisper-port`, or `--native-port` when your recognition server uses a different port. Low hints use the next checkpoint, Medium includes up to two more, and High includes up to four more, subject to the model's hint limits. For Whisper, the levels also increase the passage word budget. NeMo's phrase-boost weight is controlled by `--boost` on the NeMo server.
 
+For a custom NeMo environment, use `--nemo-distro`, `--nemo-python` and
+`--nemo-model`. The default Python lives in the selected WSL user's home directory.
+
 Choose the passage and model, configure hints and recording, then select **Start experience**. Wait for **Listening** before reading. The panel marks each checkpoint the matcher fires. **End experience** stops capture and waits for the client to finish. Transcripts are written locally under `output/operator-sessions`. Each session writes a WAV there only when **Save recording** is on.
 
-## Sky Garden projector cue
+## Projection and calibration
+
+The Windows launcher prepares a selected-story project and opens it in MapMap
+from **Preflight → Open MapMap**. It loads only the selected book's scenes, and
+MapMap confirms the first video frame before the panel crossfades to the scene.
+**Edit MapMap cues** assigns scenes to checkpoints. **Preflight → Import scenes**
+adds new media from the [scenes folder](../scenes/README.md) to the master project
+when MapMap is closed. Use the **Output layout** controls to fit the fullscreen
+canvas, preview the three-wall geometry, and save it across all scenes.
+
+## Legacy Sky Garden handoff
 
 Open **Start MapMap.cmd** from the handoff yourself. When the Sky Garden spoken-cue project is open, launch the panel with the path to the bundled bridge. For the handoff extracted under this checkout, use:
 
