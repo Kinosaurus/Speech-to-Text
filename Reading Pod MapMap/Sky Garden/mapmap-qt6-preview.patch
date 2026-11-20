@@ -1,0 +1,135 @@
+--- a/src/app/main.cpp
++++ b/src/app/main.cpp
+@@ -240,13 +240,7 @@
+   else
+     qFatal("Invalid option <frame-rate>.");
+ 
+-  // Terminate splash.
+-  splash.showMessage("  " + QObject::tr("Done."),
+-                     Qt::AlignLeft | Qt::AlignTop, MM::WHITE);
+-  splash.finish(win);
+-  splash.raise();
+-
+-  // Launch program.
++  splash.close();
+   win->show();
+ 
+   if (parser.isSet(fullscreenOption))
+--- a/src/core/Source.cpp
++++ b/src/core/Source.cpp
+@@ -126,11 +126,7 @@
+   QImageReader reader(_uri);
+   _images.clear();
+   for (int i = 0; i < reader.imageCount(); i++) {
+-    QImage raw = reader.read().convertToFormat(QImage::Format_RGBA8888);
+-    QT_WARNING_PUSH
+-    QT_WARNING_DISABLE_DEPRECATED
+-    _images.push_back(raw.mirrored(true, false).transformed(QTransform().rotate(180)));
+-    QT_WARNING_POP
++    _images.push_back(reader.read().convertToFormat(QImage::Format_RGBA8888));
+   }
+ 
+   rewind();
+@@ -138,6 +134,8 @@
+ 
+ void Image::update()
+ {
++  Texture::update();
++
+   if (isAnimation() && isPlaying())
+   {
+     // Compute the interval of time since last call to update().
+--- a/src/gui/ShapeGraphicsItem.cpp
++++ b/src/gui/ShapeGraphicsItem.cpp
+@@ -262,7 +262,27 @@
+ 	Q_CHECK_PTR(texture);
+ 
+   Q_UNUSED(option);
++  const QTransform transform = painter->deviceTransform();
+   painter->beginNativePainting();
++
++  // Qt's painter uses shaders and does not set the fixed-function matrices.
++  // Match its item-to-device transform so the texture follows the editor controls.
++  GLint viewport[4];
++  glGetIntegerv(GL_VIEWPORT, viewport);
++  const GLdouble modelView[16] = {
++    transform.m11(), transform.m12(), 0, 0,
++    transform.m21(), transform.m22(), 0, 0,
++    0, 0, 1, 0,
++    transform.dx(), transform.dy(), 0, 1
++  };
++  glPushAttrib(GL_TRANSFORM_BIT);
++  glMatrixMode(GL_PROJECTION);
++  glPushMatrix();
++  glLoadIdentity();
++  glOrtho(0, viewport[2], viewport[3], 0, -1, 1);
++  glMatrixMode(GL_MODELVIEW);
++  glPushMatrix();
++  glLoadMatrixd(modelView);
+ 
+   // Free any textures orphaned by destroyed sources now that a GL context is
+   // current (see issue #229).
+@@ -304,6 +324,7 @@
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+ 
++
+   // Set texture color (apply opacity).
+   glColor4f(1.0f, 1.0f, 1.0f,
+             isOutput() ? getLayer()->getComputedOpacity() : getLayer()->getSource()->getOpacity());
+@@ -317,6 +338,11 @@
+ 
+   glDisable(GL_TEXTURE_2D);
+ 
++  glMatrixMode(GL_MODELVIEW);
++  glPopMatrix();
++  glMatrixMode(GL_PROJECTION);
++  glPopMatrix();
++  glPopAttrib();
+   painter->endNativePainting();
+ }
+ 
+--- a/src/gui/OutputGLCanvas.cpp
++++ b/src/gui/OutputGLCanvas.cpp
+@@ -37,13 +37,14 @@
+   // Disable scrollbars.
+   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
++  setAlignment(Qt::AlignLeft | Qt::AlignTop);
+ 
+   setSceneRectToViewportGeometry();
+ }
+ 
+ void OutputGLCanvas::setSceneRectToViewportGeometry()
+ {
+-  setSceneRect(viewport()->geometry());
++  setSceneRect(viewport()->rect());
+ }
+ 
+ void OutputGLCanvas::setSyphonOutputEnabled(bool on)
+@@ -291,10 +292,9 @@
+   }
+ }
+ 
+-void OutputGLCanvas::resizeGL(int width, int height)
+-{
+-  Q_UNUSED(width);
+-  Q_UNUSED(height);
++void OutputGLCanvas::resizeEvent(QResizeEvent* event)
++{
++  MapperGLCanvas::resizeEvent(event);
+   setSceneRectToViewportGeometry();
+ }
+ 
+--- a/src/gui/OutputGLCanvas.h
++++ b/src/gui/OutputGLCanvas.h
+@@ -79,8 +79,7 @@
+ #endif
+ 
+ protected:
+-  // overriden from QGlWidget:
+-  virtual void resizeGL(int width, int height);
++  void resizeEvent(QResizeEvent* event) override;
+ 
+   void wheelEvent(QWheelEvent *event);
+   void mouseMoveEvent(QMouseEvent *event);

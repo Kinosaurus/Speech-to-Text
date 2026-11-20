@@ -1,0 +1,384 @@
+{
+  "layers": [
+    {
+      "className": "TextureLayer",
+      "depth": "1",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 4,
+      "locked": "false",
+      "name": "Garden | Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            360,
+            0
+          ],
+          [
+            0,
+            600
+          ],
+          [
+            360,
+            600
+          ]
+        ]
+      },
+      "sourceId": 2,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "2",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 5,
+      "locked": "false",
+      "name": "Garden | Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            360,
+            0
+          ],
+          [
+            1080,
+            0
+          ],
+          [
+            360,
+            600
+          ],
+          [
+            1080,
+            600
+          ]
+        ]
+      },
+      "sourceId": 2,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "3",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 6,
+      "locked": "false",
+      "name": "Garden | Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            1080,
+            0
+          ],
+          [
+            1440,
+            0
+          ],
+          [
+            1080,
+            600
+          ],
+          [
+            1440,
+            600
+          ]
+        ]
+      },
+      "sourceId": 2,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "4",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            90,
+            84
+          ],
+          [
+            356,
+            138
+          ],
+          [
+            90,
+            636
+          ],
+          [
+            356,
+            582
+          ]
+        ]
+      },
+      "id": 1,
+      "locked": "false",
+      "name": "Left wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            360,
+            0
+          ],
+          [
+            0,
+            600
+          ],
+          [
+            360,
+            600
+          ]
+        ]
+      },
+      "sourceId": 1,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "5",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            356,
+            138
+          ],
+          [
+            924,
+            138
+          ],
+          [
+            356,
+            582
+          ],
+          [
+            924,
+            582
+          ]
+        ]
+      },
+      "id": 2,
+      "locked": "false",
+      "name": "Center wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            360,
+            0
+          ],
+          [
+            1080,
+            0
+          ],
+          [
+            360,
+            600
+          ],
+          [
+            1080,
+            600
+          ]
+        ]
+      },
+      "sourceId": 1,
+      "visible": "true"
+    },
+    {
+      "className": "TextureLayer",
+      "depth": "6",
+      "destination": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            924,
+            138
+          ],
+          [
+            1190,
+            84
+          ],
+          [
+            924,
+            582
+          ],
+          [
+            1190,
+            636
+          ]
+        ]
+      },
+      "id": 3,
+      "locked": "false",
+      "name": "Right wall",
+      "opacity": "1",
+      "solo": "false",
+      "source": {
+        "className": "Mesh",
+        "locked": "false",
+        "nColumns": "2",
+        "nRows": "2",
+        "vertices": [
+          [
+            1080,
+            0
+          ],
+          [
+            1440,
+            0
+          ],
+          [
+            1080,
+            600
+          ],
+          [
+            1440,
+            600
+          ]
+        ]
+      },
+      "sourceId": 1,
+      "visible": "true"
+    }
+  ],
+  "sources": [
+    {
+      "className": "Image",
+      "id": 1,
+      "locked": "false",
+      "name": "Wall calibration",
+      "opacity": "1",
+      "rate": "1",
+      "uri": "C:/Users/heart/Speech-to-Text/Reading Pod MapMap/Sky Garden/wall-calibration.png",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "className": "Video",
+      "id": 2,
+      "locked": "false",
+      "name": "Silver Seed video",
+      "opacity": "0",
+      "rate": "1",
+      "uri": "C:/Users/heart/Speech-to-Text/Reading Pod MapMap/Sky Garden/Sky Garden - Silver Seed.mp4",
+      "x": 0,
+      "y": 0,
+      "volume": "0"
+    }
+  ],
+  "version": "1.0.0-alpha.1"
+}

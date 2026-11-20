@@ -3,6 +3,19 @@
 This app listens to a child reading aloud, follows their place in a story, and
 triggers checkpoints for visuals and sound.
 
+## Start the Windows Reading Pod on this PC
+
+Double-click **Start Reading Pod Panel.cmd** to start the panel and open it in your default browser.
+Keep the launcher window open while using the panel.
+
+The current panel checkout is `output\reading-pod-first-pipeline`.
+Use its [Reading Pod startup guide](output/reading-pod-first-pipeline/docs/READING_POD_STARTUP.md)
+for the exact NeMo, panel and MapMap commands, scene imports, calibration and
+troubleshooting. The [operator panel](http://127.0.0.1:8765) opens after its
+server starts.
+
+## Project documentation
+
 Start with [current progress and tested commands](docs/PROJECT_STATUS.md).
 For model choices, deployment options, and why the pilot setup was selected,
 see [setups and tradeoffs](docs/SETUPS.md).
