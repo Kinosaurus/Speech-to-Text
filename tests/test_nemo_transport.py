@@ -2,12 +2,12 @@ import json
 import threading
 from types import SimpleNamespace
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock,patch
 
 import numpy as np
 
 from books_to_life.runtime.nemo_parakeet import NemoParakeetSession, hint_phrases, reset_phrase_state
-from books_to_life.cli.run_nemo_server import handle_connection
+from books_to_life.cli.run_nemo_server import handle_connection,warm_model
 
 
 class Socket:
@@ -23,6 +23,32 @@ class Socket:
 
 
 class NemoTransportTests(unittest.TestCase):
+    def test_startup_warms_a_separate_silent_session_and_releases_it(self):
+        with patch('books_to_life.cli.run_nemo_server.NemoParakeetSession') as factory:
+            warm_model('model',160,560,1.0)
+        factory.assert_called_once_with('model',160,560,1.0)
+        session=factory.return_value
+        session.set_hints.assert_called_once_with(None)
+        audio=session.feed.call_args.args[0]
+        self.assertEqual(len(audio),32000)
+        self.assertTrue(np.all(audio==0))
+        session.finish.assert_called_once()
+        session.close.assert_called_once()
+
+    def test_startup_failure_still_releases_the_warmup_session(self):
+        with patch('books_to_life.cli.run_nemo_server.NemoParakeetSession') as factory:
+            factory.return_value.feed.side_effect=ValueError('warmup failure')
+            with self.assertRaises(ValueError):warm_model('model',160,560,1.0)
+            factory.return_value.close.assert_called_once()
+
+    def test_readiness_reports_the_actual_buffer_configuration(self):
+        socket=Socket([b'END_OF_AUDIO'])
+        session=Mock(configuration={'chunk_ms':160,'right_ms':560,'boost':1.0})
+        session.finish.return_value=''
+        handle_connection(socket,lambda:session,threading.Lock())
+        ready=next(m for m in socket.sent if m.get('message')=='SERVER_READY')
+        self.assertEqual((ready['chunk_ms'],ready['right_ms'],ready['boost']),(160,560,1.0))
+
     def session(self, chunk=4, right=2):
         session = NemoParakeetSession.__new__(NemoParakeetSession)
         session.context = SimpleNamespace(chunk=chunk, right=right)

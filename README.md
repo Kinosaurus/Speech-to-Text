@@ -3,6 +3,20 @@
 This app listens to a child reading aloud, follows their place in a story, and
 triggers checkpoints for visuals and sound.
 
+## Start the Windows Reading Pod
+
+Use the [Reading Pod startup guide](docs/READING_POD_STARTUP.md) for the current
+PC's exact commands, projector setup, scene imports, calibration and troubleshooting.
+Start the panel and **Start Reading Pod MapMap.cmd**, then use
+**Preflight → Start recognition server** and wait for **Ready**. Open the
+[operator panel](http://127.0.0.1:8765), select the story, microphone and model,
+and wait for **Listening** before reading.
+
+The [latency investigation](benchmarks/LATENCY_INVESTIGATION.md) documents the
+current NeMo buffering defaults, measured cue delays and remaining checks.
+
+## Project documentation
+
 Start with [current progress and tested commands](docs/PROJECT_STATUS.md).
 For model choices, deployment options, and why the pilot setup was selected,
 see [setups and tradeoffs](docs/SETUPS.md).

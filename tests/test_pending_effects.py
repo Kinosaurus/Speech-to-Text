@@ -1,6 +1,7 @@
 import unittest
 
 from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
+from books_to_life.context.book_context import BookContext
 
 
 INTRO = 'we walked along the quiet lane past the old wooden gate'
@@ -47,6 +48,27 @@ class PendingEffectTests(unittest.TestCase):
                 self.assertEqual(matcher._buffer[-2:],[partial,ending])
                 self.assertEqual(matcher.suppressed_checkpoint_ids,set())
                 self.assertFalse(step(matcher,full,4).triggered)
+
+    def test_hint_window_retains_pending_cue_until_its_ending_resolves(self):
+        matcher = self.pending(later=True)
+        context = BookContext(matcher, phrase_only=True)
+        self.assertIsNone(context.hints.initial_prompt)
+        self.assertIn('we looked for the small puppies', context.hints.hotwords)
+        self.assertIn('bright birds', context.hints.hotwords)
+        self.assertIsNone(context.refresh())
+        update = step(matcher, PREFIX+' puppy puppies', 3.5)
+        self.assertTrue(update.triggered)
+        hints = context.refresh()
+        self.assertNotIn('puppies', hints.hotwords)
+        self.assertIn('bright birds', hints.hotwords)
+
+    def test_pending_final_cue_keeps_hint_until_stream_completion(self):
+        matcher = self.pending()
+        context = BookContext(matcher, phrase_only=True)
+        self.assertIn('puppies', context.hints.hotwords)
+        self.assertFalse(step(matcher, PREFIX+' puppy', 3).triggered)
+        self.assertIsNone(context.refresh())
+        self.assertTrue(step(matcher, PREFIX+' puppy puppies', 3, completed=True).triggered)
 
     def test_omission_and_expiry_never_guess_the_endpoint(self):
         matcher=self.pending()

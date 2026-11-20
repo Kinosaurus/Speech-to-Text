@@ -1,5 +1,12 @@
 # Benchmark child-reading recognition
 
+For the six-child, four-setup table and checkpoint-hint follow-up, see
+[Four-model child-reading pilot](FOUR_MODEL_READINGS.md).
+
+For the tracker-free baseline, see [ASR-only model comparison](ASR_ONLY.md).
+It streams identical recordings with hints off and rejects tracker/context imports.
+It labels printed-passage errors separately from verified spoken-transcript WER.
+
 Latest focused challenge: [45 full-stream synthetic adult cases](results/false-trigger-challenges-2026-11-02.json).
 Five anchors each test correct reading, endpoint omission, close/distant wrong
 words, quoted/negated prompts, unrelated continuation after an anchor prefix,

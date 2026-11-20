@@ -46,6 +46,38 @@ class SoundPlayerTests(unittest.TestCase):
             audio.writeframes(np.zeros(16000, dtype='<i2').tobytes())
         self.assertEqual(load_sound(self.path).shape, (44100, 2))
 
+    def test_portaudio_lifecycle_stays_on_caller_thread(self):
+        backend, audio, stream = self.backend()
+        caller = threading.get_ident()
+        initialized, terminated = [], []
+
+        def initialize_audio():
+            initialized.append(threading.get_ident())
+            return audio
+
+        def terminate_audio():
+            terminated.append(threading.get_ident())
+
+        backend.PyAudio.side_effect = initialize_audio
+        audio.terminate.side_effect = terminate_audio
+        with patch.dict(sys.modules, pyaudio=backend):
+            player = SoundPlayer(self.checkpoints, self.root / 'book.json')
+            self.assertEqual(initialized, [caller])
+            player.close()
+            player.close()
+        self.assertEqual(terminated, [caller])
+        stream.write.assert_not_called()
+
+    def test_audio_initialization_failure_disables_sounds(self):
+        backend, audio, stream = self.backend()
+        backend.PyAudio.side_effect = OSError('audio device unavailable')
+        with patch.dict(sys.modules, pyaudio=backend), self.assertLogs(level='ERROR'):
+            player = SoundPlayer(self.checkpoints, self.root / 'book.json')
+        self.assertIsInstance(player.error, OSError)
+        self.assertFalse(player.handle_update(update()))
+        player.close()
+        audio.terminate.assert_not_called()
+
     def test_emitted_checkpoints_overlap_without_duplicate_or_suppressed_playback(self):
         backend, audio, stream = self.backend()
         with patch.dict(sys.modules, pyaudio=backend):

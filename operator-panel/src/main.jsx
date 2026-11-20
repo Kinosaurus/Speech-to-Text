@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
+import { WallEditor } from './wall-editor.jsx';
 import './styles.css';
 
-const defaults = { passage: 'sample', model: 'parakeet-nemo', microphone: 'default', hints: false, strength: 'medium', save: false };
+const defaults = { passage: 'sample', model: 'parakeet-nemo', microphone: 'default', hints: true, strength: 'medium', save: false };
 const phases = {
   idle: 'Ready to start',
   starting: 'Connecting',
@@ -16,6 +18,9 @@ const checkLabels = {
   error: 'Check failed',
   unknown: 'Unverified',
   unconfigured: 'Not configured',
+  checking: 'Checking…',
+  starting: 'Starting…',
+  restarting: 'Restarting…',
 };
 const wordLabels = {
   exact: 'Exact match',
@@ -61,8 +66,42 @@ function Toggle({ label, description, checked, onChange, disabled }) {
   );
 }
 
-function Preflight({ checks, projection, silverSeedTest, transition, disabled, checking, message, onCheck, onTest, onReset, onTransition }) {
-  const mapmapState = checks?.mapmap.state ?? (projection ? '' : 'unconfigured');
+function OutputLayout({ disabled, onLayout, wallProject }) {
+  const [width, setWidth] = useState('1024');
+  const [height, setHeight] = useState('768');
+  function fit(event) {
+    event.preventDefault();
+    onLayout({ mode: 'fit', width: Number(width), height: Number(height) });
+  }
+  return (
+    <details className="output-layout">
+      <summary>Output layout</summary>
+      <div className="preflight-controls output-actions">
+        <button type="button" disabled={disabled} onClick={() => onLayout({ mode: 'auto' })}>Fit output</button>
+        <button type="button" disabled={disabled} onClick={() => onLayout({ mode: 'original' })}>Restore original</button>
+        {wallProject && <WallEditor disabled={disabled} project={wallProject} request={request} />}
+      </div>
+      <details className="manual-layout">
+        <summary>Manual dimensions</summary>
+        <form onSubmit={fit}>
+          <fieldset disabled={disabled}>
+            <div className="output-dimensions">
+              <label>Width (px)<input type="number" min="240" max="8192" required value={width} onChange={(event) => setWidth(event.target.value)} /></label>
+              <label>Height (px)<input type="number" min="240" max="8192" required value={height} onChange={(event) => setHeight(event.target.value)} /></label>
+            </div>
+            <button type="submit" disabled={disabled}>Fit manual size</button>
+          </fieldset>
+        </form>
+      </details>
+    </details>
+  );
+}
+
+function Preflight({ checks, projection, silverSeedTest, transition, cues, layout, wallProject, disabled, checking, message,
+  sceneDirectory, sceneUpdate, sceneAction, onSceneAction, onCheck, onTest, onReset, onTransition, onPreview, onLayout,
+  recognition, serverDisabled, reading, onServer, mapmap, onOpenMapMap }) {
+  const showSilverSeedTest = silverSeedTest && cues.length <= 1;
+  const mapmapState = mapmap?.state ?? checks?.mapmap.state ?? (projection ? '' : 'unconfigured');
   return (
     <section className="preflight" aria-labelledby="preflight-title">
       <div className="preflight-heading">
@@ -73,22 +112,84 @@ function Preflight({ checks, projection, silverSeedTest, transition, disabled, c
         <div>
           <dt>Parakeet NeMo</dt>
           <dd>
-            <strong className={checks?.nemo.state}>{checkLabels[checks?.nemo.state] ?? 'Unchecked'}</strong>
-            {checks && <small>{checks.nemo.detail}</small>}
+            <strong className={recognition?.state ?? checks?.nemo.state}>
+              {checkLabels[recognition?.state ?? checks?.nemo.state] ?? 'Unchecked'}
+            </strong>
+            <small>{recognition?.detail ?? checks?.nemo.detail}</small>
           </dd>
         </div>
         <div>
           <dt>MapMap OSC</dt>
           <dd>
             <strong className={mapmapState}>
-              {mapmapState === 'ready' ? 'Listener found' : checkLabels[mapmapState] ?? 'Unchecked'}
+              {mapmapState === 'ready' ? 'Running · OSC connected' : mapmapState === 'starting' ? 'Opening…' : checkLabels[mapmapState] ?? 'Unchecked'}
             </strong>
-            {checks && <small>{checks.mapmap.detail}</small>}
+            <small>{mapmap?.detail ?? checks?.mapmap.detail}</small>
           </dd>
         </div>
       </dl>
+      {mapmap?.managed && (
+        <div className="preflight-controls">
+          <button type="button" disabled={disabled || mapmap.busy || mapmap.state === 'ready'} onClick={onOpenMapMap}>
+            {mapmap.state === 'starting' ? 'Opening MapMap…' : 'Open MapMap'}
+          </button>
+        </div>
+      )}
+      {recognition?.managed && (
+        <div className="recognition-controls" aria-live="polite">
+          <div className="preflight-controls">
+            <button type="button" disabled={serverDisabled || reading || recognition.state === 'ready'}
+              onClick={() => onServer('start')}>Start recognition server</button>
+            <button type="button" disabled={serverDisabled}
+              onClick={() => onServer('restart')}>Restart recognition server</button>
+          </div>
+          {reading && <small>Restart ends the current reading session.</small>}
+          {recognition.state === 'error' && <small>Server log · {recognition.log}</small>}
+        </div>
+      )}
+      {sceneDirectory && (
+        <fieldset className="scene-library" disabled={disabled}>
+          <legend>Scene library</legend>
+          <p>Drop MP4, MOV, WebM, PNG, or JPEG files in this folder. Save and close MapMap before importing.</p>
+          <code>{sceneDirectory}</code>
+          <div className="preflight-controls">
+            <button type="button" onClick={() => onSceneAction('import')}>
+              {sceneAction === 'import' ? 'Importing…' : 'Import scenes'}
+            </button>
+            <button type="button" onClick={() => onSceneAction('apply-layout')}>
+              {sceneAction === 'apply-layout' ? 'Applying layout…' : 'Apply wall layout to all scenes'}
+            </button>
+          </div>
+          {sceneUpdate && (
+            <p role="status">
+              {sceneUpdate.imported
+                ? (sceneUpdate.imported.length ? `Imported ${sceneUpdate.imported.length}.` : 'No new scenes imported.')
+                : `Wall layout applied to ${sceneUpdate.updated} scenes.`}
+              {sceneUpdate.existing > 0 && ` ${sceneUpdate.existing} already in the project.`}
+              {(sceneUpdate.imported?.length > 0 || sceneUpdate.updated > 0)
+                && ' Open the updated project in MapMap before projecting.'}
+            </p>
+          )}
+          {sceneUpdate?.skipped.length > 0 && (
+            <details>
+              <summary>{sceneUpdate.skipped.length} skipped</summary>
+              <ul>{sceneUpdate.skipped.map((issue, index) => <li key={`${index}-${issue}`}>{issue}</li>)}</ul>
+            </details>
+          )}
+        </fieldset>
+      )}
+      {!showSilverSeedTest && cues.length > 0 && (
+        <fieldset className="scene-preview" disabled={disabled}>
+          <legend>Preview scenes</legend>
+          <div className="scene-preview-buttons">
+            {cues.map(({ id, title }) => (
+              <button key={id} type="button" onClick={() => onPreview(id)}>Show {title}</button>
+            ))}
+          </div>
+        </fieldset>
+      )}
       <div className="preflight-controls">
-        <button type="button" disabled={disabled || !silverSeedTest} onClick={onTest}>Test Silver Seed</button>
+        {showSilverSeedTest && <button type="button" disabled={disabled} onClick={onTest}>Test Silver Seed</button>}
         <button type="button" disabled={disabled || !projection} onClick={onReset}>Reset to grid</button>
       </div>
       {transition && (
@@ -99,6 +200,7 @@ function Preflight({ checks, projection, silverSeedTest, transition, disabled, c
           </select>
         </label>
       )}
+      {layout && <OutputLayout disabled={disabled} onLayout={onLayout} wallProject={wallProject} />}
       {message && <p className="preflight-message" role="status">{message}</p>}
     </section>
   );
@@ -206,8 +308,33 @@ function passagePlaybackLabel({ checkpoints }) {
 }
 
 function PassagePreview({ passage, fired, transcript, partial, scores, cueStatus, matchEvidence, readingCheckpoint, listening,
-  cueOptions, mapmapProject, canEditCues, cueEditingDisabled, assignmentMessage, onAssignCue }) {
+  cueOptions, mapmapProject, canEditCues, cueEditingDisabled, assignmentMessage, onAssignCue, previewDisabled }) {
   const [editingCues, setEditingCues] = useState(false);
+  const [currentPreview, setCurrentPreview] = useState(null);
+  const previewPlayer = useRef(null);
+  const attachPreviewPlayer = useCallback((video) => {
+    previewPlayer.current = video;
+    return () => {
+      video.pause();
+      previewPlayer.current = null;
+    };
+  }, []);
+  useEffect(() => {
+    if (previewDisabled) setCurrentPreview(null);
+  }, [previewDisabled]);
+
+  function togglePreview(url) {
+    if (currentPreview === url) {
+      setCurrentPreview(null);
+      return;
+    }
+    // Keep play() inside the button's click so browser audio can start.
+    flushSync(() => setCurrentPreview(url));
+    previewPlayer.current?.play().catch(() => {
+      // The player's controls are still available if browser settings block playback.
+    });
+  }
+
   const showCueEditors = canEditCues && editingCues;
   const playbackLabel = passagePlaybackLabel(passage);
   const evidenceCheckpoint = matchEvidence[readingCheckpoint] ? readingCheckpoint
@@ -246,10 +373,11 @@ function PassagePreview({ passage, fired, transcript, partial, scores, cueStatus
       {showCueEditors && <small className="cue-editor-note">Cues from {mapmapProject}. Changes save locally as you make them.</small>}
       {assignmentMessage && <p className="cue-editor-note" role="status">{assignmentMessage}</p>}
       <ol className="checkpoints">
-        {passage.checkpoints.map(({ id, checkpoint_text, page, playback, mapmap_cue: assignedCue }) => {
+        {passage.checkpoints.map(({ id, checkpoint_text, page, playback, preview_url: previewUrl, mapmap_cue: assignedCue }) => {
           const didFire = fired.includes(id);
           const isCurrent = listening && id === readingCheckpoint;
           const cueAvailable = cueOptions.some(({ id: cueId }) => cueId === assignedCue);
+          const previewOpen = !previewDisabled && currentPreview === previewUrl && Boolean(previewUrl);
           return (
             <li key={id} className={isCurrent ? 'current' : didFire ? 'fired' : ''} aria-current={isCurrent ? 'step' : undefined}>
               <span className="checkpoint-marker" aria-hidden="true">{didFire ? '✓' : ''}</span>
@@ -264,6 +392,13 @@ function PassagePreview({ passage, fired, transcript, partial, scores, cueStatus
                   </div>
                 )}
                 {assignedCue && !cueAvailable && <small className="cue-unavailable">The saved MapMap cue is unavailable in this project.</small>}
+                {previewUrl && (
+                  <button type="button" className="checkpoint-preview-button" aria-expanded={previewOpen}
+                    aria-label={`${previewOpen ? 'Close preview' : 'Test cue'} for page ${page}, ${checkpoint_text}`}
+                    disabled={previewDisabled} onClick={() => togglePreview(previewUrl)}>
+                    {previewOpen ? 'Close preview' : 'Test cue'}
+                  </button>
+                )}
                 {showCueEditors && (
                   <label className="cue-editor">
                     <span>MapMap cue</span>
@@ -282,6 +417,10 @@ function PassagePreview({ passage, fired, transcript, partial, scores, cueStatus
                   Match {scores[id] == null ? '—' : `${scores[id]}%`}
                 </span>
               </div>
+              {previewOpen && (
+                <video className="checkpoint-preview-video" ref={attachPreviewPlayer} src={previewUrl}
+                  aria-label={`Cue preview for page ${page}`} controls playsInline preload="none" />
+              )}
               {matchEvidence[id] && <CheckpointEvidence evidence={matchEvidence[id]} autoOpen={id === evidenceCheckpoint} />}
             </li>
           );
@@ -298,15 +437,22 @@ function App() {
   const [pending, setPending] = useState('');
   const [checks, setChecks] = useState(null);
   const [projectionMessage, setProjectionMessage] = useState('');
+  const [sceneUpdate, setSceneUpdate] = useState(null);
   const [assignmentMessage, setAssignmentMessage] = useState('');
   const [connectionError, setConnectionError] = useState('');
   const [actionError, setActionError] = useState('');
   const [connected, setConnected] = useState(false);
   const active = ['starting', 'listening', 'ending'].includes(session.phase);
-  const busy = Boolean(pending);
+  const busy = Boolean(pending) || session.mapmap?.state === 'starting';
   const selection = active ? session.settings || settings : settings;
   const model = catalog?.models.find((item) => item.id === selection.model);
+  const recognition = session.recognition;
+  const serverBusy = Boolean(recognition?.busy);
+  const waitingForNemo = selection.model === 'parakeet-nemo' && recognition
+    && (recognition.state !== 'ready' || serverBusy);
   const passage = catalog?.passages.find((item) => item.id === selection.passage);
+  const assignedScenes = new Set(passage?.checkpoints.map((checkpoint) => checkpoint.mapmap_cue));
+  const previewScenes = (catalog?.mapmap_cues ?? []).filter(({ id }) => !catalog?.mapmap_story || assignedScenes.has(id));
   const samePassage = session.settings?.passage === selection.passage;
   const fired = samePassage ? session.fired : [];
 
@@ -319,6 +465,7 @@ function App() {
         if (!loaded) {
           const data = await request('/api/catalog', undefined, controller.signal);
           setCatalog(data);
+          if (data.mapmap_story) setSettings((current) => ({ ...current, passage: data.mapmap_story }));
           loaded = true;
         }
         setSession(await request('/api/session', undefined, controller.signal));
@@ -343,7 +490,12 @@ function App() {
   function change(key, value) {
     setSettings((current) => ({ ...current, [key]: value }));
     setActionError('');
-    if (key === 'passage') setAssignmentMessage('');
+    if (key === 'passage') {
+      setAssignmentMessage('');
+      if (catalog?.mapmap_story) {
+        act('/api/mapmap/story', { passage: value }, ({ message }) => setProjectionMessage(message));
+      }
+    }
   }
 
   async function act(path, body, onSuccess) {
@@ -365,14 +517,23 @@ function App() {
     act('/api/preflight', {}, setChecks);
   }
 
-  function manualCue(action) {
-    act(`/api/mapmap/${action}`, {}, ({ message }) => setProjectionMessage(message));
+  function manualCue(action, body = {}) {
+    act(`/api/mapmap/${action}`, body, ({ message }) => setProjectionMessage(message));
   }
 
   function assignCue(checkpoint, cue) {
     act('/api/mapmap/assignment', { passage: selection.passage, checkpoint, cue }, (updatedCatalog) => {
       setCatalog(updatedCatalog);
       setAssignmentMessage(cue ? 'MapMap cue assigned.' : 'MapMap cue removed.');
+    });
+  }
+
+  function updateScenes(action) {
+    setSceneUpdate(null);
+    act(`/api/mapmap/scenes/${action}`, {}, ({ catalog: updatedCatalog, ...result }) => {
+      setCatalog(updatedCatalog);
+      setSceneUpdate(result);
+      setChecks(null);
     });
   }
 
@@ -397,7 +558,7 @@ function App() {
               {connected ? phases[session.phase] : connectionError ? 'Disconnected' : 'Connecting to panel'}
             </span>
             <button type="button" className="end" disabled={!connected || !active || busy || session.phase === 'ending'} onClick={() => act('/api/session/end', {}, setSession)}>End experience</button>
-            <button type="button" className="start" disabled={!connected || !model || !passage || busy || active} onClick={() => act('/api/session/start', settings, setSession)}>Start experience</button>
+            <button type="button" className="start" disabled={!connected || !model || !passage || busy || active || waitingForNemo} onClick={() => act('/api/session/start', settings, setSession)}>Start experience</button>
           </div>
         </div>
       </header>
@@ -417,6 +578,7 @@ function App() {
                     return <option key={item.id} value={item.id}>{item.title}{playback && ` · ${playback}`}</option>;
                   })}
                 </select>
+                {pending === '/api/mapmap/story' && <small role="status">Loading the story’s projection scenes…</small>}
               </label>
               <label className="field">
                 <span>Speech model</span>
@@ -440,7 +602,7 @@ function App() {
                 </p>
               )}
               <div className="setting-block">
-                <Toggle label="Reading hints" description={model?.hints ? 'Give the model upcoming phrases from the passage.' : 'The selected model does not support reading hints.'}
+                <Toggle label="Reading hints" description={model?.hints ? 'Help recognition with upcoming checkpoint phrases. The tracker follows the full story.' : 'The selected model does not support reading hints.'}
                   checked={Boolean(model?.hints && selection.hints)} disabled={!model?.hints}
                   onChange={(event) => change('hints', event.target.checked)} />
                 <fieldset className="strength" disabled={!model?.hints || !selection.hints}>
@@ -455,7 +617,7 @@ function App() {
                     ))}
                   </div>
                   <small>{selection.model === 'parakeet-nemo'
-                    ? 'Changes how many phrases are included. Boost weight is set on the NeMo server.'
+                    ? 'Medium includes the current cue and up to two ahead. An unfinished cue stays included while its ending is checked.'
                     : 'Changes how much upcoming passage context is included.'}</small>
                 </fieldset>
               </div>
@@ -464,14 +626,28 @@ function App() {
                   checked={selection.save} onChange={(event) => change('save', event.target.checked)} />
               </div>
             </fieldset>
-            <Preflight checks={checks} projection={catalog?.projection} silverSeedTest={catalog?.silver_seed_test ?? catalog?.projection}
-              transition={catalog?.mapmap_transition} onTransition={changeTransition}
+            <Preflight checks={checks} projection={catalog?.projection}
+              mapmap={session.mapmap}
+              onOpenMapMap={() => act('/api/mapmap/open', {}, (status) => {
+                setSession((current) => ({ ...current, mapmap: status }));
+              })}
+              recognition={recognition} reading={active} serverDisabled={!connected || busy || serverBusy}
+              onServer={(action) => act(`/api/recognition/${action}`, {}, (status) => {
+                setSession((current) => ({ ...current, recognition: status }));
+              })}
+              silverSeedTest={!catalog?.mapmap_story && (catalog?.silver_seed_test ?? catalog?.projection)}
+              transition={catalog?.mapmap_transition} onTransition={changeTransition} cues={previewScenes}
+              sceneDirectory={catalog?.mapmap_scene_directory} sceneUpdate={sceneUpdate} onSceneAction={updateScenes}
+              sceneAction={pending.startsWith('/api/mapmap/scenes/') ? pending.split('/').at(-1) : ''}
+              layout={catalog?.mapmap_layout} wallProject={catalog?.mapmap_scene_directory && catalog.mapmap_project}
+              onLayout={(settings) => manualCue('layout', settings)}
               disabled={!connected || busy || active} checking={pending === '/api/preflight'}
               message={projectionMessage} onCheck={checkSetup}
-              onTest={() => manualCue('test')} onReset={() => manualCue('reset')} />
+              onTest={() => manualCue('test')} onReset={() => manualCue('reset')}
+              onPreview={(cue) => manualCue('preview', { cue })} />
           </section>
           {passage && (
-            <PassagePreview passage={passage} fired={fired}
+            <PassagePreview key={passage.id} passage={passage} fired={fired}
               transcript={samePassage ? session.transcript : ''}
               partial={samePassage ? session.partial ?? [] : []}
               scores={samePassage ? session.scores ?? {} : {}}
@@ -481,7 +657,7 @@ function App() {
               listening={session.phase === 'listening'}
               cueOptions={catalog?.mapmap_cues ?? []} mapmapProject={catalog?.mapmap_project}
               canEditCues={!active && Boolean(catalog?.mapmap_project)} cueEditingDisabled={!connected || busy}
-              assignmentMessage={assignmentMessage} onAssignCue={assignCue} />
+              assignmentMessage={assignmentMessage} onAssignCue={assignCue} previewDisabled={active || pending === '/api/session/start'} />
           )}
         </div>
       </main>

@@ -6,23 +6,31 @@ from functools import partial
 from hashlib import sha256
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
+from os import fstat
 from os.path import normcase
 from pathlib import Path
 import re
 import subprocess
 import sys
 from threading import Lock, Thread
+from urllib.parse import quote
 from uuid import uuid4
 
 import websocket
 
 from books_to_life.runtime.audio_runtime import input_devices, microphone_label
 from books_to_life.runtime.mapmap_cues import DEFAULT_FADE_MS, MapMapCue
+from books_to_life.runtime.mapmap_output import detect_output_size
+from books_to_life.runtime.mapmap_story import StoryProject
+from books_to_life.runtime.mapmap_application import MapMapApplication
+from books_to_life.runtime.recognition_server import RecognitionServer
+from books_to_life.runtime.nemo_defaults import microphone_arguments
 
 
 ROOT = Path(__file__).resolve().parents[2]
 DIST = ROOT / 'operator-panel/dist'
 STORIES = ROOT / 'recordings/library/stories'
+SCENES = ROOT / 'scenes'
 MODELS = {
     'parakeet-nemo': ('Parakeet NeMo', 9097, True),
     'base.en': ('Whisper Base (English)', 9090, True),
@@ -65,6 +73,10 @@ def load_passages():
     return passages
 
 
+def cue_preview_url(passage, checkpoint):
+    return '/cue-preview/' + quote(passage, safe='') + '/' + quote(str(checkpoint), safe='') + '.mp4'
+
+
 def check_nemo(port):
     endpoint = f'127.0.0.1:{port}'
     uid = str(uuid4())
@@ -77,7 +89,10 @@ def check_nemo(port):
         reply = json.loads(connection.recv())
         if (isinstance(reply, dict) and reply.get('uid') == uid
                 and reply.get('message') == 'SERVER_READY' and reply.get('backend') == 'parakeet-nemo'):
-            return {'state': 'ready', 'detail': f'SERVER_READY from {endpoint}.'}
+            detail=f'SERVER_READY from {endpoint}.'
+            if isinstance(reply.get('chunk_ms'),int) and isinstance(reply.get('right_ms'),int):
+                detail+=f' Updates every {reply["chunk_ms"]} ms; future context {reply["right_ms"]} ms.'
+            return {'state': 'ready', 'detail': detail}
         if isinstance(reply, dict) and reply.get('uid') == uid and reply.get('status') == 'ERROR':
             return {'state': 'error', 'detail': f'{endpoint} reported: {str(reply.get("message"))[:200]}'}
         return {'state': 'error', 'detail': f'Unexpected reply from {endpoint}. Check the NeMo server.'}
@@ -102,7 +117,7 @@ $listeners = @(Get-NetUDPEndpoint -ErrorAction Stop | Where-Object {{
 if ($listeners.Count -eq 0) {{ 'missing'; exit }}
 foreach ($listener in $listeners) {{
     $owner = Get-Process -Id $listener.OwningProcess -ErrorAction SilentlyContinue
-    if ($owner.ProcessName -ieq 'MapMap') {{ 'mapmap'; exit }}
+    if ($owner.ProcessName -ieq 'MapMap') {{ "mapmap:$($owner.Id)"; exit }}
 }}
 'other'
 '''
@@ -115,23 +130,37 @@ foreach ($listener in $listeners) {{
         return unavailable
     if result.returncode:
         return unavailable
-    match result.stdout.strip():
-        case 'mapmap':
-            return {'state': 'ready', 'detail': f'MapMap owns {endpoint}. Use the test cue to check playback.'}
+    reply = result.stdout.strip()
+    if match := re.fullmatch(r'mapmap:(\d+)', reply):
+        return {'state': 'ready', 'detail': f'MapMap owns {endpoint}. Use the test cue to check playback.',
+                'pid': int(match[1])}
+    match reply:
         case 'missing':
             return {'state': 'error', 'detail': f'No listener on {endpoint}. Open MapMap and verify its OSC port.'}
         case 'other':
-            return {'state': 'error', 'detail': f'Another process owns {endpoint}. Check the MapMap OSC port.'}
+            return {'state': 'error', 'detail': f'Another process owns {endpoint}. Check the MapMap OSC port.',
+                    'reason': 'port_in_use'}
         case _:
             return unavailable
 
 
 class Sessions:
-    def __init__(self, passages, ports, cue=None, *, assignment_file=None):
+    def __init__(self, passages, ports, cue=None, *, assignment_file=None, scene_directory=SCENES,
+                 story_directory=None, recognition_options=None, mapmap_launcher=None):
         self.passages = passages
+        self.preview_files = {}
+        for passage, (manifest, data) in passages.items():
+            for checkpoint in data['checkpoints']:
+                preview = (checkpoint.get('effect') or {}).get('preview')
+                if not isinstance(preview, str) or not preview:
+                    continue
+                path = (manifest.parent / preview).resolve()
+                if path.suffix.lower() == '.mp4' and path.is_relative_to(manifest.parents[2]) and path.is_file():
+                    self.preview_files[cue_preview_url(passage, checkpoint['id'])] = path
         self.ports = ports
         self.cue = cue
         self.assignment_file = assignment_file
+        self.scene_directory = scene_directory if cue and cue.has_project_file else None
         self.assignments = {'sample': {'seed_found': cue.silver_seed}} if cue and cue.silver_seed else {}
         self.fade_ms = DEFAULT_FADE_MS
         if assignment_file is not None and assignment_file.is_file():
@@ -152,21 +181,98 @@ class Sessions:
         self.lock = Lock()
         self.process = None
         self.update_thread = None
+        self.recognition = RecognitionServer(ROOT, ports.get('parakeet-nemo', 9097),
+                                             self.probe_recognition, **(recognition_options or {}))
         self.state = {'phase': 'idle', 'fired': [], 'message': '', 'settings': None,
                       'transcript': '', 'partial': [], 'scores': {}, 'cue_status': {}, 'match_evidence': {},
                       'reading_checkpoint': None}
+        self.story_project = StoryProject(story_directory, cue.project, cue.port) if story_directory else None
+        self.mapmap_application = None
+        if self.story_project:
+            cue.story_project = self.story_project
+            launcher = mapmap_launcher or Path(cue.bridge.__file__).resolve().parents[2] / 'Start-Reading-Pod-MapMap.ps1'
+            self.mapmap_application = MapMapApplication(launcher, self.story_project, cue.port, check_mapmap_listener)
+        self.story_passage = None
+        if self.story_project and passages:
+            saved = self.story_project.saved_passage()
+            passage = saved if saved in passages else ('sample' if 'sample' in passages else next(iter(passages)))
+            self.prepare_story(passage)
 
     def status(self):
         with self.lock:
             return {**self.state, 'fired': self.state['fired'][:], 'scores': self.state['scores'].copy(),
+                    'recognition': self.recognition.snapshot(),
+                    'mapmap': self.mapmap_application.snapshot() if self.mapmap_application else None,
                     'cue_status': self.state['cue_status'].copy(),
-                    'match_evidence': self.state['match_evidence'].copy()}
+                      'match_evidence': self.state['match_evidence'].copy(),
+                      'message': self.state['message'] or (self.cue.playback_error if self.cue else '') or ''}
+
+    def probe_recognition(self):
+        with self.lock:
+            if (self.process is not None and self.process.poll() is None
+                    and self.state['settings']['model'] == 'parakeet-nemo'):
+                return {'state': 'ready', 'detail': 'NeMo is serving the active reading session.'}
+            return check_nemo(self.ports.get('parakeet-nemo', 9097))
+
+    def recognition_action(self, action):
+        def finish_reading():
+            self.end()
+            process = self.process
+            if process is not None:
+                process.wait(timeout=75)
+
+        return self.recognition.request(action, finish_reading if action == 'restart' else None)
+
+    def open_mapmap(self):
+        with self.lock:
+            if self.process is not None:
+                raise ValueError('End the active experience before opening MapMap.')
+            if not self.mapmap_application:
+                raise ValueError('Start the panel with the Reading Pod master project and selected-story directory.')
+            return self.mapmap_application.open()
 
     def mapmap_cues(self, passage):
         if not self.cue:
             return {}
-        return {checkpoint: self.cue.cues[cue_id] for checkpoint, cue_id in self.assignments.get(passage, {}).items()
-                if cue_id in self.cue.cues}
+        cues = self.cue.cues
+        return {checkpoint: cues[cue_id] for checkpoint, cue_id in self.assignments.get(passage, {}).items()
+                if cue_id in cues}
+
+    def next_projection_video(self, passage, cues, after=None):
+        checkpoints = self.passages[passage][1]['checkpoints']
+        current = cues.get(after)
+        position = next((i for i, item in enumerate(checkpoints) if str(item['id']) == after), -1)
+        for checkpoint in checkpoints[position + 1:]:
+            cue = cues.get(str(checkpoint['id']))
+            if cue and cue.hold_seconds is not None and cue != current:
+                return cue
+        return None
+
+    def prepare_story(self, passage, listener=None):
+        cues = self.mapmap_cues(passage)
+        revision, layers = self.story_project.prepare(passage, cues)
+        pid = listener.get('pid') if listener and listener['state'] == 'ready' else None
+        self.cue.set_story_scope((revision, pid), cues, layers)
+        if pid is not None:
+            self.story_project.load(revision, pid)
+        self.story_passage = passage
+        return len({cue.source for cue in cues.values()}), pid is not None
+
+    def select_story(self, body):
+        passage = body.get('passage') if isinstance(body, dict) else None
+        if not isinstance(passage, str) or passage not in self.passages:
+            raise ValueError('Choose a listed story.')
+        with self.lock:
+            if self.process is not None:
+                raise ValueError('End the active experience before switching stories.')
+            if self.mapmap_application and self.mapmap_application.snapshot(refresh=False)['state'] == 'starting':
+                raise ValueError('Wait for MapMap to finish opening before switching stories.')
+            if not self.story_project:
+                raise ValueError('Story switching is not configured for this panel.')
+            count, ready = self.prepare_story(passage, check_mapmap_listener(self.cue.port))
+        title = self.passages[passage][1]['title']
+        detail = f'{title} loaded in MapMap' if ready else f'{title} prepared for the next MapMap launch'
+        return {'message': f'{detail}. {count} projection scene{"s" if count != 1 else ""}.'}
 
     def assign_cue(self, body):
         if not isinstance(body, dict) or 'cue' not in body:
@@ -186,6 +292,8 @@ class Sessions:
             assignments = {**self.assignments, passage: {**self.assignments.get(passage, {}), checkpoint: cue_id}}
             self.save_mapmap_settings(assignments, self.fade_ms)
             self.assignments = assignments
+            if self.story_project and passage == self.story_passage:
+                self.prepare_story(passage, check_mapmap_listener(self.cue.port))
 
     def set_transition(self, body):
         fade_ms = body.get('fade_ms') if isinstance(body, dict) else None
@@ -198,6 +306,22 @@ class Sessions:
                 raise ValueError('The MapMap bridge is not configured for transition settings.')
             self.save_mapmap_settings(self.assignments, fade_ms)
             self.fade_ms = fade_ms
+
+    def update_scenes(self, action):
+        with self.lock:
+            purpose = 'importing scenes' if action == 'import' else 'applying the wall layout'
+            if self.process is not None:
+                raise ValueError(f'End the active experience before {purpose}.')
+            if self.scene_directory is None:
+                raise ValueError(f'Start the panel with a saved MapMap project before {purpose}.')
+            try:
+                result = (self.cue.import_scenes(self.scene_directory) if action == 'import'
+                          else self.cue.apply_wall_layout())
+                if self.story_passage:
+                    self.prepare_story(self.story_passage)
+                return result
+            except (KeyError, TypeError) as error:
+                raise ValueError('The saved MapMap project has an invalid source or layer.') from error
 
     def save_mapmap_settings(self, assignments, fade_ms):
         payload = {'version': 1, 'assignments': assignments, 'fade_ms': fade_ms}
@@ -229,7 +353,9 @@ class Sessions:
                     playback = {'kind': 'local_sound', 'detail': Path(sound).stem.replace('_', ' ')}
                 else:
                     playback = {'kind': 'tracking'}
+                url = cue_preview_url(passage, ident)
                 checkpoints.append({**checkpoint, 'playback': playback,
+                                    'preview_url': url if url in self.preview_files else None,
                                     'mapmap_cue': self.assignments.get(passage, {}).get(ident)})
             passages.append({**data, 'checkpoints': checkpoints})
         return {
@@ -240,9 +366,12 @@ class Sessions:
             ],
             'projection': self.cue is not None,
             'mapmap_project': self.cue.project.name if self.cue else None,
+            'mapmap_story': self.story_passage,
+            'mapmap_scene_directory': str(self.scene_directory) if self.scene_directory else None,
             'mapmap_cues': [{'id': ident, 'title': cue.title} for ident, cue in self.cue.cues.items()] if self.cue else [],
             'silver_seed_test': bool(self.cue and self.cue.silver_seed),
             'mapmap_transition': {'fade_ms': self.fade_ms, 'options_ms': FADE_OPTIONS_MS} if self.cue else None,
+            'mapmap_layout': bool(self.cue and self.cue.output_layers),
             'microphones': microphones,
         }
 
@@ -258,7 +387,7 @@ class Sessions:
             mapmap = {'state': 'unconfigured', 'detail': 'Start the panel with the MapMap bridge to test projection.'}
         return {'nemo': nemo, 'mapmap': mapmap}
 
-    def manual_cue(self, action):
+    def manual_cue(self, action, body):
         with self.lock:
             if self.process is not None:
                 raise ValueError('End the active experience before testing projection.')
@@ -266,14 +395,89 @@ class Sessions:
                 raise ValueError('The MapMap bridge is not configured.')
             if action == 'test' and not self.cue.silver_seed:
                 raise ValueError('The Silver Seed cue is unavailable in this MapMap project.')
+            selected = None
+            if action == 'preview':
+                ident = body.get('cue') if isinstance(body, dict) else None
+                if not isinstance(ident, str) or ident not in self.cue.cues:
+                    raise ValueError('Choose a scene from the MapMap project.')
+                selected = self.cue.cues[ident]
             status = check_mapmap_listener(self.cue.port)
             if status['state'] == 'error':
                 raise ValueError(status['detail'])
+            if self.story_passage:
+                self.prepare_story(self.story_passage, status)
+                requested = selected or (self.cue.cues[self.cue.silver_seed] if action == 'test' else None)
+                if requested and requested.source not in self.cue.story_cues:
+                    raise ValueError('Choose a scene assigned to the selected story.')
+            if selected is not None:
+                self.cue.play(selected, self.fade_ms)
+                return {'message': f'{selected.title} sent to MapMap.'}
             self.cue.reset()
             if action == 'test':
                 self.cue.play(self.cue.cues[self.cue.silver_seed])
                 return {'message': 'Silver Seed cue sent. Check the video and soundtrack at the pod.'}
             return {'message': 'Reset sent. Check that MapMap returns to the calibration grid.'}
+
+    def apply_layout(self, body):
+        if not isinstance(body, dict) or body.get('mode') not in ('auto', 'fit', 'original'):
+            raise ValueError('Choose Fit output or Restore original.')
+        size = None
+        if body['mode'] == 'fit':
+            size = (body.get('width'), body.get('height'))
+            if any(type(value) is not int or not 240 <= value <= 8192 for value in size):
+                raise ValueError('Enter output dimensions between 240 and 8192 pixels.')
+        with self.lock:
+            if self.process is not None:
+                raise ValueError('End the active experience before adjusting the output layout.')
+            if not self.cue:
+                raise ValueError('The MapMap bridge is not configured.')
+            status = check_mapmap_listener(self.cue.port)
+            if status['state'] == 'error':
+                raise ValueError(status['detail'])
+            if body['mode'] == 'auto':
+                size = detect_output_size(status.get('pid'))
+                if size is None:
+                    raise ValueError('Could not detect the MapMap output. Open it fullscreen or use Manual dimensions.')
+            self.cue.set_output_layout(size, pid=status.get('pid'))
+        action = 'applied and confirmed' if self.story_project else 'sent'
+        return {'message': f'Fit {action} for {size[0]} × {size[1]}.' if size else f'Original output layout {action}.'}
+
+    def wall_layout(self, action=None, body=None):
+        with self.lock:
+            if self.process is not None:
+                raise ValueError('End the active experience before editing the wall layout.')
+            if self.scene_directory is None:
+                raise ValueError('Start the panel with a saved MapMap project to edit its wall layout.')
+            try:
+                if action is None:
+                    status = check_mapmap_listener(self.cue.port)
+                    layout = self.cue.wall_layout(pid=status.get('pid'))
+                    layout['output_size'] = detect_output_size(status.get('pid'))
+                    return layout
+                if not isinstance(body, dict) or not isinstance(body.get('revision'), str):
+                    raise ValueError('Open the wall editor to load the saved layout.')
+                if action == 'preview':
+                    status = check_mapmap_listener(self.cue.port)
+                    if status['state'] == 'error':
+                        raise ValueError(status['detail'])
+                    return self.cue.preview_wall_layout(body['revision'], body.get('corners'), pid=status.get('pid'))
+                status = check_mapmap_listener(self.cue.port)
+                live = status['state'] == 'ready' and self.story_project is not None
+                if live:
+                    self.story_project.require_live_layout(status['pid'])
+                saved = self.cue.save_wall_layout(body['revision'], body.get('corners'), live=live)
+                saved['live_applied'] = False
+                if live:
+                    try:
+                        self.story_project.apply_layout(self.cue.output_layers, status['pid'], saved['revision'])
+                        saved['live_applied'] = True
+                    except (OSError, ValueError) as error:
+                        saved['apply_error'] = f'Layout saved to all scenes. Live update failed: {error}'
+                elif self.story_passage:
+                    self.prepare_story(self.story_passage)
+                return saved
+            except (KeyError, TypeError, IndexError) as error:
+                raise ValueError('The saved MapMap project has an invalid wall layout.') from error
 
     def start(self, settings):
         if not isinstance(settings, dict):
@@ -304,6 +508,7 @@ class Sessions:
             '--connection_timeout', '20', '--stop-on-stdin-close', '--live-transcript',
             '--transcript_file', str(folder / 'transcript.srt'),
         ]
+        command += microphone_arguments(model)
         if microphone != 'default':
             command += ['--input_device', microphone]
         if save:
@@ -318,11 +523,21 @@ class Sessions:
         with self.lock:
             if self.process is not None:
                 raise ValueError('End the current session before starting another.')
-            for checkpoint, cue in self.mapmap_cues(passage).items():
-                if cue.has_audio:
+            if self.mapmap_application and self.mapmap_application.snapshot(refresh=False)['state'] == 'starting':
+                raise ValueError('Wait for MapMap to finish opening before starting the experience.')
+            if model == 'parakeet-nemo' and self.recognition.snapshot(refresh=False)['busy']:
+                raise ValueError('Wait for the recognition server to finish starting or checking readiness.')
+            ready = True
+            if self.story_project:
+                _, ready = self.prepare_story(passage, check_mapmap_listener(self.cue.port))
+            projection_cues = self.mapmap_cues(passage)
+            for checkpoint, cue in projection_cues.items():
+                if cue.has_audio and ready:
                     command += ['--mute-checkpoint-sound', checkpoint]
             if self.cue:
                 self.cue.reset()
+                if self.story_project and ready:
+                    self.cue.preload(self.next_projection_video(passage, projection_cues))
             self.process = subprocess.Popen(
                 command, cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT, encoding='utf-8', errors='replace',
@@ -386,7 +601,8 @@ class Sessions:
                         self.state['fired'].append(trigger[1])
                         if trigger[1] in mapmap_cues:
                             try:
-                                self.cue.play(mapmap_cues[trigger[1]], self.fade_ms)
+                                next_cue = self.next_projection_video(passage, mapmap_cues, after=trigger[1])
+                                self.cue.play(mapmap_cues[trigger[1]], self.fade_ms, next_cue=next_cue)
                             except OSError as error:
                                 self.state['message'] = f'MapMap cue failed. {error}'
         code = process.wait()
@@ -421,6 +637,27 @@ class PanelHandler(SimpleHTTPRequestHandler):
         port = self.server.server_port
         return self.headers.get('Host') in (f'127.0.0.1:{port}', f'localhost:{port}')
 
+    def send_head(self):
+        if not self.path.startswith('/cue-preview/'):
+            return super().send_head()
+        if not self.local_host():
+            self.send_error(403)
+            return None
+        path = self.sessions.preview_files.get(self.path)
+        try:
+            stream = path.open('rb') if path else None
+        except OSError:
+            stream = None
+        if stream is None:
+            self.send_error(404)
+            return None
+        self.send_response(200)
+        self.send_header('Content-Type', 'video/mp4')
+        self.send_header('Content-Length', str(fstat(stream.fileno()).st_size))
+        self.send_header('Cross-Origin-Resource-Policy', 'same-origin')
+        self.end_headers()
+        return stream
+
     def do_GET(self):
         if not self.local_host():
             self.send_error(403)
@@ -428,7 +665,12 @@ class PanelHandler(SimpleHTTPRequestHandler):
             self.send_json(self.sessions.catalog())
         elif self.path == '/api/session':
             self.send_json(self.sessions.status())
-        elif self.path == '/' or self.path.startswith('/assets/'):
+        elif self.path == '/api/mapmap/wall-layout':
+            try:
+                self.send_json(self.sessions.wall_layout())
+            except (ValueError, OSError) as error:
+                self.send_json({'error': str(error)}, 400)
+        elif self.path == '/' or self.path.startswith(('/assets/', '/cue-preview/')):
             super().do_GET()
         else:
             self.send_error(404)
@@ -451,16 +693,29 @@ class PanelHandler(SimpleHTTPRequestHandler):
                 self.sessions.start(body)
             elif self.path == '/api/session/end':
                 self.sessions.end()
+            elif self.path in ('/api/recognition/start', '/api/recognition/restart'):
+                result = self.sessions.recognition_action(self.path.rsplit('/', 1)[1])
+            elif self.path == '/api/mapmap/open':
+                result = self.sessions.open_mapmap()
             elif self.path == '/api/preflight':
                 result = self.sessions.preflight()
             elif self.path == '/api/mapmap/assignment':
                 self.sessions.assign_cue(body)
                 result = self.sessions.catalog()
+            elif self.path == '/api/mapmap/story':
+                result = self.sessions.select_story(body)
             elif self.path == '/api/mapmap/transition':
                 self.sessions.set_transition(body)
                 result = self.sessions.catalog()
-            elif self.path in ('/api/mapmap/test', '/api/mapmap/reset'):
-                result = self.sessions.manual_cue(self.path.rsplit('/', 1)[1])
+            elif self.path in ('/api/mapmap/scenes/import', '/api/mapmap/scenes/apply-layout'):
+                update = self.sessions.update_scenes(self.path.rsplit('/', 1)[1])
+                result = {'catalog': self.sessions.catalog(), **update}
+            elif self.path == '/api/mapmap/layout':
+                result = self.sessions.apply_layout(body)
+            elif self.path in ('/api/mapmap/wall-layout/preview', '/api/mapmap/wall-layout/save'):
+                result = self.sessions.wall_layout(self.path.rsplit('/', 1)[1], body)
+            elif self.path in ('/api/mapmap/test', '/api/mapmap/reset', '/api/mapmap/preview'):
+                result = self.sessions.manual_cue(self.path.rsplit('/', 1)[1], body)
             else:
                 self.send_error(404)
                 return
@@ -479,9 +734,15 @@ def main():
     parser.add_argument('--port', type=int, default=8765)
     parser.add_argument('--whisper-port', type=int, default=9090)
     parser.add_argument('--nemo-port', type=int, default=9097)
+    parser.add_argument('--nemo-distro', default='Ubuntu', help='WSL distribution used by the NeMo server controls.')
+    parser.add_argument('--nemo-python', default='/home/heart/.venvs/books-to-life-nemo/bin/python',
+                        help='Installed Python executable inside the NeMo WSL environment.')
+    parser.add_argument('--nemo-model', type=Path, help='Windows path to the cached NeMo model.')
     parser.add_argument('--native-port', type=int, default=9091)
     parser.add_argument('--mapmap-bridge', type=Path, help='Path to the handoff play_cue.py.')
     parser.add_argument('--mapmap-project', type=Path, help='Saved MapMap project. Defaults to the bridge’s spoken-cue project.')
+    parser.add_argument('--mapmap-story-dir', type=Path, help='Directory for the generated selected-story MapMap project.')
+    parser.add_argument('--mapmap-launcher', type=Path, help='Path to Start-Reading-Pod-MapMap.ps1, inferred from the bridge by default.')
     parser.add_argument('--osc-port', type=int, default=12345)
     args = parser.parse_args()
     if not (DIST / 'index.html').is_file():
@@ -490,6 +751,8 @@ def main():
         parser.error('--mapmap-bridge must point to the handoff play_cue.py file.')
     if args.mapmap_project and not args.mapmap_bridge:
         parser.error('--mapmap-project requires --mapmap-bridge.')
+    if args.mapmap_story_dir and not args.mapmap_project:
+        parser.error('--mapmap-story-dir requires --mapmap-project.')
     ports = {model: {9090: args.whisper_port, 9091: args.native_port, 9097: args.nemo_port}[port]
              for model, (_, port, _) in MODELS.items()}
     try:
@@ -498,7 +761,11 @@ def main():
         if cue:
             project_key = sha256(normcase(str(cue.project)).encode()).hexdigest()[:24]
             assignment_file = ROOT / 'output/operator-mapmap' / f'{project_key}.json'
-        sessions = Sessions(load_passages(), ports, cue, assignment_file=assignment_file)
+        story_directory = args.mapmap_story_dir.resolve() if args.mapmap_story_dir else None
+        sessions = Sessions(load_passages(), ports, cue, assignment_file=assignment_file, story_directory=story_directory,
+                            mapmap_launcher=args.mapmap_launcher,
+                            recognition_options={'distro': args.nemo_distro, 'python': args.nemo_python,
+                                                 'model': args.nemo_model})
     except (OSError, ValueError, AttributeError, KeyError, TypeError) as error:
         parser.error(f'Could not load operator panel configuration. {error}')
     with ThreadingHTTPServer(('127.0.0.1', args.port), partial(PanelHandler, sessions=sessions)) as server:

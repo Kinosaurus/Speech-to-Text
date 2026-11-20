@@ -25,8 +25,11 @@ are not used. Hint revisions replace the phrase tree between audio chunks while
 retaining the speech decoder's state and previously emitted words.
 
 This is a different runtime from the hint-free `parakeet` GGUF adapter. Its
-default buffering is 560 ms chunk + 560 ms right context, with 5.6 seconds left
-context. It uses bfloat16 CUDA inference and disables CUDA graph decoding while
+default buffering is 160 ms chunk + 560 ms right context, with 5.6 seconds left
+context. The panel uses 80 ms microphone packets for NeMo. The earlier 560/560 ms
+benchmarks remain frozen; see the [latency investigation](../benchmarks/LATENCY_INVESTIGATION.md)
+for measured improvements and remaining accuracy limits. Explicit `--chunk-ms 560
+--right-ms 560` restores legacy server buffering. It uses bfloat16 CUDA inference and disables CUDA graph decoding while
 supporting dynamic phrase changes. Re-measure accuracy and timing in this
 configuration; the earlier Vulkan results do not apply directly. Jetson execution
 has not been verified.

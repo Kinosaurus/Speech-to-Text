@@ -20,6 +20,32 @@ def feed(m,text,t):
 
 
 class TimelyTests(unittest.TestCase):
+    def test_one_shot_resumes_after_aside_with_an_exact_endpoint_and_book_context(self):
+        context = 'we followed a narrow path through the garden'
+        prefix = 'the small rabbit hurried across the wooden'
+        manifest = config()
+        manifest['pages'][0]['text'] = f'{context} {prefix} bridge we watched quietly from the hill'
+        manifest['checkpoints'][0]['checkpoint_text'] = f'{prefix} bridge'
+        aside = 'please pass the blue notebook'
+        for resume, should_fire in (
+            ('bridge we watched quietly', True),
+            ('bridge I saw something', False),
+            ('we watched quietly', False),
+        ):
+            with self.subTest(resume=resume):
+                matcher = TimelyEvidenceMatcher(manifest)
+                # The preceding page context has already been confirmed.
+                matcher.tracked_word_position = len(context.split())
+                head = f'{context} {prefix}'
+                self.assertFalse(feed(matcher, head, 1).triggered)
+                self.assertFalse(feed(matcher, f'{head} {aside}', 3).triggered)
+                segments = [
+                    dict(start=0, end=3, text=f'{head} {aside}', completed=True),
+                    dict(start=3, end=4, text=resume, completed=False),
+                ]
+                update = matcher.process(f'{head} {aside} {resume}', segments)
+                self.assertEqual(update.triggered, should_fire)
+
     def test_article_omissions_work_on_an_unconfigured_first_checkpoint(self):
         anchor = 'a nimble rabbit brushed the leaves beside wooden gates'
         manifest = config()

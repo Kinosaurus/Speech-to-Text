@@ -26,12 +26,13 @@ class BookContext:
     """Use the next checkpoint plus lookahead; advance only on confirmed progress."""
 
     def __init__(self, matcher, lookahead=2, prompt_words=64,
-                 initial_prompt=None, hotwords=None):
+                 initial_prompt=None, hotwords=None, phrase_only=False):
         if not 0 <= lookahead <= 10 or not 8 <= prompt_words <= 128:
             raise ValueError("Book context needs lookahead 0–10 and prompt_words 8–128.")
         self.matcher = matcher
         self.lookahead = lookahead
         self.prompt_words = prompt_words
+        self.phrase_only = phrase_only
         # Explicit CLI hints override their respective automatic field.
         self.manual_prompt = initial_prompt
         self.manual_hotwords = hotwords
@@ -42,7 +43,8 @@ class BookContext:
 
     def refresh(self, force=False):
         position = getattr(self.matcher, "tracked_word_position", 0)
-        index = min(self.matcher.current_index, len(self.matcher.checkpoints) - 1)
+        hint_index = getattr(self.matcher, "hint_checkpoint_index", self.matcher.current_index)
+        index = min(hint_index, len(self.matcher.checkpoints) - 1)
         if not force and index == self._index and position < self._position + 16:
             return None
         self._index, self._position = index, position
@@ -61,14 +63,17 @@ class BookContext:
             phrases.append(phrase)
             words_used += word_count
         automatic_hotwords = ", ".join(phrases) or None
-        if hasattr(self.matcher, "words"):
+        if self.phrase_only:
+            automatic_prompt = None
+        elif hasattr(self.matcher, "words"):
             # A short lookback retains context for corrections and unfinished ASR.
             start = max(0, position - 8)
             passage = " ".join(self.matcher.words[start:start + self.prompt_words])
+            automatic_prompt = _bounded_words(passage, self.prompt_words, 480)
         else:
             # Phrase-only manifests have no full-page text.
             passage = ". ".join(phrases)
-        automatic_prompt = _bounded_words(passage, self.prompt_words, 480)
+            automatic_prompt = _bounded_words(passage, self.prompt_words, 480)
         hints = BookHints(
             self.manual_prompt if self.manual_prompt is not None else automatic_prompt,
             self.manual_hotwords if self.manual_hotwords is not None else automatic_hotwords,

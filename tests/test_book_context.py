@@ -38,6 +38,18 @@ class BookContextTests(unittest.TestCase):
         self.assertIn("And the little mermaid could not speak", context.hints.hotwords)
         self.assertIn("deep blue eyes", context.hints.initial_prompt)
 
+    def test_phrase_only_context_keeps_full_story_in_the_tracker(self):
+        matcher = AlignmentMatcher(sample(), stability=1)
+        context = BookContext(matcher, phrase_only=True)
+        original_words = matcher.words[:]
+        self.assertIsNone(context.hints.initial_prompt)
+        self.assertIn(matcher.checkpoints[0]['checkpoint_text'], context.hints.hotwords)
+        matcher.process(matcher.checkpoints[0]['checkpoint_text'])
+        hints = context.refresh()
+        self.assertIsNone(hints.initial_prompt)
+        self.assertIn(matcher.checkpoints[3]['checkpoint_text'], hints.hotwords)
+        self.assertEqual(matcher.words, original_words)
+
     def test_tentative_or_unrelated_speech_does_not_move_hints(self):
         matcher = AlignmentMatcher(sample())
         context = BookContext(matcher)
@@ -118,6 +130,7 @@ class BookContextTests(unittest.TestCase):
         args = ["books_to_life.cli.run_client", "--files", str(audio), *options]
         with patch.object(sys, "argv", args), \
                 patch("books_to_life.context.book_context_client.BookTranscriptionClient", fake), \
+                patch("books_to_life.runtime.native_stream_client.NativeTranscriptionClient", fake), \
                 patch("whisper_live.client.TranscriptionClient", fake), \
                 patch("books_to_life.runtime.audio_runtime.wait_for_server"), contextlib.redirect_stdout(io.StringIO()):
             runpy.run_module("books_to_life.cli.run_client", run_name="__main__")
@@ -135,6 +148,16 @@ class BookContextTests(unittest.TestCase):
         self.assertIsNone(options["hotwords"])
         options = self.launch_client(["--checkpoints", manifest, "--no_book_context", "--hotwords", "Manual"])
         self.assertEqual(options["hotwords"], "Manual")
+
+    def test_nemo_cli_sends_checkpoint_hints_without_a_passage_prompt(self):
+        manifest = str(ROOT / 'recordings/library/stories/little_mermaid/readers/little_mermaid/checkpoints.json')
+        options = self.launch_client(['--model', 'parakeet-nemo', '--checkpoints', manifest])
+        self.assertIsNone(options['initial_prompt'])
+        self.assertIn('prettiest legs', options['hotwords'])
+        self.assertNotIn('deep blue eyes', options['hotwords'])
+        options = self.launch_client(['--model', 'parakeet-nemo', '--checkpoints', manifest, '--no_book_context'])
+        self.assertIsNone(options['initial_prompt'])
+        self.assertIsNone(options['hotwords'])
 
 
 if __name__ == "__main__":

@@ -221,6 +221,8 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Local ASR tests, transcripts and scratch work
+/scenes/*
+!/scenes/README.md
 /tmp/
 /output/
 /recordings/*
@@ -237,10 +239,14 @@ __marimo__/
 !/recordings/library/stories/horse/
 !/recordings/library/stories/little_mermaid/
 !/recordings/library/stories/nickel/
+!/recordings/library/stories/night_tiger/
 !/recordings/library/stories/recording_2/
 !/recordings/library/stories/tea/
 !/recordings/library/stories/sample/
 /recordings/library/**/asr/
+# Keep copied commercial story text and OCR-derived reading manifests local.
+/benchmarks/product_comparison/readmio_lion_excerpt.txt
+/recordings/library/stories/night_tiger/readers/
 /*.wav
 /*.m4a
 /*.mp3

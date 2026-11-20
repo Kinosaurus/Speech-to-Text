@@ -256,6 +256,7 @@ if __name__ == '__main__':
             book_context = BookContext(
                 checkpoint_matcher, lookahead=args.book_context_lookahead,
                 prompt_words=args.book_context_words, initial_prompt=initial_prompt, hotwords=hotwords,
+                phrase_only=args.model == 'parakeet-nemo',
             )
             initial_prompt, hotwords = book_context.hints.initial_prompt, book_context.hints.hotwords
             print(f"[BOOK_CONTEXT] Automatic hints enabled; lookahead={args.book_context_lookahead}.")

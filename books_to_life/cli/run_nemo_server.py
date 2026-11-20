@@ -12,6 +12,18 @@ from websockets.exceptions import ConnectionClosed
 
 from books_to_life.context.book_context import CONTEXT_PROTOCOL_VERSION, parse_context_message
 from books_to_life.runtime.nemo_parakeet import NemoParakeetSession, hint_phrases, load_model
+from books_to_life.runtime.nemo_defaults import CHUNK_MS, RIGHT_MS
+
+
+def warm_model(model,chunk_ms,right_ms,boost):
+    """Initialize CUDA inference before readiness, without microphone input."""
+    session=NemoParakeetSession(model,chunk_ms,right_ms,boost)
+    try:
+        session.set_hints(None)
+        session.feed(np.zeros(32000,dtype=np.float32))
+        session.finish()
+    finally:
+        session.close()
 
 
 def handle_connection(socket, factory, lock, max_seconds=3600):
@@ -33,7 +45,9 @@ def handle_connection(socket, factory, lock, max_seconds=3600):
             raise ValueError('Another reading session is active.')
         session = factory()
         session.set_hints(options.get('hotwords'))
-        send(message='SERVER_READY', backend='parakeet-nemo')
+        configuration=getattr(session,'configuration',{})
+        send(message='SERVER_READY', backend='parakeet-nemo',
+             **(configuration if isinstance(configuration,dict) else {}))
         send(type='book_context_capabilities', version=CONTEXT_PROTOCOL_VERSION, hint_mode='phrases')
         revision = 0
         samples = 0
@@ -89,8 +103,8 @@ def main():
     parser.add_argument('--model-path', type=Path, required=True)
     parser.add_argument('--host', default='127.0.0.1')
     parser.add_argument('--port', type=int, default=9097)
-    parser.add_argument('--chunk-ms', type=int, default=560)
-    parser.add_argument('--right-ms', type=int, default=560)
+    parser.add_argument('--chunk-ms', type=int, default=CHUNK_MS)
+    parser.add_argument('--right-ms', type=int, default=RIGHT_MS)
     parser.add_argument('--boost', type=float, default=1.0)
     parser.add_argument('--max-seconds', type=int, default=3600)
     args = parser.parse_args()
@@ -107,6 +121,8 @@ def main():
     print(f'[ASR] Buffered streaming: 5600 ms left, {args.chunk_ms} ms chunk, {args.right_ms} ms right.', flush=True)
     lock = threading.Lock()
     factory = lambda: NemoParakeetSession(model, args.chunk_ms, args.right_ms, args.boost)
+    print('[ASR] Warming CUDA with two seconds of synthetic silence before readiness.',flush=True)
+    warm_model(model,args.chunk_ms,args.right_ms,args.boost)
     with serve(lambda ws: handle_connection(ws, factory, lock, args.max_seconds),
                args.host, args.port, max_size=65536) as server:
         print(f'[READY] ws://{args.host}:{args.port}', flush=True)
