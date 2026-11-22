@@ -23,6 +23,31 @@ class Socket:
 
 
 class NemoTransportTests(unittest.TestCase):
+    def test_nemotron_uses_same_snapshot_protocol_and_live_phrase_updates(self):
+        socket = Socket([np.zeros(1280, dtype='<f4').tobytes(),
+                         json.dumps({'type':'book_context','revision':1,'hotwords':'Prince'}), b'END_OF_AUDIO'])
+        socket.recv = lambda timeout=None: json.dumps({'uid':'test','model':'nemotron','language':'en','hotwords':'Mermaid'})
+        session = Mock(configuration={'chunk_ms':160,'att_context':[70,1],'boost':1.0})
+        session.feed.return_value = ['a mermaid']
+        session.finish.return_value = 'a mermaid and a prince'
+        lock = threading.Lock()
+        handle_connection(socket, lambda:session, lock, backend='nemotron')
+        ready = socket.sent[0]
+        self.assertEqual((ready['backend'],ready['chunk_ms'],ready['att_context']),('nemotron',160,[70,1]))
+        self.assertEqual([call.args[0] for call in session.set_hints.call_args_list],['Mermaid','Prince'])
+        self.assertEqual(socket.sent[-2]['segments'][0]['text'],'a mermaid and a prince')
+        self.assertTrue(socket.sent[-2]['segments'][0]['completed'])
+        self.assertEqual(socket.sent[-1]['message'],'STREAM_DONE')
+        self.assertFalse(lock.locked())
+
+    def test_wrong_nemo_backend_is_rejected_before_session_creation(self):
+        socket = Socket([])
+        factory = Mock()
+        handle_connection(socket, factory, threading.Lock(), backend='nemotron')
+        factory.assert_not_called()
+        self.assertEqual(socket.sent[-1]['status'],'ERROR')
+        self.assertIn('nemotron',socket.sent[-1]['message'])
+
     def test_startup_warms_a_separate_silent_session_and_releases_it(self):
         with patch('books_to_life.cli.run_nemo_server.NemoParakeetSession') as factory:
             warm_model('model',160,560,1.0)

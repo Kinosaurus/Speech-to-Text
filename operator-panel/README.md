@@ -19,6 +19,7 @@ renderer. For other models, follow the [runtime instructions](../docs/RUNNING.md
 | Model | Default port | Reading hints |
 | --- | --- | --- |
 | Parakeet NeMo | 9097 | Upcoming checkpoint phrases |
+| Nemotron · 160 ms | 9097 (shared with Parakeet) | Upcoming checkpoint phrases |
 | Whisper Base, Tiny, Medium (English) | 9090 | Upcoming checkpoint phrases and passage text |
 | Parakeet ONNX or Moonshine | 9091 | Unavailable |
 
@@ -28,6 +29,17 @@ Reading hints start enabled at Medium for the default Parakeet NeMo selection. N
 
 For a custom NeMo environment, use `--nemo-distro`, `--nemo-python` and
 `--nemo-model`. The default Python lives in the selected WSL user's home directory.
+
+Nemotron is available as **Nemotron · 160 ms** in the model dropdown. Select it,
+then use **Start recognition server** under Preflight. Switching between Nemotron
+and Parakeet loads the selected checkpoint on the shared NeMo port. End the active
+experience before switching. Live transcripts, reading hints, the tracker, sound
+effects and MapMap use the same panel controls for either model.
+
+The installed NeMo WSL environment supports both models. On a fresh PC, run
+`python -m books_to_life.cli.prepare_nemotron_model` from that environment to
+download the pinned checkpoint into `model-cache/nemotron-nemo`. The panel also
+searches parent folders for the cache. Use `--nemotron-model` for a custom path.
 
 Choose the passage and model, configure hints and recording, then select **Start experience**. Wait for **Listening** before reading. The panel marks each checkpoint the matcher fires. **End experience** stops capture and waits for the client to finish. Transcripts are written locally under `output/operator-sessions`. Each session writes a WAV there only when **Save recording** is on.
 

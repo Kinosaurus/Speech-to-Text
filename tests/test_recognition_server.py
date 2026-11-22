@@ -11,6 +11,39 @@ from books_to_life.runtime.recognition_server import RecognitionServer
 
 
 class RecognitionServerTests(unittest.TestCase):
+    def test_nemotron_request_launches_its_checkpoint_and_reports_selected_backend(self):
+        probe = Mock(side_effect=[{'state':'error','detail':'Wrong model'}, {'state':'ready','detail':'Nemotron 160 ms'}])
+        server = RecognitionServer(self.root,9097,probe,model=self.model,nemotron_model=self.root/'nemotron.nemo')
+        server.state['managed'] = True
+        with patch('books_to_life.runtime.recognition_server.subprocess.run',return_value=Mock(returncode=0)) as launch:
+            server.request('start',backend='nemotron')
+            state = self.finish(server)
+        command = launch.call_args.args[0]
+        self.assertEqual(command[command.index('--backend')+1],'nemotron')
+        self.assertIn('nemotron.nemo',command[command.index('--model-path')+1])
+        self.assertEqual((state['backend'],state['state']),('nemotron','ready'))
+
+    def test_start_switches_existing_managed_backend_before_loading_nemotron(self):
+        with patch('books_to_life.cli.manage_nemo_server.server_processes',side_effect=[[123],[],[],[],[]]), \
+                patch('books_to_life.cli.manage_nemo_server.port_in_use',return_value=False), \
+                patch('books_to_life.cli.manage_nemo_server.os.kill') as stop, \
+                patch('books_to_life.cli.manage_nemo_server.subprocess.Popen',return_value=Mock(pid=456)) as launch:
+            manage('start',9097,self.model,self.root/'nemo.log',backend='nemotron')
+        stop.assert_called_once_with(123,signal.SIGTERM)
+        command = launch.call_args.args[0]
+        self.assertEqual(command[command.index('--backend')+1],'nemotron')
+        self.assertEqual(command[command.index('--chunk-ms')+1],'160')
+
+    def test_nemotron_readiness_reuses_active_session_without_connecting(self):
+        sessions = Sessions({}, {'parakeet-nemo':9097,'nemotron':9097})
+        sessions.recognition.backend = 'nemotron'
+        sessions.process = Mock()
+        sessions.process.poll.return_value = None
+        sessions.state['settings'] = {'model':'nemotron'}
+        with patch('books_to_life.cli.operator_panel.check_nemo') as probe:
+            self.assertEqual(sessions.probe_recognition()['state'],'ready')
+        probe.assert_not_called()
+
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)

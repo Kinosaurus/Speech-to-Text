@@ -12,7 +12,7 @@ from websockets.exceptions import ConnectionClosed
 
 from books_to_life.context.book_context import CONTEXT_PROTOCOL_VERSION, parse_context_message
 from books_to_life.runtime.nemo_parakeet import NemoParakeetSession, hint_phrases, load_model
-from books_to_life.runtime.nemo_defaults import CHUNK_MS, RIGHT_MS
+from books_to_life.runtime.nemo_defaults import CHUNK_MS, RIGHT_MS, NEMO_MODELS
 
 
 def warm_model(model,chunk_ms,right_ms,boost):
@@ -26,7 +26,7 @@ def warm_model(model,chunk_ms,right_ms,boost):
         session.close()
 
 
-def handle_connection(socket, factory, lock, max_seconds=3600):
+def handle_connection(socket, factory, lock, max_seconds=3600, backend='parakeet-nemo'):
     uid = None
     session = None
     acquired = False
@@ -35,8 +35,8 @@ def handle_connection(socket, factory, lock, max_seconds=3600):
     try:
         options = json.loads(socket.recv(timeout=30))
         uid = options['uid']
-        if options.get('model') != 'parakeet-nemo':
-            raise ValueError('Use --model parakeet-nemo with this server.')
+        if options.get('model') != backend:
+            raise ValueError(f'Use --model {backend} with this server.')
         if options.get('language') not in (None, 'en') or options.get('task') == 'translate' or options.get('enable_translation'):
             raise ValueError('English transcription only.')
         hint_phrases(options.get('hotwords'))
@@ -46,7 +46,7 @@ def handle_connection(socket, factory, lock, max_seconds=3600):
         session = factory()
         session.set_hints(options.get('hotwords'))
         configuration=getattr(session,'configuration',{})
-        send(message='SERVER_READY', backend='parakeet-nemo',
+        send(message='SERVER_READY', backend=backend,
              **(configuration if isinstance(configuration,dict) else {}))
         send(type='book_context_capabilities', version=CONTEXT_PROTOCOL_VERSION, hint_mode='phrases')
         revision = 0
@@ -101,6 +101,7 @@ def handle_connection(socket, factory, lock, max_seconds=3600):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--model-path', type=Path, required=True)
+    parser.add_argument('--backend', choices=NEMO_MODELS, default='parakeet-nemo')
     parser.add_argument('--host', default='127.0.0.1')
     parser.add_argument('--port', type=int, default=9097)
     parser.add_argument('--chunk-ms', type=int, default=CHUNK_MS)
@@ -109,21 +110,38 @@ def main():
     parser.add_argument('--max-seconds', type=int, default=3600)
     args = parser.parse_args()
     if not args.model_path.is_file():
-        parser.error('Download the original Parakeet Unified .nemo checkpoint first.')
-    if any(x <= 0 or x % 80 or x > 1040 for x in (args.chunk_ms, args.right_ms)):
+        parser.error('Download the selected backend’s .nemo checkpoint first.')
+    if args.backend == 'nemotron' and args.chunk_ms not in (80, 160, 560, 1120):
+        parser.error('Nemotron supports trained chunk sizes 80, 160, 560 or 1120 ms.')
+    if args.backend == 'parakeet-nemo' and any(x <= 0 or x % 80 or x > 1040 for x in (args.chunk_ms, args.right_ms)):
         parser.error('Chunk/right context must be multiples of 80 ms between 80 and 1040.')
     if not math.isfinite(args.boost) or not 0 <= args.boost <= 5 or args.max_seconds < 1:
         parser.error('Boost must be between 0 and 5; session limit must be positive.')
     os.environ.setdefault('PYTORCH_CUDA_ALLOC_CONF', 'expandable_segments:True')
-    model = load_model(args.model_path, args.chunk_ms, args.right_ms)
     import torch
-    print(f'[ASR] Parakeet Unified CUDA {torch.cuda.get_device_name()}, bfloat16; phrase boosting={args.boost}', flush=True)
-    print(f'[ASR] Buffered streaming: 5600 ms left, {args.chunk_ms} ms chunk, {args.right_ms} ms right.', flush=True)
+    torch.set_num_threads(2)
+    if args.backend == 'nemotron':
+        from books_to_life.runtime.nemotron import load_model as load_nemotron, NemotronSession
+        model = load_nemotron(args.model_path, chunk_ms=args.chunk_ms)
+        factory = lambda: NemotronSession(model, chunk_ms=args.chunk_ms, boost=args.boost)
+        print(f'[ASR] Nemotron CUDA, bfloat16; {args.chunk_ms} ms chunks; phrase boosting={args.boost}', flush=True)
+    else:
+        model = load_model(args.model_path, args.chunk_ms, args.right_ms)
+        factory = lambda: NemoParakeetSession(model, args.chunk_ms, args.right_ms, args.boost)
+        print(f'[ASR] Parakeet Unified CUDA {torch.cuda.get_device_name()}, bfloat16; phrase boosting={args.boost}', flush=True)
+        print(f'[ASR] Buffered streaming: 5600 ms left, {args.chunk_ms} ms chunk, {args.right_ms} ms right.', flush=True)
     lock = threading.Lock()
-    factory = lambda: NemoParakeetSession(model, args.chunk_ms, args.right_ms, args.boost)
     print('[ASR] Warming CUDA with two seconds of synthetic silence before readiness.',flush=True)
-    warm_model(model,args.chunk_ms,args.right_ms,args.boost)
-    with serve(lambda ws: handle_connection(ws, factory, lock, args.max_seconds),
+    if args.backend == 'nemotron':
+        session = factory()
+        try:
+            session.feed(np.zeros(32000, dtype=np.float32))
+            session.finish()
+        finally:
+            session.close()
+    else:
+        warm_model(model,args.chunk_ms,args.right_ms,args.boost)
+    with serve(lambda ws: handle_connection(ws, factory, lock, args.max_seconds, backend=args.backend),
                args.host, args.port, max_size=65536) as server:
         print(f'[READY] ws://{args.host}:{args.port}', flush=True)
         server.serve_forever()

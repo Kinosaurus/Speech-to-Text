@@ -1,2 +1,4 @@
 scripts/reading-pod/*.sh text eol=lf
 pod/mapmap/*.patch text eol=lf
+# Preserve audited experiment snapshot bytes on Windows and Linux.
+benchmarks/experiments/20261122/** -text whitespace=cr-at-eol,-blank-at-eof

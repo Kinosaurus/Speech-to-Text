@@ -21,6 +21,7 @@ class LatencyProtocolTests(unittest.TestCase):
             self.assertEqual(factory.return_value.process.call_args.kwargs['segments'],[segment])
     def test_only_nemo_microphone_packets_change(self):
         self.assertEqual(microphone_arguments('parakeet-nemo'),['--audio_chunk',str(MIC_PACKET_SAMPLES)])
+        self.assertEqual(microphone_arguments('nemotron'),['--audio_chunk',str(MIC_PACKET_SAMPLES)])
         for model in ['base.en','parakeet','moonshine']:
             self.assertEqual(microphone_arguments(model),[])
     def test_profiles_stay_within_model_trained_context_axes(self):

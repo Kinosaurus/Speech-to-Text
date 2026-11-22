@@ -1,5 +1,28 @@
 # Books to Life Pod: current flow, handover and verification
 
+22 November: the operator panel now includes **Nemotron · 160 ms**, with managed
+backend switching, live transcripts, split tracking and changing checkpoint
+hints. A production saved-file replay completed four of four Moon cues and three
+hint updates. The focused Windows suite passed 53 tests with one GPU-only skip;
+the actual WSL GPU replay and React build passed. The combined branch subsequently
+passed the full Windows suite: 294 passed, one GPU-only test skipped. See the
+[new ASR-only and cue-to-sound results](../benchmarks/NEMOTRON_RESULTS_20261122.md)
+and [other-PC checklist](OTHER_PC_ASR_TEST.md). Live microphone/speaker/projector
+testing remains outstanding. Older dated status notes below retain their scope.
+
+7 November: checkpoint sound playback is wired into the reading client.
+Emitted effects with a valid `sound` WAV play through a preloaded background
+mixer; delayed and overlapping cues are supported. All 12 checkpoints across
+the five existing stories and all four Maya pilot checkpoints now point to
+16 bundled, original synthesized test cues. Imported/local manifests may still
+need assets. An original test chime and matcher-driven demo are also bundled.
+See [sound playback](SOUND_PLAYBACK.md). The current Windows
+suite passes 179 tests with one NeMo-only check skipped; the matcher-driven
+chime demo completed through the local PortAudio output without errors.
+Live child/microphone/speaker feedback testing, looping ambience, visuals,
+lighting, and operator session controls remain pending. Older dated evaluation
+notes below retain their original scope.
+
 Singapore CHILDES access inspection, 2 November: the user-downloaded archive
 passes ZIP integrity checks and contains 168 CHAT transcripts. One matching
 recording, e5d6a.mp3 (195.42 seconds), decodes successfully; three contextual
@@ -319,8 +342,9 @@ The tracker advances confirmed progress, suppresses duplicate scene activations,
 and can select a later scene while marking intervening scenes skipped. Reaching
 completed does NOT prove that every scene fired. Current catch-up behavior is
 suited to persistent ambience; there is no separate event policy for one-shot
-sounds/animations. Effect filenames are placeholders and physical audio/video
-playback/control is NOT wired to triggers yet.
+sounds/animations in those earlier modes. WAV sound playback is now wired to
+emitted triggers; the five bundled story manifests have synthesized test assets.
+Video and physical lighting control are not connected. See [sound playback](SOUND_PLAYBACK.md).
 
 ## Recognition engines and hints
 

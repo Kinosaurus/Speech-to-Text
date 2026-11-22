@@ -1,11 +1,34 @@
 # Benchmark child-reading recognition
 
+Latest: [six-setup ASR-only comparison and tracker-to-sound retest, 22 November](NEMOTRON_RESULTS_20261122.md). The current panel includes Nemotron 160 ms.
+
 For the six-child, four-setup table and checkpoint-hint follow-up, see
 [Four-model child-reading pilot](FOUR_MODEL_READINGS.md).
 
 For the tracker-free baseline, see [ASR-only model comparison](ASR_ONLY.md).
 It streams identical recordings with hints off and rejects tracker/context imports.
 It labels printed-passage errors separately from verified spoken-transcript WER.
+## Saved ASR comparison
+
+| Evaluation | Model and configuration | WER ↓ | Exact cue recall ↑ | Tracker hits ↑ | Cue delay ↓ |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 50 recordings | **Nemotron 160 ms, hints off** | 23.76% | 84/147 | 155/184 | 279 ms |
+| 50 recordings | **Nemotron 160 ms, next checkpoint only** | 23.71% | 119/147 | 166/184 | 279 ms |
+| 50 recordings | Parakeet NeMo, hints off | 19.55% | 90/147 | 161/184 | 763 ms |
+| 50 recordings | KeenASR, saved corpus run | 20.63% | 138/147 | 163/184 | — |
+| Earlier 13-cue screenshot | Parakeet NeMo with checkpoint hints | 8.9% | 12/13 | — | 2.03 s |
+| Earlier 13-cue screenshot | KeenASR Web SDK with full-book graph | 16.7% | 10/13 | — | 0.36 s |
+| Earlier 13-cue screenshot | Whisper Tiny English on CPU | 16.9% | 9/13 | — | 2.14 s |
+| Earlier 13-cue screenshot | Moonshine Medium on CPU | 12.6% | 8/13 | — | 9.17 s |
+
+The 50-recording rows use 46 reference transcripts for WER, 147 verbatim
+spoken cues for exact recall and 184 configured cues for tracker hits. Delay
+is the median estimated cue-end-to-tracker-firing interval on the replay audio
+clock. The saved KeenASR corpus run has no full callback timing record.
+The earlier rows reproduce the screenshot’s figures. Its recording list and
+metric definitions are unavailable, so compare figures within each evaluation.
+All rows reuse saved results. The per-recording corpus artifacts remain local.
+[Other-PC test checklist](../docs/OTHER_PC_ASR_TEST.md)
 
 Latest focused challenge: [45 full-stream synthetic adult cases](results/false-trigger-challenges-2026-11-02.json).
 Five anchors each test correct reading, endpoint omission, close/distant wrong
@@ -229,7 +252,9 @@ server; the older `run.py` profiles below use a separate benchmark harness.
 These scripts compare the existing Whisper base.en, small.en and medium.en GPU
 setup with Parakeet Unified and Moonshine Streaming Medium. They are separate
 from the reading application: the ASR server/client and matcher are unchanged.
-Nemotron is a possible later test and is not downloaded by this benchmark.
+The [saved ASR comparison](#saved-asr-comparison) includes the separate
+Nemotron replay benchmark. Use the [other-PC checklist](../docs/OTHER_PC_ASR_TEST.md)
+to download the pinned Nemotron checkpoint and try hints on the bundled WAVs.
 
 The supplied samples include the 33-second Little Mermaid recording (two
 checkpoints), 93-second Tea recording (three) and 57-second Fat Cat recording

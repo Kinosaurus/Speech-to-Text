@@ -99,7 +99,7 @@ function OutputLayout({ disabled, onLayout, wallProject }) {
 
 function Preflight({ checks, projection, silverSeedTest, transition, cues, layout, wallProject, disabled, checking, message,
   sceneDirectory, sceneUpdate, sceneAction, onSceneAction, onCheck, onTest, onReset, onTransition, onPreview, onLayout,
-  recognition, serverDisabled, reading, onServer, mapmap, onOpenMapMap }) {
+  recognition, recognitionLabel, serverDisabled, reading, onServer, mapmap, onOpenMapMap }) {
   const showSilverSeedTest = silverSeedTest && cues.length <= 1;
   const mapmapState = mapmap?.state ?? checks?.mapmap.state ?? (projection ? '' : 'unconfigured');
   return (
@@ -110,7 +110,7 @@ function Preflight({ checks, projection, silverSeedTest, transition, cues, layou
       </div>
       <dl className="preflight-checks" aria-live="polite">
         <div>
-          <dt>Parakeet NeMo</dt>
+          <dt>{recognitionLabel}</dt>
           <dd>
             <strong className={recognition?.state ?? checks?.nemo.state}>
               {checkLabels[recognition?.state ?? checks?.nemo.state] ?? 'Unchecked'}
@@ -446,10 +446,13 @@ function App() {
   const busy = Boolean(pending) || session.mapmap?.state === 'starting';
   const selection = active ? session.settings || settings : settings;
   const model = catalog?.models.find((item) => item.id === selection.model);
-  const recognition = session.recognition;
-  const serverBusy = Boolean(recognition?.busy);
-  const waitingForNemo = selection.model === 'parakeet-nemo' && recognition
-    && (recognition.state !== 'ready' || serverBusy);
+  const serverBusy = Boolean(session.recognition?.busy);
+  const recognitionBackend = model?.managed ? selection.model : 'parakeet-nemo';
+  const recognition = session.recognition && session.recognition.backend !== recognitionBackend
+    ? { ...session.recognition, state: serverBusy ? session.recognition.state : 'unconfigured',
+        detail: serverBusy ? session.recognition.detail : 'Start the selected recognition model.' }
+    : session.recognition;
+  const waitingForNemo = model?.managed && (!recognition || recognition.state !== 'ready' || serverBusy);
   const passage = catalog?.passages.find((item) => item.id === selection.passage);
   const assignedScenes = new Set(passage?.checkpoints.map((checkpoint) => checkpoint.mapmap_cue));
   const previewScenes = (catalog?.mapmap_cues ?? []).filter(({ id }) => !catalog?.mapmap_story || assignedScenes.has(id));
@@ -514,7 +517,7 @@ function App() {
 
   function checkSetup() {
     setChecks(null);
-    act('/api/preflight', {}, setChecks);
+    act('/api/preflight', { model: recognitionBackend }, setChecks);
   }
 
   function manualCue(action, body = {}) {
@@ -616,7 +619,7 @@ function App() {
                       </label>
                     ))}
                   </div>
-                  <small>{selection.model === 'parakeet-nemo'
+                  <small>{model?.managed
                     ? 'Medium includes the current cue and up to two ahead. An unfinished cue stays included while its ending is checked.'
                     : 'Changes how much upcoming passage context is included.'}</small>
                 </fieldset>
@@ -631,8 +634,8 @@ function App() {
               onOpenMapMap={() => act('/api/mapmap/open', {}, (status) => {
                 setSession((current) => ({ ...current, mapmap: status }));
               })}
-              recognition={recognition} reading={active} serverDisabled={!connected || busy || serverBusy}
-              onServer={(action) => act(`/api/recognition/${action}`, {}, (status) => {
+              recognition={recognition} recognitionLabel={catalog?.models.find((item) => item.id === recognitionBackend)?.label} reading={active} serverDisabled={!connected || busy || serverBusy}
+              onServer={(action) => act(`/api/recognition/${action}`, { model: recognitionBackend }, (status) => {
                 setSession((current) => ({ ...current, recognition: status }));
               })}
               silverSeedTest={!catalog?.mapmap_story && (catalog?.silver_seed_test ?? catalog?.projection)}

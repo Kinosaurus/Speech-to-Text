@@ -16,6 +16,7 @@ from books_to_life.runtime.audio_runtime import microphone_label
 from books_to_life.data.recording_library import resolve_recording_path, session_outputs
 from books_to_life.context.book_context import BookContext
 from books_to_life.runtime.sound_player import SoundPlayer
+from books_to_life.runtime.nemo_defaults import NEMO_MODELS
 
 
 def read_optional_text(parser, inline_value, file_value, label):
@@ -174,16 +175,16 @@ if __name__ == '__main__':
         args.checkpoints = str(resolve_recording_path(args.checkpoints))
     Path(args.transcript_file).parent.mkdir(parents=True, exist_ok=True)
 
-    native_model = args.model in ('parakeet', 'moonshine', 'parakeet-nemo')
+    native_model = args.model in ('parakeet', 'moonshine', *NEMO_MODELS)
     if native_model:
-        if args.model != 'parakeet-nemo' and (args.initial_prompt or args.initial_prompt_file or args.hotwords or args.hotwords_file):
+        if args.model not in NEMO_MODELS and (args.initial_prompt or args.initial_prompt_file or args.hotwords or args.hotwords_file):
             parser.error('Parakeet/Moonshine native runtime does not support prompts or hotwords.')
         if args.translate or args.enable_translation or args.lang != 'en':
             parser.error('Parakeet/Moonshine native runtime supports English transcription only.')
-        if args.model == 'parakeet-nemo':
+        if args.model in NEMO_MODELS:
             if args.initial_prompt or args.initial_prompt_file:
-                parser.error('Parakeet NeMo accepts --hotwords phrases, not a Whisper passage prompt.')
-            print('[ASR] Parakeet NeMo: phrase boosting supported; Whisper VAD/segment settings do not apply.')
+                parser.error('NeMo models accept --hotwords phrases, not a Whisper passage prompt.')
+            print(f'[ASR] {args.model}: phrase boosting supported; Whisper VAD/segment settings do not apply.')
         else:
             args.no_book_context = True
             print('[ASR] Native streaming: book hints disabled; Whisper VAD/segment settings do not apply.')
@@ -256,7 +257,7 @@ if __name__ == '__main__':
             book_context = BookContext(
                 checkpoint_matcher, lookahead=args.book_context_lookahead,
                 prompt_words=args.book_context_words, initial_prompt=initial_prompt, hotwords=hotwords,
-                phrase_only=args.model == 'parakeet-nemo',
+                phrase_only=args.model in NEMO_MODELS,
             )
             initial_prompt, hotwords = book_context.hints.initial_prompt, book_context.hints.hotwords
             print(f"[BOOK_CONTEXT] Automatic hints enabled; lookahead={args.book_context_lookahead}.")
@@ -269,7 +270,7 @@ if __name__ == '__main__':
 
         def handle_transcription(text, segments):
             if args.live_transcript:
-                if args.model == 'parakeet-nemo' and segments and len(segments) == 1:
+                if args.model in NEMO_MODELS and segments and len(segments) == 1:
                     live_text = segments[0]['text']
                 elif native_model:
                     # Native backends revise the full transcript on every update.

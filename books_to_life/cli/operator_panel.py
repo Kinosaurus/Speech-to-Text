@@ -24,7 +24,7 @@ from books_to_life.runtime.mapmap_output import detect_output_size
 from books_to_life.runtime.mapmap_story import StoryProject
 from books_to_life.runtime.mapmap_application import MapMapApplication
 from books_to_life.runtime.recognition_server import RecognitionServer
-from books_to_life.runtime.nemo_defaults import microphone_arguments
+from books_to_life.runtime.nemo_defaults import microphone_arguments, NEMO_MODELS
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -33,6 +33,7 @@ STORIES = ROOT / 'recordings/library/stories'
 SCENES = ROOT / 'scenes'
 MODELS = {
     'parakeet-nemo': ('Parakeet NeMo', 9097, True),
+    'nemotron': ('Nemotron · 160 ms', 9097, True),
     'base.en': ('Whisper Base (English)', 9090, True),
     'tiny.en': ('Whisper Tiny (English)', 9090, True),
     'medium.en': ('Whisper Medium (English)', 9090, True),
@@ -77,7 +78,7 @@ def cue_preview_url(passage, checkpoint):
     return '/cue-preview/' + quote(passage, safe='') + '/' + quote(str(checkpoint), safe='') + '.mp4'
 
 
-def check_nemo(port):
+def check_nemo(port, backend='parakeet-nemo'):
     endpoint = f'127.0.0.1:{port}'
     uid = str(uuid4())
     connection = None
@@ -85,13 +86,15 @@ def check_nemo(port):
         connection = websocket.create_connection(
             f'ws://{endpoint}', timeout=3, http_no_proxy=['127.0.0.1'],
         )
-        connection.send(json.dumps({'uid': uid, 'model': 'parakeet-nemo', 'language': 'en'}))
+        connection.send(json.dumps({'uid': uid, 'model': backend, 'language': 'en'}))
         reply = json.loads(connection.recv())
         if (isinstance(reply, dict) and reply.get('uid') == uid
-                and reply.get('message') == 'SERVER_READY' and reply.get('backend') == 'parakeet-nemo'):
+                and reply.get('message') == 'SERVER_READY' and reply.get('backend') == backend):
             detail=f'SERVER_READY from {endpoint}.'
             if isinstance(reply.get('chunk_ms'),int) and isinstance(reply.get('right_ms'),int):
                 detail+=f' Updates every {reply["chunk_ms"]} ms; future context {reply["right_ms"]} ms.'
+            elif isinstance(reply.get('chunk_ms'), int):
+                detail += f' Nemotron streams in {reply["chunk_ms"]} ms chunks.'
             return {'state': 'ready', 'detail': detail}
         if isinstance(reply, dict) and reply.get('uid') == uid and reply.get('status') == 'ERROR':
             return {'state': 'error', 'detail': f'{endpoint} reported: {str(reply.get("message"))[:200]}'}
@@ -213,18 +216,24 @@ class Sessions:
     def probe_recognition(self):
         with self.lock:
             if (self.process is not None and self.process.poll() is None
-                    and self.state['settings']['model'] == 'parakeet-nemo'):
+                    and self.state['settings']['model'] == self.recognition.backend):
                 return {'state': 'ready', 'detail': 'NeMo is serving the active reading session.'}
-            return check_nemo(self.ports.get('parakeet-nemo', 9097))
+            return check_nemo(self.ports.get('parakeet-nemo', 9097), self.recognition.backend)
 
-    def recognition_action(self, action):
+    def recognition_action(self, action, backend=None):
+        if backend is not None and backend not in NEMO_MODELS:
+            raise ValueError('Choose Parakeet NeMo or Nemotron.')
+        if action == 'start' and self.process is not None:
+            raise ValueError('End the current experience before starting or switching recognition servers.')
         def finish_reading():
             self.end()
             process = self.process
             if process is not None:
                 process.wait(timeout=75)
 
-        return self.recognition.request(action, finish_reading if action == 'restart' else None)
+        if backend is None:
+            return self.recognition.request(action, finish_reading if action == 'restart' else None)
+        return self.recognition.request(action, finish_reading if action == 'restart' else None, backend=backend)
 
     def open_mapmap(self):
         with self.lock:
@@ -364,7 +373,7 @@ class Sessions:
         return {
             'passages': passages,
             'models': [
-                {'id': key, 'label': name, 'port': self.ports.get(key, port), 'hints': hints}
+                {'id': key, 'label': name, 'port': self.ports.get(key, port), 'hints': hints, 'managed': key in NEMO_MODELS}
                 for key, (name, port, hints) in MODELS.items()
             ],
             'projection': self.cue is not None,
@@ -378,12 +387,14 @@ class Sessions:
             'microphones': microphones,
         }
 
-    def preflight(self):
+    def preflight(self, backend='parakeet-nemo'):
+        if backend not in NEMO_MODELS:
+            raise ValueError('Choose Parakeet NeMo or Nemotron.')
         # NeMo accepts one session at a time. Keep Start from racing the probe.
         with self.lock:
             if self.process is not None:
                 raise ValueError('End the active experience before checking NeMo.')
-            nemo = check_nemo(self.ports.get('parakeet-nemo', MODELS['parakeet-nemo'][1]))
+            nemo = check_nemo(self.ports.get(backend, MODELS[backend][1]), backend)
         if self.cue:
             mapmap = check_mapmap_listener(self.cue.port)
         else:
@@ -528,8 +539,10 @@ class Sessions:
                 raise ValueError('End the current session before starting another.')
             if self.mapmap_application and self.mapmap_application.snapshot(refresh=False)['state'] == 'starting':
                 raise ValueError('Wait for MapMap to finish opening before starting the experience.')
-            if model == 'parakeet-nemo' and self.recognition.snapshot(refresh=False)['busy']:
+            if model in NEMO_MODELS and self.recognition.snapshot(refresh=False)['busy']:
                 raise ValueError('Wait for the recognition server to finish starting or checking readiness.')
+            if model in NEMO_MODELS and self.recognition.backend != model:
+                raise ValueError('Start the selected recognition model under Preflight first.')
             ready = True
             if self.story_project:
                 _, ready = self.prepare_story(passage, check_mapmap_listener(self.cue.port))
@@ -697,11 +710,11 @@ class PanelHandler(SimpleHTTPRequestHandler):
             elif self.path == '/api/session/end':
                 self.sessions.end()
             elif self.path in ('/api/recognition/start', '/api/recognition/restart'):
-                result = self.sessions.recognition_action(self.path.rsplit('/', 1)[1])
+                result = self.sessions.recognition_action(self.path.rsplit('/', 1)[1], body.get('model'))
             elif self.path == '/api/mapmap/open':
                 result = self.sessions.open_mapmap()
             elif self.path == '/api/preflight':
-                result = self.sessions.preflight()
+                result = self.sessions.preflight(body.get('model', 'parakeet-nemo'))
             elif self.path == '/api/mapmap/assignment':
                 self.sessions.assign_cue(body)
                 result = self.sessions.catalog()
@@ -759,6 +772,7 @@ def main():
     parser.add_argument('--nemo-python',
                         help='Installed Python executable inside the NeMo WSL environment.')
     parser.add_argument('--nemo-model', type=Path, help='Windows path to the cached NeMo model.')
+    parser.add_argument('--nemotron-model', type=Path, help='Windows path to the cached Nemotron checkpoint.')
     parser.add_argument('--native-port', type=int, default=9091)
     parser.add_argument('--mapmap-bridge', type=Path, help='Path to the handoff play_cue.py.')
     parser.add_argument('--mapmap-project', type=Path, help='Saved MapMap project. Defaults to the bridge’s spoken-cue project.')
@@ -794,7 +808,7 @@ def main():
                             assignment_defaults=args.mapmap_default_assignments,
                             mapmap_launcher=args.mapmap_launcher,
                             recognition_options={'distro': args.nemo_distro, 'python': args.nemo_python,
-                                                 'model': args.nemo_model})
+                                                 'model': args.nemo_model, 'nemotron_model': args.nemotron_model})
     except (OSError, ValueError, AttributeError, KeyError, TypeError) as error:
         parser.error(f'Could not load operator panel configuration. {error}')
     with ThreadingHTTPServer(('127.0.0.1', args.port), partial(PanelHandler, sessions=sessions)) as server:

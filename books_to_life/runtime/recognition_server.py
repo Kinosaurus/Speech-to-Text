@@ -5,6 +5,7 @@ import subprocess
 import sys
 from threading import Lock, Thread
 from time import monotonic, sleep
+from books_to_life.runtime.nemo_defaults import NEMO_MODELS
 
 
 def wsl_path(path):
@@ -16,20 +17,26 @@ def wsl_path(path):
 
 class RecognitionServer:
     def __init__(self, root, port, probe, *, distro='Ubuntu',
-                 python=None, model=None):
+                 python=None, model=None, nemotron_model=None):
         if not 1 <= port <= 65535:
             raise ValueError('The NeMo port must be between 1 and 65535.')
         self.root, self.port, self.probe = root, port, probe
         self.distro, self.python = distro, python
-        model_path = Path('model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo')
-        candidates = [root / model_path, *(parent / model_path for parent in root.parents)]
-        self.model = model or next((path for path in candidates if path.is_file()), candidates[0])
+        self.models = {}
+        for backend, relative, override in [
+            ('parakeet-nemo', 'model-cache/parakeet-nemo/parakeet-unified-en-0.6b.nemo', model),
+            ('nemotron', 'model-cache/nemotron-nemo/nemotron-speech-streaming-en-0.6b.nemo', nemotron_model),
+        ]:
+            candidates = [root / relative, *(parent / relative for parent in root.parents)]
+            self.models[backend] = override or next((path for path in candidates if path.is_file()), candidates[0])
+        self.backend = 'parakeet-nemo'
+        self.model = self.models[self.backend]
         self.log = root / 'output/operator-server/nemo.log'
         self.lock = Lock()
         self.worker = None
         self.next_check = 0
         self.state = {'state': 'unknown', 'detail': 'Checking the recognition server.', 'busy': False,
-                      'log': str(self.log), 'managed': sys.platform == 'win32'}
+                      'log': str(self.log), 'managed': sys.platform == 'win32', 'backend': self.backend}
 
     def snapshot(self, *, refresh=True):
         with self.lock:
@@ -37,7 +44,7 @@ class RecognitionServer:
                 self._start_worker('check')
             return self.state.copy()
 
-    def request(self, action, before_restart=None):
+    def request(self, action, before_restart=None, *, backend=None):
         if action not in ('start', 'restart'):
             raise ValueError('Choose Start or Restart recognition server.')
         with self.lock:
@@ -45,6 +52,12 @@ class RecognitionServer:
                 raise ValueError('The recognition server is already being checked or started.')
             if not self.state['managed']:
                 raise ValueError('Panel server controls require the Windows WSL setup.')
+            if backend is not None:
+                if backend not in NEMO_MODELS:
+                    raise ValueError('Choose Parakeet NeMo or Nemotron.')
+                self.backend = backend
+                self.model = self.models[backend]
+                self.state['backend'] = backend
             self._start_worker(action, before_restart)
             return self.state.copy()
 
@@ -70,7 +83,7 @@ class RecognitionServer:
                 command = ['wsl.exe', '-d', self.distro, '--cd', wsl_path(self.root), '--exec',
                            *python, '-m', 'books_to_life.cli.manage_nemo_server', action,
                            '--port', str(self.port), '--model-path', wsl_path(self.model),
-                           '--log-file', wsl_path(self.log)]
+                           '--log-file', wsl_path(self.log), '--backend', self.backend]
                 completed = subprocess.run(command, capture_output=True, text=True, encoding='utf-8',
                                            errors='replace', timeout=45,
                                            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))

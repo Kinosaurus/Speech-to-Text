@@ -40,7 +40,9 @@ Setup builds the panel and the MapMap runtime locally. It fetches MapMap at
 `cc29e940385aa85c14a28832b20315dc2378b89d`, applies the [renderer patch](../pod/mapmap/reading-pod.patch),
 and deploys the matching Qt libraries into `output/reading-pod`. When recognition
 is enabled, it installs NeMo into the Ubuntu user's `~/.venvs/books-to-life-nemo`
-and downloads Parakeet into the checkout's `model-cache`.
+and downloads Parakeet into the checkout's `model-cache`. To add Nemotron 160 ms,
+follow the [other-PC checklist](OTHER_PC_ASR_TEST.md) to download its checkpoint
+once and select it in the panel. Both models use the same WSL environment.
 
 ## Start and check the pod
 
