@@ -142,8 +142,9 @@ catch-up. It does not make the recognition or reading position infallible.
 The policy applies to the **whole checkpoint payload**. A payload containing a
 one-shot sound/animation should not be labelled ambience merely to allow its
 lighting/background component to catch up. Keep mixed payloads conservative
-until component-level actuator policies are implemented. Real projector/sound
-actuation remains outside the current terminal-trigger integration.
+until component-level actuator policies are implemented. WAV sounds are now
+played once on emitted triggers; persistent audio loops and projector control
+remain unimplemented. See [sound playback](SOUND_PLAYBACK.md).
 
 ## Provisional endpoints can remain pending
 

@@ -1,0 +1,4 @@
+# Existing WSL CUDA NeMo environment plus the shared scoring normalizer.
+# Install inside WSL, not the Windows .venv.
+-r requirements-nemo.txt
+whisper-normalizer==0.1.15
