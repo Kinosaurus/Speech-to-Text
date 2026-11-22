@@ -2,6 +2,11 @@
 
 Latest: [six-setup ASR-only comparison and tracker-to-sound retest, 22 November](NEMOTRON_RESULTS_20261122.md). The current panel includes Nemotron 160 ms.
 
+New: [Nemotron 160 ms interruption checks](NEMOTRON_INTERRUPTION_RESULTS_20261122.md).
+Fifty fresh server/tracker streams compare Low checkpoint hints with hints off.
+Silent synthetic pauses pass; spoken interruptions expose premature hinted
+effects, and an inserted pause loses Tea's stove cue in both configurations.
+
 For the six-child, four-setup table and checkpoint-hint follow-up, see
 [Four-model child-reading pilot](FOUR_MODEL_READINGS.md).
 

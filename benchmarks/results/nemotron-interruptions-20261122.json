@@ -1,0 +1,1875 @@
+{
+  "protocol": {
+    "packet_samples": 1280,
+    "backend": "nemotron",
+    "chunk_ms": 160,
+    "attention_context": [
+      70,
+      1
+    ],
+    "matcher": "TimelyEvidenceMatcher (panel split mode)",
+    "hints": "Low: next checkpoint only",
+    "threshold": 82,
+    "stability": 2,
+    "min_coverage": 0.8,
+    "real_time": false,
+    "input_output": "saved WAVs; no microphone, speaker, or projector",
+    "synthetic_voice": "Microsoft Zira Desktop",
+    "source_sha256": {
+      "benchmarks/run_nemotron_interruptions.py": "6c9b9c1c44e7ddd9d6389a2787a143eb2ce494149d22e1129fb0c88f36cd6caa",
+      "books_to_life/runtime/nemotron.py": "3bc6bb6622c7f5cebcf1fb211994bd2ddf688e2e197a1da5e7ab01c0f12689bc",
+      "books_to_life/cli/run_nemo_server.py": "46f44d653a0f00dfbfa6cdbdffa4292896f2789a0c95b4a06e315c41f208d616",
+      "books_to_life/context/book_context.py": "3f57b9cdd11c1b3311b03b6bc57a503c0af114575d18e57f40ac749f763839a9",
+      "books_to_life/matching/__init__.py": "99ee5408a71ec7c2f705bb1d884440f10d507b300fff2252849eaa2741c76457",
+      "books_to_life/matching/alignment_matcher.py": "b90d49c906d49f2d249b79a5754216f424709a78895b3713d8243602c170fa3b",
+      "books_to_life/matching/boundary_matcher.py": "c3c007ccf1672fca2dacd28b2efc065172ef396ee79f2c4dd0a7a7c2b07f9a45",
+      "books_to_life/matching/checkpoint_matcher.py": "6be3ca4bd6d3a10d4704ae8e3434307e1afb4874f62de3bd07f43e424b6339cb",
+      "books_to_life/matching/effect_permission.py": "7ca2bf1851c4c061b855362c862da5f8ace533670ad14682b021880e6b25bd2a",
+      "books_to_life/matching/evidence_matcher.py": "c3fa74a32a50b7d2d13b574ad30d607b0a1088524fffd247061955289236f364",
+      "books_to_life/matching/phone_features.py": "258a63bd7f7a5589e7b8f6f8a2c6a4359341b7fb13d016612a8ca77a4e3cab8a",
+      "books_to_life/matching/phonetic_endpoint.py": "28393d0c604c3e2164de134e48f1781535d282750ea7b381123acecea395beb9",
+      "books_to_life/matching/split_matcher.py": "bc07366927e476ea092265549bc679bb2fc1839e94a7f9ab1882801a8d62b3a7",
+      "books_to_life/matching/timely_matcher.py": "911a8e66bd220b557fec2752f1a8907e00613ffa10ebb15f11595b3f805036ee",
+      "books_to_life/matching/transcript_display.py": "7582cbc42b3cdbc532563007134e2e11d5bda8e80ab964b78c8f203cf0b3e312",
+      "books_to_life/matching/word_boundaries.py": "89c6efe892ac08a6fe5a71e4e108250addb7f645e24b1e66f2df71c93280208a"
+    },
+    "model_sha256": "283638054c44f6794e74fe9af9048d78a6d9d6c058c12131856c7859a62ac9cd",
+    "manifest_sha256": {
+      "horse-manifest.json": "514f1447fdcb16a82222be2e963e2f815778aebd7029af9301ca584b67b085d0",
+      "little_mermaid-manifest.json": "a93d589818361eb9d38ec2ce2f999dc3fd96c214081076d178e0087b0f547872",
+      "manifest.json": "bb841e9bc1a8832f9fc87d4a4805b0f488478b111e19d37d5212fc5758f81529",
+      "tea-manifest.json": "962792ab8fa9266f9805316cafcbe13b8b4e3040abd66cc2b412d865d9777ebc"
+    }
+  },
+  "modes": {
+    "hints-low": {
+      "trials": 25,
+      "complete_streams": 25,
+      "callback_replay_agreement": 25,
+      "synthetic_pass": 9,
+      "synthetic_total": 19,
+      "positive_pass": 6,
+      "positive_total": 13,
+      "negative_pass": 3,
+      "negative_total": 6,
+      "expected_synthetic_cues": 51,
+      "matched_synthetic_cues": 51,
+      "unexpected_cues": 3,
+      "duplicate_cues": 0,
+      "premature_target_cues": 7,
+      "original_pause_pairs": [
+        {
+          "story": "horse",
+          "original_hits": [
+            "horse_at_farm"
+          ],
+          "paused_hits": [
+            "horse_at_farm"
+          ],
+          "added": [],
+          "lost": []
+        },
+        {
+          "story": "tea",
+          "original_hits": [
+            "make_a_pot_of_tea",
+            "teapot_on_stove",
+            "little_house_ready"
+          ],
+          "paused_hits": [
+            "make_a_pot_of_tea",
+            "little_house_ready"
+          ],
+          "added": [],
+          "lost": [
+            "teapot_on_stove"
+          ]
+        },
+        {
+          "story": "little_mermaid",
+          "original_hits": [
+            "mermaid_has_legs"
+          ],
+          "paused_hits": [
+            "mermaid_has_legs"
+          ],
+          "added": [],
+          "lost": []
+        }
+      ],
+      "cases": [
+        {
+          "id": "opening_clean",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 2.705,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.875,
+          "samples_delivered": 446000,
+          "packet_acks": 349,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 10.317186238000431,
+          "passed": true
+        },
+        {
+          "id": "opening_pause_2s",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 4.455,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 29.625,
+          "samples_delivered": 474000,
+          "packet_acks": 371,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 11.06333978800103,
+          "passed": true
+        },
+        {
+          "id": "opening_pause_15s",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 17.455,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 42.625,
+          "samples_delivered": 682000,
+          "packet_acks": 533,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 14.531095639998966,
+          "passed": true
+        },
+        {
+          "id": "opening_pause_90s",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 92.455,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 117.625,
+          "samples_delivered": 1882000,
+          "packet_acks": 1471,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 40.12329409499944,
+          "passed": true
+        },
+        {
+          "id": "opening_parent_question",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [
+            {
+              "id": "seed_found",
+              "audio_end": 5.76
+            }
+          ],
+          "target_resume_start": 8.21,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 33.38,
+          "samples_delivered": 534080,
+          "packet_acks": 418,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 11.90244187299868,
+          "passed": false
+        },
+        {
+          "id": "opening_off_book_aside",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [
+            {
+              "id": "seed_found",
+              "audio_end": 7.2
+            }
+          ],
+          "target_resume_start": 9.565,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 34.735,
+          "samples_delivered": 555760,
+          "packet_acks": 435,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 11.259600162000424,
+          "passed": false
+        },
+        {
+          "id": "opening_long_conversation",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [
+            {
+              "id": "seed_found",
+              "audio_end": 4.96
+            }
+          ],
+          "target_resume_start": 15.68,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 40.85,
+          "samples_delivered": 653600,
+          "packet_acks": 511,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 13.019179262999387,
+          "passed": false
+        },
+        {
+          "id": "acquired_clean",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 11.835,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.97,
+          "samples_delivered": 447520,
+          "packet_acks": 350,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 8.9000090669997,
+          "passed": true
+        },
+        {
+          "id": "acquired_pause_15s",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 26.585,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 42.72,
+          "samples_delivered": 683520,
+          "packet_acks": 534,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 13.22274810899944,
+          "passed": true
+        },
+        {
+          "id": "acquired_parent_question",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [
+            {
+              "id": "grass_grows",
+              "audio_end": 13.44
+            }
+          ],
+          "target_resume_start": 17.34,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 33.475,
+          "samples_delivered": 535600,
+          "packet_acks": 419,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 11.724833530999604,
+          "passed": false
+        },
+        {
+          "id": "acquired_off_book_aside",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [
+            {
+              "id": "grass_grows",
+              "audio_end": 13.6
+            }
+          ],
+          "target_resume_start": 18.695,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 34.83,
+          "samples_delivered": 557280,
+          "packet_acks": 436,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 11.271455687001435,
+          "passed": false
+        },
+        {
+          "id": "acquired_long_conversation",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [
+            {
+              "id": "grass_grows",
+              "audio_end": 13.28
+            }
+          ],
+          "target_resume_start": 24.81,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 40.945,
+          "samples_delivered": 655120,
+          "packet_acks": 512,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 14.094871073999457,
+          "passed": false
+        },
+        {
+          "id": "restart_and_reread",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [
+            {
+              "id": "grass_grows",
+              "audio_end": 13.76
+            }
+          ],
+          "target_resume_start": 18.2,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 42.675,
+          "samples_delivered": 682800,
+          "packet_acks": 534,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 14.490666196999882,
+          "passed": false
+        },
+        {
+          "id": "endpoint_only",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [
+            "grass_grows"
+          ],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.67,
+          "samples_delivered": 442720,
+          "packet_acks": 346,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 9.051284818000568,
+          "passed": false
+        },
+        {
+          "id": "missing_endpoint",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [
+            "grass_grows"
+          ],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 26.94,
+          "samples_delivered": 431040,
+          "packet_acks": 337,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 9.218986201000007,
+          "passed": false
+        },
+        {
+          "id": "wrong_endpoint",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [
+            "grass_grows"
+          ],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.195,
+          "samples_delivered": 435120,
+          "packet_acks": 340,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 10.349309090001043,
+          "passed": false
+        },
+        {
+          "id": "negated_prompt",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [
+            "grass_grows"
+          ],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.815,
+          "samples_delivered": 445040,
+          "packet_acks": 348,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 9.342149780999534,
+          "passed": true
+        },
+        {
+          "id": "quoted_prompt",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [
+            "grass_grows"
+          ],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.77,
+          "samples_delivered": 444320,
+          "packet_acks": 348,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 9.805695416000162,
+          "passed": true
+        },
+        {
+          "id": "skipped_checkpoint",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [
+            "grass_grows"
+          ],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 23.39,
+          "samples_delivered": 374240,
+          "packet_acks": 293,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 8.163540204001038,
+          "passed": true
+        },
+        {
+          "id": "horse-original",
+          "kind": "original",
+          "expected": [
+            "horse_at_farm"
+          ],
+          "hits": [
+            "horse_at_farm"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 16,
+          "duration_seconds": 41.61525,
+          "samples_delivered": 665844,
+          "packet_acks": 521,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 13.26320089500041,
+          "passed": true
+        },
+        {
+          "id": "horse-midpoint-pause",
+          "kind": "original_pause",
+          "expected": [
+            "horse_at_farm"
+          ],
+          "hits": [
+            "horse_at_farm"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 16,
+          "duration_seconds": 56.61525,
+          "samples_delivered": 905844,
+          "packet_acks": 708,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 17.78747206799926,
+          "passed": true
+        },
+        {
+          "id": "tea-original",
+          "kind": "original",
+          "expected": [
+            "make_a_pot_of_tea",
+            "teapot_on_stove",
+            "little_house_ready"
+          ],
+          "hits": [
+            "make_a_pot_of_tea",
+            "teapot_on_stove",
+            "little_house_ready"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 38,
+          "duration_seconds": 93.8481875,
+          "samples_delivered": 1501571,
+          "packet_acks": 1174,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 29.343019989000823,
+          "passed": true
+        },
+        {
+          "id": "tea-midpoint-pause",
+          "kind": "original_pause",
+          "expected": [
+            "make_a_pot_of_tea",
+            "teapot_on_stove",
+            "little_house_ready"
+          ],
+          "hits": [
+            "make_a_pot_of_tea",
+            "little_house_ready"
+          ],
+          "missed": [
+            "teapot_on_stove"
+          ],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [
+            "teapot_on_stove"
+          ],
+          "final_position": 38,
+          "duration_seconds": 108.8481875,
+          "samples_delivered": 1741571,
+          "packet_acks": 1361,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 35.935633856001004,
+          "passed": false
+        },
+        {
+          "id": "little_mermaid-original",
+          "kind": "original",
+          "expected": [
+            "mermaid_has_legs",
+            "mermaid_cannot_speak"
+          ],
+          "hits": [
+            "mermaid_has_legs"
+          ],
+          "missed": [
+            "mermaid_cannot_speak"
+          ],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [
+            "mermaid_cannot_speak"
+          ],
+          "skipped": [],
+          "final_position": 45,
+          "duration_seconds": 34.114625,
+          "samples_delivered": 545834,
+          "packet_acks": 427,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 11.86815039099929,
+          "passed": false
+        },
+        {
+          "id": "little_mermaid-midpoint-pause",
+          "kind": "original_pause",
+          "expected": [
+            "mermaid_has_legs",
+            "mermaid_cannot_speak"
+          ],
+          "hits": [
+            "mermaid_has_legs"
+          ],
+          "missed": [
+            "mermaid_cannot_speak"
+          ],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 40,
+          "duration_seconds": 49.114625,
+          "samples_delivered": 785834,
+          "packet_acks": 614,
+          "stream_done": true,
+          "hints_enabled": true,
+          "wall_seconds": 16.50109278399941,
+          "passed": false
+        }
+      ]
+    },
+    "hints-off": {
+      "trials": 25,
+      "complete_streams": 25,
+      "callback_replay_agreement": 25,
+      "synthetic_pass": 18,
+      "synthetic_total": 19,
+      "positive_pass": 12,
+      "positive_total": 13,
+      "negative_pass": 6,
+      "negative_total": 6,
+      "expected_synthetic_cues": 51,
+      "matched_synthetic_cues": 50,
+      "unexpected_cues": 0,
+      "duplicate_cues": 0,
+      "premature_target_cues": 0,
+      "original_pause_pairs": [
+        {
+          "story": "horse",
+          "original_hits": [
+            "horse_at_farm"
+          ],
+          "paused_hits": [
+            "horse_at_farm"
+          ],
+          "added": [],
+          "lost": []
+        },
+        {
+          "story": "tea",
+          "original_hits": [
+            "make_a_pot_of_tea",
+            "teapot_on_stove",
+            "little_house_ready"
+          ],
+          "paused_hits": [
+            "make_a_pot_of_tea",
+            "little_house_ready"
+          ],
+          "added": [],
+          "lost": [
+            "teapot_on_stove"
+          ]
+        },
+        {
+          "story": "little_mermaid",
+          "original_hits": [
+            "mermaid_has_legs"
+          ],
+          "paused_hits": [
+            "mermaid_has_legs"
+          ],
+          "added": [],
+          "lost": []
+        }
+      ],
+      "cases": [
+        {
+          "id": "opening_clean",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 2.705,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.875,
+          "samples_delivered": 446000,
+          "packet_acks": 349,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 10.01981313900069,
+          "passed": true
+        },
+        {
+          "id": "opening_pause_2s",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 4.455,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 29.625,
+          "samples_delivered": 474000,
+          "packet_acks": 371,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 9.557351694000317,
+          "passed": true
+        },
+        {
+          "id": "opening_pause_15s",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 17.455,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 42.625,
+          "samples_delivered": 682000,
+          "packet_acks": 533,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 14.057940102999055,
+          "passed": true
+        },
+        {
+          "id": "opening_pause_90s",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 92.455,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 117.625,
+          "samples_delivered": 1882000,
+          "packet_acks": 1471,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 39.48822980600016,
+          "passed": true
+        },
+        {
+          "id": "opening_parent_question",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 8.21,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 33.38,
+          "samples_delivered": 534080,
+          "packet_acks": 418,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 11.06056537800032,
+          "passed": true
+        },
+        {
+          "id": "opening_off_book_aside",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 9.565,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 34.735,
+          "samples_delivered": 555760,
+          "packet_acks": 435,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 11.726121036999757,
+          "passed": true
+        },
+        {
+          "id": "opening_long_conversation",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [
+            "seed_found"
+          ],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 15.68,
+          "suppressed": [
+            "seed_found"
+          ],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 40.85,
+          "samples_delivered": 653600,
+          "packet_acks": 511,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 13.414173465000204,
+          "passed": false
+        },
+        {
+          "id": "acquired_clean",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 11.835,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.97,
+          "samples_delivered": 447520,
+          "packet_acks": 350,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 8.987203022999893,
+          "passed": true
+        },
+        {
+          "id": "acquired_pause_15s",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 26.585,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 42.72,
+          "samples_delivered": 683520,
+          "packet_acks": 534,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 13.99266665200048,
+          "passed": true
+        },
+        {
+          "id": "acquired_parent_question",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 17.34,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 33.475,
+          "samples_delivered": 535600,
+          "packet_acks": 419,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 11.27467018599964,
+          "passed": true
+        },
+        {
+          "id": "acquired_off_book_aside",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 18.695,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 34.83,
+          "samples_delivered": 557280,
+          "packet_acks": 436,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 11.876110784000048,
+          "passed": true
+        },
+        {
+          "id": "acquired_long_conversation",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 24.81,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 40.945,
+          "samples_delivered": 655120,
+          "packet_acks": 512,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 13.744237894001344,
+          "passed": true
+        },
+        {
+          "id": "restart_and_reread",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "grass_grows",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": 18.2,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 42.675,
+          "samples_delivered": 682800,
+          "packet_acks": 534,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 14.207315839999865,
+          "passed": true
+        },
+        {
+          "id": "endpoint_only",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [
+            "grass_grows"
+          ],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.67,
+          "samples_delivered": 442720,
+          "packet_acks": 346,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 8.855842031000066,
+          "passed": true
+        },
+        {
+          "id": "missing_endpoint",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [
+            "grass_grows"
+          ],
+          "final_position": 73,
+          "duration_seconds": 26.94,
+          "samples_delivered": 431040,
+          "packet_acks": 337,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 9.167992673001208,
+          "passed": true
+        },
+        {
+          "id": "wrong_endpoint",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [
+            "grass_grows"
+          ],
+          "final_position": 73,
+          "duration_seconds": 27.195,
+          "samples_delivered": 435120,
+          "packet_acks": 340,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 9.170335508999415,
+          "passed": true
+        },
+        {
+          "id": "negated_prompt",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [
+            "grass_grows"
+          ],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.815,
+          "samples_delivered": 445040,
+          "packet_acks": 348,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 8.904661577998922,
+          "passed": true
+        },
+        {
+          "id": "quoted_prompt",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [
+            "grass_grows"
+          ],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 27.77,
+          "samples_delivered": 444320,
+          "packet_acks": 348,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 8.777051561000917,
+          "passed": true
+        },
+        {
+          "id": "skipped_checkpoint",
+          "kind": "synthetic",
+          "expected": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "hits": [
+            "seed_found",
+            "clouds_arrive"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [
+            "grass_grows"
+          ],
+          "skipped": [],
+          "final_position": 73,
+          "duration_seconds": 23.39,
+          "samples_delivered": 374240,
+          "packet_acks": 293,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 7.392288502000156,
+          "passed": true
+        },
+        {
+          "id": "horse-original",
+          "kind": "original",
+          "expected": [
+            "horse_at_farm"
+          ],
+          "hits": [
+            "horse_at_farm"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 16,
+          "duration_seconds": 41.61525,
+          "samples_delivered": 665844,
+          "packet_acks": 521,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 14.130901078999159,
+          "passed": true
+        },
+        {
+          "id": "horse-midpoint-pause",
+          "kind": "original_pause",
+          "expected": [
+            "horse_at_farm"
+          ],
+          "hits": [
+            "horse_at_farm"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 16,
+          "duration_seconds": 56.61525,
+          "samples_delivered": 905844,
+          "packet_acks": 708,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 18.967171020000023,
+          "passed": true
+        },
+        {
+          "id": "tea-original",
+          "kind": "original",
+          "expected": [
+            "make_a_pot_of_tea",
+            "teapot_on_stove",
+            "little_house_ready"
+          ],
+          "hits": [
+            "make_a_pot_of_tea",
+            "teapot_on_stove",
+            "little_house_ready"
+          ],
+          "missed": [],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 38,
+          "duration_seconds": 93.8481875,
+          "samples_delivered": 1501571,
+          "packet_acks": 1174,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 30.53403417499976,
+          "passed": true
+        },
+        {
+          "id": "tea-midpoint-pause",
+          "kind": "original_pause",
+          "expected": [
+            "make_a_pot_of_tea",
+            "teapot_on_stove",
+            "little_house_ready"
+          ],
+          "hits": [
+            "make_a_pot_of_tea",
+            "little_house_ready"
+          ],
+          "missed": [
+            "teapot_on_stove"
+          ],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [
+            "teapot_on_stove"
+          ],
+          "final_position": 38,
+          "duration_seconds": 108.8481875,
+          "samples_delivered": 1741571,
+          "packet_acks": 1361,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 36.58032359600111,
+          "passed": false
+        },
+        {
+          "id": "little_mermaid-original",
+          "kind": "original",
+          "expected": [
+            "mermaid_has_legs",
+            "mermaid_cannot_speak"
+          ],
+          "hits": [
+            "mermaid_has_legs"
+          ],
+          "missed": [
+            "mermaid_cannot_speak"
+          ],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [
+            "mermaid_cannot_speak"
+          ],
+          "skipped": [],
+          "final_position": 45,
+          "duration_seconds": 34.114625,
+          "samples_delivered": 545834,
+          "packet_acks": 427,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 11.03597537099995,
+          "passed": false
+        },
+        {
+          "id": "little_mermaid-midpoint-pause",
+          "kind": "original_pause",
+          "expected": [
+            "mermaid_has_legs",
+            "mermaid_cannot_speak"
+          ],
+          "hits": [
+            "mermaid_has_legs"
+          ],
+          "missed": [
+            "mermaid_cannot_speak"
+          ],
+          "unexpected": [],
+          "duplicates": {},
+          "premature": [],
+          "target_resume_start": null,
+          "suppressed": [],
+          "skipped": [],
+          "final_position": 40,
+          "duration_seconds": 49.114625,
+          "samples_delivered": 785834,
+          "packet_acks": 614,
+          "stream_done": true,
+          "hints_enabled": false,
+          "wall_seconds": 17.192096458999004,
+          "passed": false
+        }
+      ]
+    }
+  },
+  "scripted_text_diagnostics": [
+    {
+      "id": "opening_clean",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "opening_pause_2s",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "opening_pause_15s",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "opening_pause_90s",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "opening_parent_question",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "opening_off_book_aside",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "opening_long_conversation",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "acquired_clean",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "acquired_pause_15s",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "acquired_parent_question",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "acquired_off_book_aside",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "acquired_long_conversation",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "restart_and_reread",
+      "hits": [
+        "seed_found",
+        "grass_grows",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "endpoint_only",
+      "hits": [
+        "seed_found",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "missing_endpoint",
+      "hits": [
+        "seed_found",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "wrong_endpoint",
+      "hits": [
+        "seed_found",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "negated_prompt",
+      "hits": [
+        "seed_found",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "quoted_prompt",
+      "hits": [
+        "seed_found",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    },
+    {
+      "id": "skipped_checkpoint",
+      "hits": [
+        "seed_found",
+        "clouds_arrive"
+      ],
+      "missed": [],
+      "unexpected": [],
+      "premature": [],
+      "passed": true
+    }
+  ],
+  "git_head": "2b7fb54fe22d6065bbb52c7e4c97cdf9b2eabc44",
+  "unit_tests": {
+    "command": ".venv/Scripts/python.exe -m unittest discover -s tests -q",
+    "run": 295,
+    "passed": 294,
+    "skipped": 1
+  },
+  "scope": "Constructed synthetic adult stress tests and paired saved-recording pauses; accelerated audio-clock replay, not live child accuracy or physical latency."
+}
