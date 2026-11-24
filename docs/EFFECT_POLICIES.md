@@ -8,6 +8,11 @@ The original `alignment`, `evidence`, and `fuzzy` modes remain comparison
 baselines. They do not implement this new effect-permission layer. Use explicit
 `--matching_mode split` for the guarded pilot.
 
+The default forward search is 6% of the loaded book's word count, rounded to
+the nearest word and bounded between 12 and 60 words. Missed updates preserve
+this cap. A manifest can explicitly set `alignment.window_words` to use a
+different starting window with wider recovery after repeated misses.
+
 ## One-shot effects: conservative default
 
 An alignment reaching a later position no longer automatically grants a
@@ -55,32 +60,34 @@ Prompt-like wording just before the matched anchor is rejected unless that
 prefix belongs to the authored book context. This bounded text rule is not
 speaker identification or general understanding of negation or adult prompting.
 
-## Exact split words
+## Split and joined words
 
 After the ordinary guard fails, an already acquired next checkpoint may use a
-separate exact-text route. It must match the **entire contiguous anchor**, with
-each authored word represented by one or two whole adjacent ASR tokens. All
-characters and reference words must be present in order and consumed once.
-This applies to split words anywhere in the anchor, including its endpoint;
-there are no word-specific mappings or additional manifest fields.
+separate spacing route. It matches the **entire contiguous anchor**. One book
+word can match two adjacent ASR tokens, or two book words can match one ASR
+token. The grouped characters must match exactly. Other words use the ordinary
+fuzzy spelling thresholds, including the stricter threshold for required words.
 
-For example, snow man can supply snowman, and note book can supply notebook.
-Partial words, intervening words, substitutions, or omitted required words do
-not satisfy this route. It does not reinterpret several authored words as a
-single different recognized word. The last supporting ASR token must remain
-within the latest four tokens, and the existing prompt checks still apply.
-Raw recognition snapshots and the matcher's buffer are unchanged.
+For example, `note book` and `notebook` can match in either direction, even if
+another word in the cue needs fuzzy spelling. The last supporting ASR token
+must remain within the latest four tokens. Prompt checks still apply, including
+preserving explicit negation in the book. The transcript stays as received.
 
 The normal score, coverage, independent-confirmation and phonetic-endpoint
-rules are retained. A complete split anchor can also supply an exact position
+rules are retained. A complete spacing match can also supply a position
 candidate for the already acquired next checkpoint, inside the ordinary search
-bounds, provided its text is unique in the book. This prevents a final split
-word from requiring a following sentence to reach the checkpoint. Duplicate
-callbacks still cannot create confirmation; normal stability or utterance
-completion rules apply. This route is stricter about complete phrase content and
-addresses token boundaries; a split combined with another recognition error
-can still be withheld. Its fresh reruns are regression tests on inspected
-recordings, not a new held-out accuracy study.
+bounds, provided its text is unique in the book. Exact groups receive full
+credit in book-word units, and fuzzy words contribute their spelling scores.
+The normal confirmation rules still apply.
+
+## Phonetic matches for split words
+
+For the next checkpoint after confirmed reading progress, the tracker can join
+the CMU pronunciations of two adjacent transcript words and compare them with
+one nonessential book word. For example, `pay seance` can support `patience`.
+The pair earns 0.75 word credit. At least four other distinct cue words must
+match exactly, and any remaining words must pass the usual spelling checks.
+The full grouped cue must pass the configured score and confirmation rules.
 
 ## Contextual phonetic endpoints
 

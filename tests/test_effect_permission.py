@@ -48,7 +48,9 @@ class EffectPermissionTests(unittest.TestCase):
     def test_genuine_skip_emits_supported_later_effect_without_replaying_skipped_one(self):
         first = 'the small frog jumped into the pond'
         second = 'the little bird landed on the old fence'
-        matcher = TimelyEvidenceMatcher(manifest(first+' then '+second, [first, second]))
+        cfg = manifest(first+' then '+second, [first, second])
+        cfg['alignment'] = {'window_words': 30}
+        matcher = TimelyEvidenceMatcher(cfg)
         update = matcher.process(second)
         self.assertTrue(update.triggered)
         self.assertEqual(update.checkpoint_id, '2')
@@ -116,6 +118,7 @@ class EffectPermissionTests(unittest.TestCase):
                   'then we see that they are covered with very small')
         text = prefix + ' scales it is these scales which have colour'
         cfg = manifest(text, ['the brilliant colours of their wings', 'covered with very small scales'])
+        cfg['alignment'] = {'window_words': 30}
         matcher = TimelyEvidenceMatcher(cfg)
         self.assertTrue(matcher.process('we admire the brilliant colours of their wings').triggered)
         self.assertFalse(matcher.process(prefix).triggered)
@@ -206,6 +209,7 @@ class EffectPermissionTests(unittest.TestCase):
                 'the note said all that she gets is a bit of the wing')
         cfg = manifest(text, ['we walked along a quiet path', 'a bit of the wing'])
         cfg['stability'] = 2
+        cfg['alignment'] = {'window_words': 30}
         matcher = TimelyEvidenceMatcher(cfg)
         prefix = 'we walked along a quiet path and saw an old sign the note said all that she gets is'
         snapshots = ['we walked along a quiet', 'we walked along a quiet path',

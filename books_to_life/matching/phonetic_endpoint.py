@@ -79,3 +79,25 @@ def phonetic_word_credit(reference, heard):
                     and _distance(expected, actual, vowel_cost=.25) <= 2.25):
                 return .5
     return 0.0
+
+
+@lru_cache(maxsize=8192)
+def phonetic_split_match(reference, left, right):
+    """Compare one book word with the combined sounds of two ASR words."""
+    for expected in pronunciations(reference):
+        if len(expected) < 5:
+            continue
+        expected_consonants = tuple(phone for phone in expected if phone not in VOWELS)
+        for first in pronunciations(left):
+            for second in pronunciations(right):
+                actual = first + second
+                if (abs(len(expected) - len(actual)) > 1
+                        or expected[:2] != actual[:2] or expected[-2:] != actual[-2:]):
+                    continue
+                actual_consonants = tuple(phone for phone in actual if phone not in VOWELS)
+                if _distance(expected_consonants, actual_consonants) > 1:
+                    continue
+                distance = _distance(expected, actual, vowel_cost=.25)
+                if distance <= 2.25 and distance <= max(len(expected), len(actual)) / 3:
+                    return True
+    return False

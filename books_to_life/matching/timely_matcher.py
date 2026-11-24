@@ -9,10 +9,16 @@ from dataclasses import replace
 
 class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
     mode = 'experimental contextual alignment with timely anchor recovery'
+    expand_default_window = False
     _permission_grace_seconds = 2.0
     _permission_grace_updates = 4
     _prompt_words = {'not', 'never', 'dont', "don't", 'say', 'repeat'}
     _negation_words = {'not', 'never', 'dont', "don't"}
+
+    @staticmethod
+    def _default_window_words(book_word_count):
+        six_percent_rounded = (6 * book_word_count + 50) // 100
+        return max(12, min(60, six_percent_rounded))
 
     def __init__(self, *args, **kwargs):
         self._pending_effect = None
@@ -74,6 +80,8 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
         words = [] if self.explain_matches else None
         allowed, reason = permission.permits(self._buffer, allow_phonetic_endpoint=locally_acquired,
                                              allow_word_boundaries=locally_acquired,
+                                             allow_endpoint_fragment=(previous_position > 0
+                                                 and not update.skipped_checkpoint_ids and not update.recovering),
                                              allow_article_omissions=(previous_position > 0
                                                  and not update.skipped_checkpoint_ids
                                                  and self.checkpoint_ranges[previous_index][1] <= previous_position + self.window_words
@@ -152,8 +160,16 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
                  and tuple(buffer) != pending['text']
                  and (not self._segments or self._audio_time > pending['time'] or completed))
         words = [] if self.explain_matches else None
-        if not expired and not prompted and fresh and permission.permits(
-                buffer, allow_phonetic_endpoint=True, allow_word_boundaries=True, word_evidence=words)[0]:
+        allowed = False
+        if not expired and not prompted and fresh:
+            allowed, _ = permission.permits(
+                buffer, allow_phonetic_endpoint=True, allow_word_boundaries=True,
+                allow_endpoint_fragment=not changed_segment, word_evidence=words,
+            )
+            if not allowed and not changed_segment:
+                threshold = self._threshold(self.current_index - 1, False)
+                allowed = permission.phonetic_split_support(buffer, threshold, word_evidence=words) is not None
+        if allowed:
             self._pending_effect = None
             self.triggered_checkpoint_ids.add(saved.checkpoint_id)
             return replace(saved, triggered=True, effect_policy=permission.policy,
@@ -365,7 +381,7 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
             phonetic_words = [] if self.explain_matches else None
             support = self._article_omission_support(include_partial=True, word_evidence=article_words)
             phonetic = self._phonetic_phrase_support(
-                self.current_index, self.tracked_word_position, self._misses >= self.recovery_after,
+                self.current_index, self.tracked_word_position, self._recovering,
                 word_evidence=phonetic_words,
             )
             if phonetic:
@@ -398,20 +414,20 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
             candidates.append(AlignmentSpan(start, end, 100*(len(anchor)-.25)/len(anchor),
                                             len(anchor), len(anchor), partial_words=partial,
                                             word_evidence=tuple(enumerate(endpoint_words or (), start))))
-        # A complete exact anchor can reach its split endpoint without waiting
+        # A complete anchor with different spacing can reach its endpoint without waiting
         # for the next sentence. Only the acquired NEXT region is eligible,
         # and repeated anchors cannot manufacture a unique position.
         split_words = [] if self.explain_matches else None
         if (self.tracked_word_position > 0 and self.tracked_word_position >= start
                 and low <= start < end <= high
                 and sum(self.words[i:i+len(anchor)] == anchor
-                        for i in range(len(self.words)-len(anchor)+1)) == 1
-                and self._effect_permissions[str(self.checkpoints[self.current_index]['id'])]
-                .supports_split_anchor(self._buffer, word_evidence=split_words)):
-            # Scores/counts use authored-word units after exact segmentation;
-            # ASR tokens and normal independent-confirmation rules stay intact.
-            candidates.append(AlignmentSpan(start, end, 100.0, len(anchor), len(anchor),
-                                            word_evidence=tuple(enumerate(split_words or (), start))))
+                        for i in range(len(self.words)-len(anchor)+1)) == 1):
+            permission = self._effect_permissions[str(self.current_checkpoint['id'])]
+            score = permission.word_boundary_score(self._buffer, word_evidence=split_words)
+            if score is not None:
+                # Count book words after grouping and preserve the original ASR tokens.
+                candidates.append(AlignmentSpan(start, end, score, len(anchor), len(anchor),
+                                                word_evidence=tuple(enumerate(split_words or (), start))))
         if not self._live_prefix(self.current_index) or not self._ending_supported():
             return candidates
         # Only add a next-endpoint candidate. Preserve the original ASR buffer;

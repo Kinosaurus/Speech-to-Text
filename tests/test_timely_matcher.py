@@ -20,6 +20,26 @@ def feed(m,text,t):
 
 
 class TimelyTests(unittest.TestCase):
+    def test_default_lookahead_scales_with_book_length(self):
+        for word_count, expected in [(100, 12), (250, 15), (275, 17), (482, 29), (800, 48), (1500, 60)]:
+            with self.subTest(word_count=word_count):
+                manifest = config()
+                page = manifest['pages'][0]
+                page['text'] += ' pebble' * (word_count - len(page['text'].split()))
+                self.assertEqual(TimelyEvidenceMatcher(manifest).window_words, expected)
+
+    def test_default_lookahead_does_not_expand_after_misses(self):
+        manifest = config()
+        cue = manifest['checkpoints'][0]['checkpoint_text']
+        manifest['pages'][0]['text'] = 'pebble ' * 24 + cue
+        matcher = TimelyEvidenceMatcher(manifest)
+        self.assertEqual(matcher.window_words, 12)
+        for end in range(1, 10):
+            update = feed(matcher, cue, end)
+            self.assertFalse(update.triggered)
+            self.assertFalse(update.recovering)
+            self.assertEqual(update.tracked_word_position, 0)
+
     def test_one_shot_resumes_after_aside_with_an_exact_endpoint_and_book_context(self):
         context = 'we followed a narrow path through the garden'
         prefix = 'the small rabbit hurried across the wooden'

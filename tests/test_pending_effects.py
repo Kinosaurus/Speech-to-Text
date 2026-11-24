@@ -140,7 +140,9 @@ class PendingEffectTests(unittest.TestCase):
         self.assertTrue(update.effect_suppressed)
 
     def test_cold_unacquired_match_does_not_receive_pending_grace(self):
-        matcher=TimelyEvidenceMatcher(config())
+        cfg = config()
+        cfg['alignment'] = {'window_words': 30}
+        matcher = TimelyEvidenceMatcher(cfg)
         update=step(matcher,PREFIX+' puppy',3)
         self.assertFalse(update.triggered)
         self.assertIsNone(update.effect_pending_checkpoint_id)

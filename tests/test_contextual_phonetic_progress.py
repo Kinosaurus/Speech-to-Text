@@ -17,6 +17,44 @@ def callback(matcher, text, time, completed=False):
 
 
 class ContextualPhoneticProgressTests(unittest.TestCase):
+    def test_grouped_sound_match_and_fuzzy_spelling_can_confirm_the_next_cue(self):
+        anchor = 'the children quietly showed great patience'
+        heard = 'the children quietly show great pay seance'
+        tracker = TimelyEvidenceMatcher(manifest(anchor))
+        tracker.explain_matches = True
+        opening = 'we walked along a quiet path'
+
+        callback(tracker, opening, 1)
+        prefix = opening + ' then the children quietly showed great'
+        self.assertFalse(callback(tracker, prefix, 2).triggered)
+        transcript = opening + ' then ' + heard
+        update = callback(tracker, transcript, 3)
+        if not update.triggered:
+            update = callback(tracker, transcript, 4, completed=True)
+        self.assertTrue(update.triggered)
+        self.assertEqual(update.checkpoint_id, 'last')
+        self.assertAlmostEqual(update.score, 92.5)
+        self.assertEqual(tracker._buffer[-2:], ['pay', 'seance'])
+        last_word = update.cue_word_evidence[-1]
+        self.assertEqual((last_word.expected, last_word.heard, last_word.kind, last_word.credit),
+                         ('patience', 'pay seance', 'sound', .75))
+        self.assertFalse(callback(tracker, transcript, 5, completed=True).triggered)
+
+    def test_grouped_sound_match_keeps_exact_context_and_required_word_guards(self):
+        anchor = 'the children quietly showed great patience'
+        heard = 'the children quietly show great pay seance'.split()
+        optional = EffectPermission(dict(checkpoint_text=anchor), .8, [])
+        self.assertEqual(optional.phonetic_split_support(heard, 82), (92.5, 6, 6))
+        self.assertIsNone(optional.phonetic_split_support(heard, 93))
+        for word in ('patience', 'showed'):
+            required = EffectPermission(dict(checkpoint_text=anchor, required_words=[word]), .8, [])
+            self.assertIsNone(required.phonetic_split_support(heard, 82))
+        for text in ('the child quietly show great pay seance',
+                     'the children quietly show great pay attention',
+                     'never the children quietly show great pay seance'):
+            with self.subTest(text=text):
+                self.assertIsNone(optional.phonetic_split_support(text.split(), 82))
+
     def test_sound_alikes_get_partial_credit_at_any_position(self):
         for anchor, heard in (
             ('curled leaves drifted across the empty garden', 'coat leaves drifted across the empty garden'),

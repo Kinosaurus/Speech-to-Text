@@ -2,10 +2,11 @@
 import math
 
 from books_to_life.matching.checkpoint_matcher import WordEvidence, fuzz, normalize_text
-from books_to_life.matching.phonetic_endpoint import phonetic_endpoint_match, phonetic_word_credit, pronunciations
-from books_to_life.matching.word_boundaries import recent_boundary_spans
+from books_to_life.matching.phonetic_endpoint import (
+    phonetic_endpoint_match, phonetic_split_match, phonetic_word_credit, pronunciations,
+)
+from books_to_life.matching.word_boundaries import PROMPT_WORDS, recent_boundary_matches
 
-PROMPT_WORDS = frozenset({'not', 'never', 'dont', "don't", 'say', 'repeat'})
 ARTICLES = frozenset({'a', 'an', 'the'})
 
 
@@ -82,7 +83,7 @@ class EffectPermission:
         self.preceding = preceding_words
 
     def permits(self, buffer, *, allow_phonetic_endpoint=False, allow_word_boundaries=False,
-                allow_article_omissions=False, word_evidence=None):
+                allow_article_omissions=False, allow_endpoint_fragment=False, word_evidence=None):
         if self.policy == 'ambience':
             return True, None
         supported, reason = self.supports_anchor(buffer, allow_phonetic_endpoint=allow_phonetic_endpoint,
@@ -91,7 +92,35 @@ class EffectPermission:
         if not supported and allow_article_omissions and self.article_omission_support(
                 buffer, word_evidence=word_evidence):
             return True, None
+        if not supported and allow_endpoint_fragment and self.supports_endpoint_fragment(
+                buffer, word_evidence=word_evidence):
+            return True, None
         return supported, reason
+
+    def supports_endpoint_fragment(self, buffer, *, word_evidence=None):
+        """Accept a recent partial ending when the preceding cue is clear."""
+        endpoint = self.anchor[-1]
+        fragment = buffer[-1] if buffer else ''
+        if (endpoint in self.required or fragment in {'a', 'i'} or fragment in PROMPT_WORDS
+                or not fragment.isalpha() or fragment == endpoint or not endpoint.startswith(fragment)):
+            return False
+        # Require five distinct exact words and allow at most one fewer
+        # supported word than ordinary coverage for longer cues.
+        minimum_context = max(5, math.ceil(len(self.anchor) * self.coverage) - 2)
+        for offset in range(len(self.anchor) - minimum_context):
+            context = self.anchor[offset:-1]
+            start = len(buffer) - len(context) - 1
+            if (start < 0 or buffer[start:-1] != context or len(set(context)) < 5
+                    or any(word not in context for word in self.required)):
+                continue
+            prefix = buffer[max(0, start - 3):start]
+            if PROMPT_WORDS.intersection(prefix) and prefix != (self.preceding + self.anchor[:offset])[-len(prefix):]:
+                continue
+            if word_evidence is not None:
+                pairs = [(i, i - offset) for i in range(offset, len(self.anchor))]
+                word_evidence[:] = anchor_word_evidence(self.anchor, buffer[start:], pairs)
+            return True
+        return False
 
     def supports_anchor(self, buffer, *, allow_phonetic_endpoint=False, allow_word_boundaries=False,
                         word_evidence=None):
@@ -159,8 +188,60 @@ class EffectPermission:
                     offset = len(buffer) - len(query) + start
                     partial = tuple((offset + j, word, phrase_word_credit(word, heard))
                                     for (_, j), (word, heard) in zip(pairs, matches) if word != heard)
+        split_words = [] if word_evidence is not None else None
+        split = self.phonetic_split_support(buffer, threshold, word_evidence=split_words)
+        if split and (best is None or split > best):
+            best = split
+            # A grouped sound match has two transcript tokens. The cue evidence
+            # records both without treating either token alone as the match.
+            partial = ()
+            if word_evidence is not None:
+                word_evidence[:] = split_words
         if best and include_partial:
             return (*best, partial)
+        return best
+
+    def phonetic_split_support(self, buffer, threshold, *, word_evidence=None):
+        """Credit one grouped ASR pair given four other distinct exact words."""
+        cue_length = len(self.anchor)
+        if cue_length < 5:
+            return None
+        query = buffer[-(cue_length + 7):]
+        best = None
+        for end in range(len(query), max(cue_length, len(query) - 4), -1):
+            start = end - cue_length - 1
+            prefix = query[max(0, start - 3):start]
+            if PROMPT_WORDS.intersection(prefix) and prefix != self.preceding[-len(prefix):]:
+                continue
+            heard = query[start:end]
+            if PROMPT_WORDS.intersection(heard) - set(self.anchor):
+                continue
+            for i, word in enumerate(self.anchor):
+                left, right = heard[i:i + 2]
+                if (word in self.required or word in PROMPT_WORDS or {left, right} & PROMPT_WORDS
+                        or word == left + right):
+                    continue
+                grouped = heard[:i] + [left + ' ' + right] + heard[i + 2:]
+                context = [(expected, token) for j, (expected, token) in
+                           enumerate(zip(self.anchor, grouped)) if j != i]
+                if len({expected for expected, token in context if expected == token}) < 4:
+                    continue
+                if any(not similar(expected, token, 85 if expected in self.required else 75)
+                       for expected, token in context):
+                    continue
+                if not phonetic_split_match(word, left, right):
+                    continue
+                credits = [fuzz.ratio(expected, token) / 100 for expected, token in context]
+                credits.insert(i, .75)
+                score = 100 * sum(credits) / cue_length
+                if score < max(threshold, 100 * self.coverage) or (best and score <= best[0]):
+                    continue
+                best = (score, cue_length, cue_length)
+                if word_evidence is not None:
+                    word_evidence[:] = [
+                        WordEvidence(expected, token, 'sound' if j == i else 'exact' if expected == token else 'spelling', credit)
+                        for j, (expected, token, credit) in enumerate(zip(self.anchor, grouped, credits))
+                    ]
         return best
 
     def _supports_anchor(self, buffer, *, allow_phonetic_endpoint=False,
@@ -228,17 +309,29 @@ class EffectPermission:
         return (None if omitted_articles_only else False), 'one-shot requires recent ordered anchor, endpoint, and authored required words'
 
     def supports_split_anchor(self, buffer, *, word_evidence=None):
-        # Complete exact content supplies every required word, including a
-        # split required word. No ordinary coverage/spelling rule is relaxed.
-        for prefix, heard in recent_boundary_spans(self.anchor, buffer, include_heard=True):
-            prompt = bool(PROMPT_WORDS.intersection(prefix))
-            if not prompt or prefix == self.preceding[-len(prefix):]:
-                if word_evidence is not None:
-                    offset = 0
-                    for expected in self.anchor:
-                        width = 1 if heard[offset] == expected else 2
-                        kind = 'exact' if width == 1 else 'split'
-                        word_evidence.append(WordEvidence(expected, ' '.join(heard[offset:offset+width]), kind, 1.0))
-                        offset += width
-                return True
-        return False
+        return self.word_boundary_score(buffer, word_evidence=word_evidence) is not None
+
+    def word_boundary_score(self, buffer, *, word_evidence=None):
+        def word_credit(word, heard):
+            if heard in PROMPT_WORDS and heard != word:
+                return None
+            if similar(word, heard, 85 if word in self.required else 75):
+                return fuzz.ratio(word, heard) / 100
+            return None
+
+        best = max(((credit, groups) for prefix, credit, groups in
+                    recent_boundary_matches(self.anchor, buffer, word_credit)
+                    if not PROMPT_WORDS.intersection(prefix) or prefix == self.preceding[-len(prefix):]),
+                   key=lambda result: result[0], default=None)
+        if best is None:
+            return None
+        credit, groups = best
+        if word_evidence is not None:
+            word_evidence.clear()
+            for expected, heard, group_credit in groups:
+                if len(expected) != len(heard):
+                    kind = 'split'
+                else:
+                    kind = 'exact' if expected == heard else 'spelling'
+                word_evidence.append(WordEvidence(' '.join(expected), ' '.join(heard), kind, group_credit))
+        return 100 * credit / len(self.anchor)

@@ -133,7 +133,12 @@ class AlignmentMatcher(CheckpointMatcher):
 
     mode = "word-sequence alignment"
 
+    expand_default_window = True
     explain_matches = False
+
+    @staticmethod
+    def _default_window_words(book_word_count):
+        return 120
 
     def __init__(self, manifest: dict[str, Any], threshold=None, stability=None):
         super().__init__(manifest, threshold=threshold, stability=stability)
@@ -192,7 +197,8 @@ class AlignmentMatcher(CheckpointMatcher):
         settings = manifest.get("alignment", {})
         if not isinstance(settings, dict):
             raise ValueError("'alignment' must be an object.")
-        self.window_words = self._positive_setting(settings, "window_words", 120)
+        self.window_words = self._positive_setting(settings, "window_words", self._default_window_words(len(self.words)))
+        self._expand_window = self.expand_default_window or "window_words" in settings
         self.transcript_words = self._positive_setting(settings, "transcript_words", 32)
         self.minimum_words = self._positive_setting(settings, "minimum_words", 5)
         self.backtrack_words = self._positive_setting(settings, "backtrack_words", 32)
@@ -323,6 +329,10 @@ class AlignmentMatcher(CheckpointMatcher):
                                           explain=self.explain_matches))
         return candidates
 
+    @property
+    def _recovering(self):
+        return self._expand_window and self._misses >= self.recovery_after
+
     def process(self, transcript: str, segments=None) -> AlignmentUpdate:
         if self.completed:
             return AlignmentUpdate(None, 0, 0, 0, False, True,
@@ -334,10 +344,10 @@ class AlignmentMatcher(CheckpointMatcher):
                     triggered=False, completed=False, tracked_word_position=self.tracked_word_position)
         if not self._ingest(transcript, segments):
             return AlignmentUpdate(**{**base, "confirmations": self.confirmations}, duplicate=True,
-                                   recovering=self._misses >= self.recovery_after)
+                                   recovering=self._recovering)
         low = max(0, self.tracked_word_position - self.backtrack_words)
-        # Every recovery_after failed fresh updates doubles the forward search.
-        level = min(self._misses // self.recovery_after, len(self.words).bit_length())
+        # Expand only for trackers or manifests that allow wider recovery.
+        level = min(self._misses // self.recovery_after, len(self.words).bit_length()) if self._recovering else 0
         high = min(len(self.words), self.tracked_word_position + self.window_words * (2 ** level))
         recovering = level > 0
         candidates = self._alignment_candidates(low, high)
