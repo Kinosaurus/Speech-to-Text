@@ -20,6 +20,14 @@ def feed(m,text,t):
 
 
 class TimelyTests(unittest.TestCase):
+    def test_default_lookahead_uses_five_percent_with_limits(self):
+        for length, expected in [(100, 12), (250, 13), (482, 24), (800, 40), (1500, 60)]:
+            with self.subTest(length=length):
+                manifest = config()
+                page = manifest['pages'][0]
+                page['text'] += ' pebble' * (length - len(page['text'].split()))
+                self.assertEqual(TimelyEvidenceMatcher(manifest).window_words, expected)
+
     def test_one_shot_resumes_after_aside_with_an_exact_endpoint_and_book_context(self):
         context = 'we followed a narrow path through the garden'
         prefix = 'the small rabbit hurried across the wooden'

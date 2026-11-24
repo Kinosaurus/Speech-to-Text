@@ -1,0 +1,567 @@
+{
+  "version": 1,
+  "format": "png",
+  "width": 720,
+  "height": 300,
+  "frame_time_seconds": 1,
+  "galleries": [
+    {
+      "id": "fat-cat",
+      "title": "Fat Cat",
+      "story_id": "fat_cat"
+    },
+    {
+      "id": "horse",
+      "title": "Horse",
+      "story_id": "horse"
+    },
+    {
+      "id": "little-mermaid",
+      "title": "Little Mermaid",
+      "story_id": "little_mermaid"
+    },
+    {
+      "id": "sky-garden",
+      "title": "Sky Garden",
+      "story_id": "sample"
+    },
+    {
+      "id": "tea",
+      "title": "Tea",
+      "story_id": "tea"
+    },
+    {
+      "id": "shared",
+      "title": "Shared",
+      "story_id": null
+    },
+    {
+      "id": "night-tiger",
+      "title": "Night Tiger",
+      "story_id": "night_tiger"
+    }
+  ],
+  "images": [
+    {
+      "id": "fat-cat/cat-on-a-sunny-mat",
+      "gallery_id": "fat-cat",
+      "title": "Cat On A Sunny Mat",
+      "description": "A cat's shadow crosses an ochre mat in a sunlit lavender room.",
+      "tags": [
+        "cat",
+        "shadow",
+        "mat",
+        "indoor",
+        "afternoon",
+        "warm",
+        "window"
+      ],
+      "file": "fat-cat--cat-on-a-sunny-mat.png",
+      "source_video": "../scenes/Fat Cat/cat-on-a-sunny-mat.mp4"
+    },
+    {
+      "id": "fat-cat/animals-in-a-hat",
+      "gallery_id": "fat-cat",
+      "title": "Animals In A Hat",
+      "description": "A hat brim and small overlapping animal shadows in an indigo room.",
+      "tags": [
+        "hat",
+        "cat",
+        "bat",
+        "rat",
+        "shadow",
+        "indoor",
+        "playful",
+        "dusk"
+      ],
+      "file": "fat-cat--animals-in-a-hat.png",
+      "source_video": "../scenes/Fat Cat/animals-in-a-hat.mp4"
+    },
+    {
+      "id": "horse/horse-at-a-farm",
+      "gallery_id": "horse",
+      "title": "Horse At A Farm",
+      "description": "A distant horse beyond a fence in green fields at golden hour.",
+      "tags": [
+        "horse",
+        "pasture",
+        "farm",
+        "field",
+        "fence",
+        "sunset",
+        "outdoor"
+      ],
+      "file": "horse--horse-at-a-farm.png",
+      "source_video": "../scenes/Horse/horse-at-a-farm.mp4"
+    },
+    {
+      "id": "little-mermaid/first-steps-by-the-sea",
+      "gallery_id": "little-mermaid",
+      "title": "First Steps By The Sea",
+      "description": "Footprints in wet sand beside coastal rocks and a warm dawn reflection.",
+      "tags": [
+        "mermaid",
+        "arrival",
+        "coast",
+        "footprints",
+        "sea",
+        "dawn",
+        "warm"
+      ],
+      "file": "little-mermaid--first-steps-by-the-sea.png",
+      "source_video": "../scenes/Little Mermaid/first-steps-by-the-sea.mp4"
+    },
+    {
+      "id": "little-mermaid/quiet-shore",
+      "gallery_id": "little-mermaid",
+      "title": "Quiet Shore",
+      "description": "A faint ripple on a still blue-violet shore at dusk.",
+      "tags": [
+        "mermaid",
+        "shore",
+        "sea",
+        "ripple",
+        "dusk",
+        "quiet",
+        "calm"
+      ],
+      "file": "little-mermaid--quiet-shore.png",
+      "source_video": "../scenes/Little Mermaid/quiet-shore.mp4"
+    },
+    {
+      "id": "sky-garden/silver-seed-at-the-gate",
+      "gallery_id": "sky-garden",
+      "title": "Silver Seed At The Gate",
+      "description": "A low pool of silver light beyond a garden gate in blue dusk.",
+      "tags": [
+        "garden",
+        "gate",
+        "silver",
+        "seed",
+        "hidden",
+        "discovery",
+        "dusk"
+      ],
+      "file": "sky-garden--silver-seed-at-the-gate.png",
+      "source_video": "../scenes/Sky Garden/silver-seed-at-the-gate.mp4"
+    },
+    {
+      "id": "sky-garden/ribbon-of-grass",
+      "gallery_id": "sky-garden",
+      "title": "Ribbon Of Grass",
+      "description": "A ribbon of light winds across green hills behind silhouetted reeds.",
+      "tags": [
+        "grass",
+        "meadow",
+        "rolling",
+        "hills",
+        "reeds",
+        "daylight",
+        "outdoors"
+      ],
+      "file": "sky-garden--ribbon-of-grass.png",
+      "source_video": "../scenes/Sky Garden/ribbon-of-grass.mp4"
+    },
+    {
+      "id": "sky-garden/clouds-over-golden-hills",
+      "gallery_id": "sky-garden",
+      "title": "Clouds Over Golden Hills",
+      "description": "Soft cloud shadows stretch across a gold hillside.",
+      "tags": [
+        "clouds",
+        "hills",
+        "landscape",
+        "afternoon",
+        "cloud",
+        "shadows",
+        "warm"
+      ],
+      "file": "sky-garden--clouds-over-golden-hills.png",
+      "source_video": "../scenes/Sky Garden/clouds-over-golden-hills.mp4"
+    },
+    {
+      "id": "sky-garden/blue-flower-reveal",
+      "gallery_id": "sky-garden",
+      "title": "Blue Flower Reveal",
+      "description": "A small blue bloom peeks through dark teal leaves.",
+      "tags": [
+        "flower",
+        "bloom",
+        "hidden",
+        "garden",
+        "teal",
+        "dusk",
+        "discovery"
+      ],
+      "file": "sky-garden--blue-flower-reveal.png",
+      "source_video": "../scenes/Sky Garden/blue-flower-reveal.mp4"
+    },
+    {
+      "id": "tea/tea-pouring",
+      "gallery_id": "tea",
+      "title": "Tea Pouring",
+      "description": "Warm window light frames a cup silhouette and a wisp of steam.",
+      "tags": [
+        "tea",
+        "cup",
+        "kitchen",
+        "steam",
+        "window",
+        "indoor",
+        "warm"
+      ],
+      "file": "tea--tea-pouring.png",
+      "source_video": "../scenes/Tea/tea-pouring.mp4"
+    },
+    {
+      "id": "tea/steaming-kettle",
+      "gallery_id": "tea",
+      "title": "Steaming Kettle",
+      "description": "A kettle silhouette and soft stove glow sit in a dark kitchen.",
+      "tags": [
+        "kettle",
+        "stove",
+        "kitchen",
+        "steam",
+        "cooking",
+        "dusk",
+        "indoor"
+      ],
+      "file": "tea--steaming-kettle.png",
+      "source_video": "../scenes/Tea/steaming-kettle.mp4"
+    },
+    {
+      "id": "tea/sunlit-cottage",
+      "gallery_id": "tea",
+      "title": "Sunlit Cottage",
+      "description": "A long patch of sunlight and a broom shadow cross the cottage floor.",
+      "tags": [
+        "cottage",
+        "indoor",
+        "broom",
+        "window",
+        "sunlight",
+        "floor",
+        "warm"
+      ],
+      "file": "tea--sunlit-cottage.png",
+      "source_video": "../scenes/Tea/sunlit-cottage.mp4"
+    },
+    {
+      "id": "shared/cozy-kitchen",
+      "gallery_id": "shared",
+      "title": "Cozy Kitchen",
+      "description": "An empty kitchen at dusk with a softly lit window and table.",
+      "tags": [
+        "kitchen",
+        "cozy",
+        "indoor",
+        "cottage",
+        "dusk",
+        "warm",
+        "ambience"
+      ],
+      "file": "shared--cozy-kitchen.png",
+      "source_video": "../scenes/Shared/cozy-kitchen.mp4"
+    },
+    {
+      "id": "night-tiger/cat-greeting",
+      "gallery_id": "night-tiger",
+      "title": "Cat Greeting",
+      "description": "Two small amber eyes peek out of ferns beside a garden path.",
+      "tags": [
+        "cat",
+        "eyes",
+        "fern",
+        "path",
+        "garden",
+        "hidden",
+        "night"
+      ],
+      "file": "night-tiger--cat-greeting.png",
+      "source_video": "../scenes/Night Tiger/cat_greeting.mp4"
+    },
+    {
+      "id": "night-tiger/cat-on-quilt",
+      "gallery_id": "night-tiger",
+      "title": "Cat on the Quilt",
+      "description": "A curled black cat rests on a lavender quilt below a blue window.",
+      "tags": [
+        "cat",
+        "sleeping",
+        "bedroom",
+        "quilt",
+        "night",
+        "cozy",
+        "indoor"
+      ],
+      "file": "night-tiger--cat-on-quilt.png",
+      "source_video": "../scenes/Night Tiger/cat_on_quilt.mp4"
+    },
+    {
+      "id": "night-tiger/cat-purr",
+      "gallery_id": "night-tiger",
+      "title": "Cat Purr",
+      "description": "Moonlight falls through an open window onto a plum quilt.",
+      "tags": [
+        "cat",
+        "purr",
+        "bedroom",
+        "quilt",
+        "window",
+        "night",
+        "quiet"
+      ],
+      "file": "night-tiger--cat-purr.png",
+      "source_video": "../scenes/Night Tiger/cat_purr.mp4"
+    },
+    {
+      "id": "night-tiger/cold-wind",
+      "gallery_id": "night-tiger",
+      "title": "Cold Wind",
+      "description": "Leaves and bent grass suggest a cold breeze in moonlight.",
+      "tags": [
+        "wind",
+        "grass",
+        "leaves",
+        "motion",
+        "night",
+        "cool",
+        "moonlight"
+      ],
+      "file": "night-tiger--cold-wind.png",
+      "source_video": "../scenes/Night Tiger/cold_wind.mp4"
+    },
+    {
+      "id": "night-tiger/cricket",
+      "gallery_id": "night-tiger",
+      "title": "Cricket",
+      "description": "A small cricket silhouette hides near a lit blade of grass.",
+      "tags": [
+        "cricket",
+        "insect",
+        "grass",
+        "hedge",
+        "hidden",
+        "night"
+      ],
+      "file": "night-tiger--cricket.png",
+      "source_video": "../scenes/Night Tiger/cricket.mp4"
+    },
+    {
+      "id": "night-tiger/into-garden",
+      "gallery_id": "night-tiger",
+      "title": "Into Garden",
+      "description": "A quiet path curves between layers of foliage in blue twilight.",
+      "tags": [
+        "path",
+        "garden",
+        "foliage",
+        "dusk",
+        "outdoor",
+        "night"
+      ],
+      "file": "night-tiger--into-garden.png",
+      "source_video": "../scenes/Night Tiger/into_garden.mp4"
+    },
+    {
+      "id": "night-tiger/moonrise",
+      "gallery_id": "night-tiger",
+      "title": "Moonrise",
+      "description": "A partly veiled moon lights distant trees and clouds.",
+      "tags": [
+        "moon",
+        "moonrise",
+        "night",
+        "sky",
+        "clouds",
+        "trees",
+        "cool"
+      ],
+      "file": "night-tiger--moonrise.png",
+      "source_video": "../scenes/Night Tiger/moonrise.mp4"
+    },
+    {
+      "id": "night-tiger/moth-pounce",
+      "gallery_id": "night-tiger",
+      "title": "Moth Pounce",
+      "description": "A pale moth catches moonlight above grass near a cat shadow.",
+      "tags": [
+        "moth",
+        "cat",
+        "moonlight",
+        "grass",
+        "shadow",
+        "night"
+      ],
+      "file": "night-tiger--moth-pounce.png",
+      "source_video": "../scenes/Night Tiger/moth_pounce.mp4"
+    },
+    {
+      "id": "night-tiger/moving-shadows",
+      "gallery_id": "night-tiger",
+      "title": "Moving Shadows",
+      "description": "Window and branch shadows fall across an indigo bedroom.",
+      "tags": [
+        "shadow",
+        "branch",
+        "bedroom",
+        "window",
+        "indoor",
+        "twilight"
+      ],
+      "file": "night-tiger--moving-shadows.png",
+      "source_video": "../scenes/Night Tiger/moving_shadows.mp4"
+    },
+    {
+      "id": "night-tiger/night-tiger-reveal",
+      "gallery_id": "night-tiger",
+      "title": "Night Tiger Reveal",
+      "description": "An orange tiger stands against a blue night garden.",
+      "tags": [
+        "tiger",
+        "reveal",
+        "animal",
+        "orange",
+        "teal",
+        "character",
+        "night"
+      ],
+      "file": "night-tiger--night-tiger-reveal.png",
+      "source_video": "../scenes/Night Tiger/night_tiger_reveal.mp4"
+    },
+    {
+      "id": "night-tiger/owl",
+      "gallery_id": "night-tiger",
+      "title": "Owl",
+      "description": "A small owl peeks through branches in moonlight.",
+      "tags": [
+        "owl",
+        "bird",
+        "trees",
+        "branches",
+        "hidden",
+        "night"
+      ],
+      "file": "night-tiger--owl.png",
+      "source_video": "../scenes/Night Tiger/owl.mp4"
+    },
+    {
+      "id": "night-tiger/silver-garden",
+      "gallery_id": "night-tiger",
+      "title": "Silver Garden",
+      "description": "Silvery fog and layered hedges fill the garden outside a window.",
+      "tags": [
+        "garden",
+        "fog",
+        "night",
+        "silver",
+        "quiet",
+        "foliage",
+        "window"
+      ],
+      "file": "night-tiger--silver-garden.png",
+      "source_video": "../scenes/Night Tiger/silver_garden.mp4"
+    },
+    {
+      "id": "night-tiger/skyward",
+      "gallery_id": "night-tiger",
+      "title": "Skyward",
+      "description": "Leaves frame a cloud opening in a lavender night sky.",
+      "tags": [
+        "sky",
+        "clouds",
+        "leaves",
+        "night",
+        "upward",
+        "moonlight"
+      ],
+      "file": "night-tiger--skyward.png",
+      "source_video": "../scenes/Night Tiger/skyward.mp4"
+    },
+    {
+      "id": "night-tiger/spell-fades",
+      "gallery_id": "night-tiger",
+      "title": "Spell Fades",
+      "description": "The last tiger stripes dissolve behind cool garden mist.",
+      "tags": [
+        "tiger",
+        "magic",
+        "fading",
+        "mist",
+        "stripes",
+        "night",
+        "garden"
+      ],
+      "file": "night-tiger--spell-fades.png",
+      "source_video": "../scenes/Night Tiger/spell_fades.mp4"
+    },
+    {
+      "id": "night-tiger/sunset",
+      "gallery_id": "night-tiger",
+      "title": "Sunset",
+      "description": "Red sunset light and window shadows fall across a bedroom wall.",
+      "tags": [
+        "sunset",
+        "bedroom",
+        "indoor",
+        "window",
+        "shadow",
+        "red",
+        "warm"
+      ],
+      "file": "night-tiger--sunset.png",
+      "source_video": "../scenes/Night Tiger/sunset.mp4"
+    },
+    {
+      "id": "night-tiger/tiger-dream",
+      "gallery_id": "night-tiger",
+      "title": "Tiger Dream",
+      "description": "A distant tiger silhouette crosses a warm glow over blue hills.",
+      "tags": [
+        "dream",
+        "tiger",
+        "silhouette",
+        "hills",
+        "night",
+        "warm",
+        "glow"
+      ],
+      "file": "night-tiger--tiger-dream.png",
+      "source_video": "../scenes/Night Tiger/tiger_dream.mp4"
+    },
+    {
+      "id": "night-tiger/tiger-pounce",
+      "gallery_id": "night-tiger",
+      "title": "Tiger Pounce",
+      "description": "A hint of a striped tiger tail shows through tall grass.",
+      "tags": [
+        "tiger",
+        "tail",
+        "stripes",
+        "grass",
+        "hidden",
+        "night",
+        "garden"
+      ],
+      "file": "night-tiger--tiger-pounce.png",
+      "source_video": "../scenes/Night Tiger/tiger_pounce.mp4"
+    },
+    {
+      "id": "night-tiger/twig-at-window",
+      "gallery_id": "night-tiger",
+      "title": "Twig At Window",
+      "description": "A twig silhouette crosses a dim bedroom window.",
+      "tags": [
+        "twig",
+        "branch",
+        "window",
+        "silhouette",
+        "night",
+        "indoor"
+      ],
+      "file": "night-tiger--twig-at-window.png",
+      "source_video": "../scenes/Night Tiger/twig_at_window.mp4"
+    }
+  ]
+}

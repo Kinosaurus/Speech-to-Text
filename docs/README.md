@@ -13,6 +13,7 @@ All terminal commands in these guides assume the project root is your current fo
 - [Jetson setup](JETSON_SETUP.md) and [Raspberry Pi setup](PI4_SETUP.md): board deployment.
 - [Low-storage testing](LOW_STORAGE_TESTING.md): smaller local test configurations.
 - [Project brief](PROJECT_BRIEF.md): purpose, scope, and technical direction.
+- [Visual art direction](PROJECT_BRIEF.md#visual-art-direction) for projection art across stories.
 - [Pod notes](BOOKS_TO_LIFE_POD_NOTES.md): supporting project notes.
 - `diagrams/`: editable application flow diagrams (`.drawio`) and checkpoint flow (`.mmd`).
 

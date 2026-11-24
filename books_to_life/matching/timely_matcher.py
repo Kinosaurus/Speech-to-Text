@@ -17,8 +17,8 @@ class TimelyEvidenceMatcher(BoundaryEvidenceMatcher):
 
     @staticmethod
     def _default_window_words(book_word_count):
-        six_percent_rounded = (6 * book_word_count + 50) // 100
-        return max(12, min(60, six_percent_rounded))
+        five_percent_rounded = (5 * book_word_count + 50) // 100
+        return max(12, min(60, five_percent_rounded))
 
     def __init__(self, *args, **kwargs):
         self._pending_effect = None

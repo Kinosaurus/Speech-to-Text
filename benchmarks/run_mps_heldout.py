@@ -161,9 +161,7 @@ def prepare(output, metadata, baseline):
                 effect_policy=policy['default_effect_policy'], effect=dict(effect_id=name))
             for rule in policy['rules']:
                 if normalize_text(rule['checkpoint_text']) == normalize_text(anchor_text):
-                    for field in ('effect_cue', 'required_words'):
-                        if field in rule:
-                            cp[field] = rule[field]
+                    cp['required_words'] = rule['required_words']
             checkpoints.append(cp)
         manifest = dict(book_id=book, title=book, threshold=82, stability=2, min_coverage=.8,
             pages=[dict(page=1, text=text)], checkpoints=checkpoints)

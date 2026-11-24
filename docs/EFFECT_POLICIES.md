@@ -8,6 +8,11 @@ The original `alignment`, `evidence`, and `fuzzy` modes remain comparison
 baselines. They do not implement this new effect-permission layer. Use explicit
 `--matching_mode split` for the guarded pilot.
 
+The default forward search is 5% of the loaded book's word count, rounded to
+the nearest word and bounded between 12 and 60 words. Missed updates preserve
+this cap. A manifest can explicitly set `alignment.window_words` to use a
+different starting window with wider recovery after repeated misses.
+
 ## One-shot effects: conservative default
 
 An alignment reaching a later position no longer automatically grants a

@@ -5,13 +5,15 @@ import json
 import math
 from pathlib import Path
 import statistics
+import sys
 from time import perf_counter
 
 from books_to_life.matching.checkpoint_matcher import CheckpointMatcher, MATCHING_ENGINE
 from books_to_life.matching.alignment_matcher import AlignmentMatcher
+from books_to_life.runtime.sound_player import SoundPlayer
 
 
-def show_update(text, update):
+def show_update(text, update, sound_player=None):
     print(f"\nTRANSCRIPT: {text}")
     if update.checkpoint_id is None:
         print("STATUS: story complete")
@@ -30,6 +32,8 @@ def show_update(text, update):
             print(f"SKIPPED: {', '.join(update.skipped_checkpoint_ids)}")
     if update.triggered:
         print(f"TRIGGER: {json.dumps(update.effect, ensure_ascii=False)}")
+        if sound_player:
+            sound_player.handle_update(update)
     if update.completed:
         print("STATUS: all checkpoints completed")
 
@@ -49,11 +53,15 @@ def main():
     parser.add_argument("--threshold", type=float, default=None)
     parser.add_argument("--stability", type=int, default=None)
     parser.add_argument("--matching_mode", choices=("alignment", "fuzzy"), default="alignment")
+    parser.add_argument('--play_sounds', action='store_true', help='Play the manifest effect WAVs.')
+    parser.add_argument('--sound_dir', type=Path, help='Effect WAV folder; defaults to the manifest folder.')
     parser.add_argument("--benchmark", type=int, default=None, metavar="REPEATS",
                         help="Replay demo transcripts to measure matching-only time per update.")
     args = parser.parse_args()
     if args.benchmark is not None and (args.benchmark < 1 or args.interactive):
         parser.error("--benchmark requires a positive repeat count and cannot be used with --interactive.")
+    if args.benchmark is not None and args.play_sounds:
+        parser.error('--play_sounds cannot be used with --benchmark.')
 
     manifest_path = Path(args.checkpoints)
     matcher_type = AlignmentMatcher if args.matching_mode == "alignment" else CheckpointMatcher
@@ -66,13 +74,23 @@ def main():
     print(f"MATCHING ENGINE: {matcher.mode} ({MATCHING_ENGINE})")
     print(f"CHECKPOINTS: {len(matcher.checkpoints)}")
 
+    player = SoundPlayer(matcher.checkpoints, manifest_path, sound_dir=args.sound_dir) if args.play_sounds else None
+    try:
+        run_demo(args, matcher, manifest, matcher_type, player)
+    finally:
+        if player:
+            player.close(drain=sys.exc_info()[0] is None)
+
+
+def run_demo(args, matcher, manifest, matcher_type, player):
+
     if args.interactive:
         print("Type transcript updates. Press Ctrl+Z then Enter on Windows to stop.")
         try:
             while not matcher.completed:
                 text = input("> ").strip()
                 if text:
-                    show_update(text, matcher.process(text))
+                    show_update(text, matcher.process(text), player)
         except EOFError:
             pass
         return
@@ -97,7 +115,7 @@ def main():
         return
 
     for text in demo_transcripts:
-        show_update(text, matcher.process(text))
+        show_update(text, matcher.process(text), player)
 
 
 if __name__ == "__main__":

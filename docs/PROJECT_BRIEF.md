@@ -37,6 +37,20 @@ The current scope includes:
 Scent, breeze effects and general-purpose LED ambience are outside the current
 scope.
 
+### Visual art direction
+
+Use a flat, cut-paper storybook style as the default for Books to Life
+projection art across stories. *The Night Tiger* cues **Cat on the Quilt**
+(page 8) and **Night Tiger Reveal** (page 17) are the reference pair.
+
+- Build scenes from large, rounded shapes, layered silhouettes, and clear
+  focal subjects that read at projection distance.
+- Use a small palette per scene. The Quilt cue uses quiet blues and lavenders,
+  and the Reveal cue uses an orange character against teal foliage. Choose
+  colors for each story and moment while keeping the same simple shapes.
+- Keep texture subtle and backgrounds uncluttered. Use gentle motion for
+  ambience and clear, focused movement for story actions.
+
 ## 2. Recommended solution
 
 Use a Raspberry Pi 5 running **sherpa-onnx with an INT8 streaming Zipformer

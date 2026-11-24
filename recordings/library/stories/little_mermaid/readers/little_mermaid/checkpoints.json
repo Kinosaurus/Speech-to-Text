@@ -19,16 +19,16 @@
       "checkpoint_text": "She had the prettiest legs on earth",
       "word_start": 10,
       "word_end": 17,
-      "effect_policy": "ambience",
       "effect": {
         "effect_id": "warm_daylight",
         "lighting_colour": "#F5DEB3",
         "brightness": 0.18,
         "fade_ms": 1800,
-        "visual": "warm_light_loop.gif",
+        "visual": "../../../../../../scenes/Little Mermaid/first-steps-by-the-sea.mp4",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/magic_shimmer.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/first-steps-by-the-sea.mp4"
       }
     },
     {
@@ -37,20 +37,18 @@
       "checkpoint_position": 2,
       "page": 1,
       "checkpoint_text": "And the little mermaid could not speak",
-      "effect_cue": "the little mermaid could not speak",
-      "required_words": ["speak"],
       "word_start": 37,
       "word_end": 44,
-      "effect_policy": "ambience",
       "effect": {
         "effect_id": "quiet_blue_ambience",
         "lighting_colour": "#BFD8ED",
         "brightness": 0.14,
         "fade_ms": 2000,
-        "visual": "soft_blue_loop.gif",
+        "visual": "../../../../../../scenes/Little Mermaid/quiet-shore.mp4",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/soft_mystery.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/quiet-shore.mp4"
       }
     }
   ],

@@ -1,0 +1,153 @@
+{
+  "status": "complete",
+  "metric": "Captured digital sound onset minus saved synthetic cue-word ending",
+  "rows": [
+    {
+      "book": "The Moon",
+      "model": "Parakeet 160 ms chunk / 560 ms future context (saved)",
+      "repetitions": 2,
+      "common_cue_median_seconds": 1.1811370000173342,
+      "common_cues_hit": 6,
+      "common_cues_expected": 6,
+      "all_configured_cues_hit": 8,
+      "all_configured_cues_expected": 8,
+      "all_configured_median_seconds": 1.048543250050861,
+      "duplicate_tracker_triggers": 0,
+      "early_sound_events": 0,
+      "common_cue_min_seconds": 0.9221220999956117,
+      "common_cue_max_seconds": 2.335651900032534,
+      "per_trial_common_medians": [
+        1.1673096000263472,
+        1.1949644000083213
+      ]
+    },
+    {
+      "book": "The Moon",
+      "model": "Nemotron 160 ms",
+      "repetitions": 2,
+      "common_cue_median_seconds": 0.5060808500042171,
+      "common_cues_hit": 6,
+      "common_cues_expected": 6,
+      "all_configured_cues_hit": 8,
+      "all_configured_cues_expected": 8,
+      "all_configured_median_seconds": 0.41313190000131605,
+      "duplicate_tracker_triggers": 0,
+      "early_sound_events": 0,
+      "common_cue_min_seconds": 0.29284230002201994,
+      "common_cue_max_seconds": 0.5803818999952641,
+      "per_trial_common_medians": [
+        0.5069673000019961,
+        0.5051944000064381
+      ],
+      "reduction_vs_saved_parakeet_percent": 57.153077924339854
+    },
+    {
+      "book": "The Moon",
+      "model": "Nemotron 320 ms",
+      "repetitions": 2,
+      "common_cue_median_seconds": 0.8878473500040132,
+      "common_cues_hit": 6,
+      "common_cues_expected": 6,
+      "all_configured_cues_hit": 8,
+      "all_configured_cues_expected": 8,
+      "all_configured_median_seconds": 0.7226598500012185,
+      "duplicate_tracker_triggers": 0,
+      "early_sound_events": 0,
+      "common_cue_min_seconds": 0.5441448000154914,
+      "common_cue_max_seconds": 0.9925198000040822,
+      "per_trial_common_medians": [
+        0.8877072999998932,
+        0.8879874000081331
+      ],
+      "reduction_vs_saved_parakeet_percent": 24.831128819858893
+    },
+    {
+      "book": "The Lion and the Mouse",
+      "model": "Parakeet 160 ms chunk / 560 ms future context (saved)",
+      "repetitions": 2,
+      "common_cue_median_seconds": 0.7915996500197835,
+      "common_cues_hit": 8,
+      "common_cues_expected": 8,
+      "all_configured_cues_hit": 8,
+      "all_configured_cues_expected": 8,
+      "all_configured_median_seconds": 0.7915996500197835,
+      "duplicate_tracker_triggers": 0,
+      "early_sound_events": 0,
+      "common_cue_min_seconds": 0.7582745000347497,
+      "common_cue_max_seconds": 0.9525497999740766,
+      "per_trial_common_medians": [
+        0.7946435499563833,
+        0.7819932500226443
+      ]
+    },
+    {
+      "book": "The Lion and the Mouse",
+      "model": "Nemotron 160 ms",
+      "repetitions": 2,
+      "common_cue_median_seconds": 0.34522564998886107,
+      "common_cues_hit": 8,
+      "common_cues_expected": 8,
+      "all_configured_cues_hit": 8,
+      "all_configured_cues_expected": 8,
+      "all_configured_median_seconds": 0.34522564998886107,
+      "duplicate_tracker_triggers": 0,
+      "early_sound_events": 0,
+      "common_cue_min_seconds": 0.20038190000574474,
+      "common_cue_max_seconds": 0.3864730999851602,
+      "per_trial_common_medians": [
+        0.33206939999829066,
+        0.3597231000009926
+      ],
+      "reduction_vs_saved_parakeet_percent": 56.38885767821735
+    },
+    {
+      "book": "The Lion and the Mouse",
+      "model": "Nemotron 320 ms",
+      "repetitions": 2,
+      "common_cue_median_seconds": 0.46064130000537284,
+      "common_cues_hit": 8,
+      "common_cues_expected": 8,
+      "all_configured_cues_hit": 8,
+      "all_configured_cues_expected": 8,
+      "all_configured_median_seconds": 0.46064130000537284,
+      "duplicate_tracker_triggers": 0,
+      "early_sound_events": 0,
+      "common_cue_min_seconds": 0.21095520001487245,
+      "common_cue_max_seconds": 1.7874524000019303,
+      "per_trial_common_medians": [
+        0.45004615000449144,
+        0.47123645000625425
+      ],
+      "reduction_vs_saved_parakeet_percent": 41.80880448925658
+    }
+  ],
+  "common_cue_ids": {
+    "moon": [
+      "opening",
+      "cat",
+      "mouse"
+    ],
+    "lion": [
+      "readmio_1",
+      "readmio_2",
+      "readmio_3",
+      "readmio_4"
+    ]
+  },
+  "settings": {
+    "threshold": 82,
+    "stability": 2,
+    "coverage": 0.8,
+    "boost": 1.0,
+    "packet_samples": 1280
+  },
+  "caveats": [
+    "Two synthetic Microsoft David recordings, two replays per setting per story.",
+    "Digital application output; physical microphone, speaker acoustics and projection excluded.",
+    "Estimated cue endings reused unchanged from the original SAPI timing marks.",
+    "Full-excerpt fixed hints and exact original tracker; these are not ASR-only measurements.",
+    "Moon common-subset comparison uses opening/cat/mouse; dog is included in separate configured-cue counts.",
+    "Parakeet results are saved November 19 runs; Nemotron results are newly measured November 22.",
+    "Nemotron 320 ms uses experimental attention context [70,3], as in the previous ASR comparison."
+  ]
+}

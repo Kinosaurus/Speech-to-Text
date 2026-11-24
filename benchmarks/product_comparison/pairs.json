@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "scope": "Two matched pairs; recordings must be identical within each pair. Do not pool across different texts as a three-way same-book test.",
+  "selection_status": "two_matched_synthetic_pairs_scored",
+  "recording_source": "user_authorized_local_synthetic_speech",
+  "metrics": [
+    "median_effect_onset_minus_spoken_anchor_end_seconds",
+    "correct_observable_events_over_expected_events"
+  ],
+  "pairs": [
+    {
+      "id": "novel_effect_moon",
+      "systems": [
+        "Reading Pod",
+        "Novel Effect"
+      ],
+      "title": "The Moon",
+      "author": "Robert Louis Stevenson",
+      "app_version": "4.2.9",
+      "text_file": "novel_effect_moon.txt",
+      "text_source": "Downloaded in-app e-book, full-poem page; public-domain poem",
+      "text_verified_against_app": true,
+      "app_evidence": "output/product-comparison-20261119/novel-moon-page2-paused.png",
+      "downloaded_in_app": true,
+      "offline_recognition_verified": true,
+      "expected_events": 3,
+      "recording": "C:\\Users\\heart\\Speech-to-Text\\output\\reading-pod-first-pipeline\\output\\product-comparison-20261119\\synthetic\\moon-normal.wav",
+      "trials": [
+        {
+          "system": "Novel Effect",
+          "path": "output\\novel-cue-annotation-20261119-validation\\full-01",
+          "status": "frozen_detector_scored"
+        },
+        {
+          "system": "Novel Effect",
+          "path": "output\\novel-cue-annotation-20261119-validation-repeat\\full-01",
+          "status": "frozen_detector_scored"
+        }
+      ],
+      "remaining": "Broader human-reader and physical-path tests; dog response remains unverified and excluded from both matched subsets.",
+      "automatic_cue_annotation": "output/novel-cue-annotation-20261119-results/annotations.json",
+      "pod_candidate_checkpoints": 4,
+      "pod_trials": [
+        "output\\novel-cue-annotation-20261119-results\\pod-moon-trial-01",
+        "output\\novel-cue-annotation-20261119-results\\pod-moon-trial-02"
+      ],
+      "annotation_freeze": "output\\novel-cue-annotation-20261119-results\\annotation-freeze.json",
+      "matched_target_ids": [
+        "opening",
+        "cat",
+        "mouse"
+      ],
+      "selection_caveat": "Exploratory subset; Pod candidate runs preceded final common-target selection.",
+      "calibration_capture": "output/product-comparison-20261119/novel-trial-01"
+    },
+    {
+      "id": "readmio_lion_excerpt",
+      "systems": [
+        "Reading Pod",
+        "Readmio"
+      ],
+      "candidate_title": "The Lion and the Mouse",
+      "app_version": "2.7.2",
+      "text_verified_against_app": false,
+      "access_verified": true,
+      "app_evidence": "output/product-comparison-20261119/readmio-mouse-search.xml",
+      "offline_recognition_verified": true,
+      "expected_events": 4,
+      "recording": "C:\\Users\\heart\\Speech-to-Text\\output\\reading-pod-first-pipeline\\output\\product-comparison-20261119\\synthetic\\readmio-lion-normal.wav",
+      "trials": [
+        {
+          "system": "Reading Pod",
+          "path": "output/product-comparison-20261119/pod-readmio-trial-02"
+        },
+        {
+          "system": "Reading Pod",
+          "path": "output/product-comparison-20261119/pod-readmio-trial-03"
+        },
+        {
+          "system": "Readmio",
+          "path": "output/product-comparison-20261119/readmio-trial-01"
+        },
+        {
+          "system": "Readmio",
+          "path": "output/product-comparison-20261119/readmio-trial-02"
+        }
+      ],
+      "title": "The Lion and the Mouse \u2014 147-word excerpt",
+      "text_source": "Official Readmio English public preview; opening app text visually matched; all four official sound assets detected"
+    }
+  ]
+}

@@ -24,10 +24,11 @@
         "lighting_colour": "#F5DEB3",
         "brightness": 0.18,
         "fade_ms": 2000,
-        "visual": "warm_light_loop.gif",
+        "visual": "../../../../../../scenes/Tea/tea-pouring.mp4",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/tea_pour.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/tea-pouring.mp4"
       }
     },
     {
@@ -43,10 +44,11 @@
         "lighting_colour": "#FFD6A5",
         "brightness": 0.18,
         "fade_ms": 2000,
-        "visual": "soft_amber_loop.gif",
+        "visual": "../../../../../../scenes/Tea/steaming-kettle.mp4",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/kettle_simmer.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/steaming-kettle.mp4"
       }
     },
     {
@@ -62,10 +64,11 @@
         "lighting_colour": "#F5E6CC",
         "brightness": 0.16,
         "fade_ms": 2000,
-        "visual": "warm_light_loop.gif",
+        "visual": "../../../../../../scenes/Tea/sunlit-cottage.mp4",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/broom_sweep.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/sunlit-cottage.mp4"
       }
     }
   ],

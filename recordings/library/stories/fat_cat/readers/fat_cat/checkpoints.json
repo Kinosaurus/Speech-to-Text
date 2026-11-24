@@ -24,10 +24,11 @@
         "lighting_colour": "#F5DEB3",
         "brightness": 0.18,
         "fade_ms": 2000,
-        "visual": "warm_light_loop.gif",
+        "visual": "../../../../../../scenes/Fat Cat/cat-on-a-sunny-mat.mp4",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/cat_purr.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/cat-on-a-sunny-mat.mp4"
       }
     },
     {
@@ -43,10 +44,11 @@
         "lighting_colour": "#BFD8ED",
         "brightness": 0.14,
         "fade_ms": 2000,
-        "visual": "soft_blue_loop.gif",
+        "visual": "../../../../../../scenes/Fat Cat/animals-in-a-hat.mp4",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/comic_tumble.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/animals-in-a-hat.mp4"
       }
     }
   ],

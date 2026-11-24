@@ -221,6 +221,56 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Local ASR tests, transcripts and scratch work
+/scenes/*
+!/scenes/README.md
+!/scenes/catalogue.html
+!/scenes/Fat Cat/
+/scenes/Fat Cat/*
+!/scenes/Fat Cat/animals-in-a-hat.mp4
+!/scenes/Fat Cat/cat-on-a-sunny-mat.mp4
+!/scenes/Horse/
+/scenes/Horse/*
+!/scenes/Horse/horse-at-a-farm.mp4
+!/scenes/Little Mermaid/
+/scenes/Little Mermaid/*
+!/scenes/Little Mermaid/first-steps-by-the-sea.mp4
+!/scenes/Little Mermaid/quiet-shore.mp4
+!/scenes/Shared/
+/scenes/Shared/*
+!/scenes/Shared/cozy-kitchen.mp4
+!/scenes/Tea/
+/scenes/Tea/*
+!/scenes/Tea/steaming-kettle.mp4
+!/scenes/Tea/sunlit-cottage.mp4
+!/scenes/Tea/tea-pouring.mp4
+!/scenes/Sky Garden/
+/scenes/Sky Garden/*
+!/scenes/Sky Garden/sky-garden.png
+!/scenes/Sky Garden/Sky Garden - Silver Seed.mp4
+!/scenes/Sky Garden/blue-flower-reveal.mp4
+!/scenes/Sky Garden/clouds-over-golden-hills.mp4
+!/scenes/Sky Garden/ribbon-of-grass.mp4
+!/scenes/Sky Garden/silver-seed-at-the-gate.mp4
+!/scenes/Night Tiger/
+/scenes/Night Tiger/*
+!/scenes/Night Tiger/sunset.mp4
+!/scenes/Night Tiger/moonrise.mp4
+!/scenes/Night Tiger/into_garden.mp4
+!/scenes/Night Tiger/cat_greeting.mp4
+!/scenes/Night Tiger/tiger_pounce.mp4
+!/scenes/Night Tiger/owl.mp4
+!/scenes/Night Tiger/cold_wind.mp4
+!/scenes/Night Tiger/cat_purr.mp4
+!/scenes/Night Tiger/cat_on_quilt.mp4
+!/scenes/Night Tiger/cricket.mp4
+!/scenes/Night Tiger/moth_pounce.mp4
+!/scenes/Night Tiger/moving_shadows.mp4
+!/scenes/Night Tiger/night_tiger_reveal.mp4
+!/scenes/Night Tiger/silver_garden.mp4
+!/scenes/Night Tiger/skyward.mp4
+!/scenes/Night Tiger/spell_fades.mp4
+!/scenes/Night Tiger/tiger_dream.mp4
+!/scenes/Night Tiger/twig_at_window.mp4
 /tmp/
 /output/
 /recordings/*
@@ -237,10 +287,14 @@ __marimo__/
 !/recordings/library/stories/horse/
 !/recordings/library/stories/little_mermaid/
 !/recordings/library/stories/nickel/
+!/recordings/library/stories/night_tiger/
+/recordings/library/stories/night_tiger/readers/
 !/recordings/library/stories/recording_2/
 !/recordings/library/stories/tea/
 !/recordings/library/stories/sample/
 /recordings/library/**/asr/
+# Keep copied commercial comparison text local; OCR manifests are excluded above.
+/benchmarks/product_comparison/readmio_lion_excerpt.txt
 /*.wav
 /*.m4a
 /*.mp3

@@ -16,10 +16,11 @@
         "lighting_colour": "#D8E6F3",
         "brightness": 0.16,
         "fade_ms": 1200,
-        "visual": "silver_sparkles.gif",
+        "visual": "../../../../../../scenes/Sky Garden/silver-seed-at-the-gate.mp4",
         "visual_delay": 500,
-        "sound": "soft_chime.wav",
-        "sound_delay": 1000
+        "sound": "../../../../../../assets/sounds/soft_chime.wav",
+        "sound_delay": 1000,
+        "preview": "../../cues/previews/silver-seed-at-the-gate.mp4"
       },
       "word_start": 0,
       "word_end": 10
@@ -35,10 +36,11 @@
         "lighting_colour": "#6F9B5D",
         "brightness": 0.18,
         "fade_ms": 1600,
-        "visual": "slow_grass_loop.gif",
+        "visual": "../../../../../../scenes/Sky Garden/ribbon-of-grass.mp4",
         "visual_delay": 0,
-        "sound": "gentle_leaves.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/gentle_leaves.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/ribbon-of-grass.mp4"
       },
       "word_start": 25,
       "word_end": 35
@@ -54,10 +56,11 @@
         "lighting_colour": "#BFD8ED",
         "brightness": 0.2,
         "fade_ms": 1800,
-        "visual": "slow_clouds_loop.gif",
+        "visual": "../../../../../../scenes/Sky Garden/clouds-over-golden-hills.mp4",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/light_breeze.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/clouds-over-golden-hills.mp4"
       },
       "word_start": 49,
       "word_end": 58
@@ -73,10 +76,11 @@
         "lighting_colour": "#6E8FEA",
         "brightness": 0.22,
         "fade_ms": 2000,
-        "visual": "blue_flower_opening.gif",
+        "visual": "../../../../../../scenes/Sky Garden/blue-flower-reveal.mp4",
         "visual_delay": 0,
-        "sound": "quiet_bell.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/quiet_bell.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/blue-flower-reveal.mp4"
       },
       "word_start": 73,
       "word_end": 82

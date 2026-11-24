@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "assignments": {
+    "sample": {
+      "seed_found": "21",
+      "clouds_arrive": "19",
+      "grass_grows": "20",
+      "flower_opens": "18"
+    },
+    "night_tiger": {
+      "sunset": "4",
+      "moonrise": "5",
+      "into_garden": "6",
+      "cat_greeting": "7",
+      "tiger_pounce": "8",
+      "owl": "9",
+      "cold_wind": "10",
+      "cat_purr": "11"
+    },
+    "fat_cat": {
+      "fat_cat_on_mat": "13",
+      "animals_in_hat": "12"
+    },
+    "horse": {
+      "horse_at_farm": "14"
+    },
+    "little_mermaid": {
+      "mermaid_has_legs": "15",
+      "mermaid_cannot_speak": "16"
+    },
+    "tea": {
+      "make_a_pot_of_tea": "24",
+      "teapot_on_stove": "22",
+      "little_house_ready": "23"
+    }
+  },
+  "fade_ms": 250
+}

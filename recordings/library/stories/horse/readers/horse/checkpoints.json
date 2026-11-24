@@ -24,10 +24,11 @@
         "lighting_colour": "#F5DEB3",
         "brightness": 0.18,
         "fade_ms": 2000,
-        "visual": "warm_light_loop.gif",
+        "visual": "../../../../../../scenes/Horse/horse-at-a-farm.mp4",
         "visual_delay": 0,
-        "sound": "light_breeze.wav",
-        "sound_delay": 0
+        "sound": "../../../../../../assets/sounds/horse_hooves.wav",
+        "sound_delay": 0,
+        "preview": "../../cues/previews/horse-at-a-farm.mp4"
       }
     }
   ],

@@ -12,7 +12,7 @@ powershell.exe -NoLogo -NoProfile -Command ^
     "    } catch { return $false }" ^
     "};" ^
     "if (Test-ReadingPod) { Start-Process $url; exit 0 };" ^
-    "$checkout = Join-Path $env:READING_POD_ROOT 'output\reading-pod-first-pipeline';" ^
+    "$checkout = $env:READING_POD_ROOT;" ^
     "$python = Join-Path $checkout '.venv\Scripts\python.exe';" ^
     "if (-not (Test-Path -LiteralPath $python -PathType Leaf)) { throw ('Panel Python was not found at ' + $python) };" ^
     "$handoff = Join-Path $env:READING_POD_ROOT 'output\mapmap-other-pc\MapMap-Reading-Pod-Handoff';" ^

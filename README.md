@@ -8,8 +8,8 @@ triggers checkpoints for visuals and sound.
 Double-click **Start Reading Pod Panel.cmd** to start the panel and open it in your default browser.
 Keep the launcher window open while using the panel.
 
-The current panel checkout is `output\reading-pod-first-pipeline`.
-Use its [Reading Pod startup guide](output/reading-pod-first-pipeline/docs/READING_POD_STARTUP.md)
+The panel runs from this project folder.
+Use the [Reading Pod startup guide](docs/READING_POD_STARTUP.md)
 for the exact NeMo, panel and MapMap commands, scene imports, calibration and
 troubleshooting. The [operator panel](http://127.0.0.1:8765) opens after its
 server starts.
@@ -40,6 +40,8 @@ Run commands from this project folder, even when reading a guide inside `docs/`.
 | `books_to_life/runtime/` | Audio input, speech devices, and model adapters. |
 | `books_to_life/context/` | Book phrase hints and client/server transport. |
 | `books_to_life/data/` | Recording library access. |
+| [scenes/](scenes/README.md) | Projection clips and the scene catalogue. |
+| [picture-gallery/](picture-gallery/README.md) | Still images and the gallery index. |
 | [docs/](docs/README.md) | Setup guides, project notes, status, and diagrams. |
 | `requirements/` | Dependency lists for specific clients, servers, and platforms. |
 | `Dockerfile*`, `compose*.yaml`, `.env.*.example` | Container builds and platform settings. |
