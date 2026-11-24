@@ -63,6 +63,14 @@ def best_window_score(transcript: str, anchor: str, min_coverage: float) -> floa
 
 
 @dataclass(frozen=True)
+class WordEvidence:
+    expected: str
+    heard: str | None
+    kind: str
+    credit: float | None = None
+
+
+@dataclass(frozen=True)
 class MatchUpdate:
     checkpoint_id: str | None
     score: float

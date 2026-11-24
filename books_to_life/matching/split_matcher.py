@@ -3,7 +3,6 @@ import re
 from books_to_life.matching.alignment_matcher import AlignmentSpan
 from books_to_life.matching.checkpoint_matcher import fuzz
 from books_to_life.matching.evidence_matcher import EvidenceAlignmentMatcher
-from books_to_life.matching.effect_permission import NEGATION_WORDS
 
 
 def split_similarity(left, right, target):
@@ -37,7 +36,7 @@ class SplitEvidenceMatcher(EvidenceAlignmentMatcher):
         if not self.triggered_checkpoint_ids or self.completed:
             return candidates
         context = set(self._buffer[-16:])
-        if context & (NEGATION_WORDS | {'no'}):
+        if context & {'not', 'never', 'no', 'dont', 'say', 'repeat', 'said', 'asked'}:
             return candidates
         start, end = self.checkpoint_ranges[self.current_index]
         if end - self.tracked_word_position > 40:
@@ -56,7 +55,10 @@ class SplitEvidenceMatcher(EvidenceAlignmentMatcher):
                     credit = split_similarity(spoken[i], spoken[i+1], ref[i])
                     if not credit or len(set(ref[:i]+ref[i+1:])) < 3:
                         continue
-                    span = AlignmentSpan(begin, stop, 100*(len(ref)-1+credit)/len(ref),len(ref),len(ref))
+                    index = len(self._buffer) - len(spoken) + i
+                    partial = ((index, ref[i], credit), (index + 1, ref[i], credit))
+                    span = AlignmentSpan(begin, stop, 100*(len(ref)-1+credit)/len(ref),len(ref),len(ref),
+                                         partial_words=partial)
                     candidates.append(span)
                     self._split_candidates.add(span)
         return candidates

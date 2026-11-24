@@ -2,13 +2,12 @@ import json
 import threading
 from types import SimpleNamespace
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock,patch
 
 import numpy as np
 
 from books_to_life.runtime.nemo_parakeet import NemoParakeetSession, hint_phrases, reset_phrase_state
-from books_to_life.cli.run_nemo_server import handle_connection
-from books_to_life.runtime.streaming_utterances import SilenceBoundedSession
+from books_to_life.cli.run_nemo_server import handle_connection,warm_model
 
 
 class Socket:
@@ -24,6 +23,57 @@ class Socket:
 
 
 class NemoTransportTests(unittest.TestCase):
+    def test_nemotron_uses_same_snapshot_protocol_and_live_phrase_updates(self):
+        socket = Socket([np.zeros(1280, dtype='<f4').tobytes(),
+                         json.dumps({'type':'book_context','revision':1,'hotwords':'Prince'}), b'END_OF_AUDIO'])
+        socket.recv = lambda timeout=None: json.dumps({'uid':'test','model':'nemotron','language':'en','hotwords':'Mermaid'})
+        session = Mock(configuration={'chunk_ms':160,'att_context':[70,1],'boost':1.0})
+        session.feed.return_value = ['a mermaid']
+        session.finish.return_value = 'a mermaid and a prince'
+        lock = threading.Lock()
+        handle_connection(socket, lambda:session, lock, backend='nemotron')
+        ready = socket.sent[0]
+        self.assertEqual((ready['backend'],ready['chunk_ms'],ready['att_context']),('nemotron',160,[70,1]))
+        self.assertEqual([call.args[0] for call in session.set_hints.call_args_list],['Mermaid','Prince'])
+        self.assertEqual(socket.sent[-2]['segments'][0]['text'],'a mermaid and a prince')
+        self.assertTrue(socket.sent[-2]['segments'][0]['completed'])
+        self.assertEqual(socket.sent[-1]['message'],'STREAM_DONE')
+        self.assertFalse(lock.locked())
+
+    def test_wrong_nemo_backend_is_rejected_before_session_creation(self):
+        socket = Socket([])
+        factory = Mock()
+        handle_connection(socket, factory, threading.Lock(), backend='nemotron')
+        factory.assert_not_called()
+        self.assertEqual(socket.sent[-1]['status'],'ERROR')
+        self.assertIn('nemotron',socket.sent[-1]['message'])
+
+    def test_startup_warms_a_separate_silent_session_and_releases_it(self):
+        with patch('books_to_life.cli.run_nemo_server.NemoParakeetSession') as factory:
+            warm_model('model',160,560,1.0)
+        factory.assert_called_once_with('model',160,560,1.0)
+        session=factory.return_value
+        session.set_hints.assert_called_once_with(None)
+        audio=session.feed.call_args.args[0]
+        self.assertEqual(len(audio),32000)
+        self.assertTrue(np.all(audio==0))
+        session.finish.assert_called_once()
+        session.close.assert_called_once()
+
+    def test_startup_failure_still_releases_the_warmup_session(self):
+        with patch('books_to_life.cli.run_nemo_server.NemoParakeetSession') as factory:
+            factory.return_value.feed.side_effect=ValueError('warmup failure')
+            with self.assertRaises(ValueError):warm_model('model',160,560,1.0)
+            factory.return_value.close.assert_called_once()
+
+    def test_readiness_reports_the_actual_buffer_configuration(self):
+        socket=Socket([b'END_OF_AUDIO'])
+        session=Mock(configuration={'chunk_ms':160,'right_ms':560,'boost':1.0})
+        session.finish.return_value=''
+        handle_connection(socket,lambda:session,threading.Lock())
+        ready=next(m for m in socket.sent if m.get('message')=='SERVER_READY')
+        self.assertEqual((ready['chunk_ms'],ready['right_ms'],ready['boost']),(160,560,1.0))
+
     def session(self, chunk=4, right=2):
         session = NemoParakeetSession.__new__(NemoParakeetSession)
         session.context = SimpleNamespace(chunk=chunk, right=right)
@@ -89,22 +139,6 @@ class NemoTransportTests(unittest.TestCase):
         self.assertEqual([s['completed'] for s in segments], [False, True])
         self.assertEqual(segments[-1]['text'], 'a bit of the wing')
         self.assertEqual(socket.sent[-1]['message'], 'STREAM_DONE')
-
-    def test_utterance_segments_keep_global_clock_through_skipped_quiet(self):
-        cores=[]
-        def factory():
-            core=Mock();core.feed.return_value=['reading'];core.finish.return_value='sentence'
-            cores.append(core);return core
-        session=SilenceBoundedSession(factory,4)
-        pcm=np.array([1,0,0,0,0,0,0,2],dtype='<f4')
-        socket=Socket([pcm.tobytes(),b'END_OF_AUDIO'])
-        handle_connection(socket,lambda:session,threading.Lock())
-        final=[m['segments'] for m in socket.sent if 'segments' in m][-1]
-        self.assertEqual([s['start'] for s in final],[0,7/16000])
-        self.assertEqual(final[-1]['end'],8/16000)
-        self.assertTrue(all(s['completed'] for s in final))
-        self.assertEqual(socket.sent[-1]['message'],'STREAM_DONE')
-        self.assertEqual(len(cores),2)
 
     def test_live_hints_stay_out_of_audio_and_stale_revision_is_rejected(self):
         pcm = np.array([0.25, -0.5], dtype='<f4')

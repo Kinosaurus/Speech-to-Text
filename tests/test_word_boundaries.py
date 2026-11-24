@@ -1,6 +1,6 @@
 import unittest
 
-from books_to_life.matching.word_boundaries import exact_boundary_match
+from books_to_life.matching.word_boundaries import PROMPT_WORDS, exact_boundary_match
 from books_to_life.matching.effect_permission import EffectPermission
 from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
 
@@ -13,6 +13,8 @@ class WordBoundaryTests(unittest.TestCase):
                 pieces = [word[:index], word[index:]]
                 with self.subTest(word=word, index=index):
                     self.assertTrue(exact_boundary_match([word], pieces))
+                    if not PROMPT_WORDS.intersection(pieces):
+                        self.assertTrue(exact_boundary_match(pieces, [word]))
 
     def test_all_content_is_required_and_tokens_cannot_be_reused(self):
         for ref, heard in [(['notebook', 'book'], ['note', 'book']),
@@ -24,7 +26,7 @@ class WordBoundaryTests(unittest.TestCase):
             with self.subTest(ref=ref, heard=heard):
                 self.assertFalse(exact_boundary_match(ref, heard))
 
-    def test_internal_and_final_boundaries_preserve_recency_and_negation(self):
+    def test_internal_and_final_boundaries_preserve_recency_and_prompts(self):
         for anchor, heard in [
             ('we opened the red notebook', 'we opened the red note book'),
             ('she put the teapot on the stove', 'she put the tea pot on the stove'),
@@ -33,8 +35,7 @@ class WordBoundaryTests(unittest.TestCase):
             permission = EffectPermission(dict(checkpoint_text=anchor), 1, [])
             with self.subTest(anchor=anchor):
                 self.assertTrue(permission.permits(heard.split(), allow_word_boundaries=True)[0])
-                self.assertTrue(permission.permits(('please repeat '+heard).split(), allow_word_boundaries=True)[0])
-                self.assertFalse(permission.permits(('never repeat '+heard).split(), allow_word_boundaries=True)[0])
+                self.assertFalse(permission.permits(('please repeat '+heard).split(), allow_word_boundaries=True)[0])
                 self.assertFalse(permission.permits((heard+' and then we walked away').split(), allow_word_boundaries=True)[0])
 
     def test_required_words_may_split_but_cannot_disappear(self):
@@ -50,6 +51,7 @@ class WordBoundaryTests(unittest.TestCase):
     def test_acquired_progress_accepts_split_endpoint_without_asr_rewriting(self):
         text = 'he had a hundred sheep one day he took the sheep to the riverside there was grass'
         cfg = dict(book_id='boundaries', threshold=82, stability=1, min_coverage=.8,
+            alignment={'window_words': 30},
             pages=[dict(page=1, text=text)], checkpoints=[
                 dict(id='first', book_id='boundaries', checkpoint_position=1, checkpoint_text='he had a hundred sheep', effect={}),
                 dict(id='second', book_id='boundaries', checkpoint_position=2, checkpoint_text='he took the sheep to the riverside', effect={})])
@@ -106,6 +108,47 @@ class WordBoundaryTests(unittest.TestCase):
             spans = matcher._alignment_candidates(0, len(matcher.words))
             exact = [s for s in spans if s.start==0 and s.end==5 and s.score==100]
             self.assertEqual(bool(exact), expected)
+
+    def test_split_and_join_can_each_combine_with_fuzzy_spelling(self):
+        opening = 'we walked along the river'
+        prefix = 'the children slowly opened their red'
+        for book_words, heard_words in [('notebook', 'note book'), ('note book', 'notebook')]:
+            with self.subTest(book_words=book_words):
+                cue = f'{prefix} {book_words}'
+                manifest = dict(book_id='boundaries', stability=2,
+                                pages=[dict(page=1, text=f'{opening} {cue}')], checkpoints=[
+                                    dict(id='first', book_id='boundaries', checkpoint_position=1,
+                                         checkpoint_text=opening, effect={}),
+                                    dict(id='last', book_id='boundaries', checkpoint_position=2,
+                                         checkpoint_text=cue, effect={}),
+                                ])
+                matcher = TimelyEvidenceMatcher(manifest)
+                matcher.explain_matches = True
+
+                def feed(text, end, completed=False):
+                    return matcher.process(text, [dict(start=0, end=end, text=text, completed=completed)])
+
+                self.assertFalse(feed(opening, 1).triggered)
+                self.assertTrue(feed(opening, 2, completed=True).triggered)
+                self.assertFalse(feed(f'{opening} {prefix}', 3).triggered)
+                heard = f'{opening} {prefix.replace("slowly", "slow")} {heard_words}'
+                self.assertFalse(feed(heard, 4).triggered)
+                update = feed(heard, 5, completed=True)
+                self.assertTrue(update.triggered)
+                self.assertEqual(update.checkpoint_id, 'last')
+                self.assertAlmostEqual(update.score, 100 * (len(cue.split()) - .2) / len(cue.split()))
+                self.assertEqual(matcher._buffer, heard.split())
+                self.assertEqual(update.cue_word_evidence[-1].expected, book_words)
+                self.assertEqual(update.cue_word_evidence[-1].heard, heard_words)
+                self.assertFalse(feed(heard, 5, completed=True).triggered)
+
+    def test_fuzzy_word_in_a_split_cue_still_uses_the_required_word_threshold(self):
+        cue = 'the children slowly opened their red notebook'
+        heard = 'the children slow opened their red note book'.split()
+        optional = EffectPermission(dict(checkpoint_text=cue), .8, [])
+        required = EffectPermission(dict(checkpoint_text=cue, required_words=['slowly']), .8, [])
+        self.assertTrue(optional.supports_split_anchor(heard))
+        self.assertFalse(required.supports_split_anchor(heard))
 
 
 if __name__ == '__main__':

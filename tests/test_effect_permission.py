@@ -48,7 +48,9 @@ class EffectPermissionTests(unittest.TestCase):
     def test_genuine_skip_emits_supported_later_effect_without_replaying_skipped_one(self):
         first = 'the small frog jumped into the pond'
         second = 'the little bird landed on the old fence'
-        matcher = TimelyEvidenceMatcher(manifest(first+' then '+second, [first, second]))
+        cfg = manifest(first+' then '+second, [first, second])
+        cfg['alignment'] = {'window_words': 30}
+        matcher = TimelyEvidenceMatcher(cfg)
         update = matcher.process(second)
         self.assertTrue(update.triggered)
         self.assertEqual(update.checkpoint_id, '2')
@@ -70,21 +72,12 @@ class EffectPermissionTests(unittest.TestCase):
                                ('with lots of steps', 'with lots of stops')]:
             self.assertTrue(EffectPermission(dict(checkpoint_text=anchor), .8, []).permits(spoken.split())[0])
 
-    def test_old_endpoint_and_negated_instruction_cannot_grant_permission(self):
+    def test_old_endpoint_and_prompt_cannot_grant_one_shot_permission(self):
         permission = EffectPermission(dict(checkpoint_text='the small frog jumped into the pond'), .8, [])
         for spoken in ['do not say the small frog jumped into the pond',
-                       'never repeat the small frog jumped into the pond',
-                       "don't say the small frog jumped into the pond",
+                       'please repeat the small frog jumped into the pond',
                        'the small frog jumped into the pond and then we talked about another animal']:
             self.assertFalse(permission.permits(spoken.split())[0])
-
-    def test_positive_coaching_uses_the_same_content_checks_as_reading(self):
-        permission = EffectPermission(dict(checkpoint_text='the small frog jumped into the pond',
-                                           required_words=['jumped']), .8, [])
-        for prefix in ('can you say', 'please repeat', 'she said', 'he asked'):
-            self.assertTrue(permission.permits((prefix+' the small frog jumped into the pond').split())[0])
-            self.assertFalse(permission.permits((prefix+' the small frog jumped into the').split())[0])
-            self.assertFalse(permission.permits((prefix+' the small frog into the pond').split())[0])
 
     def test_phonetic_endpoint_requires_acquisition_and_entire_exact_prefix(self):
         permission = EffectPermission(dict(checkpoint_text='covered with very small scales'), .8, [])
@@ -125,6 +118,7 @@ class EffectPermissionTests(unittest.TestCase):
                   'then we see that they are covered with very small')
         text = prefix + ' scales it is these scales which have colour'
         cfg = manifest(text, ['the brilliant colours of their wings', 'covered with very small scales'])
+        cfg['alignment'] = {'window_words': 30}
         matcher = TimelyEvidenceMatcher(cfg)
         self.assertTrue(matcher.process('we admire the brilliant colours of their wings').triggered)
         self.assertFalse(matcher.process(prefix).triggered)
@@ -215,6 +209,7 @@ class EffectPermissionTests(unittest.TestCase):
                 'the note said all that she gets is a bit of the wing')
         cfg = manifest(text, ['we walked along a quiet path', 'a bit of the wing'])
         cfg['stability'] = 2
+        cfg['alignment'] = {'window_words': 30}
         matcher = TimelyEvidenceMatcher(cfg)
         prefix = 'we walked along a quiet path and saw an old sign the note said all that she gets is'
         snapshots = ['we walked along a quiet', 'we walked along a quiet path',

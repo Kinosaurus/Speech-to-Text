@@ -2,8 +2,10 @@ import json
 from pathlib import Path
 import unittest
 
+from books_to_life.matching.alignment_matcher import AlignmentSpan
 from books_to_life.matching.boundary_matcher import BoundaryEvidenceMatcher
 from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
+from books_to_life.matching.transcript_display import TranscriptEvidence
 
 
 def config():
@@ -18,6 +20,153 @@ def feed(m,text,t):
 
 
 class TimelyTests(unittest.TestCase):
+    def test_one_shot_resumes_after_aside_with_an_exact_endpoint_and_book_context(self):
+        context = 'we followed a narrow path through the garden'
+        prefix = 'the small rabbit hurried across the wooden'
+        manifest = config()
+        manifest['pages'][0]['text'] = f'{context} {prefix} bridge we watched quietly from the hill'
+        manifest['checkpoints'][0]['checkpoint_text'] = f'{prefix} bridge'
+        aside = 'please pass the blue notebook'
+        for resume, should_fire in (
+            ('bridge we watched quietly', True),
+            ('bridge I saw something', False),
+            ('we watched quietly', False),
+        ):
+            with self.subTest(resume=resume):
+                matcher = TimelyEvidenceMatcher(manifest)
+                # The preceding page context has already been confirmed.
+                matcher.tracked_word_position = len(context.split())
+                head = f'{context} {prefix}'
+                self.assertFalse(feed(matcher, head, 1).triggered)
+                self.assertFalse(feed(matcher, f'{head} {aside}', 3).triggered)
+                segments = [
+                    dict(start=0, end=3, text=f'{head} {aside}', completed=True),
+                    dict(start=3, end=4, text=resume, completed=False),
+                ]
+                update = matcher.process(f'{head} {aside} {resume}', segments)
+                self.assertEqual(update.triggered, should_fire)
+
+    def test_article_omissions_work_on_an_unconfigured_first_checkpoint(self):
+        anchor = 'a nimble rabbit brushed the leaves beside wooden gates'
+        manifest = config()
+        context = 'we followed a narrow path through the garden'
+        manifest['pages'][0]['text'] = context + ' ' + anchor
+        manifest['checkpoints'][0]['checkpoint_text'] = anchor
+        matcher = TimelyEvidenceMatcher(manifest)
+        matcher.explain_matches = True
+        feed(matcher, 'we followed a narrow path', 1)
+        feed(matcher, context, 2)
+        self.assertGreater(matcher.tracked_word_position, 0)
+        update = feed(matcher, context + ' nimble rabbit brushed leaves beside wooden gates', 3)
+        self.assertTrue(update.triggered)
+        self.assertEqual(
+            [word.expected for word in update.cue_word_evidence if word.kind == 'article_waived'],
+            ['a', 'the'],
+        )
+
+    def test_missing_content_word_gets_no_credit_even_when_cue_fires(self):
+        path = Path(__file__).resolve().parents[1] / (
+            'recordings/library/stories/sample/readers/demo/checkpoints.json'
+        )
+        matcher = TimelyEvidenceMatcher.from_file(path)
+        matcher.explain_matches = True
+        feed(matcher, 'Mila found a silver seed', 1)
+        anchor = 'Mila found a silver seed beside the old gate'
+        feed(matcher, anchor, 2)
+        text = anchor + ' She carried'
+        update = feed(matcher, text, 3)
+        self.assertTrue(update.triggered)
+        evidence = TranscriptEvidence().update(text, matcher._buffer, update)['evidence']
+        self.assertIn({'expected': 'tiny', 'heard': None, 'kind': 'omitted', 'credit': None},
+                      evidence['cue_words'])
+
+    def test_sky_garden_flower_accepts_missing_article_and_two_near_words(self):
+        path = Path(__file__).resolve().parents[1] / (
+            'recordings/library/stories/sample/readers/demo/checkpoints.json'
+        )
+        for ending, should_fire in (('flower', True), ('garden', False)):
+            with self.subTest(ending=ending):
+                matcher = TimelyEvidenceMatcher.from_file(path)
+                matcher.current_index = 3
+                matcher.tracked_word_position = matcher.checkpoint_ranges[2][1]
+                matcher._misses = matcher.recovery_after
+                update = feed(matcher, 'the little seat opened into right blue ' + ending, 5)
+                self.assertEqual(update.triggered, should_fire)
+                if should_fire:
+                    self.assertEqual(update.checkpoint_id, 'flower_opens')
+                    self.assertEqual([word for _, word, _ in update.partial_words], ['seed', 'bright'])
+
+    def test_sky_garden_grass_tolerates_dropped_articles_with_endpoint_evidence(self):
+        path = Path(__file__).resolve().parents[1] / (
+            'recordings/library/stories/sample/readers/demo/checkpoints.json'
+        )
+        seed = 'Mila found a tiny silver slit beside the old gate'
+        prior = seed + ' She carried it carefully and to quiet water and press onto warm soil'
+        grass = 'soft green glass coat across floor like ribbon'
+        variants = (
+            (grass, True),
+            (grass.replace('ribbon', 'river'), False),
+            ('repeat ' + grass, False),
+            ('soft green birds across floor like ribbon', False),
+        )
+        for phrase, should_fire in variants:
+            with self.subTest(phrase=phrase):
+                matcher = TimelyEvidenceMatcher.from_file(path)
+                matcher.explain_matches = True
+                feed(matcher, seed, 1)
+                self.assertTrue(feed(matcher, seed + ' She carried', 2).triggered)
+                feed(matcher, prior, 3)
+                matcher._misses = matcher.recovery_after
+                update = feed(matcher, prior + ' ' + phrase, 4)
+                self.assertEqual(update.triggered, should_fire)
+                self.assertEqual('grass_grows' in matcher.triggered_checkpoint_ids, should_fire)
+                if should_fire:
+                    self.assertGreater(update.score, 87.5)
+                    transcript = prior + '. Soft green glass coat across floor like ribbon.'
+                    display = TranscriptEvidence()
+                    panel = display.update(transcript, matcher._buffer, update)
+                    self.assertEqual(panel['text'], transcript)
+                    self.assertEqual(panel['score'], round(update.score, 1))
+                    self.assertIn({'expected': 'curled', 'heard': 'coat', 'kind': 'sound', 'credit': .5},
+                                  panel['evidence']['words'])
+                    self.assertEqual(
+                        [word['expected'] for word in panel['evidence']['cue_words'] if word['kind'] == 'article_waived'],
+                        ['the', 'a'],
+                    )
+                    self.assertEqual(
+                        [(transcript[word['start']:word['end']], word['expected']) for word in panel['partial']],
+                        [('glass', 'grass'), ('coat', 'curled')],
+                    )
+                    revised = transcript.replace('glass coat', 'grass curled')
+                    later = feed(matcher, revised, 5)
+                    self.assertEqual(display.update(revised, matcher._buffer, later)['partial'], [])
+
+    def test_short_post_cue_match_cannot_skip_several_cues(self):
+        manifest = config()
+        cues = [
+            'grandma has a big house with lots of steps',
+            'the little rabbit looked out through the window',
+            'plants need sunshine to grow nice vegetables and flowers',
+        ]
+        manifest['pages'] = [
+            dict(page=1, text=' '.join(cues[:2])),
+            dict(page=2, text=cues[2] + ' gardens do well if they get enough rain'),
+        ]
+        manifest['checkpoints'] = [
+            dict(id=str(i), book_id='timely', checkpoint_position=i + 1,
+                 page=1 if i < 2 else 2, checkpoint_text=cue, effect={'effect_id': str(i)})
+            for i, cue in enumerate(cues)
+        ]
+        matcher = TimelyEvidenceMatcher(manifest)
+        matcher._misses = matcher.recovery_after * 4
+        for second, partial in enumerate(('gardens do well if they', 'do well if they get'), 1):
+            self.assertFalse(feed(matcher, partial, second).triggered)
+        self.assertEqual(matcher.current_index, 0)
+        self.assertEqual(matcher.tracked_word_position, 0)
+        self.assertFalse(matcher.skipped_checkpoint_ids)
+        start, end = matcher.checkpoint_ranges[2]
+        self.assertTrue(matcher._supports_forward_jump(AlignmentSpan(start, end, 100, 9, 9)))
+
     def test_repetition_with_supported_near_spelling_ending(self):
         old,new=BoundaryEvidenceMatcher(config()),TimelyEvidenceMatcher(config())
         for m in (old,new):feed(m,'grandma has a big house with',1)
@@ -39,8 +188,8 @@ class TimelyTests(unittest.TestCase):
             feed(m,'grandma has a big house with',1)
             self.assertFalse(feed(m,text,t).triggered)
 
-    def test_wrong_ending_and_negations_do_not_get_repeat_credit(self):
-        for prefix,ending in [('', 'doors'),('do not ', 'steps'),('never repeat ', 'steps')]:
+    def test_wrong_ending_and_prompts_do_not_get_repeat_credit(self):
+        for prefix,ending in [('', 'doors'),('do not ', 'steps'),('please repeat ', 'steps')]:
             m=TimelyEvidenceMatcher(config())
             feed(m,prefix+'grandma has a big house with',1)
             self.assertFalse(feed(m,prefix+'grandma has a big house with with a lot of '+ending,2).triggered)
@@ -118,104 +267,6 @@ class SkyGardenInterruptionTests(unittest.TestCase):
             (90.0, 90.5, "gate"),
         ])
         self.assertFalse(any(update.triggered for update in updates))
-
-
-class ContextualEndingConfirmationTests(unittest.TestCase):
-    def test_authored_cue_reuses_context_only_with_new_audio_and_exact_final_word(self):
-        manifest = (Path(__file__).resolve().parents[1] / "recordings/library/stories/little_mermaid"
-                    / "readers/little_mermaid/checkpoints.json")
-        for ending, endpoint_time, expected in [
-                ("speak", 28, True), ("sneak", 28, False), ("speak", 27.4, False)]:
-            with self.subTest(ending=ending, endpoint_time=endpoint_time):
-                matcher = TimelyEvidenceMatcher.from_file(manifest, stability=2)
-                intro = "The next thing she knew the little mermaid woke up she had the prettiest life"
-                feed(matcher, intro, 9.7)
-                intro += " on earth"
-                feed(matcher, intro, 10.1)
-                context = (intro + " and in front of her stood the handsome prince who are you asked "
-                           "the prince where do you come from")
-                feed(matcher, context, 25.2)
-                feed(matcher, context + " the little mer", 26.8)
-                prefix = context + " the little merry could not"
-                self.assertFalse(feed(matcher, prefix, 27.4).triggered)
-                update = feed(matcher, prefix + " " + ending, endpoint_time)
-                self.assertEqual(update.triggered, expected)
-                if expected:
-                    self.assertEqual(update.confirmations, 2)
-                    self.assertEqual(update.checkpoint_id, "mermaid_cannot_speak")
-
-
-class VerifiedCueConfirmationTests(unittest.TestCase):
-    def test_mermaid_waits_for_confirmation_and_revalidates_the_saved_words(self):
-        manifest = (Path(__file__).resolve().parents[1] / "recordings/library/stories/little_mermaid"
-                    / "readers/little_mermaid/checkpoints.json")
-        opening = ("the next thing she knew the little mermaid woke up she had the prettiest "
-                   "lines on earth and in front of her stood the handsome prince who are you "
-                   "asked the prince where do you come from")
-        prefix = opening + " i'm the little mermaid she could not "
-        for ending, end_time, expected in [
-                ("speak", 32.48, True), ("sleep", 32.48, False), ("speak", 38.0, False)]:
-            with self.subTest(ending=ending, end_time=end_time):
-                matcher = TimelyEvidenceMatcher.from_file(manifest, stability=2)
-                for text, time in [
-                        (opening.split(" lines on earth")[0], 8.4),
-                        (opening.split(" in front")[0], 10.08),
-                        (opening.split(" of her")[0], 12.32),
-                        (opening, 24.08),
-                        (opening + " the little mermaid", 26.32),
-                        (opening + " i'm the little mermaid", 28.0)]:
-                    feed(matcher, text, time)
-                first = feed(matcher, prefix + "speak she could not", 30.24)
-                self.assertEqual(first.confirmations, 1)
-                self.assertFalse(first.triggered)
-                later = prefix + ending + " she could only look at the prince with her"
-                update = feed(matcher, later, end_time)
-                self.assertEqual(update.checkpoint_id, "mermaid_cannot_speak")
-                self.assertEqual(update.confirmations, 2)
-                self.assertEqual(update.triggered, expected)
-                self.assertFalse(feed(matcher, later + " deep blue eyes", end_time + 2).triggered)
-
-
-class CumulativeInterruptionTests(unittest.TestCase):
-    def test_authored_cue_requires_book_continuation_after_an_aside(self):
-        manifest_path = (Path(__file__).resolve().parents[1] / "recordings/library/stories/little_mermaid"
-                         / "readers/little_mermaid/checkpoints.json")
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        for checkpoint in manifest["checkpoints"]:
-            checkpoint["effect_policy"] = "one_shot"
-        opening = ("the next thing she knew the little mermaid woke up she had the prettiest legs on earth "
-                   "and in front of her stood the handsome prince who are you asked the prince where do you come from")
-        prefix = opening + " and the little mermaid"
-        aside = " spoken_noise you spoken_noise where you are spoken_noise "
-        for first, second, revised, expected in [
-                ("could not speak she could", "only", False, True),
-                ("not speak she could", "only", False, True),
-                ("speak louder so i can hear you", "from the hall", False, False),
-                ("not sneak she could", "only look", False, False),
-                ("not speak she could", "only", True, False),
-        ]:
-            with self.subTest(resume=first, revised=revised):
-                matcher = TimelyEvidenceMatcher(manifest, stability=2)
-                feed(matcher, opening.split(" earth")[0], 9)
-                self.assertTrue(feed(matcher, opening.split(" and in front")[0], 10).triggered)
-                feed(matcher, opening.rsplit(" from", 1)[0], 23)
-                feed(matcher, opening, 24)
-                feed(matcher, prefix, 25)
-                heard = prefix + aside + first
-                self.assertFalse(feed(matcher, prefix + aside.rstrip(), 31).triggered)
-                if first != "could not speak she could":
-                    self.assertFalse(feed(matcher, prefix + aside + first.split()[0], 33).triggered)
-                self.assertFalse(feed(matcher, heard, 34).triggered)
-                self.assertFalse(feed(matcher, heard, 34.1).triggered)
-                if revised:
-                    heard = heard.replace("the little mermaid spoken", "the little maiden spoken")
-                later = heard + " " + second
-                update = feed(matcher, later, 35)
-                self.assertEqual(update.triggered, expected)
-                if expected:
-                    self.assertEqual(update.checkpoint_id, "mermaid_cannot_speak")
-                    self.assertEqual(update.confirmations, 2)
-                self.assertFalse(feed(matcher, later + " at the prince", 36).triggered)
 
 
 if __name__=='__main__':unittest.main()

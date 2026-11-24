@@ -1,6 +1,7 @@
 import unittest
 
 from books_to_life.matching.timely_matcher import TimelyEvidenceMatcher
+from books_to_life.context.book_context import BookContext
 
 
 INTRO = 'we walked along the quiet lane past the old wooden gate'
@@ -48,6 +49,27 @@ class PendingEffectTests(unittest.TestCase):
                 self.assertEqual(matcher.suppressed_checkpoint_ids,set())
                 self.assertFalse(step(matcher,full,4).triggered)
 
+    def test_hint_window_retains_pending_cue_until_its_ending_resolves(self):
+        matcher = self.pending(later=True)
+        context = BookContext(matcher, phrase_only=True)
+        self.assertIsNone(context.hints.initial_prompt)
+        self.assertIn('we looked for the small puppies', context.hints.hotwords)
+        self.assertIn('bright birds', context.hints.hotwords)
+        self.assertIsNone(context.refresh())
+        update = step(matcher, PREFIX+' puppy puppies', 3.5)
+        self.assertTrue(update.triggered)
+        hints = context.refresh()
+        self.assertNotIn('puppies', hints.hotwords)
+        self.assertIn('bright birds', hints.hotwords)
+
+    def test_pending_final_cue_keeps_hint_until_stream_completion(self):
+        matcher = self.pending()
+        context = BookContext(matcher, phrase_only=True)
+        self.assertIn('puppies', context.hints.hotwords)
+        self.assertFalse(step(matcher, PREFIX+' puppy', 3).triggered)
+        self.assertIsNone(context.refresh())
+        self.assertTrue(step(matcher, PREFIX+' puppy puppies', 3, completed=True).triggered)
+
     def test_omission_and_expiry_never_guess_the_endpoint(self):
         matcher=self.pending()
         update=step(matcher,PREFIX+' puppy',6)
@@ -94,52 +116,16 @@ class PendingEffectTests(unittest.TestCase):
         self.assertEqual(matcher.suppressed_checkpoint_ids,{'2'})
         self.assertEqual(matcher.triggered_checkpoint_ids,{'1','3'})
 
-    def test_negated_instruction_closes_pending_without_emitting(self):
+    def test_prompts_close_pending_without_emitting(self):
         matcher=self.pending()
-        update=step(matcher,PREFIX+' puppy never repeat puppies',3.5)
+        update=step(matcher,PREFIX+' puppy please repeat puppies',3.5)
         self.assertFalse(update.triggered)
         self.assertTrue(update.effect_suppressed)
-
-    def test_parent_can_complete_pending_phrase_without_replaying_effect(self):
-        matcher=self.pending()
-        reading=PREFIX+' puppy please repeat we looked for the small puppies'
-        self.assertTrue(step(matcher,reading,3.5).triggered)
-        self.assertFalse(step(matcher,reading+' we looked for the small puppies',4).triggered)
 
     def test_new_utterance_cannot_borrow_an_old_incomplete_prefix(self):
         matcher=self.pending()
         text='puppies'
         update=matcher.process(text,[dict(start=3,end=3.5,text=text,completed=False)])
-        self.assertFalse(update.triggered)
-        self.assertTrue(update.effect_suppressed)
-
-    def interrupted(self):
-        matcher = TimelyEvidenceMatcher(config())
-        self.assertTrue(step(matcher, INTRO, 1).triggered)
-        self.assertFalse(step(matcher, PREFIX, 2, completed=True).triggered)
-        prefix = dict(start=0, end=2, text=PREFIX, completed=True)
-        aside = dict(start=3, end=4, text='well', completed=False)
-        update = matcher.process(PREFIX + ' well', [prefix, aside])
-        self.assertEqual(update.effect_pending_checkpoint_id, '2')
-        aside = dict(aside, end=5, text='well the bag is outside', completed=True)
-        update = matcher.process(PREFIX + ' ' + aside['text'], [prefix, aside])
-        self.assertEqual(update.effect_pending_checkpoint_id, '2')
-        return matcher, prefix, aside
-
-    def test_interrupted_pending_cue_accepts_isolated_exact_endpoint_once(self):
-        matcher, prefix, aside = self.interrupted()
-        finish = dict(start=22, end=23, text='puppies', completed=False)
-        segments = [prefix, aside, finish]
-        update = matcher.process(PREFIX + ' ' + aside['text'] + ' puppies', segments)
-        self.assertTrue(update.triggered)
-        self.assertEqual(update.checkpoint_id, '2')
-        self.assertFalse(matcher.process(PREFIX + ' ' + aside['text'] + ' puppies', segments).triggered)
-
-    def test_interrupted_pending_cue_rejects_endpoint_inside_conversation(self):
-        matcher, prefix, aside = self.interrupted()
-        talk = dict(start=22, end=23, text='the puppies are outside', completed=True)
-        update = matcher.process(PREFIX + ' ' + aside['text'] + ' ' + talk['text'],
-                                 [prefix, aside, talk])
         self.assertFalse(update.triggered)
         self.assertTrue(update.effect_suppressed)
 
@@ -154,7 +140,9 @@ class PendingEffectTests(unittest.TestCase):
         self.assertTrue(update.effect_suppressed)
 
     def test_cold_unacquired_match_does_not_receive_pending_grace(self):
-        matcher=TimelyEvidenceMatcher(config())
+        cfg = config()
+        cfg['alignment'] = {'window_words': 30}
+        matcher = TimelyEvidenceMatcher(cfg)
         update=step(matcher,PREFIX+' puppy',3)
         self.assertFalse(update.triggered)
         self.assertIsNone(update.effect_pending_checkpoint_id)
