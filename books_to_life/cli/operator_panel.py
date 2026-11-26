@@ -12,7 +12,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
-from threading import Lock, Thread
+from threading import RLock, Thread
 from urllib.parse import quote
 from uuid import uuid4
 
@@ -182,7 +182,7 @@ class Sessions:
             ):
                 raise ValueError('MapMap assignments must map passages and checkpoints to cue IDs or null.')
             self.assignments = assignments
-        self.lock = Lock()
+        self.lock = RLock()
         self.process = None
         self.update_thread = None
         self.recognition = RecognitionServer(ROOT, ports.get(DEFAULT_RECOGNITION_MODEL, 9097),
@@ -521,6 +521,7 @@ class Sessions:
             '--port', str(self.ports.get(model, default_port)),
             '--checkpoints', str(manifest), '--matching_mode', 'split',
             '--connection_timeout', '20', '--stop-on-stdin-close', '--live-transcript',
+            '--sound_volume', '1.0',
             '--transcript_file', str(folder / 'transcript.srt'),
         ]
         command += microphone_arguments(model)
@@ -572,10 +573,19 @@ class Sessions:
     def end(self):
         with self.lock:
             if self.process and self.state['phase'] != 'ending':
-                self.state['phase'] = 'ending'
-                self.process.stdin.close()
-                if self.cue:
-                    self.cue.reset()
+                self.stop_capture('ending')
+
+    def reset(self):
+        with self.lock:
+            if self.process is None or self.state['phase'] not in ('starting', 'listening'):
+                raise ValueError('Start an experience before resetting it.')
+            self.stop_capture('resetting')
+
+    def stop_capture(self, phase):
+        self.state['phase'] = phase
+        self.process.stdin.close()
+        if self.cue:
+            self.cue.reset()
 
     def monitor(self, process, passage):
         failure = ''
@@ -586,6 +596,8 @@ class Sessions:
                 if raw.startswith(TRANSCRIPT_PREFIX):
                     update = json.loads(raw[len(TRANSCRIPT_PREFIX):])
                     with self.lock:
+                        if self.state['phase'] == 'resetting':
+                            continue
                         self.state['transcript'] = update['text']
                         self.state['partial'] = update['partial']
                         if 'reading_checkpoint' in update:
@@ -607,7 +619,7 @@ class Sessions:
                 if line.startswith('[STARTUP]') or re.match(r'^(?:\w+Error:|run_client\.py: error:)', line):
                     failure = line[:300]
                 with self.lock:
-                    if self.state['phase'] == 'ending':
+                    if self.state['phase'] in ('ending', 'resetting'):
                         continue
                     if raw.startswith(MICROPHONE_PREFIX):
                         self.state['microphone'] = raw[len(MICROPHONE_PREFIX):].strip()
@@ -625,6 +637,13 @@ class Sessions:
         code = process.wait()
         process.stdin.close()
         with self.lock:
+            self.process = None
+            if self.state['phase'] == 'resetting':
+                try:
+                    self.start(self.state['settings'])
+                except (OSError, ValueError) as error:
+                    self.state.update(phase='error', message=f'Could not restart the experience. {error}')
+                return
             if self.cue:
                 try:
                     self.cue.reset()
@@ -633,7 +652,6 @@ class Sessions:
             self.state['phase'] = 'error' if code else 'ended'
             if code and not self.state['message']:
                 self.state['message'] = failure or f'Speech client exited with code {code}. Check the selected recognition server.'
-            self.process = None
 
 
 class PanelHandler(SimpleHTTPRequestHandler):
@@ -710,6 +728,8 @@ class PanelHandler(SimpleHTTPRequestHandler):
                 self.sessions.start(body)
             elif self.path == '/api/session/end':
                 self.sessions.end()
+            elif self.path == '/api/session/reset':
+                self.sessions.reset()
             elif self.path in ('/api/recognition/start', '/api/recognition/restart'):
                 result = self.sessions.recognition_action(self.path.rsplit('/', 1)[1], body.get('model'))
             elif self.path == '/api/mapmap/open':

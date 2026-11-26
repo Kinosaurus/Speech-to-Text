@@ -41,7 +41,7 @@ The installed NeMo WSL environment supports both models. On a fresh PC, run
 download the pinned checkpoint into `model-cache/nemotron-nemo`. The panel also
 searches parent folders for the cache. Use `--nemotron-model` for a custom path.
 
-Choose the passage and model, configure hints and recording, then select **Start experience**. Wait for **Listening** before reading. The panel marks each checkpoint the matcher fires. **End experience** stops capture and waits for the client to finish. Transcripts are written locally under `output/operator-sessions`. Each session writes a WAV there only when **Save recording** is on.
+Choose the passage and model, configure hints and recording, then select **Start experience**. Wait for **Listening** before reading. The panel marks each checkpoint the matcher fires. **Reset experience** clears progress, restores the calibration grid, and starts listening again with the same settings. **End experience** stops capture. Transcripts are written locally under `output/operator-sessions`. Each start or reset creates a separate session folder and writes a WAV there only when **Save recording** is on.
 
 ## Projection and calibration
 

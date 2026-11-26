@@ -9,6 +9,7 @@ const phases = {
   idle: 'Ready to start',
   starting: 'Connecting',
   listening: 'Listening',
+  resetting: 'Resetting experience',
   ending: 'Ending session',
   ended: 'Session ended',
   error: 'Session interrupted',
@@ -47,6 +48,9 @@ async function request(path, body, signal) {
     }),
   });
   if (!response.headers.get('Content-Type')?.includes('application/json')) {
+    if (path === '/api/session/reset' && response.status === 404) {
+      throw new Error('Restart the Reading Pod panel server to enable Reset experience.');
+    }
     throw new Error('The local panel server did not respond. Check that it is running.');
   }
   const data = await response.json();
@@ -442,7 +446,8 @@ function App() {
   const [connectionError, setConnectionError] = useState('');
   const [actionError, setActionError] = useState('');
   const [connected, setConnected] = useState(false);
-  const active = ['starting', 'listening', 'ending'].includes(session.phase);
+  const canReset = ['starting', 'listening'].includes(session.phase);
+  const active = canReset || session.phase === 'resetting' || session.phase === 'ending';
   const busy = Boolean(pending) || session.mapmap?.state === 'starting';
   const selection = active ? session.settings || settings : settings;
   const model = catalog?.models.find((item) => item.id === selection.model);
@@ -564,6 +569,7 @@ function App() {
               <span aria-hidden="true" />
               {connected ? phases[session.phase] : connectionError ? 'Disconnected' : 'Connecting to panel'}
             </span>
+            <button type="button" className="end" disabled={!connected || !canReset || busy} onClick={() => act('/api/session/reset', {}, setSession)}>Reset experience</button>
             <button type="button" className="end" disabled={!connected || !active || busy || session.phase === 'ending'} onClick={() => act('/api/session/end', {}, setSession)}>End experience</button>
             <button type="button" className="start" disabled={!connected || !model || !passage || busy || active || waitingForNemo} onClick={() => act('/api/session/start', settings, setSession)}>Start experience</button>
           </div>

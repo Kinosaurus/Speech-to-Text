@@ -6,6 +6,11 @@ from books_to_life.matching.phone_features import close_phone_features, close_pr
 
 
 VOWELS = frozenset('AA AE AH AO AW AY EH ER EY IH IY OW OY UH UW'.split())
+DEVOICED_STOP_SIBILANT = {
+    ('B', 'Z'): ('P', 'S'),
+    ('D', 'Z'): ('T', 'S'),
+    ('G', 'Z'): ('K', 'S'),
+}
 
 
 @lru_cache(maxsize=1)
@@ -69,16 +74,26 @@ def phonetic_word_credit(reference, heard):
     expected_phones, heard_phones = pronunciations(reference), pronunciations(heard)
     if set(expected_phones).intersection(heard_phones) or phonetic_endpoint_match(reference, heard):
         return .75
+    credit = 0.0
     for expected in expected_phones:
         for actual in heard_phones:
+            # Some Singapore English speakers overlap DRESS and TRAP vowels
+            # and weaken final voicing. Credit this combination in a phrase
+            # when the onset and the final consonants' place and manner agree.
+            if (len(expected) == len(actual) and len(expected) >= 4
+                    and expected[:-3] == actual[:-3] and expected[-4] not in VOWELS
+                    and {expected[-3], actual[-3]} == {'AE', 'EH'}
+                    and (DEVOICED_STOP_SIBILANT.get(expected[-2:]) == actual[-2:]
+                         or DEVOICED_STOP_SIBILANT.get(actual[-2:]) == expected[-2:])):
+                return .75
             if (min(len(expected), len(actual)) >= 3
                     and expected[0] == actual[0] and expected[0] not in VOWELS
                     and (expected[-1] == actual[-1] or (
                         expected[-1] not in VOWELS and actual[-1] not in VOWELS
                         and close_phone_features(expected[-1], actual[-1])))
                     and _distance(expected, actual, vowel_cost=.25) <= 2.25):
-                return .5
-    return 0.0
+                credit = .5
+    return credit
 
 
 @lru_cache(maxsize=8192)

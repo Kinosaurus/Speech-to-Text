@@ -59,7 +59,6 @@ export function WallEditor({ disabled, project, request }) {
       work.request = request(`${endpoint}/preview`, { revision: job.revision, corners: job.corners });
       const result = await work.request;
       if (job.generation === work.generation) {
-        setMessage('Preview updated on the projector.');
         setSkipped(result.skipped);
       }
     } catch (failure) {

@@ -28,7 +28,7 @@ h3 { font-size: 16px; margin-bottom: 10px; }
 .phase { color: #d1ddd4; display: inline-flex; align-items: center; gap: 8px; font-size: .84rem; margin-right: 8px; }
 .phase span { width: 8px; height: 8px; border-radius: 50%; background: #a9b6a9; }
 .phase.listening span { background: #9ee4b1; box-shadow: 0 0 0 4px #9ee4b125; }
-.phase.starting span, .phase.ending span { background: #e9c975; }
+.phase.starting span, .phase.resetting span, .phase.ending span { background: #e9c975; }
 .phase.offline span, .phase.error span { background: #ffaaa2; }
 button { padding: 11px 15px; border: 1px solid transparent; border-radius: 8px; font-weight: 700; }
 .start { color: #172920; background: #bee8bc; }

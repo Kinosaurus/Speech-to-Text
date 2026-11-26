@@ -83,6 +83,26 @@ class ContextualPhoneticProgressTests(unittest.TestCase):
                      'the little coat garden fern beside the gate', 'coat beside gate'):
             self.assertIsNone(permission.phonetic_phrase_support(text.split(), 82))
 
+    def test_dress_trap_overlap_and_final_devoicing_get_contextual_credit(self):
+        anchor = 'the sleepy cat pads on my bed and purrs'
+        heard = 'the sleepy cat pets of my bed and purse'
+        matcher = TimelyEvidenceMatcher(manifest(anchor, stability=1))
+        matcher.explain_matches = True
+        callback(matcher, 'we walked along a quiet path', 1)
+        update = callback(matcher, 'we walked along a quiet path then ' + heard, 2)
+        self.assertTrue(update.triggered)
+        self.assertEqual(matcher._buffer[-6], 'pets')
+        self.assertIn(('pads', 'pets', 'sound', .75),
+                      [(word.expected, word.heard, word.kind, word.credit)
+                       for word in update.cue_word_evidence])
+
+        permission = EffectPermission(dict(checkpoint_text=anchor), .8, [])
+        required = EffectPermission(dict(checkpoint_text=anchor, required_words=['pads']), .8, [])
+        self.assertIsNone(required.phonetic_phrase_support(heard.split(), 82))
+        for text in ('repeat ' + heard, heard.removesuffix(' purse'), heard.replace('pets', 'pots')):
+            with self.subTest(text=text):
+                self.assertIsNone(permission.phonetic_phrase_support(text.split(), 82))
+
     def test_prior_progress_and_fresh_endpoint_reach_final_anchor_without_following_words(self):
         for anchor, heard in [('we found the little sheep', 'chip'),
                               ('she carried the winter coat', 'goat'),
