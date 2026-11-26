@@ -1,0 +1,114 @@
+.panel-navigation {
+  display: flex;
+  gap: 8px;
+  max-width: 1260px;
+  margin: auto;
+  padding-inline: clamp(18px, 4vw, 56px);
+}
+
+.panel-navigation button {
+  padding: 9px 12px;
+  border-radius: 8px 8px 0 0;
+  color: #d1ddd4;
+  background: transparent;
+  font-size: .85rem;
+}
+
+.panel-navigation button:hover { background: #30463d; }
+.panel-navigation button[aria-pressed="true"] { color: #20312a; background: #f5f5ed; }
+.panel-navigation span { margin-left: 4px; font-size: .72rem; font-weight: 500; }
+
+.book-intake { display: grid; gap: 18px; padding-top: 24px; }
+.intake-hero, .intake-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.intake-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(230px, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: clamp(18px, 3vw, 32px);
+  background: #e6eee2;
+}
+
+.intake-intro h2 {
+  margin: 6px 0 10px;
+  font-family: Georgia, serif;
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 500;
+  line-height: 1.07;
+}
+
+.intake-intro p, .intake-description { color: var(--muted); line-height: 1.45; }
+.intake-intro .intake-demo-label { margin-top: 14px; color: #365746; font-size: .78rem; font-weight: 700; }
+.intake-label { color: var(--muted); font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.intake-book {
+  position: relative;
+  display: grid;
+  align-items: end;
+  min-height: 158px;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 11px;
+  color: #fff;
+  background: #263b2d;
+}
+
+.intake-book img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.intake-book::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, #142719 0%, #14271900 76%); }
+.intake-book div { display: grid; gap: 3px; padding: 15px; }
+.intake-book span { font-size: .75rem; }
+
+.intake-stages { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.intake-stages button {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-color: var(--line);
+  border-radius: 10px;
+  color: inherit;
+  background: #fff;
+  text-align: left;
+}
+
+.intake-stages button:hover { background: #f3f8ef; }
+.intake-stages button[aria-pressed="true"] { border-color: #659178; background: #edf5ea; box-shadow: inset 0 -3px #659178; }
+.intake-stage-status { color: #315941; font-size: .8rem; font-weight: 500; }
+
+.intake-workspace { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.intake-card { min-width: 0; padding: clamp(16px, 2.4vw, 24px); background: #fff; }
+.intake-card h3 { margin-bottom: 5px; font-size: 1.18rem; }
+.intake-description { margin-bottom: 16px; font-size: .88rem; }
+.intake-extract { padding: 13px 15px; border-left: 3px solid #98b69b; border-radius: 4px 8px 8px 4px; background: #f6f7f0; }
+.intake-extract p { margin-top: 5px; font: 1rem / 1.48 Georgia, serif; }
+.intake-review { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 12px 0 0; }
+.intake-review div { padding: 9px 11px; border: 1px solid var(--line); border-radius: 7px; }
+.intake-review .intake-phrase { grid-column: 1 / -1; }
+.intake-review dt { color: var(--muted); font-size: .75rem; }
+.intake-review dd { margin: 4px 0 0; font-size: .85rem; font-weight: 700; }
+
+.intake-list, .intake-publish-steps { display: grid; gap: 8px; }
+.intake-list { list-style: none; margin: 0; padding: 0; }
+.intake-list li, .intake-publish-steps div {
+  display: grid;
+  gap: 4px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-size: .85rem;
+}
+
+.intake-list span, .intake-publish-steps span, .intake-note { color: var(--muted); font-size: .8rem; line-height: 1.45; }
+.intake-note { margin-top: 12px; }
+.intake-publish { background: #f9faf5; }
+.intake-publish button { width: 100%; margin-top: 15px; color: #f8f9f4; background: #365746; }
+
+@media (max-width: 680px) {
+  .intake-hero, .intake-workspace { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 440px) {
+  .intake-stages, .intake-review { grid-template-columns: 1fr; }
+}

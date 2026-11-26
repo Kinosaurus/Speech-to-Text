@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
+import { BookIntakeDemo } from './book-intake-demo.jsx';
 import { WallEditor } from './wall-editor.jsx';
 import './styles.css';
 
@@ -435,6 +436,7 @@ function PassagePreview({ passage, fired, transcript, partial, scores, cueStatus
 }
 
 function App() {
+  const [view, setView] = useState('reading');
   const [catalog, setCatalog] = useState(null);
   const [session, setSession] = useState({ phase: 'idle', fired: [] });
   const [settings, setSettings] = useState(defaults);
@@ -569,13 +571,17 @@ function App() {
               <span aria-hidden="true" />
               {connected ? phases[session.phase] : connectionError ? 'Disconnected' : 'Connecting to panel'}
             </span>
-            <button type="button" className="end" disabled={!connected || !canReset || busy} onClick={() => act('/api/session/reset', {}, setSession)}>Reset experience</button>
-            <button type="button" className="end" disabled={!connected || !active || busy || session.phase === 'ending'} onClick={() => act('/api/session/end', {}, setSession)}>End experience</button>
-            <button type="button" className="start" disabled={!connected || !model || !passage || busy || active || waitingForNemo} onClick={() => act('/api/session/start', settings, setSession)}>Start experience</button>
+            {(view === 'reading' || active) && <button type="button" className="end" disabled={!connected || !canReset || busy} onClick={() => act('/api/session/reset', {}, setSession)}>Reset experience</button>}
+            {(view === 'reading' || active) && <button type="button" className="end" disabled={!connected || !active || busy || session.phase === 'ending'} onClick={() => act('/api/session/end', {}, setSession)}>End experience</button>}
+            {view === 'reading' && <button type="button" className="start" disabled={!connected || !model || !passage || busy || active || waitingForNemo} onClick={() => act('/api/session/start', settings, setSession)}>Start experience</button>}
           </div>
         </div>
+        <nav className="panel-navigation" aria-label="Panel views">
+          <button type="button" aria-pressed={view === 'reading'} onClick={() => setView('reading')}>Reading session</button>
+          <button type="button" aria-pressed={view === 'intake'} onClick={() => setView('intake')}>Book intake <span>Demo</span></button>
+        </nav>
       </header>
-      <main>
+      {view === 'intake' ? <BookIntakeDemo /> : <main>
         {(connectionError || actionError || session.message) && (
           <p role="alert" className="error-message">{connectionError || actionError || session.message}</p>
         )}
@@ -673,7 +679,7 @@ function App() {
               assignmentMessage={assignmentMessage} onAssignCue={assignCue} previewDisabled={active || pending === '/api/session/start'} />
           )}
         </div>
-      </main>
+      </main>}
     </>
   );
 }
